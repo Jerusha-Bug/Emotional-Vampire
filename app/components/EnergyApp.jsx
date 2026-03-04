@@ -3,12 +3,13 @@ import {
   Share2, RefreshCcw, ShieldCheck, Zap, 
   ArrowLeft, ArrowRight, Fingerprint, Activity, 
   Sparkles, BookOpen, Timer, ListChecks, BarChart3, UserCheck, HeartPulse,
-  AlertTriangle, ShieldAlert, CheckCircle2, X, Download, Lock, Unlock, Key
+  AlertTriangle, ShieldAlert, CheckCircle2, X, Download, Lock, Unlock, Key, Eye
 } from 'lucide-react';
 
 // --- 授权配置 ---
-const ACCESS_CODE = "6688"; // 授权码：用于交付权限控制
+const ACCESS_CODE = "6688"; 
 
+// --- 选项配置 ---
 const OPTIONS = [
   { label: "从不", value: 1 },
   { label: "很少", value: 2 },
@@ -71,17 +72,22 @@ const QUESTIONS = [
 ];
 
 const RESULT_MATRIX = {
-  "A_LOW_B_LOW": { name: "能量自洽状态", tag: "互动平衡 · 损耗极低", color: "text-emerald-400", bg: "from-emerald-950/40", status: "Healthy", desc: "损耗发现：你与 TA 之间保持着清晰的心理边界。你目前不需要过度流失能量来维持这段关系，这种平衡的互动是滋养的。", advice: "目前的互动非常健康，请继续保持这种平衡的补能节奏。" },
-  "A_HIGH_B_LOW": { name: "高频损耗承担者", tag: "单向透支 · 能量流失", color: "text-orange-400", bg: "from-orange-950/40", status: "Warning", desc: "损耗发现：你正在这段关系中扮演‘能量供给站’的角色。大量能量通过互动口径流失到了对方身上。", advice: "你需要暂时关闭能量输出，学习识别那些不属于你的责任，找回属于自己的休息空间。" },
-  "A_LOW_B_HIGH": { name: "深海孤岛状态", tag: "渴求补给 · 潜在内耗", color: "text-indigo-400", bg: "from-indigo-950/40", status: "Cautious", desc: "损耗发现：目前的外部损耗尚在可控范围，但你内心的‘能量空洞’正在悄悄拉扯你。你可能因为害怕失去，而在潜意识里过度牺牲自己。", advice: "外部的认可是消耗性的，你需要建立一套独立的内在补能回路，学习如何进行自我情感支撑。" },
-  "A_HIGH_B_HIGH": { name: "深度纠缠损耗者", tag: "双重内耗 · 能量枯竭", color: "text-rose-400", bg: "from-rose-950/40", status: "Critical", desc: "损耗发现：你们正处于‘能量相互流失’的危险阶段。由于双方都处于极度匮乏状态，这种拉扯正在榨干你的生命热情。", advice: "停止在受损场域内寻求改变。物理与心理的‘双重撤离’是现在的最优解。" }
+  "LOW_LOW": { name: "能量自洽状态", tag: "互动平衡 · 损耗极低", color: "text-emerald-400", bg: "from-emerald-950/40", status: "Healthy", desc: "损耗发现：你与 TA 之间保持着清晰的心理边界。你目前不需要过度流失能量来维持这段关系，这种平衡的互动是滋养的。", advice: "目前的互动非常健康，请继续保持这种平衡的补能节奏。" },
+  "MID_LOW": { name: "动态拉扯模式", tag: "隐性损耗 · 适应期", color: "text-amber-400", bg: "from-amber-950/40", status: "Moderate", desc: "损耗发现：关系中存在一些不稳定的能量渗漏，你们正在互相试探边界。虽然目前没有严重透支，但偶尔的沟通疲劳不容忽视。", advice: "尝试在感到疲惫时主动表达边界，不要等到能量见底才求救。" },
+  "HIGH_LOW": { name: "高频损耗承担者", tag: "单向透支 · 能量流失", color: "text-orange-400", bg: "from-orange-950/40", status: "Warning", desc: "损耗发现：你正在这段关系中扮演‘能量供给站’的角色。大量能量通过互动口径流失到了对方身上，你的防线已经开始变薄。", advice: "你需要暂时关闭能量输出，学习识别那些不属于你的责任，找回属于自己的休息空间。" },
+  "LOW_MID": { name: "自我调适状态", tag: "内核重构 · 补给中", color: "text-indigo-400", bg: "from-indigo-950/40", status: "Moderate", desc: "损耗发现：外部关系尚算平稳，但你正处于一个自我审视的阶段。你开始察觉到内心的某些渴望，正在寻找更稳定的补能方式。", advice: "关注你的内在节奏，外部认可是辅助，自我的肯定才是核心燃料。" },
+  "MID_MID": { name: "博弈共生阶段", tag: "存量博弈 · 心理防御", color: "text-blue-400", bg: "from-blue-950/40", status: "Cautious", desc: "损耗发现：这是典型的‘中间地带’。你们在互动中既有依赖也有排斥，能量在反复的微小拉扯中被消耗。这是一种‘亚健康’的互动状态。", advice: "打破‘理所当然’的互动惯性，试着从被动应对转为主动建立新的互动协议。" },
+  "HIGH_MID": { name: "能量侵蚀状态", tag: "高压互动 · 局部过载", color: "text-rose-400", bg: "from-rose-950/40", status: "Critical", desc: "损耗发现：你正承受着显著的外部压力，同时内在防御也略显疲态。这种双重拉扯让你在处理关系冲突时变得迟钝或过敏。", advice: "优先处理那些让你最感到疲惫的单向任务。减少非必要的深度社交。" },
+  "LOW_HIGH": { name: "深海孤岛状态", tag: "渴求补给 · 潜在内耗", color: "text-purple-400", bg: "from-purple-950/40", status: "Warning", desc: "损耗发现：目前的外部损耗尚在可控范围，但你内心的‘能量空洞’正在悄悄拉扯你。你可能因为害怕失去，而在潜意识里过度牺牲自己。", advice: "外部的认可是消耗性的，你需要建立一套独立的内在补能回路，先关怀那个饥饿的自己。" },
+  "MID_HIGH": { name: "防守型抓取模式", tag: "焦虑互动 · 能量渴求", color: "text-pink-400", bg: "from-pink-950/40", status: "Critical", desc: "损耗发现：由于内在能量的匮乏，你对关系中的微小变动非常敏感。这种敏感导致了不必要的互动损耗，形成了一种‘因恐惧流失而流失更多’的恶性循环。", advice: "停止向外索要确定性。从最小的自我愉悦行动开始，重建你的能量储蓄池。" },
+  "HIGH_HIGH": { name: "深度纠缠损耗者", tag: "双重内耗 · 能量枯竭", color: "text-red-500", bg: "from-red-950/40", status: "Danger", desc: "损耗发现：你们正处于‘能量相互流失’的极端阶段。由于双方都处于极度匮乏状态，这种拉扯正在榨干你的生命热情，导致系统性的疲惫。", advice: "物理与心理的‘双重撤离’是现在的最优解。在能量彻底枯竭前，先回到能让你呼吸的安全地带。" }
 };
 
 const RadarChart = ({ data, dark = true }) => {
   const size = 200; const center = size / 2; const radius = center * 0.65;
   const points = data.map((d, i) => {
     const angle = (Math.PI * 2 * i) / data.length - Math.PI / 2;
-    const r = (d.value / 5) * radius;
+    const r = (Math.max(0.1, d.value / 5)) * radius;
     return { x: center + r * Math.cos(angle), y: center + r * Math.sin(angle), labelX: center + (radius + 25) * Math.cos(angle), labelY: center + (radius + 20) * Math.sin(angle), name: d.name };
   });
   const polygonPath = points.map(p => `${p.x},${p.y}`).join(' ');
@@ -91,7 +97,7 @@ const RadarChart = ({ data, dark = true }) => {
         {[0.2, 0.4, 0.6, 0.8, 1].map(r => (<circle key={r} cx={center} cy={center} r={radius * r} fill="none" stroke={dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"} strokeWidth="1" />))}
         {points.map((p, i) => { const angle = (Math.PI * 2 * i) / data.length - Math.PI / 2; return <line key={i} x1={center} y1={center} x2={center + radius * Math.cos(angle)} y2={center + radius * Math.sin(angle)} stroke={dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"} strokeWidth="1" />; })}
         <polygon points={polygonPath} fill="rgba(99, 102, 241, 0.2)" stroke="#818cf8" strokeWidth="2" />
-        {points.map((p, i) => (<text key={i} x={p.labelX} y={p.labelY} fontSize="8" textAnchor="middle" fill={dark ? "#94a3b8" : "#64748b"} fontWeight="bold">{p.name}</text>))}
+        {points.map((p, i) => (<text key={i} x={p.labelX} y={p.labelY} fontSize="8" textAnchor="middle" fill={dark ? "#94a3b8" : "#64748b"} fontWeight="bold">{String(p.name)}</text>))}
       </svg>
     </div>
   );
@@ -109,12 +115,7 @@ export default function App() {
   const isUnlocked = useMemo(() => unlockCode === ACCESS_CODE, [unlockCode]);
   const finalTarget = targetPerson.trim() || 'TA';
 
-  const handleStart = () => {
-    if (!isUnlocked) return;
-    setStep('quiz');
-    setCurrentIndex(0);
-    setAnswers({});
-  };
+  const handleStart = () => { if (isUnlocked) setStep('quiz'); };
 
   const navigateToNext = (currentIdx) => {
     if (isNavigating) return;
@@ -133,23 +134,47 @@ export default function App() {
     setTimeout(() => { navigateToNext(currentIndex); }, 300);
   };
 
-  const handleNextBtn = () => { if (answers[QUESTIONS[currentIndex]?.id]) navigateToNext(currentIndex); };
-  const handlePrev = () => { if (isNavigating) return; if (currentIndex > 0) setCurrentIndex(prev => prev - 1); };
-
   const resultData = useMemo(() => {
     if (step !== 'result') return null;
     let scoreA = 0; let scoreB = 0; const dimScores = {};
     DIMENSIONS.forEach(dim => dimScores[dim] = 0);
     QUESTIONS.forEach(q => {
       const val = answers[q.id] || 0;
-      if (q.part === 'A') { scoreA += val; if (dimScores.hasOwnProperty(q.dim)) dimScores[q.dim] += val; }
-      else { scoreB += val; if (dimScores.hasOwnProperty(q.dim)) dimScores[q.dim] += val; }
+      if (q.part === 'A') { scoreA += val; dimScores[q.dim] += val; }
+      else { scoreB += val; dimScores[q.dim] += val; }
     });
+
     const radarData = DIMENSIONS.slice(0, 6).map(key => ({ name: key, value: dimScores[key] / 5 }));
-    const isHighA = scoreA > 75; const isHighB = scoreB > 24;
-    const typeKey = `${isHighA ? 'A_HIGH' : 'A_LOW'}_${isHighB ? 'B_HIGH' : 'B_LOW'}`;
-    const baseResult = RESULT_MATRIX[typeKey] || RESULT_MATRIX["A_LOW_B_LOW"];
-    return { ...baseResult, scoreA, scoreB, radarData, dimScores };
+    const topDim = DIMENSIONS.slice(0, 6).reduce((a, b) => dimScores[a] > dimScores[b] ? a : b);
+    
+    const getLevel = (score, type) => {
+      if (type === 'A') {
+        if (score <= 65) return "LOW";
+        if (score <= 105) return "MID";
+        return "HIGH";
+      } else {
+        if (score <= 18) return "LOW";
+        if (score <= 28) return "MID";
+        return "HIGH";
+      }
+    };
+
+    const levelA = getLevel(scoreA, 'A');
+    const levelB = getLevel(scoreB, 'B');
+    const typeKey = `${levelA}_${levelB}`;
+    const baseResult = RESULT_MATRIX[typeKey] || RESULT_MATRIX["LOW_LOW"];
+    
+    // --- “为何成为目标” 逻辑逻辑映射 ---
+    let vulnerabilityReason = "";
+    if (levelB === "HIGH") {
+      vulnerabilityReason = "你之所以成为‘能量流失点’，核心在于你内在的高匮乏感。因为极度渴望外界的认可来填补空洞，你会在潜意识里通过‘有用’、‘顺从’或‘拯救对方’来交换安全感。吸能者正是识别到了你这种‘以牺牲换爱’的心理模式。";
+    } else if (levelB === "MID") {
+      vulnerabilityReason = "你成为目标源于你摇摆不定的心理防线。虽然你有自我意识，但在冲突面前，你习惯性地选择先妥协来换取表面的和平。这种‘防御性退缩’给了对方不断蚕食你领地的借口。";
+    } else {
+      vulnerabilityReason = "虽然你的内核相对稳定，但你之所以被拉入损耗，多半源于你高度的同理心或‘责任感包袱’。吸能者利用了你的善良，通过展示无助或转嫁责任，让你在不知不觉中成为了他们的义务发电机。";
+    }
+
+    return { ...baseResult, scoreA, scoreB, radarData, dimScores, topDim, vulnerabilityReason };
   }, [step, answers]);
 
   if (step === 'welcome') {
@@ -167,7 +192,7 @@ export default function App() {
         <p className="text-slate-400 text-sm mb-12 max-w-xs text-center leading-relaxed opacity-70">揭秘互动中的能量流失真相<br/>识别并追踪你的损耗出口</p>
 
         <div className="w-full max-w-sm mb-8 space-y-4 text-center">
-          <input type="text" placeholder="你想分析哪段关系? (如：妈妈/爱人/同事)" className="w-full bg-white/5 border border-white/10 p-5 rounded-[2rem] text-sm text-center focus:outline-none focus:border-indigo-500/50 transition-all placeholder:text-slate-700 mx-auto block" value={targetPerson} onChange={(e) => setTargetPerson(e.target.value)} />
+          <input type="text" placeholder="你想分析哪段关系? (如：妈妈/爱人)" className="w-full bg-white/5 border border-white/10 p-5 rounded-[2rem] text-sm text-center focus:outline-none focus:border-indigo-500/50 transition-all placeholder:text-slate-700 mx-auto block" value={targetPerson} onChange={(e) => setTargetPerson(e.target.value)} />
           <div className="relative group">
             <input type="text" placeholder="请输入专属解锁码" className={`w-full bg-white/5 border p-5 rounded-[2rem] text-sm text-center focus:outline-none transition-all placeholder:text-slate-700 font-mono tracking-[0.2em] ${isUnlocked ? 'border-emerald-500/50 text-emerald-400' : 'border-white/10 text-white'}`} value={unlockCode} onChange={(e) => setUnlockCode(e.target.value)} />
             <div className="absolute left-6 top-1/2 -translate-y-1/2 opacity-30 group-focus-within:opacity-100 transition-opacity">{isUnlocked ? <Unlock className="w-4 h-4 text-emerald-400" /> : <Lock className="w-4 h-4 text-slate-500" />}</div>
@@ -207,7 +232,7 @@ export default function App() {
         <div className="max-w-md mx-auto w-full px-2">
             <div className="flex items-center justify-between mb-2 mt-4 px-1">
               <div className="flex flex-col"><span className="text-lg font-black tracking-tighter"><span className="text-indigo-500 font-black">{currentIndex + 1}</span><span className="text-slate-700 font-bold"> / 38</span></span></div>
-              <div className="bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-indigo-300">PART {q.part}</div>
+              <div className="bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-indigo-300">PART {String(q.part)}</div>
             </div>
             <div className="w-full h-1.5 bg-slate-900 rounded-full mb-5 overflow-hidden relative mx-auto"><div className="h-full bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.8)] transition-all duration-500 ease-out" style={{ width: `${progress}%` }} /></div>
             <div className="flex items-center gap-2 mb-8 text-left pl-1"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></div><span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{String(q.dim)}</span></div>
@@ -221,21 +246,21 @@ export default function App() {
             {OPTIONS.map(opt => (
               <button key={opt.value} onClick={() => handleAnswer(opt.value)} className="flex flex-col items-center gap-3 flex-1 group">
                 <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 font-black text-lg ${currentVal === opt.value ? 'bg-indigo-600 border-indigo-600 text-white shadow-[0_0_20px_rgba(99,102,241,0.6)] scale-110' : 'bg-white/5 border-white/10 text-slate-500 group-hover:border-indigo-500/50 active:scale-90'}`}>{opt.value}</div>
-                <span className={`text-[10px] font-bold tracking-tight text-center ${currentVal === opt.value ? 'text-indigo-400 font-black' : 'text-slate-600'}`}>{opt.label}</span>
+                <span className={`text-[10px] font-bold tracking-tight text-center ${currentVal === opt.value ? 'text-indigo-400 font-black' : 'text-slate-600'}`}>{String(opt.label)}</span>
               </button>
             ))}
           </div>
         </div>
         <div className="flex gap-4 mb-6 mt-auto max-w-md mx-auto w-full">
-           <button onClick={handlePrev} disabled={currentIndex === 0} className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center border transition-all ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'bg-white/5 border-white/10 text-slate-500 active:scale-90 hover:bg-white/10'}`}><ArrowLeft className="w-6 h-6" /></button>
-           <button onClick={handleNextBtn} disabled={!currentVal} className={`flex-1 h-16 rounded-[1.5rem] font-black text-lg transition-all ${!currentVal ? 'bg-slate-900 text-slate-700 border border-white/5' : 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20 active:scale-95'}`}>{currentIndex === QUESTIONS.length - 1 ? '分析流失中...' : '下一题'}</button>
+           <button onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)} disabled={currentIndex === 0} className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center border transition-all ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'bg-white/5 border-white/10 text-slate-500 active:scale-90 hover:bg-white/10'}`}><ArrowLeft className="w-6 h-6" /></button>
+           <button onClick={() => currentVal && navigateToNext(currentIndex)} disabled={!currentVal} className={`flex-1 h-16 rounded-[1.5rem] font-black text-lg transition-all ${!currentVal ? 'bg-slate-900 text-slate-700 border border-white/5' : 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20 active:scale-95'}`}>{currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}</button>
         </div>
       </div>
     );
   }
 
   if (step === 'result' && resultData) {
-    const { name, tag, desc, advice, color, bg, status, scoreA, scoreB, radarData, dimScores } = resultData;
+    const { name, tag, desc, advice, color, bg, status, scoreA, scoreB, radarData, dimScores, topDim, vulnerabilityReason } = resultData;
     if (showPoster) {
       return (
         <div className="min-h-screen bg-black/95 flex items-center justify-center p-6 animate-in fade-in zoom-in duration-300 z-50">
@@ -274,8 +299,38 @@ export default function App() {
               <div className={`px-5 py-2 rounded-full text-[10px] font-black border border-white/10 ${color} bg-black/30 backdrop-blur-md shadow-sm`}>{String(tag)}</div>
             </div>
             <div className="px-8 pb-10 space-y-10">
-              <div className="bg-white/5 rounded-[2.5rem] p-8 border border-white/5 relative overflow-hidden mx-auto"><div className="flex items-center justify-between mb-4 relative z-10 text-left"><h4 className="font-black text-[10px] uppercase tracking-widest text-slate-400">外部互动流失分布图</h4><span className="text-[10px] font-black text-indigo-400">{scoreA} pts</span></div><RadarChart data={radarData} /></div>
-              <div className="bg-white/5 p-8 rounded-[2.5rem] border border-white/5 text-left relative overflow-hidden group"><div className="absolute left-0 top-0 w-1.5 h-full bg-indigo-600"></div><h4 className="font-black text-sm mb-4 flex items-center gap-2"><HeartPulse className="w-4 h-4 text-rose-500" /> 能量流失定性解析</h4><p className="text-slate-300 text-sm leading-relaxed text-justify opacity-90 font-medium">{String(desc)}</p></div>
+              {/* 雷达图区块 */}
+              <div className="bg-white/5 rounded-[2.5rem] p-8 border border-white/5 relative overflow-hidden mx-auto">
+                <div className="flex items-center justify-between mb-4 relative z-10 text-left">
+                  <h4 className="font-black text-[10px] uppercase tracking-widest text-slate-400">外部损耗雷达</h4>
+                  <span className="text-[10px] font-black text-indigo-400">{scoreA} pts</span>
+                </div>
+                <RadarChart data={radarData} />
+                <div className="mt-4 p-4 rounded-2xl bg-white/5 border border-white/5 text-left">
+                   <p className="text-[10px] text-slate-500 font-bold mb-1">主要流失源：</p>
+                   <p className="text-xs text-indigo-400 font-black">【{String(topDim)}】得分最为显著</p>
+                </div>
+              </div>
+
+              {/* 新增：为何成为目标的深度解析 */}
+              <div className="bg-indigo-950/30 p-8 rounded-[2.5rem] border border-indigo-500/20 text-left relative overflow-hidden group">
+                  <div className="absolute right-[-10px] top-[-10px] opacity-10"><Eye className="w-24 h-24 text-indigo-400" /></div>
+                  <h4 className="font-black text-sm mb-4 flex items-center gap-2 text-indigo-300">
+                    <UserCheck className="w-4 h-4" /> 为何你成为了目标？
+                  </h4>
+                  <p className="text-indigo-100/90 text-sm leading-relaxed text-justify font-medium">
+                    {String(vulnerabilityReason)}
+                  </p>
+              </div>
+
+              {/* 损耗定性解析 */}
+              <div className="bg-white/5 p-8 rounded-[2.5rem] border border-white/5 text-left relative overflow-hidden group">
+                  <div className="absolute left-0 top-0 w-1.5 h-full bg-indigo-600"></div>
+                  <h4 className="font-black text-sm mb-4 flex items-center gap-2"><HeartPulse className="w-4 h-4 text-rose-500" /> 能量流失定性解析</h4>
+                  <p className="text-slate-300 text-sm leading-relaxed text-justify opacity-90 font-medium">{String(desc)}</p>
+              </div>
+
+              {/* 详细报表 */}
               <div className="space-y-4">
                  <h4 className="font-black text-xs uppercase tracking-[0.2em] mb-4 text-slate-500 pl-2 text-left">损耗维度深度报表</h4>
                  {DIMENSIONS.map((dim, idx) => {
@@ -284,7 +339,7 @@ export default function App() {
                    return (
                     <div key={idx} className={`relative overflow-hidden transition-all duration-300 p-6 rounded-[2.2rem] border text-left ${isInternal ? 'bg-indigo-950/50 border-indigo-400/40 shadow-[0_0_30px_rgba(99,102,241,0.2)] ring-1 ring-indigo-400/20' : 'bg-white/5 border-white/5 hover:bg-white/[0.04]'}`}>
                         {isInternal && (<div className="absolute -right-8 -top-8 opacity-10 rotate-12 pointer-events-none"><Fingerprint className="w-32 h-32 text-indigo-400" /></div>)}
-                        <div className="flex items-center justify-between mb-4 relative z-10 text-left text-white"><div className="flex flex-col">{isInternal && (<span className="text-[8px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-1">Individual Scan</span>)}<div className="flex items-center gap-2">{isInternal ? <Fingerprint className="w-3.5 h-3.5 text-indigo-400" /> : <Activity className="w-3.5 h-3.5 text-slate-500" />}<span className={`text-xs font-black tracking-tight ${isInternal ? 'text-indigo-100' : 'text-slate-200'}`}>0{idx+1} {dim}</span><span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span></div></div><span className={`text-[10px] font-black ${isInternal ? 'text-indigo-400' : 'text-slate-500'}`}>{score} / {maxVal}</span></div>
+                        <div className="flex items-center justify-between mb-4 relative z-10 text-left text-white"><div className="flex flex-col">{isInternal && (<span className="text-[8px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-1">Individual Scan</span>)}<div className="flex items-center gap-2">{isInternal ? <Fingerprint className="w-3.5 h-3.5 text-indigo-400" /> : <Activity className="w-3.5 h-3.5 text-slate-500" />}<span className={`text-xs font-black tracking-tight ${isInternal ? 'text-indigo-100' : 'text-slate-200'}`}>0{idx+1} {String(dim)}</span><span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span></div></div><span className={`text-[10px] font-black ${isInternal ? 'text-indigo-400' : 'text-slate-500'}`}>{score} / {maxVal}</span></div>
                         <div className={`w-full h-1 rounded-full mb-4 overflow-hidden relative z-10 ${isInternal ? 'bg-indigo-900/50' : 'bg-white/5'}`}><div className={`h-full transition-all duration-1000 ${isInternal ? 'bg-indigo-400 shadow-[0_0_10px_rgba(129,140,248,0.5)]' : 'bg-indigo-600'}`} style={{ width: `${ratio*100}%` }}></div></div>
                         <p className={`text-[10px] leading-relaxed text-justify relative z-10 ${isInternal ? 'text-indigo-200/80 font-medium' : 'text-slate-500 opacity-80'}`}>{String(DIMENSION_DESCS[dim])}</p>
                         {isInternal && (<div className="mt-4 pt-3 border-t border-indigo-400/10 flex items-center gap-2 relative z-10 text-white"><Zap className="w-2.5 h-2.5 text-indigo-400 animate-pulse" /><span className="text-[9px] font-bold text-indigo-300/70 tracking-tight italic">分值越高代表补能需求越强烈</span></div>)}
