@@ -224,7 +224,7 @@ export default function App() {
           <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></div> 流失追踪 · 能量损耗分析
         </div>
         <h1 className="text-4xl font-black mb-6 tracking-tighter leading-[1.1] text-center">关系能量与<br/>心理防御双维度测评</h1>
-        <p className="text-slate-400 text-sm mb-12 max-w-xs text-center leading-relaxed opacity-70">揭秘互动中的能量流失真相<br/>识别并追踪你的损耗出口</p>
+        <p className="text-slate-400 text-sm mb-12 max-w-xs text-center leading-relaxed opacity-70">这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？</p>
         
         <div className="w-full max-w-sm mb-8 space-y-4">
           <button onClick={handleStartIdentity} className="w-full py-6 bg-indigo-600 hover:bg-indigo-500 shadow-indigo-600/40 shadow-2xl active:scale-95 transition-all rounded-[2.2rem] font-black text-xl flex items-center justify-center gap-3 cursor-pointer">
@@ -238,7 +238,7 @@ export default function App() {
              <BookOpen className="w-5 h-5 text-indigo-400 mt-1 flex-shrink-0" />
              <div className="space-y-2">
                 <p className="text-xs text-slate-300 font-bold leading-relaxed text-left">Stéphane Clerget 核心理论支持</p>
-                <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80 text-justify text-left">通过交叉识别互动模型与防御机制，精准定位你的生命力流失源。</p>
+                <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80 text-justify text-left">整合情绪劳动理论、依恋与关系动力学理论、家庭动力学及情绪发展理论，不仅看“谁在吸你的能”，更看“你为何成为目标”。</p>
              </div>
           </div>
         </div>
@@ -402,3 +402,4 @@ export default function App() {
   }
   return null;
 }
+
