@@ -58,7 +58,7 @@ const QUESTIONS = [
   { id: 27, part: "A", dim: "自我消耗", text: "你为了维持关系改变了自己。" },
   { id: 28, part: "A", dim: "自我消耗", text: "你会反复回想{target}说过的话。" },
   { id: 29, part: "A", dim: "自我消耗", text: "你在这段关系中感到内耗。" },
-  { id: 30, part: "A", dim: "自我消耗", text: "我有想过疏远{target}。" },
+  { id: 30, part: "A", dim: "自我消耗", text: "你有想过疏远{target}。" },
   { id: 31, part: "B", dim: "内在补能模式", text: "我觉得周围的人大多都带着一身麻烦，需要我去关注。" },
   { id: 32, part: "B", dim: "内在补能模式", text: "我觉得自己对人生中发生的大部分事情都无能为力。" },
   { id: 33, part: "B", dim: "内在补能模式", text: "在我真正需要帮助时，身边几乎找不到可以依靠的人。" },
@@ -124,7 +124,6 @@ export default function App() {
   };
 
   const handleStartIdentity = async () => { 
-     // 点击开始后，进入身份确认步骤
      setStep('identity'); 
   };
 
@@ -212,41 +211,52 @@ export default function App() {
     return { ...baseResult, scoreA, scoreB, radarData, dimScores, topDim, vulnerabilityReason };
   }, [step, answers]);
 
-  // --- [1] Welcome Screen (极简版) ---
+  // --- [1] 首页 (调整位置后的版本) ---
   if (step === 'welcome') {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden">
+      <div className="min-h-screen bg-slate-950 text-white flex flex-col p-8 font-sans overflow-hidden">
+        {/* 背景装饰保持不变 */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 overflow-hidden -z-10 text-slate-950">
           <div className="absolute top-[-20%] left-[-10%] w-[100%] h-[100%] bg-indigo-600 rounded-full blur-[150px]"></div>
           <div className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[80%] bg-purple-600 rounded-full blur-[150px]"></div>
         </div>
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest text-indigo-300 mb-8 bg-white/5 backdrop-blur-md">
-          <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></div> 流失追踪 · 能量损耗分析
-        </div>
-        <h1 className="text-4xl font-black mb-6 tracking-tighter leading-[1.1] text-center">关系能量与<br/>心理防御双维度测评</h1>
-        <p className="text-slate-400 text-sm mb-12 max-w-xs text-center leading-relaxed opacity-70">这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？</p>
-        
-        <div className="w-full max-w-sm mb-8 space-y-4">
-          <button onClick={handleStartIdentity} className="w-full py-6 bg-indigo-600 hover:bg-indigo-500 shadow-indigo-600/40 shadow-2xl active:scale-95 transition-all rounded-[2.2rem] font-black text-xl flex items-center justify-center gap-3 cursor-pointer">
-             开启测评
-          </button>
-          <p className="text-[10px] text-slate-500 text-center font-bold tracking-widest opacity-40 uppercase">Professional Assessment System</p>
-        </div>
 
-        <div className="max-w-sm w-full bg-white/[0.02] border border-white/[0.05] p-6 rounded-[2rem] backdrop-blur-sm mt-4 text-left">
-          <div className="flex items-start gap-3">
-             <BookOpen className="w-5 h-5 text-indigo-400 mt-1 flex-shrink-0" />
-             <div className="space-y-2">
-                <p className="text-xs text-slate-300 font-bold leading-relaxed text-left">Stéphane Clerget 核心理论支持</p>
-                <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80 text-justify text-left">整合情绪劳动理论、依恋与关系动力学理论、家庭动力学及边界理论，不仅看“谁在吸你的能”，更看“你为何成为目标”。</p>
-             </div>
+        {/* 顶部标题区 (保持原位) */}
+        <div className="flex flex-col items-center mt-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest text-indigo-300 mb-8 bg-white/5 backdrop-blur-md">
+            <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></div> 流失追踪 · 能量损耗分析
+          </div>
+          <h1 className="text-4xl font-black mb-6 tracking-tighter leading-[1.1] text-center">关系能量与<br/>心理防御双维度测评</h1>
+          <p className="text-slate-400 text-sm max-w-xs text-center leading-relaxed opacity-70">这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？</p>
+        </div>
+        
+        {/* 中间留白，将后续内容推到底部 */}
+        <div className="flex-1"></div>
+
+        {/* 底部按钮及理论支持区 (移动到这里) */}
+        <div className="w-full max-w-sm mx-auto mb-12 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          <div className="space-y-4">
+            <button onClick={handleStartIdentity} className="w-full py-6 bg-indigo-600 hover:bg-indigo-500 shadow-indigo-600/40 shadow-2xl active:scale-95 transition-all rounded-[2.2rem] font-black text-xl flex items-center justify-center gap-3 cursor-pointer">
+               开启测评
+            </button>
+            <p className="text-[10px] text-slate-500 text-center font-bold tracking-widest opacity-40 uppercase">Professional Assessment System</p>
+          </div>
+
+          <div className="bg-white/[0.02] border border-white/[0.05] p-6 rounded-[2rem] backdrop-blur-sm text-left">
+            <div className="flex items-start gap-3">
+               <BookOpen className="w-5 h-5 text-indigo-400 mt-1 flex-shrink-0" />
+               <div className="space-y-2">
+                  <p className="text-xs text-slate-300 font-bold leading-relaxed text-left">Stéphane Clerget 核心理论支持</p>
+                  <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80 text-justify text-left">整合情绪劳动理论、依恋与关系动力学理论、家庭动力学及边界理论，不仅看“谁在吸你的能”，更看“你为何成为目标”。</p>
+               </div>
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
-  // --- [2] Identity Step (新增关系确认页) ---
+  // --- [2] Identity Step ---
   if (step === 'identity') {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden">
@@ -282,7 +292,7 @@ export default function App() {
     );
   }
 
-  // --- [3] Quiz Step ---
+  // --- 其余 Quiz, Transition, Result 渲染逻辑保持不变 ---
   if (step === 'quiz') {
     const q = QUESTIONS[currentIndex]; if (!q) return null;
     const currentVal = answers[q.id]; const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
@@ -318,7 +328,6 @@ export default function App() {
     );
   }
 
-  // --- [4] Transition Step ---
   if (step === 'transition') return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-12 text-center font-sans">
       <Fingerprint className="w-16 h-16 text-indigo-400 mb-8 animate-pulse" />
@@ -328,7 +337,6 @@ export default function App() {
     </div>
   );
 
-  // --- [5] Result Step ---
   if (step === 'result' && resultData) {
     const { name, tag, desc, advice, color, bg, status, scoreA, radarData, topDim, vulnerabilityReason, dimScores } = resultData;
     if (showPoster) return (
@@ -392,7 +400,7 @@ export default function App() {
                    )
                  })}
               </div>
-              <div className="bg-indigo-600 p-8 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden text-left ring-4 ring-indigo-50/10 font-sans"><Sparkles className="absolute -right-2 -top-2 w-16 h-16 opacity-20 rotate-12 text-left" /><h5 className="text-[10px] font-black opacity-60 uppercase mb-2 tracking-widest text-left text-white/60">止损与补能建议</h5><p className="text-sm font-bold italic leading-relaxed relative z-10 text-left">“{String(advice)}”</p></div>
+              <div className="bg-indigo-600 p-8 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden text-left ring-4 ring-indigo-50/10 font-sans"><Sparkles className="absolute -right-2 -top-2 w-16 h-16 opacity-20 rotate-12 text-left" /><h5 className="text-[10px] font-black opacity-60 uppercase mb-2 tracking-widest text-left text-white/60">止损与补能建议</h5><p className="text-sm font-bold italic leading-relaxed relative z-10 text-left text-white">“{String(advice)}”</p></div>
               <div className="pt-6 flex gap-4 text-center font-sans"><button onClick={() => window.location.reload()} className="flex-1 py-5 bg-white/5 text-slate-400 rounded-[2.2rem] font-black text-xs flex items-center justify-center gap-2"><RefreshCcw className="w-4 h-4" /> 重测</button><button onClick={() => setShowPoster(true)} className="flex-[2] py-5 bg-indigo-600 text-white rounded-[2.2rem] font-black text-xs shadow-xl active:scale-95 flex items-center justify-center gap-2 text-white"><Share2 className="w-4 h-4" /> 导出卡片报告</button></div>
             </div>
           </div>
@@ -402,5 +410,3 @@ export default function App() {
   }
   return null;
 }
-
-
