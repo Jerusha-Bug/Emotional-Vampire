@@ -247,7 +247,7 @@ export default function App() {
                <BookOpen className="w-5 h-5 text-indigo-400 mt-1 flex-shrink-0" />
                <div className="space-y-2">
                   <p className="text-xs text-slate-300 font-bold leading-relaxed text-left">Stéphane Clerget 核心理论支持</p>
-                  <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80 text-justify text-left">整合情绪劳动理论、依恋与关系动力学理论、家庭动力学及边界理论，不仅看“谁在吸你的能”，更看“你为何成为目标”。</p>
+                  <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80 text-justify text-left">整合情绪劳动理论、依恋与关系动力学理论、家庭动力学及边界理论。<br/>不仅看“你在被谁吸取能量”，更看“你为何会成为目标”。</p>
                </div>
             </div>
           </div>
@@ -410,3 +410,4 @@ export default function App() {
   }
   return null;
 }
+
