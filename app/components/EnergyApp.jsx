@@ -1,3 +1,4 @@
+import { createClient } from '@supabase/supabase-js';
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Share2, RefreshCcw, ShieldCheck, Zap, 
@@ -5,6 +6,11 @@ import {
   Sparkles, BookOpen, Timer, ListChecks, BarChart3, UserCheck, HeartPulse,
   AlertTriangle, ShieldAlert, CheckCircle2, X, Download, Lock, Unlock, Key, Eye
 } from 'lucide-react';
+
+// --- Supabase 配置 ---
+const SUPABASE_URL = 'https://rfazkfbaqmrxcsudefiu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_9ksrRzUpTr_nUM4cAwN0WQ_NBD-gcfN';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- 授权配置 ---
 const ACCESS_CODE = "6688"; 
@@ -115,8 +121,6 @@ export default function App() {
   const isUnlocked = useMemo(() => unlockCode === ACCESS_CODE, [unlockCode]);
   const finalTarget = targetPerson.trim() || 'TA';
 
-  const handleStart = () => { if (isUnlocked) setStep('quiz'); };
-
   const navigateToNext = (currentIdx) => {
     if (isNavigating) return;
     setIsNavigating(true);
@@ -126,11 +130,35 @@ export default function App() {
     setTimeout(() => setIsNavigating(false), 300);
   };
 
-  const handleAnswer = (val) => {
+  const handleStart = async () => { 
+    if (isUnlocked) {
+      try {
+        await supabase.from('test_results').insert([
+          { relation_type: finalTarget, final_score: 0 }
+        ]);
+      } catch (e) { console.error(e); }
+      setStep('quiz'); 
+    }
+  };
+
+  const handleAnswer = async (val) => {
     if (isNavigating) return;
     const currentQ = QUESTIONS[currentIndex];
     if (!currentQ) return;
-    setAnswers(prev => ({ ...prev, [currentQ.id]: val }));
+    
+    const newAnswers = { ...answers, [currentQ.id]: val };
+    setAnswers(newAnswers);
+
+    if (currentIndex === QUESTIONS.length - 1) {
+      let total = 0;
+      Object.values(newAnswers).forEach(v => total += v);
+      try {
+        await supabase.from('test_results').insert([
+          { relation_type: finalTarget, final_score: total }
+        ]);
+      } catch (e) { console.error(e); }
+    }
+
     setTimeout(() => { navigateToNext(currentIndex); }, 300);
   };
 
@@ -164,7 +192,6 @@ export default function App() {
     const typeKey = `${levelA}_${levelB}`;
     const baseResult = RESULT_MATRIX[typeKey] || RESULT_MATRIX["LOW_LOW"];
     
-    // --- “为何成为目标” 逻辑逻辑映射 ---
     let vulnerabilityReason = "";
     if (levelB === "HIGH") {
       vulnerabilityReason = "你之所以成为‘能量流失点’，核心在于你内在的高匮乏感。因为极度渴望外界的认可来填补空洞，你会在潜意识里通过‘有用’、‘顺从’或‘拯救对方’来交换安全感。吸能者正是识别到了你这种‘以牺牲换爱’的心理模式。";
@@ -252,8 +279,8 @@ export default function App() {
           </div>
         </div>
         <div className="flex gap-4 mb-6 mt-auto max-w-md mx-auto w-full">
-           <button onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)} disabled={currentIndex === 0} className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center border transition-all ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'bg-white/5 border-white/10 text-slate-500 active:scale-90 hover:bg-white/10'}`}><ArrowLeft className="w-6 h-6" /></button>
-           <button onClick={() => currentVal && navigateToNext(currentIndex)} disabled={!currentVal} className={`flex-1 h-16 rounded-[1.5rem] font-black text-lg transition-all ${!currentVal ? 'bg-slate-900 text-slate-700 border border-white/5' : 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20 active:scale-95'}`}>{currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}</button>
+            <button onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)} disabled={currentIndex === 0} className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center border transition-all ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'bg-white/5 border-white/10 text-slate-500 active:scale-90 hover:bg-white/10'}`}><ArrowLeft className="w-6 h-6" /></button>
+            <button onClick={() => currentVal && navigateToNext(currentIndex)} disabled={!currentVal} className={`flex-1 h-16 rounded-[1.5rem] font-black text-lg transition-all ${!currentVal ? 'bg-slate-900 text-slate-700 border border-white/5' : 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20 active:scale-95'}`}>{currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}</button>
         </div>
       </div>
     );
