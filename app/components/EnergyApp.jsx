@@ -12,7 +12,10 @@ const SUPABASE_URL = 'https://rfazkfbaqmrxcsudefiu.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_9ksrRzUpTr_nUM4cAwN0WQ_NBD-gcfN';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// --- 授权配置 ---
 const ACCESS_CODE = "6688"; 
+
+// --- 选项配置 ---
 const OPTIONS = [
   { label: "从不", value: 1 }, { label: "很少", value: 2 }, { label: "有时", value: 3 }, { label: "经常", value: 4 }, { label: "总是", value: 5 }
 ];
@@ -55,10 +58,10 @@ const QUESTIONS = [
   { id: 23, part: "A", dim: "冲突激发", text: "冲突后通常是我先向{target}道歉。" },
   { id: 24, part: "A", dim: "冲突激发", text: "{target}会回避问题不沟通。" },
   { id: 25, part: "A", dim: "冲突激发", text: "小问题会被放大成大矛盾。" },
-  { id: 26, part: "A", dim: "自我消耗", text: "这段关系让我怀疑自己的价值。" },
-  { id: 27, part: "A", dim: "自我消耗", text: "我为了维持关系改变了自己。" },
+  { id: 26, part: "A", dim: "自我消耗", text: "这段关系让你怀疑自己的价值。" },
+  { id: 27, part: "A", dim: "自我消耗", text: "你为了维持关系改变了自己。" },
   { id: 28, part: "A", dim: "自我消耗", text: "我会反复回想{target}说过的话。" },
-  { id: 29, part: "A", dim: "自我消耗", text: "我在这段关系中感到内耗。" },
+  { id: 29, part: "A", dim: "自我消耗", text: "你在这段关系中感到内耗。" },
   { id: 30, part: "A", dim: "自我消耗", text: "我有想过疏远{target}。" },
   { id: 31, part: "B", dim: "内在补能模式", text: "我觉得周围的人大多都带着一身麻烦，需要我去关注。" },
   { id: 32, part: "B", dim: "内在补能模式", text: "我觉得自己对人生中发生的大部分事情都无能为力。" },
@@ -71,15 +74,23 @@ const QUESTIONS = [
 ];
 
 const RESULT_MATRIX = {
-  "LOW_LOW": { name: "能量自洽状态", tag: "互动平衡 · 损耗极低", color: "text-emerald-400", bg: "from-emerald-950/40", status: "Healthy", desc: "损耗发现：你与 TA 之间保持着清晰的心理边界。你目前不需要过度流失能量来维持这段关系，这种平衡的互动是滋养的。", advice: "目前的互动健康，保持平衡。" },
-  "MID_LOW": { name: "动态拉扯模式", tag: "隐性损耗 · 适应期", color: "text-amber-400", bg: "from-amber-950/40", status: "Moderate", desc: "损耗发现：关系中存在一些不稳定的能量渗漏，你们正在互相试探边界。", advice: "感到疲惫时主动表达边界。" },
-  "HIGH_LOW": { name: "高频损耗承担者", tag: "单向透支 · 能量流失", color: "text-orange-400", bg: "from-orange-950/40", status: "Warning", desc: "损耗发现：你正在扮演‘能量供给站’。", advice: "暂时关闭能量输出。" },
-  "LOW_MID": { name: "自我调适状态", tag: "内核重构 · 补给中", color: "text-indigo-400", bg: "from-indigo-950/40", status: "Moderate", desc: "损耗发现：你开始察觉到内心的某些渴望。", advice: "关注内在节奏。" },
-  "MID_MID": { name: "博弈共生阶段", tag: "存量博弈 · 心理防御", color: "text-blue-400", bg: "from-blue-950/40", status: "Cautious", desc: "损耗发现：互动中既有依赖也有排斥。", advice: "打破‘理所当然’的互动惯性。" },
-  "HIGH_MID": { name: "能量侵蚀状态", tag: "高压互动 · 局部过载", color: "text-rose-400", bg: "from-rose-950/40", status: "Critical", desc: "损耗发现：你正承受显著的外部压力。", advice: "减少非必要深度社交。" },
-  "LOW_HIGH": { name: "深海孤岛状态", tag: "渴求补给 · 潜在内耗", color: "text-purple-400", bg: "from-purple-950/40", status: "Warning", desc: "损耗发现：内心的‘能量空洞’正在悄悄拉扯你。", advice: "建立独立的内在补能回路。" },
-  "MID_HIGH": { name: "防守型抓取模式", tag: "焦虑互动 · 能量渴求", color: "text-pink-400", bg: "from-pink-950/40", status: "Critical", desc: "损耗发现：由于内在能量的匮乏，你对关系中的微小变动非常敏感。", advice: "停止向外索要确定性。" },
-  "HIGH_HIGH": { name: "深度纠缠损耗者", tag: "双重内耗 · 能量枯竭", color: "text-red-500", bg: "from-red-950/40", status: "Danger", desc: "损耗发现：你们正处于‘能量相互流失’的极端阶段。", advice: "物理与心理的‘双重撤离’。" }
+  // 内在稳健型 (B-LOW)
+  "HEALTHY_STABLE": { name: "能量自洽星人", tag: "互动平衡 · 损耗极低", color: "text-emerald-400", bg: "from-emerald-950/40", status: "Healthy", desc: "损耗发现：你与 TA 之间形成了高透明度的能量闭环。你具备强大的心理免疫力，能自然地过滤潜在的损耗，保持个人能量场的稳健。", advice: "目前的互动非常健康，请继续保持这种平衡的补能节奏。" },
+  "FLUCTUATING_STABLE": { name: "边界探索者", tag: "隐性试探 · 动态调整", color: "text-blue-400", bg: "from-blue-950/40", status: "Moderate", desc: "损耗发现：关系中存在一些不稳定的能量渗漏，你们正在互相试探边界。虽然目前没有严重透支，但偶尔沟通疲劳说明需要明确互动协议了。", advice: "尝试在感到微小疲惫时就主动表达，不要让‘小渗漏’变成‘大缺口’。" },
+  "BURDENED_STABLE": { name: "高频负重承担者", tag: "单向透支 · 能量发电机", color: "text-orange-400", bg: "from-orange-950/40", status: "Warning", desc: "损耗发现：你正在这段关系中扮演‘能量供给站’的角色。大量能量通过情绪倾倒口径流失到了对方身上，你的心理防线已显疲态。", advice: "你需要暂时关闭能量输出，学习识别那些不属于你的责任，找回属于自己的休息空间。" },
+  "CRISIS_STABLE": { name: "孤勇承受者", tag: "极限抗压 · 系统性流失", color: "text-rose-500", bg: "from-rose-950/40", status: "Critical", desc: "损耗发现：损耗已达到临界点。尽管你内核稳定，但长期的单向输出正让你陷入‘能量休克’。对方的吸能模式已经严重干扰了你的正常生活。", advice: "立即停止解释和自证。物理隔离是最高优先级的自救行动。" },
+
+  // 内在寻求型 (B-MID)
+  "HEALTHY_SEEKING": { name: "内核重构状态", tag: "自我觉察 · 补给期", color: "text-indigo-400", bg: "from-indigo-950/40", status: "Cautious", desc: "损耗发现：外部关系尚算平稳，但你正处于一个深刻的自我审视阶段。你开始察觉到内心的某些渴望，正在寻找更稳定的补能方式。", advice: "关注你的内在节奏，外部认可是辅助，自我的肯定才是核心燃料。" },
+  "FLUCTUATING_SEEKING": { name: "动态平衡模式", tag: "亚健康互动 · 存量博弈", color: "text-cyan-400", bg: "from-cyan-950/40", status: "Moderate", desc: "损耗发现：这是典型的‘拉扯地带’。你们在互动中既有依赖也有排斥，能量在反复磨损中被消耗。这是一种隐性的、长期的不满足感。", advice: "打破‘理所当然’的互动惯性，试着从被动应对转为主动建立新的互动边界。" },
+  "BURDENED_SEEKING": { name: "疲惫维系个体", tag: "高压互动 · 局部过载", color: "text-amber-500", bg: "from-amber-950/40", status: "Warning", desc: "损耗发现：你承受着显著的外部压力，同时内在防御也略显疲态。这种双重拉扯让你在处理关系冲突时变得迟钝，容易在妥协中进一步流失能量。", advice: "优先处理那些让你最感到疲惫的任务。减少非必要的深度社交，把能量留给自己。" },
+  "CRISIS_SEEKING": { name: "系统性透支源", tag: "双重崩溃 · 能量工伤", color: "text-red-400", bg: "from-red-950/40", status: "Critical", desc: "损耗发现：警告，你的能量系统正在全面报警。长期的损耗已经击穿了你的调适空间，你正处于一种‘为了活着而勉强互动’的濒危状态。", advice: "不要尝试去解决任何关系问题，现在的你没有余额。先去一个能让你感到绝对安全的地方。" },
+
+  // 内在匮乏型 (B-HIGH)
+  "HEALTHY_EMPTY": { name: "荒原守望者", tag: "内核空洞 · 潜在代偿", color: "text-purple-400", bg: "from-purple-950/40", status: "Cautious", desc: "损耗发现：虽然外部关系目前温和，但你内心的‘能量黑洞’极大。你可能因为害怕失去，而在潜意识里过度关注对方需求来换取存在的证据。", advice: "外界的灯火只是路标，你需要尝试在荒原中挖掘自己的水源，学习如何无条件地支持自己。" },
+  "FLUCTUATING_EMPTY": { name: "焦虑抓取模式", tag: "恐惧驱动 · 敏感互动", color: "text-fuchsia-400", bg: "from-fuchsia-950/40", status: "Warning", desc: "损耗发现：由于内在能量的匮乏，你对关系中的微小变动非常敏感。这种敏感导致了不必要的互动损耗，形成了‘因恐惧流失而流失更多’的恶性循环。", advice: "停止向外索要‘确定的爱’。从最小的、能让自己愉悦的行动开始，重建你的自爱储蓄池。" },
+  "BURDENED_EMPTY": { name: "情感代偿客", tag: "牺牲换爱 · 深度透支", color: "text-pink-500", bg: "from-pink-950/40", status: "Critical", desc: "损耗发现：你正在通过‘自我毁灭式’的付出来换取对方的一点点认可。这种互动模式让你成为了对方最完美的‘吸能目标’，损耗已深入骨髓。", advice: "看清那个‘我必须有用才值得被爱’的谎言。现在的你最需要的是停止任何形式的输出。" },
+  "HIGH_HIGH": { name: "深度纠缠沉沦者", tag: "相互吞噬 · 能量枯竭", color: "text-red-600", bg: "from-red-950/40", status: "Danger", desc: "损耗发现：最高危机。你们正处于‘能量相互残杀’的极端阶段。两个匮乏的人在泥潭中疯狂拉扯，系统性地摧毁生命力。", advice: "物理与心理的‘双重撤离’是唯一的生机。在能量彻底枯竭前，必须斩断这一消耗链条。" }
 };
 
 const RadarChart = ({ data, dark = true }) => {
@@ -166,10 +177,34 @@ export default function App() {
     });
     const radarData = DIMENSIONS.slice(0, 6).map(key => ({ name: key, value: dimScores[key] / 5 }));
     const topDim = DIMENSIONS.slice(0, 6).reduce((a, b) => dimScores[a] > dimScores[b] ? a : b);
-    const getLevel = (s, t) => t === 'A' ? (s <= 65 ? "LOW" : s <= 105 ? "MID" : "HIGH") : (s <= 18 ? "LOW" : s <= 28 ? "MID" : "HIGH");
-    const levelA = getLevel(scoreA, 'A'); const levelB = getLevel(scoreB, 'B');
-    const typeKey = `${levelA}_${levelB}`; const baseResult = RESULT_MATRIX[typeKey] || RESULT_MATRIX["LOW_LOW"];
-    let vulnerabilityReason = levelB === "HIGH" ? "你之所以成为‘能量流失点’，核心在于你内在的高匮乏感。吸能者正是识别到了你这种‘以牺牲换爱’的心理模式。" : levelB === "MID" ? "你成为目标源于你摇摆不定的心理防线。这种‘防御性退缩’给了对方不断蚕食你领地的借口。" : "虽然你的内核相对稳定，但你之所以被拉入损耗，多半源于你高度的同理心或‘责任感包袱’。";
+    
+    // --- 4x3 判定逻辑 ---
+    const getLevelA = (s) => {
+      if (s <= 55) return "HEALTHY";
+      if (s <= 90) return "FLUCTUATING";
+      if (s <= 120) return "BURDENED";
+      return "CRISIS";
+    };
+    const getLevelB = (s) => {
+      if (s <= 16) return "STABLE";
+      if (s <= 27) return "SEEKING";
+      return "EMPTY";
+    };
+
+    const lA = getLevelA(scoreA);
+    const lB = getLevelB(scoreB);
+    const typeKey = (lA === "CRISIS" && lB === "EMPTY") ? "HIGH_HIGH" : `${lA}_${lB}`;
+    const baseResult = RESULT_MATRIX[typeKey] || RESULT_MATRIX["HEALTHY_STABLE"];
+    
+    let vulnerabilityReason = "";
+    if (lB === "EMPTY") {
+      vulnerabilityReason = "你之所以成为‘能量流失点’，核心在于你内在的高匮乏感。因为极度渴望外界认可来填补空洞，你会在潜意识里通过‘牺牲’来交换安全感。吸能者正是识别到了这种模式，将你锁定为优质供应源。";
+    } else if (lB === "SEEKING") {
+      vulnerabilityReason = "你成为目标源于你摇摆不定的心理防线。在冲突面前，你习惯性地选择‘有限度的妥协’。这种‘防御性退缩’给了对方试探和蚕食你领地的借口，让他们觉得你的能量是可以被‘谈’出来的。";
+    } else {
+      vulnerabilityReason = "虽然内核稳定，但你被拉入损耗多半源于高度同理心。吸能者利用了你的善良，通过诉说不幸或转嫁责任，让你在不知不觉中背负了不属于你的负重，成为了义务发电机。";
+    }
+
     return { ...baseResult, scoreA, scoreB, radarData, dimScores, topDim, vulnerabilityReason };
   }, [step, answers]);
 
@@ -187,7 +222,7 @@ export default function App() {
         <h1 className="text-4xl font-black mb-6 tracking-tighter leading-[1.1] text-center">关系能量与<br/>心理防御双维度测评</h1>
         <p className="text-slate-400 text-sm mb-12 max-w-xs text-center leading-relaxed opacity-70">揭秘互动中的能量流失真相<br/>识别并追踪你的损耗出口</p>
         <div className="w-full max-w-sm mb-8 space-y-4 text-center">
-          <input type="text" placeholder="你想分析哪段关系? (如：妈妈/爱人)" className="w-full bg-white/5 border border-white/10 p-5 rounded-[2rem] text-sm text-center focus:outline-none focus:border-indigo-500/50 transition-all placeholder:text-slate-700" value={targetPerson} onChange={(e) => setTargetPerson(e.target.value)} />
+          <input type="text" placeholder="你想分析哪段关系? (如：妈妈/爱人)" className="w-full bg-white/5 border border-white/10 p-5 rounded-[2rem] text-sm text-center focus:outline-none focus:border-indigo-500/50 transition-all placeholder:text-slate-700 mx-auto block" value={targetPerson} onChange={(e) => setTargetPerson(e.target.value)} />
           <div className="relative group">
             <input type="text" placeholder="请输入专属解锁码" className={`w-full bg-white/5 border p-5 rounded-[2rem] text-sm text-center focus:outline-none transition-all placeholder:text-slate-700 font-mono tracking-[0.2em] ${isUnlocked ? 'border-emerald-500/50 text-emerald-400' : 'border-white/10 text-white'}`} value={unlockCode} onChange={(e) => setUnlockCode(e.target.value)} />
             <div className="absolute left-6 top-1/2 -translate-y-1/2 opacity-30 group-focus-within:opacity-100 transition-opacity">{isUnlocked ? <Unlock className="w-4 h-4 text-emerald-400" /> : <Lock className="w-4 h-4 text-slate-500" />}</div>
@@ -197,9 +232,9 @@ export default function App() {
         <div className="max-w-sm w-full bg-white/[0.02] border border-white/[0.05] p-6 rounded-[2rem] backdrop-blur-sm mt-4">
           <div className="flex items-start gap-3 text-left">
              <BookOpen className="w-5 h-5 text-indigo-400 mt-1 flex-shrink-0" />
-             <div className="space-y-2">
+             <div className="space-y-2 text-left">
                 <p className="text-xs text-slate-300 font-bold leading-relaxed">核心逻辑源自 Stéphane Clerget 著作：<br/><span className="text-indigo-400 italic font-medium">《Les vampires psychiques》</span></p>
-                <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80 text-justify text-justify">整合亲子关系及情绪发展理论，不仅看“谁在吸你的能”，更看“你为何成为目标”。</p>
+                <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80 text-justify">整合亲子关系及情绪发展理论，不仅看“谁在吸你的能”，更看“你为何成为目标”。</p>
              </div>
           </div>
         </div>
@@ -213,7 +248,7 @@ export default function App() {
     const currentVal = answers[q.id]; const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
     return (
       <div className="min-h-screen bg-slate-950 text-white flex flex-col p-6 font-sans">
-        <div className="max-w-md mx-auto w-full px-2 text-center">
+        <div className="max-w-md mx-auto w-full px-2">
             <div className="flex items-center justify-between mb-2 mt-4 px-1">
               <div className="flex flex-col"><span className="text-lg font-black tracking-tighter"><span className="text-indigo-500 font-black">{currentIndex + 1}</span><span className="text-slate-700 font-bold"> / 38</span></span></div>
               <div className="bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-indigo-300">PART {String(q.part)}</div>
@@ -221,7 +256,7 @@ export default function App() {
             <div className="w-full h-1.5 bg-slate-900 rounded-full mb-5 overflow-hidden relative mx-auto"><div className="h-full bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.8)] transition-all duration-500 ease-out" style={{ width: `${progress}%` }} /></div>
             <div className="flex items-center gap-2 mb-8 text-left pl-1"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></div><span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{String(q.dim)}</span></div>
         </div>
-        <div className="flex-1 flex flex-col max-w-md mx-auto w-full text-center">
+        <div className="flex-1 flex flex-col max-w-md mx-auto w-full">
           <div className="bg-white/[0.03] border border-white/[0.05] px-10 rounded-[2.5rem] mb-12 shadow-2xl backdrop-blur-sm relative h-56 flex flex-col justify-center overflow-hidden text-left">
              <span className="absolute top-10 left-10 text-[10px] font-bold text-indigo-500/40 block tracking-[0.2em] font-mono">Q{String(currentIndex+1).padStart(2,'0')}</span>
              <h2 className="text-2xl font-bold text-slate-100 leading-snug w-full">{String(q.text).replace('{target}', finalTarget)}</h2>
@@ -235,7 +270,7 @@ export default function App() {
             ))}
           </div>
         </div>
-        <div className="flex gap-4 mb-6 mt-auto max-w-md mx-auto w-full text-center">
+        <div className="flex gap-4 mb-6 mt-auto max-w-md mx-auto w-full">
             <button onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)} disabled={currentIndex === 0} className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center border transition-all ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'bg-white/5 border-white/10 text-slate-500 active:scale-90 hover:bg-white/10'}`}><ArrowLeft className="w-6 h-6" /></button>
             <button onClick={() => currentVal && navigateToNext(currentIndex)} disabled={!currentVal} className={`flex-1 h-16 rounded-[1.5rem] font-black text-lg transition-all ${!currentVal ? 'bg-slate-900 text-slate-700 border border-white/5' : 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20 active:scale-95'}`}>{currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}</button>
         </div>
@@ -253,37 +288,35 @@ export default function App() {
     </div>
   );
 
-  // --- 结果页核心逻辑 ---
+  // --- 结果页 ---
   if (step === 'result' && resultData) {
     const { name, tag, desc, advice, color, bg, status, scoreA, radarData, topDim, vulnerabilityReason, dimScores } = resultData;
     
-    // 如果是海报模式
     if (showPoster) return (
-      <div className="min-h-screen bg-black/95 flex items-center justify-center p-6 animate-in fade-in zoom-in duration-300 z-50 text-center">
+      <div className="min-h-screen bg-black/95 flex items-center justify-center p-6 animate-in fade-in zoom-in duration-300 z-50">
          <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-6 h-6"/></button>
          <div className="w-full max-w-[340px] bg-slate-950 rounded-[2.5rem] border border-white/10 overflow-hidden shadow-[0_0_50px_rgba(99,102,241,0.3)] relative text-center">
             <div className={`h-28 bg-gradient-to-b ${bg} to-slate-950 p-6 flex flex-col items-center justify-center`}><div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-black uppercase tracking-widest`}>{String(status)} Level</div></div>
             <div className="px-8 pb-10 flex flex-col items-center">
                 <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-5 -mt-8 ring-4 ring-slate-950"><ShieldCheck className={`w-8 h-8 ${color}`} /></div>
                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-1 text-center">Energy Loss Analysis</p>
-                <h2 className="text-3xl font-black mb-3 tracking-tighter text-white">{String(name)}</h2>
+                <h2 className="text-3xl font-black mb-3 tracking-tighter text-white leading-tight">{String(name)}</h2>
                 <div className={`px-4 py-1.5 rounded-full text-[9px] font-black border border-white/10 ${color} bg-white/5 mb-8`}>{String(tag)}</div>
                 <div className="w-full bg-white/[0.02] border border-white/5 rounded-[2rem] p-4 mb-6 text-center">
                    <div className="flex items-center justify-between mb-2 px-2"><span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Loss Pattern Scan</span><span className="text-[9px] font-black text-indigo-400">{scoreA} PTS</span></div>
                    <RadarChart data={radarData} />
                 </div>
-                <div className="text-left relative pl-4 border-l-2 border-indigo-600"><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">流失定性解析</h4><p className="text-slate-300 text-xs leading-relaxed text-justify font-medium opacity-90">{String(desc)}</p></div>
-                <div className="mt-8 w-full flex items-center justify-between"><div className="text-left"><p className="text-[10px] font-black text-white/40 uppercase tracking-widest">Energy Flow Analysis</p><p className="text-[8px] text-slate-600 italic">By Stéphane Clerget System</p></div><div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-[8px] font-bold text-slate-600 border border-white/5 font-mono">QR</div></div>
+                <div className="text-left relative pl-4 border-l-2 border-indigo-600"><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 text-left">流失定性解析</h4><p className="text-slate-300 text-xs leading-relaxed text-justify font-medium opacity-90 text-left">{String(desc)}</p></div>
+                <div className="mt-8 w-full flex items-center justify-between"><div className="text-left text-left"><p className="text-[10px] font-black text-white/40 uppercase tracking-widest">Energy Flow Analysis</p><p className="text-[8px] text-slate-600 italic">By Stéphane Clerget System</p></div><div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-[8px] font-bold text-slate-600 border border-white/5 font-mono">QR</div></div>
                 <div className="mt-8"><p className="text-white/20 text-[9px] font-medium tracking-[0.2em] flex items-center justify-center gap-2 text-center"><Download className="w-2.5 h-2.5 opacity-50"/> 截图保存能量报告</p></div>
             </div>
          </div>
       </div>
     );
 
-    // 常规结果页
     return (
-      <div className="min-h-screen bg-slate-950 text-white p-4 pb-12 font-sans overflow-x-hidden text-center">
-        <div className="max-w-md mx-auto space-y-6 text-center">
+      <div className="min-h-screen bg-slate-950 text-white p-4 pb-12 font-sans overflow-x-hidden">
+        <div className="max-w-md mx-auto space-y-6">
           <div className={`rounded-[3rem] border border-white/5 bg-gradient-to-b ${bg} to-slate-950 shadow-2xl relative overflow-hidden`}>
             <div className="absolute top-8 right-8"><div className={`flex items-center gap-1.5 px-3 py-1 rounded-full border bg-black/40 backdrop-blur-sm ${color} border-white/10 text-[9px] font-black uppercase tracking-widest`}>{String(status)} Level</div></div>
             <div className="p-10 text-center flex flex-col items-center text-white">
@@ -293,19 +326,19 @@ export default function App() {
               <div className={`px-5 py-2 rounded-full text-[10px] font-black border border-white/10 ${color} bg-black/30 backdrop-blur-md shadow-sm`}>{String(tag)}</div>
             </div>
             <div className="px-8 pb-10 space-y-10">
-              <div className="bg-white/5 rounded-[2.5rem] p-8 border border-white/5 relative overflow-hidden mx-auto">
+              <div className="bg-white/5 rounded-[2.5rem] p-8 border border-white/5 relative overflow-hidden mx-auto text-center">
                 <div className="flex items-center justify-between mb-4 text-left px-2"><h4 className="font-black text-[10px] uppercase tracking-widest text-slate-400">外部损耗雷达</h4><span className="text-[10px] font-black text-indigo-400">{scoreA} pts</span></div>
                 <RadarChart data={radarData} />
-                <div className="mt-4 p-4 rounded-2xl bg-white/5 border border-white/5 text-left"><p className="text-[10px] text-slate-500 font-bold mb-1">主要流失源：</p><p className="text-xs text-indigo-400 font-black">【{String(topDim)}】得分最为显著</p></div>
+                <div className="mt-4 p-4 rounded-2xl bg-white/5 border border-white/5 text-left"><p className="text-[10px] text-slate-500 font-bold mb-1">关键流失点：</p><p className="text-xs text-indigo-400 font-black">【{String(topDim)}】泄露最为严重</p></div>
               </div>
               <div className="bg-indigo-950/30 p-8 rounded-[2.5rem] border border-indigo-500/20 text-left relative overflow-hidden group">
                   <div className="absolute right-[-10px] top-[-10px] opacity-10"><Eye className="w-24 h-24 text-indigo-400" /></div>
-                  <h4 className="font-black text-sm mb-4 flex items-center gap-2 text-indigo-300"><UserCheck className="w-4 h-4" /> 为何你成为了目标？</h4>
+                  <h4 className="font-black text-sm mb-4 flex items-center gap-2 text-indigo-300"><UserCheck className="w-4 h-4" /> 溯源：为何你成为了目标？</h4>
                   <p className="text-indigo-100/90 text-sm leading-relaxed text-justify font-medium text-left">{String(vulnerabilityReason)}</p>
               </div>
               <div className="bg-white/5 p-8 rounded-[2.5rem] border border-white/5 text-left relative overflow-hidden group">
                   <div className="absolute left-0 top-0 w-1.5 h-full bg-indigo-600"></div>
-                  <h4 className="font-black text-sm mb-4 flex items-center gap-2 text-white"><HeartPulse className="w-4 h-4 text-rose-500" /> 能量流失定性解析</h4>
+                  <h4 className="font-black text-sm mb-4 flex items-center gap-2 text-white text-left"><HeartPulse className="w-4 h-4 text-rose-500" /> 能量流失定性解析</h4>
                   <p className="text-slate-300 text-sm leading-relaxed text-justify opacity-90 font-medium text-left">{String(desc)}</p>
               </div>
               <div className="space-y-4">
@@ -323,8 +356,8 @@ export default function App() {
                    )
                  })}
               </div>
-              <div className="bg-indigo-600 p-8 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden text-left ring-4 ring-indigo-50/10"><Sparkles className="absolute -right-2 -top-2 w-16 h-16 opacity-20 rotate-12" /><h5 className="text-[10px] font-black opacity-60 uppercase mb-2 tracking-widest text-left text-white">止损与补能建议</h5><p className="text-sm font-bold italic leading-relaxed text-left text-white">“{String(advice)}”</p></div>
-              <div className="pt-6 flex gap-4 text-center"><button onClick={() => window.location.reload()} className="flex-1 py-5 bg-white/5 text-slate-400 rounded-[2.2rem] font-black text-xs flex items-center justify-center gap-2"><RefreshCcw className="w-4 h-4" /> 重测</button><button onClick={() => setShowPoster(true)} className="flex-[2] py-5 bg-indigo-600 text-white rounded-[2.2rem] font-black text-xs shadow-xl active:scale-95 flex items-center justify-center gap-2 text-white"><Share2 className="w-4 h-4" /> 导出卡片</button></div>
+              <div className="bg-indigo-600 p-8 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden text-left ring-4 ring-indigo-50/10"><Sparkles className="absolute -right-2 -top-2 w-16 h-16 opacity-20 rotate-12" /><h5 className="text-[10px] font-black opacity-60 uppercase mb-2 tracking-widest text-left text-white/60">止损与补能建议</h5><p className="text-sm font-bold italic leading-relaxed relative z-10 text-left text-white">“{String(advice)}”</p></div>
+              <div className="pt-6 flex gap-4 text-center"><button onClick={() => window.location.reload()} className="flex-1 py-5 bg-white/5 text-slate-400 rounded-[2.2rem] font-black text-xs hover:bg-white/10 transition-colors flex items-center justify-center gap-2"><RefreshCcw className="w-4 h-4" /> 重测</button><button onClick={() => setShowPoster(true)} className="flex-[2] py-5 bg-indigo-600 text-white rounded-[2.2rem] font-black text-xs shadow-xl active:scale-95 hover:bg-indigo-500 transition-all flex items-center justify-center gap-2 text-white"><Share2 className="w-4 h-4" /> 导出卡片报告</button></div>
             </div>
           </div>
         </div>
