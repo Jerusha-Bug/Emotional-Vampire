@@ -39,7 +39,7 @@ const QUESTIONS = [
   { id: 8, part: "A", dim: "受害叙述", text: "我经常猜测{target}是不是对我不满。" },
   { id: 9, part: "A", dim: "受害叙述", text: "我在这段关系中缺乏稳定感。" },
   { id: 10, part: "A", dim: "受害叙述", text: "我害怕失去这段关系。" },
-  { id: 11, part: "A", dim: "责任转移", text: "{target}会干涉我的 decision 或生活。" },
+  { id: 11, part: "A", dim: "责任转移", text: "{target}会干涉我的决定或生活。" },
   { id: 12, part: "A", dim: "责任转移", text: "我很难拒绝{target}的请求。" },
   { id: 13, part: "A", dim: "责任转移", text: "即使不愿意，我也会答应{target}。" },
   { id: 14, part: "A", dim: "责任转移", text: "我觉得自己需要为{target}的情绪负责。" },
@@ -410,4 +410,5 @@ export default function App() {
   }
   return null;
 }
+
 
