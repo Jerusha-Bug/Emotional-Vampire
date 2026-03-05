@@ -121,26 +121,20 @@ export default function App() {
   const isUnlocked = useMemo(() => unlockCode === ACCESS_CODE, [unlockCode]);
   const finalTarget = targetPerson.trim() || 'TA';
 
-  const navigateToNext = (currentIdx) => {
-    if (isNavigating) return;
-    setIsNavigating(true);
-    if (currentIdx === 29) setStep('transition');
-    else if (currentIdx < QUESTIONS.length - 1) setCurrentIndex(prev => prev + 1);
-    else setStep('result');
-    setTimeout(() => setIsNavigating(false), 300);
-  };
-
+  // --- 这里的逻辑整合了步骤跳转和数据初始化上传 ---
   const handleStart = async () => { 
     if (isUnlocked) {
       try {
         await supabase.from('test_results').insert([
           { relation_type: finalTarget, final_score: 0 }
         ]);
-      } catch (e) { console.error(e); }
+        console.log("初始化成功");
+      } catch (e) { console.error("初始化失败:", e); }
       setStep('quiz'); 
     }
   };
 
+  // --- 唯一的 handleAnswer 函数，处理实时答题和最终同步 ---
   const handleAnswer = async (val) => {
     if (isNavigating) return;
     const currentQ = QUESTIONS[currentIndex];
@@ -149,6 +143,7 @@ export default function App() {
     const newAnswers = { ...answers, [currentQ.id]: val };
     setAnswers(newAnswers);
 
+    // 如果是最后一题（第 38 题）
     if (currentIndex === QUESTIONS.length - 1) {
       let total = 0;
       Object.values(newAnswers).forEach(v => total += v);
@@ -156,10 +151,20 @@ export default function App() {
         await supabase.from('test_results').insert([
           { relation_type: finalTarget, final_score: total }
         ]);
-      } catch (e) { console.error(e); }
+        console.log("最终结果同步成功");
+      } catch (e) { console.error("同步失败:", e); }
     }
 
     setTimeout(() => { navigateToNext(currentIndex); }, 300);
+  };
+
+  const navigateToNext = (currentIdx) => {
+    if (isNavigating) return;
+    setIsNavigating(true);
+    if (currentIdx === 29) setStep('transition');
+    else if (currentIdx < QUESTIONS.length - 1) setCurrentIndex(prev => prev + 1);
+    else setStep('result');
+    setTimeout(() => setIsNavigating(false), 300);
   };
 
   const resultData = useMemo(() => {
@@ -306,7 +311,7 @@ export default function App() {
                       <RadarChart data={radarData} />
                   </div>
                   <div className="text-left relative pl-4 border-l-2 border-indigo-600"><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">流失定性解析</h4><p className="text-slate-300 text-xs leading-relaxed text-justify font-medium opacity-90">{String(desc)}</p></div>
-                  <div className="mt-10 pt-6 border-t border-white/5 w-full flex items-center justify-between text-left text-white"><div><p className="text-[10px] font-black text-white/40 uppercase tracking-widest">Energy Flow Analysis</p><p className="text-[8px] text-slate-600 italic">By Stéphane Clerget System</p></div><div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-[8px] font-bold text-slate-600 border border-white/5">QR</div></div>
+                  <div className="mt-10 pt-6 border-t border-white/5 w-full flex items-center justify-between text-left text-white"><div><p className="text-[10 tax-white/40 uppercase tracking-widest">Energy Flow Analysis</p><p className="text-[8px] text-slate-600 italic">By Stéphane Clerget System</p></div><div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-[8px] font-bold text-slate-600 border border-white/5">QR</div></div>
                   <div className="mt-8"><p className="text-white/20 text-[9px] font-medium tracking-[0.2em] flex items-center justify-center gap-2 text-center"><Download className="w-2.5 h-2.5 opacity-50"/> 长按或截图保存能量报告</p></div>
               </div>
            </div>
