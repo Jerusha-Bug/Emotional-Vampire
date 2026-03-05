@@ -77,7 +77,7 @@ const RESULT_MATRIX = {
   "LOW_MID": { name: "自我调适状态", tag: "内核重构 · 补给中", color: "text-indigo-400", bg: "from-indigo-950/40", status: "Moderate", desc: "损耗发现：你开始察觉到内心的某些渴望。", advice: "关注内在节奏。" },
   "MID_MID": { name: "博弈共生阶段", tag: "存量博弈 · 心理防御", color: "text-blue-400", bg: "from-blue-950/40", status: "Cautious", desc: "损耗发现：互动中既有依赖也有排斥。", advice: "打破‘理所当然’的互动惯性。" },
   "HIGH_MID": { name: "能量侵蚀状态", tag: "高压互动 · 局部过载", color: "text-rose-400", bg: "from-rose-950/40", status: "Critical", desc: "损耗发现：你正承受显著的外部压力。", advice: "减少非必要深度社交。" },
-  "LOW_HIGH": { name: "深海孤岛状态", tag: "渴求补给 · 潜在内耗", color: "text-purple-400", bg: "from-purple-950/40", status: "Warning", desc: "损耗发现：内心的‘能量空洞’正在拉扯你。", advice: "建立独立的内在补能回路。" },
+  "LOW_HIGH": { name: "深海孤岛状态", tag: "渴求补给 · 潜在内耗", color: "text-purple-400", bg: "from-purple-950/40", status: "Warning", desc: "损耗发现：内心的‘能量空洞’正在悄悄拉扯你。", advice: "建立独立的内在补能回路。" },
   "MID_HIGH": { name: "防守型抓取模式", tag: "焦虑互动 · 能量渴求", color: "text-pink-400", bg: "from-pink-950/40", status: "Critical", desc: "损耗发现：由于内在能量的匮乏，你对关系中的微小变动非常敏感。", advice: "停止向外索要确定性。" },
   "HIGH_HIGH": { name: "深度纠缠损耗者", tag: "双重内耗 · 能量枯竭", color: "text-red-500", bg: "from-red-950/40", status: "Danger", desc: "损耗发现：你们正处于‘能量相互流失’的极端阶段。", advice: "物理与心理的‘双重撤离’。" }
 };
@@ -173,6 +173,7 @@ export default function App() {
     return { ...baseResult, scoreA, scoreB, radarData, dimScores, topDim, vulnerabilityReason };
   }, [step, answers]);
 
+  // --- 欢迎页 ---
   if (step === 'welcome') {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden">
@@ -198,7 +199,7 @@ export default function App() {
              <BookOpen className="w-5 h-5 text-indigo-400 mt-1 flex-shrink-0" />
              <div className="space-y-2">
                 <p className="text-xs text-slate-300 font-bold leading-relaxed">核心逻辑源自 Stéphane Clerget 著作：<br/><span className="text-indigo-400 italic font-medium">《Les vampires psychiques》</span></p>
-                <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80 text-justify">整合亲子关系及情绪发展理论，不仅看“谁在吸你的能”，更看“你为何成为目标”。</p>
+                <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80 text-justify text-justify">整合亲子关系及情绪发展理论，不仅看“谁在吸你的能”，更看“你为何成为目标”。</p>
              </div>
           </div>
         </div>
@@ -206,12 +207,13 @@ export default function App() {
     );
   }
 
+  // --- 答题页 ---
   if (step === 'quiz') {
     const q = QUESTIONS[currentIndex]; if (!q) return null;
     const currentVal = answers[q.id]; const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
     return (
       <div className="min-h-screen bg-slate-950 text-white flex flex-col p-6 font-sans">
-        <div className="max-w-md mx-auto w-full px-2">
+        <div className="max-w-md mx-auto w-full px-2 text-center">
             <div className="flex items-center justify-between mb-2 mt-4 px-1">
               <div className="flex flex-col"><span className="text-lg font-black tracking-tighter"><span className="text-indigo-500 font-black">{currentIndex + 1}</span><span className="text-slate-700 font-bold"> / 38</span></span></div>
               <div className="bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-indigo-300">PART {String(q.part)}</div>
@@ -219,7 +221,7 @@ export default function App() {
             <div className="w-full h-1.5 bg-slate-900 rounded-full mb-5 overflow-hidden relative mx-auto"><div className="h-full bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.8)] transition-all duration-500 ease-out" style={{ width: `${progress}%` }} /></div>
             <div className="flex items-center gap-2 mb-8 text-left pl-1"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></div><span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{String(q.dim)}</span></div>
         </div>
-        <div className="flex-1 flex flex-col max-w-md mx-auto w-full">
+        <div className="flex-1 flex flex-col max-w-md mx-auto w-full text-center">
           <div className="bg-white/[0.03] border border-white/[0.05] px-10 rounded-[2.5rem] mb-12 shadow-2xl backdrop-blur-sm relative h-56 flex flex-col justify-center overflow-hidden text-left">
              <span className="absolute top-10 left-10 text-[10px] font-bold text-indigo-500/40 block tracking-[0.2em] font-mono">Q{String(currentIndex+1).padStart(2,'0')}</span>
              <h2 className="text-2xl font-bold text-slate-100 leading-snug w-full">{String(q.text).replace('{target}', finalTarget)}</h2>
@@ -233,7 +235,7 @@ export default function App() {
             ))}
           </div>
         </div>
-        <div className="flex gap-4 mb-6 mt-auto max-w-md mx-auto w-full">
+        <div className="flex gap-4 mb-6 mt-auto max-w-md mx-auto w-full text-center">
             <button onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)} disabled={currentIndex === 0} className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center border transition-all ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'bg-white/5 border-white/10 text-slate-500 active:scale-90 hover:bg-white/10'}`}><ArrowLeft className="w-6 h-6" /></button>
             <button onClick={() => currentVal && navigateToNext(currentIndex)} disabled={!currentVal} className={`flex-1 h-16 rounded-[1.5rem] font-black text-lg transition-all ${!currentVal ? 'bg-slate-900 text-slate-700 border border-white/5' : 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20 active:scale-95'}`}>{currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}</button>
         </div>
@@ -241,6 +243,7 @@ export default function App() {
     );
   }
 
+  // --- 过渡页 ---
   if (step === 'transition') return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-12 text-center">
       <Fingerprint className="w-16 h-16 text-indigo-400 mb-8 animate-pulse" />
@@ -250,10 +253,13 @@ export default function App() {
     </div>
   );
 
+  // --- 结果页核心逻辑 ---
   if (step === 'result' && resultData) {
     const { name, tag, desc, advice, color, bg, status, scoreA, radarData, topDim, vulnerabilityReason, dimScores } = resultData;
+    
+    // 如果是海报模式
     if (showPoster) return (
-      <div className="min-h-screen bg-black/95 flex items-center justify-center p-6 animate-in fade-in zoom-in duration-300 z-50">
+      <div className="min-h-screen bg-black/95 flex items-center justify-center p-6 animate-in fade-in zoom-in duration-300 z-50 text-center">
          <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-6 h-6"/></button>
          <div className="w-full max-w-[340px] bg-slate-950 rounded-[2.5rem] border border-white/10 overflow-hidden shadow-[0_0_50px_rgba(99,102,241,0.3)] relative text-center">
             <div className={`h-28 bg-gradient-to-b ${bg} to-slate-950 p-6 flex flex-col items-center justify-center`}><div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-black uppercase tracking-widest`}>{String(status)} Level</div></div>
@@ -268,15 +274,16 @@ export default function App() {
                 </div>
                 <div className="text-left relative pl-4 border-l-2 border-indigo-600"><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">流失定性解析</h4><p className="text-slate-300 text-xs leading-relaxed text-justify font-medium opacity-90">{String(desc)}</p></div>
                 <div className="mt-8 w-full flex items-center justify-between"><div className="text-left"><p className="text-[10px] font-black text-white/40 uppercase tracking-widest">Energy Flow Analysis</p><p className="text-[8px] text-slate-600 italic">By Stéphane Clerget System</p></div><div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-[8px] font-bold text-slate-600 border border-white/5 font-mono">QR</div></div>
-                <div className="mt-8"><p className="text-white/20 text-[9px] font-medium tracking-[0.2em] flex items-center justify-center gap-2"><Download className="w-2.5 h-2.5 opacity-50"/> 截图保存能量报告</p></div>
+                <div className="mt-8"><p className="text-white/20 text-[9px] font-medium tracking-[0.2em] flex items-center justify-center gap-2 text-center"><Download className="w-2.5 h-2.5 opacity-50"/> 截图保存能量报告</p></div>
             </div>
          </div>
       </div>
     );
 
+    // 常规结果页
     return (
-      <div className="min-h-screen bg-slate-950 text-white p-4 pb-12 font-sans overflow-x-hidden">
-        <div className="max-w-md mx-auto space-y-6">
+      <div className="min-h-screen bg-slate-950 text-white p-4 pb-12 font-sans overflow-x-hidden text-center">
+        <div className="max-w-md mx-auto space-y-6 text-center">
           <div className={`rounded-[3rem] border border-white/5 bg-gradient-to-b ${bg} to-slate-950 shadow-2xl relative overflow-hidden`}>
             <div className="absolute top-8 right-8"><div className={`flex items-center gap-1.5 px-3 py-1 rounded-full border bg-black/40 backdrop-blur-sm ${color} border-white/10 text-[9px] font-black uppercase tracking-widest`}>{String(status)} Level</div></div>
             <div className="p-10 text-center flex flex-col items-center text-white">
@@ -287,19 +294,19 @@ export default function App() {
             </div>
             <div className="px-8 pb-10 space-y-10">
               <div className="bg-white/5 rounded-[2.5rem] p-8 border border-white/5 relative overflow-hidden mx-auto">
-                <div className="flex items-center justify-between mb-4 text-left"><h4 className="font-black text-[10px] uppercase tracking-widest text-slate-400">外部损耗雷达</h4><span className="text-[10px] font-black text-indigo-400">{scoreA} pts</span></div>
+                <div className="flex items-center justify-between mb-4 text-left px-2"><h4 className="font-black text-[10px] uppercase tracking-widest text-slate-400">外部损耗雷达</h4><span className="text-[10px] font-black text-indigo-400">{scoreA} pts</span></div>
                 <RadarChart data={radarData} />
                 <div className="mt-4 p-4 rounded-2xl bg-white/5 border border-white/5 text-left"><p className="text-[10px] text-slate-500 font-bold mb-1">主要流失源：</p><p className="text-xs text-indigo-400 font-black">【{String(topDim)}】得分最为显著</p></div>
               </div>
               <div className="bg-indigo-950/30 p-8 rounded-[2.5rem] border border-indigo-500/20 text-left relative overflow-hidden group">
                   <div className="absolute right-[-10px] top-[-10px] opacity-10"><Eye className="w-24 h-24 text-indigo-400" /></div>
                   <h4 className="font-black text-sm mb-4 flex items-center gap-2 text-indigo-300"><UserCheck className="w-4 h-4" /> 为何你成为了目标？</h4>
-                  <p className="text-indigo-100/90 text-sm leading-relaxed text-justify font-medium">{String(vulnerabilityReason)}</p>
+                  <p className="text-indigo-100/90 text-sm leading-relaxed text-justify font-medium text-left">{String(vulnerabilityReason)}</p>
               </div>
               <div className="bg-white/5 p-8 rounded-[2.5rem] border border-white/5 text-left relative overflow-hidden group">
                   <div className="absolute left-0 top-0 w-1.5 h-full bg-indigo-600"></div>
                   <h4 className="font-black text-sm mb-4 flex items-center gap-2 text-white"><HeartPulse className="w-4 h-4 text-rose-500" /> 能量流失定性解析</h4>
-                  <p className="text-slate-300 text-sm leading-relaxed text-justify opacity-90 font-medium">{String(desc)}</p>
+                  <p className="text-slate-300 text-sm leading-relaxed text-justify opacity-90 font-medium text-left">{String(desc)}</p>
               </div>
               <div className="space-y-4">
                  <h4 className="font-black text-xs uppercase tracking-[0.2em] mb-4 text-slate-500 pl-2 text-left">损耗维度深度报表</h4>
@@ -311,13 +318,13 @@ export default function App() {
                         {isInternal && (<div className="absolute -right-8 -top-8 opacity-10 rotate-12 pointer-events-none"><Fingerprint className="w-32 h-32 text-indigo-400" /></div>)}
                         <div className="flex items-center justify-between mb-4 relative z-10 text-left text-white"><div className="flex flex-col">{isInternal && (<span className="text-[8px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-1">Individual Scan</span>)}<div className="flex items-center gap-2">{isInternal ? <Fingerprint className="w-3.5 h-3.5 text-indigo-400" /> : <Activity className="w-3.5 h-3.5 text-slate-500" />}<span className={`text-xs font-black tracking-tight ${isInternal ? 'text-indigo-100' : 'text-slate-200'}`}>0{idx+1} {String(dim)}</span><span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span></div></div><span className={`text-[10px] font-black ${isInternal ? 'text-indigo-400' : 'text-slate-500'}`}>{score} / {maxVal}</span></div>
                         <div className={`w-full h-1 rounded-full mb-4 overflow-hidden relative z-10 ${isInternal ? 'bg-indigo-900/50' : 'bg-white/5'}`}><div className={`h-full transition-all duration-1000 ${isInternal ? 'bg-indigo-400 shadow-[0_0_10px_rgba(129,140,248,0.5)]' : 'bg-indigo-600'}`} style={{ width: `${ratio*100}%` }}></div></div>
-                        <p className={`text-[10px] leading-relaxed text-justify relative z-10 ${isInternal ? 'text-indigo-200/80 font-medium' : 'text-slate-500 opacity-80'}`}>{String(DIMENSION_DESCS[dim])}</p>
+                        <p className={`text-[10px] leading-relaxed text-justify relative z-10 text-left ${isInternal ? 'text-indigo-200/80 font-medium' : 'text-slate-500 opacity-80'}`}>{String(DIMENSION_DESCS[dim])}</p>
                     </div>
                    )
                  })}
               </div>
               <div className="bg-indigo-600 p-8 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden text-left ring-4 ring-indigo-50/10"><Sparkles className="absolute -right-2 -top-2 w-16 h-16 opacity-20 rotate-12" /><h5 className="text-[10px] font-black opacity-60 uppercase mb-2 tracking-widest text-left text-white">止损与补能建议</h5><p className="text-sm font-bold italic leading-relaxed text-left text-white">“{String(advice)}”</p></div>
-              <div className="pt-6 flex gap-4 text-center"><button onClick={() => window.location.reload()} className="flex-1 py-5 bg-white/5 text-slate-400 rounded-[2.2rem] font-black text-xs hover:bg-white/10 transition-colors flex items-center justify-center gap-2"><RefreshCcw className="w-4 h-4" /> 重测</button><button onClick={() => setShowPoster(true)} className="flex-[2] py-5 bg-indigo-600 text-white rounded-[2.2rem] font-black text-xs shadow-xl active:scale-95 hover:bg-indigo-500 transition-all flex items-center justify-center gap-2 text-white"><Share2 className="w-4 h-4" /> 导出卡片</button></div>
+              <div className="pt-6 flex gap-4 text-center"><button onClick={() => window.location.reload()} className="flex-1 py-5 bg-white/5 text-slate-400 rounded-[2.2rem] font-black text-xs flex items-center justify-center gap-2"><RefreshCcw className="w-4 h-4" /> 重测</button><button onClick={() => setShowPoster(true)} className="flex-[2] py-5 bg-indigo-600 text-white rounded-[2.2rem] font-black text-xs shadow-xl active:scale-95 flex items-center justify-center gap-2 text-white"><Share2 className="w-4 h-4" /> 导出卡片</button></div>
             </div>
           </div>
         </div>
