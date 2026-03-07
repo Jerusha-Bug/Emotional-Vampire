@@ -603,12 +603,12 @@ export default function App() {
 
     return (
       <div className={`min-h-screen bg-gradient-to-b ${bg} via-slate-950 to-black text-white px-5 py-10 font-sans`}>
-        <div className="max-w-md mx-auto space-y-6">
+        <div className="max-w-md mx-auto space-y-4">
 
-          {/* ① 结果标题 - 主角色 */}
-          <section className={`bg-gradient-to-b from-black/30 via-black/20 ${bg} rounded-3xl p-7 text-center border border-white/10 relative overflow-hidden`}>
+          {/* ① 主角色卡片（含副机制） */}
+          <section className={`bg-gradient-to-b from-black/30 via-black/20 ${bg} rounded-3xl border border-white/10 relative overflow-hidden`}>
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40 pointer-events-none rounded-3xl" />
-            <div className="relative z-10">
+            <div className="relative z-10 p-7 text-center">
               <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/15 text-[9px] font-black tracking-widest mb-5 ${color} bg-black/20`}>
                 {String(status)}
               </div>
@@ -617,50 +617,48 @@ export default function App() {
               <p className={`text-sm font-black mb-5 ${color}`}>{String(tag)}</p>
               <p className="text-white/60 text-sm leading-relaxed">{String(definition)}</p>
             </div>
+            {subRole && (
+              <div className="relative z-10 mx-5 mb-5 rounded-2xl border border-white/10 bg-black/20 backdrop-blur-sm p-4 flex items-start gap-3">
+                <div className="flex-shrink-0 px-2 py-1 rounded-lg border border-white/10 bg-white/5">
+                  <p className="text-[8px] font-black text-white/40 uppercase tracking-widest">副机制</p>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className={`text-sm font-black ${subRole.color}`}>{String(subRole.name)}</span>
+                    <span className="text-[9px] text-white/30 font-bold">· {String(subRole.dim)} 维度</span>
+                  </div>
+                  <p className="text-xs text-white/50 leading-relaxed">{String(subRole.definition)}</p>
+                </div>
+              </div>
+            )}
           </section>
 
-          {/* ② 副机制卡片（条件显示） */}
-          {subRole && (
-            <section className="rounded-2xl border border-white/10 bg-black/20 backdrop-blur-sm p-5 flex items-start gap-4">
-              <div className="flex-shrink-0 px-2 py-1 rounded-lg border border-white/10 bg-white/5">
-                <p className="text-[8px] font-black text-white/40 uppercase tracking-widest">副机制</p>
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`text-sm font-black ${subRole.color}`}>{String(subRole.name)}</span>
-                  <span className="text-[9px] text-white/30 font-bold">· {String(subRole.dim)} 维度</span>
-                </div>
-                <p className="text-xs text-white/50 leading-relaxed">{String(subRole.definition)}</p>
-              </div>
-            </section>
-          )}
-
-          {/* ③ 关系图形 placeholder */}
+          {/* ② 关系图形 placeholder */}
           <section>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">关系互动模式</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">关系互动模式</p>
             <div className="rounded-2xl border border-dashed border-white/10 bg-black/10 h-48 flex items-center justify-center backdrop-blur-sm">
               <p className="text-white/20 text-xs font-bold">关系图形设计区域</p>
             </div>
           </section>
 
-          {/* ④ 行为模式 */}
-          <section>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">常见互动表现</p>
-            <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-5 space-y-3">
-              {behaviors.map((b, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${color.replace('text-', 'bg-')}`}></div>
-                  <p className="text-sm text-white/70">{String(b)}</p>
-                </div>
-              ))}
+          {/* ③ 大卡片：常见互动 + 能量影响 */}
+          <section className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-3xl overflow-hidden">
+            {/* 常见互动表现 */}
+            <div className="p-5 border-b border-white/8">
+              <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">常见互动表现</p>
+              <div className="space-y-2.5">
+                {behaviors.map((b, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${color.replace('text-', 'bg-')}`}></div>
+                    <p className="text-sm text-white/70">{String(b)}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </section>
-
-          {/* ⑤ 能量影响 */}
-          <section>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">这种关系可能带来的消耗</p>
-            <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-5 relative overflow-hidden">
-              <div className={`absolute left-0 top-0 w-1 h-full ${color.replace('text-', 'bg-')} rounded-l-2xl opacity-60`}></div>
+            {/* 能量影响 */}
+            <div className="p-5 relative overflow-hidden">
+              <div className={`absolute left-0 top-0 w-1 h-full ${color.replace('text-', 'bg-')} opacity-50`}></div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3 pl-3">这种关系可能带来的消耗</p>
               <div className="flex items-center gap-2 mb-2 pl-3">
                 <HeartPulse className={`w-4 h-4 ${color}`} />
                 <span className="text-sm font-black text-white">能量损耗</span>
@@ -669,110 +667,134 @@ export default function App() {
             </div>
           </section>
 
-          {/* ⑥ 雷达图 + 六维分值解释 */}
-          <section>
-            {/* Part A 标题 */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-6 h-6 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
-                <span className="text-[9px] font-black text-indigo-400">A</span>
-              </div>
-              <div>
-                <p className="text-xs font-black text-white/70">外部能量损耗分析</p>
-                <p className="text-[10px] text-white/30">这段关系对你的消耗程度</p>
+          {/* ④ 大卡片 Part A：关系能量结构 */}
+          <section className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-3xl overflow-hidden">
+            <div className="p-5 border-b border-white/8">
+              <div className="flex items-center gap-3 mb-1">
+                <div className="w-5 h-5 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                  <span className="text-[9px] font-black text-indigo-400">A</span>
+                </div>
+                <div>
+                  <p className="text-xs font-black text-white/70">外部能量损耗分析</p>
+                  <p className="text-[9px] text-white/30">这段关系对你的消耗程度</p>
+                </div>
               </div>
             </div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">关系能量结构</p>
-            <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-5 mb-3">
-              <div className="px-1 mb-4">
+            <div className="p-5">
+              <div className="mb-4">
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-[10px] font-black text-white/30 uppercase tracking-widest">关系消耗程度</span>
                   <span className={`text-[10px] font-black ${color}`}>{Math.round((scoreA / 150) * 100)}%</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full overflow-hidden bg-white/10">
-                  <div
-                    className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`}
-                    style={{ width: `${Math.round((scoreA / 150) * 100)}%` }}
-                  />
+                  <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`} style={{ width: `${Math.round((scoreA / 150) * 100)}%` }} />
                 </div>
               </div>
               <RadarChart data={radarData} />
             </div>
-            <div className="space-y-2">
-              {DIMENSIONS.map((dim, idx) => {
-                const isInternal = idx === 6;
-                const maxVal = isInternal ? 40 : 25;
+            {/* 01–06 维度卡片 */}
+            <div className="px-4 pb-4 space-y-2">
+              {DIMENSIONS.slice(0, 6).map((dim, idx) => {
+                const maxVal = 25;
                 const score = dimScores[dim] || 0;
                 const ratio = score / maxVal;
                 let stateLabel = "平稳"; let stateColor = "text-emerald-400"; let levelKey = "stable";
-                if (ratio > 0.75) { stateLabel = isInternal ? "需关注" : "过载"; stateColor = "text-rose-400"; levelKey = "overload"; }
+                if (ratio > 0.75) { stateLabel = "过载"; stateColor = "text-rose-400"; levelKey = "overload"; }
                 else if (ratio > 0.5) { stateLabel = "活跃"; stateColor = "text-orange-400"; levelKey = "active"; }
                 const numLabel = `0${idx + 1}`;
-                const partBDivider = isInternal ? (
-                  <div key="partB-divider" className="flex items-center gap-3 pt-2 pb-1">
-                    <div className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
-                      <span className="text-[9px] font-black text-purple-400">B</span>
-                    </div>
-                    <div>
-                      <p className="text-xs font-black text-white/70">内在能量状态</p>
-                      <p className="text-[10px] text-white/30">你是否正在无意识地消耗身边的人</p>
-                    </div>
-                  </div>
-                ) : null;
                 const levelDesc = DIMENSION_LEVEL_DESC[dim]?.[levelKey] || "";
                 const scoreDesc = DIMENSION_SCORE_DESC[dim] || "";
                 return (
-                  <React.Fragment key={idx}>
-                  {partBDivider}
-                  <div className={`rounded-2xl border p-5 backdrop-blur-sm ${isInternal ? 'bg-white/8 border-white/20 ring-1 ring-white/10' : 'bg-black/20 border-white/8'}`}>
-                    {/* 序号 + 维度名 + 状态 + 分数 */}
+                  <div key={idx} className="rounded-2xl border bg-black/20 border-white/8 p-4 backdrop-blur-sm">
                     <div className="flex justify-between items-start mb-3">
                       <div className="flex items-center gap-2">
-                        <span className={`text-[9px] font-black tabular-nums ${isInternal ? color : 'text-white/25'}`}>{numLabel}</span>
-                        {isInternal ? <Fingerprint className={`w-3 h-3 ${color}`} /> : <Activity className="w-3 h-3 text-white/25" />}
-                        <span className={`text-sm font-black ${isInternal ? 'text-white' : 'text-white/80'}`}>{String(dim)}</span>
+                        <span className="text-[9px] font-black tabular-nums text-white/25">{numLabel}</span>
+                        <Activity className="w-3 h-3 text-white/25" />
+                        <span className="text-sm font-black text-white/80">{String(dim)}</span>
                         <span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span>
                       </div>
-                      <span className={`text-[10px] font-black tabular-nums ${isInternal ? color : 'text-white/40'}`}>{score} / {maxVal}</span>
+                      <span className="text-[10px] font-black tabular-nums text-white/40">{score} / {maxVal}</span>
                     </div>
-                    {/* 进度条 */}
-                    <div className="w-full h-1.5 rounded-full mb-4 overflow-hidden bg-white/10">
+                    <div className="w-full h-1.5 rounded-full mb-3 overflow-hidden bg-white/10">
                       <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`} style={{ width: `${ratio * 100}%` }} />
                     </div>
-                    {/* 固定描述 + 分数说明 */}
-                    <div className={`mb-3 pb-3 border-b ${isInternal ? 'border-white/10' : 'border-white/5'}`}>
+                    <div className="mb-3 pb-3 border-b border-white/5">
                       <p className="text-xs text-white/50 leading-relaxed mb-1">{String(DIMENSION_DESCS[dim])}</p>
                       <p className="text-[10px] text-white/30 leading-relaxed">{scoreDesc}</p>
                     </div>
-                    {/* 分级解读 */}
                     <div className="flex items-start gap-2">
                       <span className={`text-[8px] font-black px-1.5 py-0.5 rounded mt-0.5 flex-shrink-0 ${stateColor} bg-black/20 border border-white/10`}>{stateLabel}</span>
                       <p className="text-sm text-white/70 leading-relaxed">{levelDesc}</p>
                     </div>
-                    {/* 07 内在补能模式额外样式标记 */}
-                    {isInternal && (
-                      <div className={`mt-3 pt-3 border-t border-white/10 flex items-center gap-1.5`}>
-                        <Fingerprint className={`w-3 h-3 ${color} opacity-50`} />
-                        <span className={`text-[8px] font-black uppercase tracking-widest ${color} opacity-50`}>当前能量状态</span>
-                      </div>
-                    )}
                   </div>
-                  </React.Fragment>
                 );
               })}
             </div>
           </section>
 
-          {/* ⑦ 建议 */}
+          {/* ⑤ 大卡片 Part B：内在补能模式 */}
+          {(() => {
+            const dim = DIMENSIONS[6];
+            const maxVal = 40;
+            const score = dimScores[dim] || 0;
+            const ratio = score / maxVal;
+            let stateLabel = "平稳"; let stateColor = "text-emerald-400"; let levelKey = "stable";
+            if (ratio > 0.75) { stateLabel = "需关注"; stateColor = "text-rose-400"; levelKey = "overload"; }
+            else if (ratio > 0.5) { stateLabel = "活跃"; stateColor = "text-orange-400"; levelKey = "active"; }
+            const levelDesc = DIMENSION_LEVEL_DESC[dim]?.[levelKey] || "";
+            const scoreDesc = DIMENSION_SCORE_DESC[dim] || "";
+            return (
+              <section className="bg-white/[0.04] backdrop-blur-sm border border-white/15 rounded-3xl overflow-hidden ring-1 ring-white/8">
+                <div className="p-5 border-b border-white/10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-[9px] font-black text-purple-400">B</span>
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-white/70">内在能量状态</p>
+                      <p className="text-[9px] text-white/30">你是否正在无意识地消耗身边的人</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-5">
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-center gap-2">
+                      <Fingerprint className={`w-3 h-3 ${color}`} />
+                      <span className="text-sm font-black text-white">{String(dim)}</span>
+                      <span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span>
+                    </div>
+                    <span className={`text-[10px] font-black tabular-nums ${color}`}>{score} / {maxVal}</span>
+                  </div>
+                  <div className="w-full h-1.5 rounded-full mb-4 overflow-hidden bg-white/10">
+                    <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`} style={{ width: `${ratio * 100}%` }} />
+                  </div>
+                  <div className="mb-3 pb-3 border-b border-white/10">
+                    <p className="text-xs text-white/50 leading-relaxed mb-1">{String(DIMENSION_DESCS[dim])}</p>
+                    <p className="text-[10px] text-white/30 leading-relaxed">{scoreDesc}</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className={`text-[8px] font-black px-1.5 py-0.5 rounded mt-0.5 flex-shrink-0 ${stateColor} bg-black/20 border border-white/10`}>{stateLabel}</span>
+                    <p className="text-sm text-white/70 leading-relaxed">{levelDesc}</p>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-white/10 flex items-center gap-1.5">
+                    <Fingerprint className={`w-3 h-3 ${color} opacity-50`} />
+                    <span className={`text-[8px] font-black uppercase tracking-widest ${color} opacity-50`}>当前能量状态</span>
+                  </div>
+                </div>
+              </section>
+            );
+          })()}
+
+          {/* ⑥ 建议 */}
           <section>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">你可以尝试</p>
             <div className={`bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-5 relative overflow-hidden`}>
               <Sparkles className={`absolute -right-2 -top-2 w-16 h-16 opacity-10 rotate-12 ${color}`} />
-              <p className="text-[10px] font-black text-white/30 uppercase tracking-widest mb-2">止损与补能建议</p>
+              <p className="text-[10px] font-black text-white/30 uppercase tracking-widest mb-2">你可以尝试</p>
               <p className="text-sm font-bold italic leading-relaxed text-white/80 relative z-10">"{String(advice)}"</p>
             </div>
           </section>
 
-          {/* ⑧ 操作按钮 */}
+          {/* ⑦ 操作按钮 */}
           <section className="flex gap-3 pb-8">
             <button onClick={() => window.location.reload()} className="flex-1 py-4 bg-black/20 backdrop-blur-sm text-white/50 rounded-2xl font-black text-xs flex items-center justify-center gap-2 border border-white/10">
               <RefreshCcw className="w-4 h-4" /> 重测
