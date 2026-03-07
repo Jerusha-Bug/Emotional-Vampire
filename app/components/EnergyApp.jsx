@@ -358,57 +358,166 @@ export default function App() {
       </div>
     );
 
+    // ── 新结果页面结构 ──
     return (
-      <div className="min-h-screen bg-slate-950 text-white p-4 pb-12 font-sans overflow-x-hidden text-center">
-        <div className="max-w-md mx-auto space-y-6 text-center">
-          <div className={`rounded-[3rem] border border-white/5 bg-gradient-to-b ${bg} to-slate-950 shadow-2xl relative overflow-hidden text-center`}>
-            <div className="absolute top-8 right-8"><div className={`flex items-center gap-1.5 px-3 py-1 rounded-full border bg-black/40 backdrop-blur-sm ${color} border-white/10 text-[9px] font-black uppercase tracking-widest`}>{String(status)} Level</div></div>
-            <div className="p-10 text-center flex flex-col items-center text-white">
-              <div className="w-20 h-20 rounded-[2.5rem] bg-white/10 flex items-center justify-center mb-6 ring-8 ring-indigo-50/5"><ShieldCheck className={`w-10 h-10 ${color}`} /></div>
-              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-2 text-center">Energy Depletion Report</h3>
-              <h2 className="text-4xl font-black mb-3 tracking-tighter text-white leading-tight">{String(name)}</h2>
-              <div className={`px-5 py-2 rounded-full text-[10px] font-black border border-white/10 ${color} bg-black/30 backdrop-blur-md shadow-sm text-center`}>{String(tag)}</div>
+      <div className="min-h-screen bg-black text-white px-6 py-10 font-sans">
+        <div className="max-w-3xl mx-auto">
+
+          {/* ① 结果标题 */}
+          <section className="text-center mb-12">
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-widest mb-6 ${color} bg-white/5`}>
+              {String(status)} Level
             </div>
-            <div className="px-8 pb-10 space-y-10 text-center font-sans">
-              <div className="bg-white/5 rounded-[2.5rem] p-8 border border-white/5 relative overflow-hidden mx-auto text-center">
-                <div className="flex items-center justify-between mb-4 text-left px-2"><h4 className="font-black text-[10px] uppercase tracking-widest text-slate-400">外部损耗雷达</h4><span className="text-[10px] font-black text-indigo-400">{scoreA} pts</span></div>
-                <RadarChart data={radarData} />
-                <div className="mt-4 p-4 rounded-2xl bg-white/5 border border-white/5 text-left"><p className="text-[10px] text-slate-500 font-bold mb-1">关键流失点：</p><p className="text-xs text-indigo-400 font-black">【{String(topDim)}】维度最为显著</p></div>
+            <h1 className="text-xs tracking-widest text-gray-400 uppercase mb-3">
+              Relationship Energy Report
+            </h1>
+            <h2 className="text-4xl font-black tracking-tighter mt-2 text-white">
+              {String(name)}
+            </h2>
+            <p className={`text-sm font-bold mt-3 ${color}`}>
+              {String(tag)}
+            </p>
+            <p className="mt-4 text-gray-400 max-w-xl mx-auto text-sm leading-relaxed">
+              {String(desc)}
+            </p>
+          </section>
+
+          {/* ② 能量可视化 */}
+          <section className="mb-12">
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-4">
+              Relationship Energy Structure
+            </h3>
+            <div className="bg-zinc-900 border border-white/5 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4 px-2">
+                <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">外部损耗雷达</span>
+                <span className="text-[10px] font-black text-indigo-400">{scoreA} pts</span>
               </div>
-              <div className="bg-indigo-950/30 p-8 rounded-[2.5rem] border border-indigo-500/20 text-left relative overflow-hidden group font-sans">
-                  <div className="absolute right-[-10px] top-[-10px] opacity-10"><Eye className="w-24 h-24 text-indigo-400" /></div>
-                  <h4 className="font-black text-sm mb-4 flex items-center gap-2 text-indigo-300 text-left"><UserCheck className="w-4 h-4 text-left" /> 溯源：为何你成为了目标？</h4>
-                  <p className="text-indigo-100/90 text-sm leading-relaxed text-justify font-medium text-left">{String(vulnerabilityReason)}</p>
+              <RadarChart data={radarData} />
+              <div className="mt-4 p-4 rounded-xl bg-white/5 border border-white/5 text-left">
+                <p className="text-[10px] text-gray-500 font-bold mb-1">关键流失点</p>
+                <p className="text-sm text-indigo-400 font-black">【{String(topDim)}】维度最为显著</p>
               </div>
-              <div className="bg-white/5 p-8 rounded-[2.5rem] border border-white/5 text-left relative overflow-hidden group font-sans">
-                  <div className="absolute left-0 top-0 w-1.5 h-full bg-indigo-600"></div>
-                  <h4 className="font-black text-sm mb-4 flex items-center gap-2 text-white text-left"><HeartPulse className="w-4 h-4 text-rose-500 text-left" /> 损耗定性解析</h4>
-                  <p className="text-slate-300 text-sm leading-relaxed text-justify opacity-90 font-medium text-left">{String(desc)}</p>
+            </div>
+          </section>
+
+          {/* ③ 溯源：为何成为目标 */}
+          <section className="mb-12">
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-4">
+              Why You Were Targeted
+            </h3>
+            <div className="bg-indigo-950/40 border border-indigo-500/20 rounded-2xl p-6 relative overflow-hidden">
+              <div className="absolute right-[-10px] top-[-10px] opacity-10 pointer-events-none">
+                <Eye className="w-24 h-24 text-indigo-400" />
               </div>
-              <div className="space-y-4 text-left font-sans">
-                 <h4 className="font-black text-xs uppercase tracking-[0.2em] mb-4 text-slate-500 pl-2 text-left">损耗维度深度报表</h4>
-                 {DIMENSIONS.map((dim, idx) => {
-                   const isInternal = idx === 6; const maxVal = isInternal ? 40 : 25; const score = dimScores[dim] || 0; const ratio = (score/maxVal);
-                   let stateLabel = "平稳"; let stateColor = "text-emerald-400"; if (ratio > 0.75) { stateLabel = isInternal ? "匮乏" : "过载"; stateColor = "text-rose-500"; } else if (ratio > 0.5) { stateLabel = "活跃"; stateColor = "text-orange-400"; }
-                   return (
-                    <div key={idx} className={`relative overflow-hidden transition-all duration-300 p-6 rounded-[2.2rem] border text-left ${isInternal ? 'bg-indigo-950/50 border-indigo-400/40 shadow-[0_0_30px_rgba(99,102,241,0.2)]' : 'bg-white/5 border-white/5'}`}>
-                        {isInternal && (<div className="absolute -right-8 -top-8 opacity-10 rotate-12 pointer-events-none text-left"><Fingerprint className="w-32 h-32 text-indigo-400 text-left" /></div>)}
-                        <div className="flex items-center justify-between mb-4 relative z-10 text-left text-white"><div className="flex flex-col text-left">{isInternal && (<span className="text-[8px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-1 text-left">Individual Scan</span>)}<div className="flex items-center gap-2 text-left">{isInternal ? <Fingerprint className="w-3.5 h-3.5 text-indigo-400 text-left" /> : <Activity className="w-3.5 h-3.5 text-slate-500 text-left" />}<span className={`text-xs font-black tracking-tight text-left ${isInternal ? 'text-indigo-100' : 'text-slate-200'}`}>0{idx+1} {String(dim)}</span><span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span></div></div><span className={`text-[10px] font-black text-left ${isInternal ? 'text-indigo-400' : 'text-slate-500'}`}>{score} / {maxVal}</span></div>
-                        <div className={`w-full h-1 rounded-full mb-4 overflow-hidden relative z-10 ${isInternal ? 'bg-indigo-900/50' : 'bg-white/5'}`}><div className={`h-full transition-all duration-1000 ${isInternal ? 'bg-indigo-400 shadow-[0_0_10px_rgba(129,140,248,0.5)]' : 'bg-indigo-600'}`} style={{ width: `${ratio*100}%` }}></div></div>
-                        <p className={`text-[10px] leading-relaxed text-justify relative z-10 text-left ${isInternal ? 'text-indigo-200/80 font-medium' : 'text-slate-500 opacity-80'}`}>{String(DIMENSION_DESCS[dim])}</p>
+              <div className="flex items-center gap-2 mb-3">
+                <UserCheck className="w-4 h-4 text-indigo-400" />
+                <span className="text-sm font-black text-indigo-300">溯源：为何你成为了目标？</span>
+              </div>
+              <p className="text-indigo-100/90 text-sm leading-relaxed">
+                {String(vulnerabilityReason)}
+              </p>
+            </div>
+          </section>
+
+          {/* ④ 能量影响 */}
+          <section className="mb-12">
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-4">
+              Energy Impact
+            </h3>
+            <div className="bg-zinc-900 border border-white/5 rounded-2xl p-6 relative overflow-hidden">
+              <div className="absolute left-0 top-0 w-1.5 h-full bg-indigo-600 rounded-l-2xl"></div>
+              <div className="flex items-center gap-2 mb-3 pl-2">
+                <HeartPulse className="w-4 h-4 text-rose-500" />
+                <span className="text-sm font-black text-white">损耗定性解析</span>
+              </div>
+              <p className="text-gray-300 text-sm leading-relaxed pl-2">
+                {String(desc)}
+              </p>
+            </div>
+          </section>
+
+          {/* ⑤ 六维机制 */}
+          <section className="mb-12">
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-6">
+              Relationship Mechanisms
+            </h3>
+            <div className="space-y-4">
+              {DIMENSIONS.map((dim, idx) => {
+                const isInternal = idx === 6;
+                const maxVal = isInternal ? 40 : 25;
+                const score = dimScores[dim] || 0;
+                const ratio = score / maxVal;
+                let stateLabel = "平稳";
+                let stateColor = "text-emerald-400";
+                if (ratio > 0.75) { stateLabel = isInternal ? "匮乏" : "过载"; stateColor = "text-rose-500"; }
+                else if (ratio > 0.5) { stateLabel = "活跃"; stateColor = "text-orange-400"; }
+                return (
+                  <div key={idx} className={`rounded-2xl border p-5 ${isInternal ? "bg-indigo-950/50 border-indigo-400/30" : "bg-zinc-900 border-white/5"}`}>
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="flex items-center gap-2">
+                        {isInternal
+                          ? <Fingerprint className="w-3.5 h-3.5 text-indigo-400" />
+                          : <Activity className="w-3.5 h-3.5 text-gray-500" />
+                        }
+                        <span className={`text-sm font-black ${isInternal ? "text-indigo-100" : "text-gray-200"}`}>
+                          {String(dim)}
+                        </span>
+                        <span className={`text-[9px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>
+                          {stateLabel}
+                        </span>
+                      </div>
+                      <span className={`text-xs font-black ${isInternal ? "text-indigo-400" : "text-gray-500"}`}>
+                        {score} / {maxVal}
+                      </span>
                     </div>
-                   )
-                 })}
-              </div>
-              <div className="bg-indigo-600 p-8 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden text-left ring-4 ring-indigo-50/10 font-sans"><Sparkles className="absolute -right-2 -top-2 w-16 h-16 opacity-20 rotate-12 text-left" /><h5 className="text-[10px] font-black opacity-60 uppercase mb-2 tracking-widest text-left text-white/60">止损与补能建议</h5><p className="text-sm font-bold italic leading-relaxed relative z-10 text-left text-white">“{String(advice)}”</p></div>
-              <div className="pt-6 flex gap-4 text-center font-sans"><button onClick={() => window.location.reload()} className="flex-1 py-5 bg-white/5 text-slate-400 rounded-[2.2rem] font-black text-xs flex items-center justify-center gap-2"><RefreshCcw className="w-4 h-4" /> 重测</button><button onClick={() => setShowPoster(true)} className="flex-[2] py-5 bg-indigo-600 text-white rounded-[2.2rem] font-black text-xs shadow-xl active:scale-95 flex items-center justify-center gap-2 text-white"><Share2 className="w-4 h-4" /> 导出卡片报告</button></div>
+                    <div className={`w-full h-1.5 rounded-full mb-3 overflow-hidden ${isInternal ? "bg-indigo-900/50" : "bg-white/5"}`}>
+                      <div
+                        className={`h-full rounded-full transition-all duration-700 ${isInternal ? "bg-indigo-400" : "bg-purple-500"}`}
+                        style={{ width: `${ratio * 100}%` }}
+                      />
+                    </div>
+                    <p className={`text-xs leading-relaxed ${isInternal ? "text-indigo-200/80" : "text-gray-500"}`}>
+                      {String(DIMENSION_DESCS[dim])}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
-          </div>
+          </section>
+
+          {/* ⑥ 建议 */}
+          <section className="mb-12">
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-4">
+              Insight
+            </h3>
+            <div className="bg-indigo-600 rounded-2xl p-6 relative overflow-hidden shadow-2xl ring-4 ring-indigo-50/10">
+              <Sparkles className="absolute -right-2 -top-2 w-16 h-16 opacity-20 rotate-12" />
+              <p className="text-[10px] font-black text-white/50 uppercase tracking-widest mb-2">止损与补能建议</p>
+              <p className="text-sm font-bold italic leading-relaxed text-white relative z-10">
+                "{String(advice)}"
+              </p>
+            </div>
+          </section>
+
+          {/* ⑦ 操作按钮 */}
+          <section className="flex gap-4">
+            <button
+              onClick={() => window.location.reload()}
+              className="flex-1 py-4 bg-white/5 text-gray-400 rounded-2xl font-black text-xs flex items-center justify-center gap-2 border border-white/5"
+            >
+              <RefreshCcw className="w-4 h-4" /> 重测
+            </button>
+            <button
+              onClick={() => setShowPoster(true)}
+              className="flex-[2] py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl font-black text-xs shadow-xl active:scale-95 flex items-center justify-center gap-2 transition-all"
+            >
+              <Share2 className="w-4 h-4" /> 导出卡片报告
+            </button>
+          </section>
+
         </div>
       </div>
     );
   }
   return null;
 }
-
-
