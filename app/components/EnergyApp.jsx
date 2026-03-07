@@ -445,13 +445,13 @@ export default function App() {
   // --- [1] 首页 - Hanae Nakajima 风格 ---
   if (step === 'welcome') {
     return (
-      <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative" style={{background: 'linear-gradient(160deg, #040210 0%, #0d0520 45%, #080318 100%)'}}>
+      <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative" style={{background: 'linear-gradient(160deg, #020108 0%, #080314 45%, #050210 100%)'}}>
 
         {/* 背景晕染 */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-5%] left-[-10%] w-[80%] h-[80%] rounded-full" style={{background: 'radial-gradient(circle, rgba(80,30,160,0.35) 0%, transparent 65%)', filter: 'blur(50px)'}}></div>
-          <div className="absolute top-[15%] right-[-20%] w-[65%] h-[65%] rounded-full" style={{background: 'radial-gradient(circle, rgba(30,60,160,0.25) 0%, transparent 65%)', filter: 'blur(60px)'}}></div>
-          <div className="absolute bottom-[10%] left-[5%] w-[70%] h-[50%] rounded-full" style={{background: 'radial-gradient(circle, rgba(140,30,110,0.2) 0%, transparent 65%)', filter: 'blur(70px)'}}></div>
+          <div className="absolute top-[-5%] left-[-10%] w-[80%] h-[80%] rounded-full" style={{background: 'radial-gradient(circle, rgba(80,30,160,0.5) 0%, transparent 65%)', filter: 'blur(50px)'}}></div>
+          <div className="absolute top-[15%] right-[-20%] w-[65%] h-[65%] rounded-full" style={{background: 'radial-gradient(circle, rgba(30,60,160,0.38) 0%, transparent 65%)', filter: 'blur(60px)'}}></div>
+          <div className="absolute bottom-[10%] left-[5%] w-[70%] h-[50%] rounded-full" style={{background: 'radial-gradient(circle, rgba(140,30,110,0.32) 0%, transparent 65%)', filter: 'blur(70px)'}}></div>
         </div>
 
         {/* SVG 主装饰层 */}
@@ -521,7 +521,7 @@ export default function App() {
             <div className="w-1 h-1 rounded-full animate-pulse" style={{background: '#B090E0'}}></div>
             流失追踪 · 能量损耗分析
           </div>
-          <h1 className="text-[2.8rem] font-bold mb-5 leading-[1.15] text-center" style={{letterSpacing: '-0.02em', color: '#f0eaf8'}}>关系能量与<br/>心理防御双维度测评</h1>
+          <h1 className="text-[2.2rem] font-bold mb-5 leading-[1.15] text-center" style={{letterSpacing: '-0.01em', color: '#f0eaf8'}}>关系能量与<br/>心理防御双维度测评</h1>
           <p className="text-sm text-center leading-loose" style={{color: 'rgba(200,175,230,0.55)', maxWidth: '260px'}}>这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？</p>
         </div>
 
