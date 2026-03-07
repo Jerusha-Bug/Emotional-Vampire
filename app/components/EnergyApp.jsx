@@ -126,7 +126,7 @@ const ROLE_DATA = {
     en: "Emotional Compensator",
     tag: "情绪修复 · 单向输出",
     color: "text-rose-400",
-    bg: "from-rose-950/60",
+    bg: "from-rose-950/80",
     status: "轻度损耗",
     definition: "你在这段关系中承担了大量情绪修复工作。当对方低落、焦虑或崩溃时，你会本能地去安抚、理解和承担。",
     behaviors: ["经常安慰对方", "帮对方解释他的行为", "很少表达自己的需求", "害怕让关系失去稳定"],
@@ -137,7 +137,7 @@ const ROLE_DATA = {
     en: "Emotional Dump",
     tag: "单向倾倒 · 极度透支",
     color: "text-red-500",
-    bg: "from-red-950/60",
+    bg: "from-red-950/80",
     status: "严重损耗",
     definition: "对方习惯把所有负面情绪倒给你，但并不真正关心你的状态。",
     behaviors: ["对方只在情绪不好时找你", "聊天几乎都是他的烦恼", "你的情绪很少被关注"],
@@ -148,7 +148,7 @@ const ROLE_DATA = {
     en: "Empathy Overload",
     tag: "过度共情 · 自我消耗",
     color: "text-fuchsia-400",
-    bg: "from-fuchsia-950/60",
+    bg: "from-fuchsia-950/80",
     status: "轻度损耗",
     definition: "你拥有很强的共情能力，但在这段关系中，这种能力被过度消耗。",
     behaviors: ["很容易理解对方", "会替对方找理由", "经常忽略自己的感受"],
@@ -159,7 +159,7 @@ const ROLE_DATA = {
     en: "Relationship Fixer",
     tag: "主动修复 · 单方维系",
     color: "text-amber-400",
-    bg: "from-amber-950/60",
+    bg: "from-amber-950/80",
     status: "明显损耗",
     definition: "每当关系出现问题，你都会试图修复它。",
     behaviors: ["主动道歉", "主动解释误会", "不希望关系破裂"],
@@ -170,7 +170,7 @@ const ROLE_DATA = {
     en: "Conflict Magnet",
     tag: "高频摩擦 · 能量耗散",
     color: "text-orange-500",
-    bg: "from-orange-950/60",
+    bg: "from-orange-950/80",
     status: "严重损耗",
     definition: "你们的互动很容易从普通交流升级为冲突。",
     behaviors: ["小问题容易变成争吵", "对话经常带有情绪", "很难真正解决问题"],
@@ -181,7 +181,7 @@ const ROLE_DATA = {
     en: "Responsibility Carrier",
     tag: "失衡承担 · 自我怀疑",
     color: "text-yellow-400",
-    bg: "from-yellow-950/60",
+    bg: "from-yellow-950/80",
     status: "明显损耗",
     definition: "当关系出现问题时，你经常承担更多责任。",
     behaviors: ["经常反思是不是自己做错了", "会主动让步", "不希望事情变得更糟"],
@@ -192,7 +192,7 @@ const ROLE_DATA = {
     en: "Dependency Anchor",
     tag: "情绪依赖 · 逐渐失自由",
     color: "text-blue-400",
-    bg: "from-blue-950/60",
+    bg: "from-blue-950/80",
     status: "轻度损耗",
     definition: "对方在情绪上高度依赖你。",
     behaviors: ["对方经常说'只有你懂我'", "离开你他会变得很焦虑", "你成为关系的稳定中心"],
@@ -203,7 +203,7 @@ const ROLE_DATA = {
     en: "Emotional Guardian",
     tag: "压抑表达 · 内耗积累",
     color: "text-cyan-400",
-    bg: "from-cyan-950/60",
+    bg: "from-cyan-950/80",
     status: "明显损耗",
     definition: "你会主动保护关系中的情绪稳定。",
     behaviors: ["避免冲突", "小心表达意见", "不想让对方难过"],
@@ -214,7 +214,7 @@ const ROLE_DATA = {
     en: "Self-Suppressor",
     tag: "需求压缩 · 自我迷失",
     color: "text-purple-400",
-    bg: "from-purple-950/60",
+    bg: "from-purple-950/80",
     status: "轻度损耗",
     definition: "为了维持关系，你不断压缩自己的需求。",
     behaviors: ["不敢表达真实想法", "经常妥协", "很少坚持自己的界限"],
@@ -236,7 +236,7 @@ const ROLE_DATA = {
     en: "Emotional Loop",
     tag: "重复模式 · 无解循环",
     color: "text-indigo-400",
-    bg: "from-indigo-950/60",
+    bg: "from-indigo-950/80",
     status: "轻度损耗",
     definition: "你们的关系不断重复同样的情绪模式。",
     behaviors: ["冲突 → 和好 → 冲突", "问题没有真正解决", "情绪循环出现"],
@@ -247,7 +247,7 @@ const ROLE_DATA = {
     en: "Awakened Observer",
     tag: "自我觉察 · 能量恢复",
     color: "text-emerald-400",
-    bg: "from-emerald-950/60",
+    bg: "from-emerald-950/80",
     status: "稳定",
     definition: "你已经开始意识到关系中的能量结构。",
     behaviors: ["开始观察互动模式", "不再盲目承担责任", "想要建立边界"],
@@ -442,108 +442,41 @@ export default function App() {
   }, [step, answers]);
 
 
-  // --- [1] 首页 - Hanae Nakajima 风格 ---
+  // --- [1] 首页 ---
   if (step === 'welcome') {
     return (
-      <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative" style={{background: 'linear-gradient(160deg, #060606 0%, #0a080f 45%, #070709 100%)'}}>
-
-        {/* 背景晕染 */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-5%] left-[-10%] w-[80%] h-[80%] rounded-full" style={{background: 'radial-gradient(circle, rgba(50,40,80,0.4) 0%, transparent 65%)', filter: 'blur(50px)'}}></div>
-          <div className="absolute top-[15%] right-[-20%] w-[65%] h-[65%] rounded-full" style={{background: 'radial-gradient(circle, rgba(35,45,80,0.3) 0%, transparent 65%)', filter: 'blur(60px)'}}></div>
-          <div className="absolute bottom-[10%] left-[5%] w-[70%] h-[50%] rounded-full" style={{background: 'radial-gradient(circle, rgba(70,40,80,0.28) 0%, transparent 65%)', filter: 'blur(70px)'}}></div>
+      <div className="min-h-screen bg-slate-950 text-white flex flex-col p-8 font-sans overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 overflow-hidden -z-10">
+          <div className="absolute top-[-20%] left-[-10%] w-[100%] h-[100%] bg-indigo-600 rounded-full blur-[150px]"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[80%] bg-purple-600 rounded-full blur-[150px]"></div>
         </div>
 
-        {/* SVG 主装饰层 */}
-        {/* 噪点纹理 overlay */}
-        <div className="absolute inset-0 pointer-events-none z-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
-          opacity: 0.04,
-          mixBlendMode: 'overlay'
-        }}></div>
-
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice">
-
-          {/* 星点背景 */}
-          {[
-            [45,38],[88,92],[134,18],[210,55],[267,30],[318,72],[355,22],[28,145],[76,188],[160,110],[230,140],[290,95],[370,130],[15,240],[95,275],[175,220],[250,260],[340,210],[380,280],[55,350],[120,390],[200,330],[275,365],[350,320],[30,460],[100,490],[180,430],[260,475],[330,440],[375,500],[60,580],[140,550],[220,600],[300,560],[370,610],[25,690],[110,650],[190,710],[270,670],[345,700],[80,760],[160,790],[240,750],[320,780],[360,820]
-          ].map(([x,y], i) => (
-            <circle key={i} cx={x} cy={y} r={i % 4 === 0 ? 1.2 : 0.7} fill={`rgba(255,255,255,${i % 5 === 0 ? 0.35 : 0.18})`}/>
-          ))}
-
-          {/* 大黑色不规则色块 - 标志性 */}
-          <path d="M 300 50 C 330 30, 370 45, 375 75 S 350 110, 315 100 S 280 80, 300 50Z" fill="rgba(4,1,12,0.95)"/>
-          <path d="M 25 300 C 10 270, 40 245, 65 255 S 85 285, 72 310 S 40 325, 25 300Z" fill="rgba(4,1,12,0.9)"/>
-          <path d="M 340 420 C 365 400, 390 420, 385 450 S 360 468, 338 455 S 320 438, 340 420Z" fill="rgba(4,1,12,0.88)"/>
-          <path d="M 50 560 C 30 540, 55 515, 78 520 S 95 545, 82 565 S 60 578, 50 560Z" fill="rgba(4,1,12,0.85)"/>
-          <path d="M 260 700 C 285 680, 315 695, 318 720 S 298 742, 272 735 S 248 718, 260 700Z" fill="rgba(4,1,12,0.88)"/>
-
-          {/* 细腻流线 - 多条细线束模拟发丝感 */}
-          <path d="M 15 180 C 60 140, 110 200, 80 270 S 30 330, 90 390" stroke="rgba(120,80,200,0.25)" strokeWidth="0.7" fill="none" strokeLinecap="round"/>
-          <path d="M 20 185 C 65 145, 115 205, 85 275 S 35 335, 95 395" stroke="rgba(140,100,210,0.18)" strokeWidth="0.5" fill="none" strokeLinecap="round"/>
-          <path d="M 25 178 C 70 138, 105 198, 75 268" stroke="rgba(100,70,190,0.15)" strokeWidth="0.6" fill="none" strokeLinecap="round"/>
-          <path d="M 350 100 C 375 155, 340 225, 362 295 S 388 365, 352 435" stroke="rgba(60,120,210,0.22)" strokeWidth="0.7" fill="none" strokeLinecap="round"/>
-          <path d="M 356 102 C 380 158, 344 228, 367 298" stroke="rgba(80,140,220,0.15)" strokeWidth="0.5" fill="none" strokeLinecap="round"/>
-          <path d="M 180 750 C 218 702, 268 718, 258 778 S 208 818, 238 844" stroke="rgba(180,80,140,0.22)" strokeWidth="0.7" fill="none" strokeLinecap="round"/>
-          <path d="M 186 752 C 224 704, 274 720, 264 780" stroke="rgba(190,90,150,0.15)" strokeWidth="0.5" fill="none" strokeLinecap="round"/>
-          <path d="M 280 550 C 328 512, 368 558, 348 618 S 298 658, 338 708" stroke="rgba(80,180,200,0.2)" strokeWidth="0.7" fill="none" strokeLinecap="round"/>
-
-          {/* 细白流线 */}
-          <path d="M 100 50 C 130 80, 110 130, 140 160" stroke="rgba(255,255,255,0.15)" strokeWidth="0.8" fill="none" strokeLinecap="round"/>
-          <path d="M 240 600 C 270 570, 300 590, 285 630" stroke="rgba(255,255,255,0.1)" strokeWidth="0.7" fill="none" strokeLinecap="round"/>
-
-          {/* 彩色旋涡螺旋 */}
-          <path d="M 60 650 C 68 642,76 645,75 653 S 65 661,60 656 S 64 646,71 648 S 74 654,70 658" stroke="rgba(200,120,180,0.6)" strokeWidth="1.5" fill="none"/>
-          <path d="M 330 200 C 340 190,352 194,351 204 S 338 214,332 208 S 337 196,346 198 S 350 206,344 211" stroke="rgba(100,170,230,0.55)" strokeWidth="1.5" fill="none"/>
-          <path d="M 160 400 C 168 392,177 396,176 405 S 164 413,158 407 S 163 396,172 398" stroke="rgba(230,140,100,0.5)" strokeWidth="1.2" fill="none"/>
-
-          {/* 蓝色水滴群 */}
-          <ellipse cx="195" cy="480" rx="4" ry="6.5" fill="rgba(80,150,230,0.6)" transform="rotate(8,195,480)"/>
-          <ellipse cx="212" cy="496" rx="3" ry="5" fill="rgba(80,150,230,0.45)" transform="rotate(3,212,496)"/>
-          <ellipse cx="178" cy="499" rx="2.5" ry="4" fill="rgba(80,150,230,0.38)" transform="rotate(-6,178,499)"/>
-          <ellipse cx="200" cy="515" rx="2" ry="3.5" fill="rgba(80,150,230,0.28)" transform="rotate(2,200,515)"/>
-
-          {/* 红色小点（图3图4有） */}
-          <circle cx="145" cy="320" r="3" fill="rgba(220,60,80,0.7)"/>
-          <circle cx="152" cy="330" r="2" fill="rgba(220,60,80,0.5)"/>
-          <circle cx="138" cy="328" r="1.5" fill="rgba(220,60,80,0.4)"/>
-
-          {/* 白色小珠点 */}
-          <circle cx="290" cy="350" r="3" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="300" cy="362" r="2" fill="rgba(255,255,255,0.35)"/>
-          <circle cx="280" cy="358" r="2.5" fill="rgba(255,255,255,0.4)"/>
-          <circle cx="310" cy="355" r="1.5" fill="rgba(255,255,255,0.28)"/>
-        </svg>
-
-        {/* 顶部标题区 */}
-        <div className="flex flex-col items-center mt-16 px-8 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[9px] font-bold tracking-[0.2em] mb-8" style={{border: '1px solid rgba(160,120,200,0.3)', color: 'rgba(190,160,230,0.85)', background: 'rgba(80,40,130,0.15)'}}>
-            <div className="w-1 h-1 rounded-full animate-pulse" style={{background: '#B090E0'}}></div>
-            流失追踪 · 能量损耗分析
+        <div className="flex flex-col items-center mt-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest text-indigo-300 mb-8 bg-white/5 backdrop-blur-md">
+            <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></div> 流失追踪 · 能量损耗分析
           </div>
-          <h1 className="text-[2.2rem] font-bold mb-5 leading-[1.15] text-center" style={{letterSpacing: '-0.01em', color: '#f0eaf8'}}>关系能量与<br/>心理防御双维度测评</h1>
-          <p className="text-sm text-center leading-loose" style={{color: 'rgba(200,175,230,0.55)', maxWidth: '260px'}}>这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？</p>
+          <h1 className="text-[2.2rem] font-bold mb-6 leading-[1.15] text-center" style={{letterSpacing: '-0.01em'}}>关系能量与<br/>心理防御双维度测评</h1>
+          <p className="text-slate-400 text-sm max-w-xs text-center leading-relaxed opacity-70">这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？</p>
         </div>
 
         <div className="flex-1"></div>
 
-        {/* 底部区域 */}
-        <div className="w-full max-w-sm mx-auto mb-12 px-8 space-y-6 relative z-10">
-          <div className="space-y-3">
-            <button onClick={handleStartIdentity} className="w-full py-5 font-bold text-lg active:scale-95 transition-all rounded-[2rem]" style={{background: 'linear-gradient(135deg, #7B4FBB 0%, #4F3A9B 50%, #8B5FCC 100%)', color: '#f0eaf8', boxShadow: '0 8px 40px rgba(100,50,200,0.5), inset 0 1px 0 rgba(255,255,255,0.12)'}}>
+        <div className="w-full max-w-sm mx-auto mb-12 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          <div className="space-y-4">
+            <button onClick={handleStartIdentity} className="w-full py-6 bg-indigo-600 hover:bg-indigo-500 shadow-indigo-600/40 shadow-2xl active:scale-95 transition-all rounded-[2.2rem] font-black text-xl flex items-center justify-center gap-3 cursor-pointer">
               开启测评
             </button>
-            <button onClick={previewResult} className="w-full py-2 text-[10px] font-bold tracking-widest flex items-center justify-center gap-1.5 transition-colors" style={{color: 'rgba(255,255,255,0.15)'}}>
-              <span className="w-1 h-1 rounded-full" style={{background: 'rgba(255,255,255,0.15)'}}></span> DEV · 预览结果页
+            <button onClick={previewResult} className="w-full py-2 text-white/20 text-[10px] font-bold tracking-widest flex items-center justify-center gap-1.5 hover:text-white/40 transition-colors">
+              <span className="w-1 h-1 rounded-full bg-white/20"></span> DEV · 预览结果页
             </button>
           </div>
 
-          <div className="p-5 rounded-[1.5rem] text-left" style={{background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(140,100,190,0.12)'}}>
+          <div className="bg-white/[0.02] border border-white/[0.05] p-6 rounded-[2rem] backdrop-blur-sm text-left">
             <div className="flex items-start gap-3">
-              <BookOpen className="w-4 h-4 mt-0.5 flex-shrink-0" style={{color: 'rgba(150,120,200,0.6)'}} />
-              <div className="space-y-1.5">
-                <p className="text-xs font-semibold" style={{color: 'rgba(210,185,235,0.7)'}}>Stéphane Clerget 核心理论支持</p>
-                <p className="text-[10px] leading-relaxed" style={{color: 'rgba(165,145,200,0.45)', fontStyle: 'italic'}}>整合情绪劳动理论、依恋与关系动力学理论、家庭动力学及边界理论。不仅看"你在被谁吸取能量"，更看"你为何会成为目标"。</p>
+              <BookOpen className="w-5 h-5 text-indigo-400 mt-1 flex-shrink-0" />
+              <div className="space-y-2">
+                <p className="text-xs text-slate-300 font-bold leading-relaxed">Stéphane Clerget 核心理论支持</p>
+                <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80">整合情绪劳动理论、依恋与关系动力学理论、家庭动力学及边界理论。<br/>不仅看"你在被谁吸取能量"，更看"你为何会成为目标"。</p>
               </div>
             </div>
           </div>
@@ -555,7 +488,7 @@ export default function App() {
   // --- [2] Identity Step ---
   if (step === 'identity') {
     return (
-      <div className="min-h-screen bg-[#0a0a0c] text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden">
+      <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden">
         <div className="w-20 h-20 bg-indigo-600/10 rounded-full flex items-center justify-center mb-8 ring-8 ring-indigo-500/5">
            <Heart className="w-10 h-10 text-rose-500 animate-pulse" fill="currentColor" />
         </div>
@@ -593,7 +526,7 @@ export default function App() {
     const q = QUESTIONS[currentIndex]; if (!q) return null;
     const currentVal = answers[q.id]; const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
     return (
-      <div className="min-h-screen bg-[#0a0a0c] text-white flex flex-col p-6 font-sans">
+      <div className="min-h-screen bg-slate-950 text-white flex flex-col p-6 font-sans">
         <div className="max-w-md mx-auto w-full px-2">
             <div className="flex items-center justify-between mb-2 mt-4 px-1 text-center">
               <div className="flex flex-col text-left"><span className="text-lg font-black tracking-tighter text-left"><span className="text-indigo-500 font-black">{currentIndex + 1}</span><span className="text-slate-700 font-bold"> / 38</span></span></div>
@@ -625,7 +558,7 @@ export default function App() {
   }
 
   if (step === 'transition') return (
-    <div className="min-h-screen bg-[#0a0a0c] text-white flex flex-col items-center justify-center p-12 text-center font-sans">
+    <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-12 text-center font-sans">
       <Fingerprint className="w-16 h-16 text-indigo-400 mb-8 animate-pulse" />
       <h2 className="text-2xl font-black mb-4 tracking-tighter text-white">关系损耗扫描已完成</h2>
       <p className="text-slate-500 text-sm mb-12 leading-relaxed italic opacity-80 text-center">接下来扫描你当前的<span className="text-indigo-400 font-bold">内在能量补给状态</span></p>
@@ -638,7 +571,7 @@ export default function App() {
 
     // 海报弹窗
     if (showPoster) return (
-      <div className={`min-h-screen bg-gradient-to-b ${bg} via-[#0a0a0c] to-black flex items-center justify-center p-6 font-sans`}>
+      <div className={`min-h-screen bg-gradient-to-b ${bg} via-slate-950 to-black flex items-center justify-center p-6 font-sans`}>
         <div className="w-full max-w-[340px]">
           <div className="bg-black/30 backdrop-blur-md rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl flex flex-col items-center text-center relative">
             {/* close btn 卡片内右上角 top-6 right-6 */}
@@ -669,7 +602,7 @@ export default function App() {
     );
 
     return (
-      <div className={`min-h-screen bg-gradient-to-b ${bg} via-[#0a0a0c] to-black text-white px-5 py-10 font-sans`}>
+      <div className={`min-h-screen bg-gradient-to-b ${bg} via-slate-950 to-black text-white px-5 py-10 font-sans`}>
         <div className="max-w-md mx-auto space-y-6">
 
           {/* ① 结果标题 - 主角色 */}
