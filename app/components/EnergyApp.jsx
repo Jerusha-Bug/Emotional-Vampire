@@ -76,7 +76,7 @@ const ROLE_DATA = {
     en: "Emotional Compensator",
     tag: "情绪修复 · 单向输出",
     color: "text-rose-400",
-    bg: "from-rose-950/40",
+    bg: "from-rose-950/80",
     status: "Warning",
     definition: "你在这段关系中承担了大量情绪修复工作。当对方低落、焦虑或崩溃时，你会本能地去安抚、理解和承担。",
     behaviors: ["经常安慰对方", "帮对方解释他的行为", "很少表达自己的需求", "害怕让关系失去稳定"],
@@ -87,7 +87,7 @@ const ROLE_DATA = {
     en: "Emotional Dump",
     tag: "单向倾倒 · 极度透支",
     color: "text-red-500",
-    bg: "from-red-950/40",
+    bg: "from-red-950/80",
     status: "Critical",
     definition: "对方习惯把所有负面情绪倒给你，但并不真正关心你的状态。",
     behaviors: ["对方只在情绪不好时找你", "聊天几乎都是他的烦恼", "你的情绪很少被关注"],
@@ -98,7 +98,7 @@ const ROLE_DATA = {
     en: "Empathy Overload",
     tag: "过度共情 · 自我消耗",
     color: "text-fuchsia-400",
-    bg: "from-fuchsia-950/40",
+    bg: "from-fuchsia-950/80",
     status: "Warning",
     definition: "你拥有很强的共情能力，但在这段关系中，这种能力被过度消耗。",
     behaviors: ["很容易理解对方", "会替对方找理由", "经常忽略自己的感受"],
@@ -109,7 +109,7 @@ const ROLE_DATA = {
     en: "Relationship Fixer",
     tag: "主动修复 · 单方维系",
     color: "text-amber-400",
-    bg: "from-amber-950/40",
+    bg: "from-amber-950/80",
     status: "Moderate",
     definition: "每当关系出现问题，你都会试图修复它。",
     behaviors: ["主动道歉", "主动解释误会", "不希望关系破裂"],
@@ -120,7 +120,7 @@ const ROLE_DATA = {
     en: "Conflict Magnet",
     tag: "高频摩擦 · 能量耗散",
     color: "text-orange-500",
-    bg: "from-orange-950/40",
+    bg: "from-orange-950/80",
     status: "Critical",
     definition: "你们的互动很容易从普通交流升级为冲突。",
     behaviors: ["小问题容易变成争吵", "对话经常带有情绪", "很难真正解决问题"],
@@ -131,7 +131,7 @@ const ROLE_DATA = {
     en: "Responsibility Carrier",
     tag: "失衡承担 · 自我怀疑",
     color: "text-yellow-400",
-    bg: "from-yellow-950/40",
+    bg: "from-yellow-950/80",
     status: "Moderate",
     definition: "当关系出现问题时，你经常承担更多责任。",
     behaviors: ["经常反思是不是自己做错了", "会主动让步", "不希望事情变得更糟"],
@@ -142,7 +142,7 @@ const ROLE_DATA = {
     en: "Dependency Anchor",
     tag: "情绪依赖 · 逐渐失自由",
     color: "text-blue-400",
-    bg: "from-blue-950/40",
+    bg: "from-blue-950/80",
     status: "Warning",
     definition: "对方在情绪上高度依赖你。",
     behaviors: ["对方经常说'只有你懂我'", "离开你他会变得很焦虑", "你成为关系的稳定中心"],
@@ -153,7 +153,7 @@ const ROLE_DATA = {
     en: "Emotional Guardian",
     tag: "压抑表达 · 内耗积累",
     color: "text-cyan-400",
-    bg: "from-cyan-950/40",
+    bg: "from-cyan-950/80",
     status: "Moderate",
     definition: "你会主动保护关系中的情绪稳定。",
     behaviors: ["避免冲突", "小心表达意见", "不想让对方难过"],
@@ -164,7 +164,7 @@ const ROLE_DATA = {
     en: "Self-Suppressor",
     tag: "需求压缩 · 自我迷失",
     color: "text-purple-400",
-    bg: "from-purple-950/40",
+    bg: "from-purple-950/80",
     status: "Warning",
     definition: "为了维持关系，你不断压缩自己的需求。",
     behaviors: ["不敢表达真实想法", "经常妥协", "很少坚持自己的界限"],
@@ -186,7 +186,7 @@ const ROLE_DATA = {
     en: "Emotional Loop",
     tag: "重复模式 · 无解循环",
     color: "text-indigo-400",
-    bg: "from-indigo-950/40",
+    bg: "from-indigo-950/80",
     status: "Warning",
     definition: "你们的关系不断重复同样的情绪模式。",
     behaviors: ["冲突 → 和好 → 冲突", "问题没有真正解决", "情绪循环出现"],
@@ -197,7 +197,7 @@ const ROLE_DATA = {
     en: "Awakened Observer",
     tag: "自我觉察 · 能量恢复",
     color: "text-emerald-400",
-    bg: "from-emerald-950/40",
+    bg: "from-emerald-950/80",
     status: "Healthy",
     definition: "你已经开始意识到关系中的能量结构。",
     behaviors: ["开始观察互动模式", "不再盲目承担责任", "想要建立边界"],
@@ -505,11 +505,11 @@ export default function App() {
 
     // 海报弹窗
     if (showPoster) return (
-      <div className={`min-h-screen bg-gradient-to-b ${bg} to-black flex items-center justify-center p-6 font-sans`}>
-        <div className="w-full max-w-[340px] relative">
-          {/* close btn 在卡片右上角 */}
-          <button onClick={() => setShowPoster(false)} className="absolute -top-3 -right-3 z-10 w-9 h-9 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/10"><X className="w-4 h-4"/></button>
-          <div className="bg-black/30 backdrop-blur-md rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl flex flex-col items-center text-center">
+      <div className={`min-h-screen bg-gradient-to-b ${bg} via-slate-950 to-black flex items-center justify-center p-6 font-sans`}>
+        <div className="w-full max-w-[340px]">
+          <div className="bg-black/30 backdrop-blur-md rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl flex flex-col items-center text-center relative">
+            {/* close btn 卡片内右上角 top-6 right-6 */}
+            <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 z-10 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/10"><X className="w-3.5 h-3.5"/></button>
             {/* 顶部 badge */}
             <div className="pt-8 pb-4 px-8 flex flex-col items-center">
               <div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-black uppercase tracking-widest mb-5`}>{String(status)} Level</div>
@@ -536,7 +536,7 @@ export default function App() {
     );
 
     return (
-      <div className={`min-h-screen bg-gradient-to-b ${bg} to-black text-white px-5 py-10 font-sans`}>
+      <div className={`min-h-screen bg-gradient-to-b ${bg} via-slate-950 to-black text-white px-5 py-10 font-sans`}>
         <div className="max-w-md mx-auto space-y-6">
 
           {/* ① 结果标题 - 主角色 */}
