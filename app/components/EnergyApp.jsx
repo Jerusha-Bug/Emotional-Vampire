@@ -442,47 +442,78 @@ export default function App() {
   }, [step, answers]);
 
 
-  // --- [1] 首页 (调整位置后的版本) ---
+  // --- [1] 首页 - Hanae Nakajima 风格 ---
   if (step === 'welcome') {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex flex-col p-8 font-sans overflow-hidden">
-        {/* 背景装饰保持不变 */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 overflow-hidden -z-10 text-slate-950">
-          <div className="absolute top-[-20%] left-[-10%] w-[100%] h-[100%] bg-indigo-600 rounded-full blur-[150px]"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[80%] bg-purple-600 rounded-full blur-[150px]"></div>
+      <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative" style={{background: 'linear-gradient(160deg, #0a0612 0%, #120820 40%, #0d0d1a 100%)'}}>
+
+        {/* 背景：深紫色晕染光斑 */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[-10%] left-[-20%] w-[70%] h-[70%] rounded-full opacity-20" style={{background: 'radial-gradient(circle, #6B3FA0 0%, transparent 70%)', filter: 'blur(60px)'}}></div>
+          <div className="absolute top-[20%] right-[-15%] w-[50%] h-[50%] rounded-full opacity-15" style={{background: 'radial-gradient(circle, #3B6FBB 0%, transparent 70%)', filter: 'blur(80px)'}}></div>
+          <div className="absolute bottom-[-5%] left-[10%] w-[60%] h-[40%] rounded-full opacity-10" style={{background: 'radial-gradient(circle, #B05090 0%, transparent 70%)', filter: 'blur(100px)'}}></div>
         </div>
 
-        {/* 顶部标题区 (保持原位) */}
-        <div className="flex flex-col items-center mt-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest text-indigo-300 mb-8 bg-white/5 backdrop-blur-md">
-            <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></div> 流失追踪 · 能量损耗分析
+        {/* SVG 装饰层 */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice">
+          <path d="M 20 120 C 80 80, 150 180, 100 240 S 60 320, 130 360" stroke="rgba(180,160,220,0.18)" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
+          <path d="M 320 60 C 360 120, 300 200, 340 260 S 380 340, 330 400" stroke="rgba(100,180,220,0.15)" strokeWidth="1" fill="none" strokeLinecap="round"/>
+          <path d="M 60 500 C 100 460, 180 520, 150 580 S 90 640, 160 680" stroke="rgba(180,130,200,0.12)" strokeWidth="1" fill="none" strokeLinecap="round"/>
+          <path d="M 280 480 C 340 520, 370 580, 320 630" stroke="rgba(120,200,210,0.12)" strokeWidth="0.8" fill="none" strokeLinecap="round"/>
+          <path d="M 180 700 C 200 680, 230 720, 210 750 S 180 780, 220 800" stroke="rgba(255,255,255,0.08)" strokeWidth="0.8" fill="none" strokeLinecap="round"/>
+          <ellipse cx="310" cy="90" rx="14" ry="9" fill="rgba(8,4,18,0.9)" transform="rotate(-20, 310, 90)"/>
+          <ellipse cx="50" cy="180" rx="9" ry="6" fill="rgba(8,4,18,0.85)" transform="rotate(15, 50, 180)"/>
+          <ellipse cx="340" cy="220" rx="6" ry="4" fill="rgba(8,4,18,0.8)" transform="rotate(-35, 340, 220)"/>
+          <ellipse cx="80" cy="420" rx="11" ry="7" fill="rgba(8,4,18,0.85)" transform="rotate(10, 80, 420)"/>
+          <ellipse cx="355" cy="380" rx="7" ry="5" fill="rgba(8,4,18,0.8)" transform="rotate(-15, 355, 380)"/>
+          <ellipse cx="170" cy="150" rx="8" ry="5" fill="rgba(8,4,18,0.7)" transform="rotate(25, 170, 150)"/>
+          <ellipse cx="290" cy="480" rx="12" ry="8" fill="rgba(8,4,18,0.75)" transform="rotate(-10, 290, 480)"/>
+          <ellipse cx="30" cy="600" rx="7" ry="5" fill="rgba(8,4,18,0.7)" transform="rotate(20, 30, 600)"/>
+          <ellipse cx="360" cy="640" rx="9" ry="6" fill="rgba(8,4,18,0.75)" transform="rotate(-25, 360, 640)"/>
+          <ellipse cx="130" cy="520" rx="3" ry="5" fill="rgba(100,160,220,0.5)" transform="rotate(10,130,520)"/>
+          <ellipse cx="145" cy="535" rx="2.5" ry="4" fill="rgba(100,160,220,0.35)" transform="rotate(5,145,535)"/>
+          <ellipse cx="118" cy="540" rx="2" ry="3.5" fill="rgba(100,160,220,0.3)" transform="rotate(-5,118,540)"/>
+          <ellipse cx="270" cy="160" rx="3" ry="5" fill="rgba(130,180,230,0.4)" transform="rotate(-8,270,160)"/>
+          <ellipse cx="283" cy="174" rx="2" ry="3.5" fill="rgba(130,180,230,0.3)" transform="rotate(3,283,174)"/>
+          <circle cx="200" cy="200" r="1.5" fill="rgba(255,255,255,0.25)"/>
+          <circle cx="320" cy="320" r="1" fill="rgba(255,255,255,0.2)"/>
+          <circle cx="60" cy="700" r="1.5" fill="rgba(255,255,255,0.15)"/>
+          <circle cx="370" cy="500" r="1" fill="rgba(255,255,255,0.2)"/>
+          <circle cx="240" cy="100" r="1.5" fill="rgba(180,150,220,0.3)"/>
+          <path d="M 340 140 C 348 132, 356 136, 354 144 S 342 152, 338 146 S 344 136, 350 138" stroke="rgba(150,200,220,0.2)" strokeWidth="0.8" fill="none"/>
+          <path d="M 55 460 C 61 454, 67 457, 66 463 S 57 469, 54 464 S 59 455, 64 457" stroke="rgba(180,150,210,0.18)" strokeWidth="0.7" fill="none"/>
+        </svg>
+
+        {/* 顶部标题区 */}
+        <div className="flex flex-col items-center mt-16 px-8 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[9px] font-bold tracking-[0.2em] mb-8" style={{border: '1px solid rgba(160,120,200,0.25)', color: 'rgba(180,150,220,0.8)', background: 'rgba(100,60,150,0.1)'}}>
+            <div className="w-1 h-1 rounded-full animate-pulse" style={{background: '#A07FCC'}}></div>
+            流失追踪 · 能量损耗分析
           </div>
-          <h1 className="text-4xl font-black mb-6 tracking-tighter leading-[1.1] text-center">关系能量与<br/>心理防御双维度测评</h1>
-          <p className="text-slate-400 text-sm max-w-xs text-center leading-relaxed opacity-70">这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？</p>
+          <h1 className="text-[2.6rem] font-bold mb-5 leading-[1.15] text-center" style={{letterSpacing: '-0.02em', color: '#f0eaf8'}}>关系能量与<br/>心理防御双维度测评</h1>
+          <p className="text-sm text-center leading-loose" style={{color: 'rgba(200,180,220,0.55)', maxWidth: '260px'}}>这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？</p>
         </div>
-        
-        {/* 中间留白，将后续内容推到底部 */}
+
         <div className="flex-1"></div>
 
-        {/* 底部按钮及理论支持区 (移动到这里) */}
-        <div className="w-full max-w-sm mx-auto mb-12 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          <div className="space-y-4">
-            <button onClick={handleStartIdentity} className="w-full py-6 bg-indigo-600 hover:bg-indigo-500 shadow-indigo-600/40 shadow-2xl active:scale-95 transition-all rounded-[2.2rem] font-black text-xl flex items-center justify-center gap-3 cursor-pointer">
-               开启测评
+        {/* 底部区域 */}
+        <div className="w-full max-w-sm mx-auto mb-12 px-8 space-y-6 relative z-10">
+          <div className="space-y-3">
+            <button onClick={handleStartIdentity} className="w-full py-5 font-bold text-lg active:scale-95 transition-all rounded-[2rem]" style={{background: 'linear-gradient(135deg, #7B4FBB 0%, #5B3F9B 50%, #8B6FBB 100%)', color: '#f0eaf8', boxShadow: '0 8px 32px rgba(100,60,180,0.4), inset 0 1px 0 rgba(255,255,255,0.1)'}}>
+              开启测评
             </button>
-
-            <button onClick={previewResult} className="w-full py-2 text-white/20 text-[10px] font-bold tracking-widest flex items-center justify-center gap-1.5 hover:text-white/40 transition-colors">
-              <span className="w-1 h-1 rounded-full bg-white/20"></span> DEV · 预览结果页
+            <button onClick={previewResult} className="w-full py-2 text-[10px] font-bold tracking-widest flex items-center justify-center gap-1.5 transition-colors" style={{color: 'rgba(255,255,255,0.15)'}}>
+              <span className="w-1 h-1 rounded-full" style={{background: 'rgba(255,255,255,0.15)'}}></span> DEV · 预览结果页
             </button>
           </div>
 
-          <div className="bg-white/[0.02] border border-white/[0.05] p-6 rounded-[2rem] backdrop-blur-sm text-left">
+          <div className="p-5 rounded-[1.5rem] text-left" style={{background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(160,120,200,0.1)'}}>
             <div className="flex items-start gap-3">
-               <BookOpen className="w-5 h-5 text-indigo-400 mt-1 flex-shrink-0" />
-               <div className="space-y-2">
-                  <p className="text-xs text-slate-300 font-bold leading-relaxed text-left">Stéphane Clerget 核心理论支持</p>
-                  <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80 text-justify text-left">整合情绪劳动理论、依恋与关系动力学理论、家庭动力学及边界理论。<br/>不仅看“你在被谁吸取能量”，更看“你为何会成为目标”。</p>
-               </div>
+              <BookOpen className="w-4 h-4 mt-0.5 flex-shrink-0" style={{color: 'rgba(160,130,210,0.6)'}} />
+              <div className="space-y-1.5">
+                <p className="text-xs font-semibold" style={{color: 'rgba(210,190,230,0.7)'}}>Stéphane Clerget 核心理论支持</p>
+                <p className="text-[10px] leading-relaxed" style={{color: 'rgba(170,150,200,0.45)', fontStyle: 'italic'}}>整合情绪劳动理论、依恋与关系动力学理论、家庭动力学及边界理论。不仅看"你在被谁吸取能量"，更看"你为何会成为目标"。</p>
+              </div>
             </div>
           </div>
         </div>
@@ -745,8 +776,8 @@ export default function App() {
                     </div>
                     {/* 固定描述 + 分数说明 */}
                     <div className={`mb-3 pb-3 border-b ${isInternal ? 'border-white/10' : 'border-white/5'}`}>
-                      <p className="text-xs text-white/50 leading-relaxed mb-1">{String(DIMENSION_DESCS[dim])}</p>
-                      <p className={`text-[10px] leading-relaxed ${isInternal ? 'text-white/40' : 'text-white/30'}`}>{scoreDesc}</p>
+                      <p className="text-sm text-white/70 leading-relaxed mb-1">{String(DIMENSION_DESCS[dim])}</p>
+                      <p className="text-sm text-white/70 leading-relaxed">{scoreDesc}</p>
                     </div>
                     {/* 分级解读 */}
                     <div className="flex items-start gap-2">
