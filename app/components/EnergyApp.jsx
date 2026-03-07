@@ -27,7 +27,7 @@ const DIMENSION_DESCS = {
   "自我消耗": "这是最直接的生命力流失，代表你的自我认同感正在被磨损。",
   
 
-  "内在补能模式": "这反映了你当前内心的'能量余额'。"
+  "内在补能模式": "这反映了你当前内在的能量储备状态，以及你是否可能在无意识地向外寻求情绪补给。"
 };
 
 const DIMENSION_SCORE_DESC = {
@@ -37,7 +37,7 @@ const DIMENSION_SCORE_DESC = {
   "依赖绑定": "分数越高，代表对方对你的情绪依赖越深，你的自由空间正在被这种依赖慢慢压缩。",
   "冲突激发": "分数越高，代表你们的互动中摩擦越频繁，每一次冲突都在持续消耗你的情绪资源。",
   "自我消耗": "分数越高，代表这段关系对你自我认同的磨损越严重，你越容易在其中迷失自己。",
-  "内在补能模式": "分数越高，代表你内在的能量越匮乏，自我修复和充电的能力越弱，越容易成为被消耗的目标。"
+  "内在补能模式": "分数越高，代表你当前的内在能量越匮乏。当一个人长期处于低能量状态时，会不自觉地向身边的人寻求更多情绪支持与关注——这是一种自然的心理补偿机制，不是你的错。"
 };
 
 const DIMENSION_LEVEL_DESC = {
@@ -72,9 +72,9 @@ const DIMENSION_LEVEL_DESC = {
     overload: "你已经在这段关系里丢失了一部分自己。那个不断妥协、不断反思、不断压抑的你，正在付出非常真实的代价。"
   },
   "内在补能模式": {
-    stable: "你内在的能量储备目前还算充足，有足够的资源去应对外部的消耗。继续照顾好自己。",
-    active: "你的内在能量正在被消耗，补给的速度有点跟不上。这时候特别需要给自己一些真正休息的空间，而不只是暂时停下来。",
-    overload: "你的内在能量已经严重不足了。你可能发现自己很难真正放松，或者即使休息了也感觉没有恢复。这是一个需要认真对待的信号。"
+    stable: "你的内在能量储备目前比较充足，有足够的资源去维持自己的状态，也有余力去关心身边的人。这是一个健康的信号，继续照顾好自己。",
+    active: "你的内在能量有些透支了。在这种状态下，人会不自觉地向外寻求更多支持——多一点陪伴、多一点回应、多一点被需要的感觉。觉察到这一点，是很重要的第一步。",
+    overload: "你目前的内在能量明显不足。当一个人长期处于匮乏状态时，可能会在不知不觉中向身边的人索取更多情绪资源。这不是你的问题，而是一个需要被关注的信号——你值得先好好照顾自己。"
   }
 };
 
@@ -466,7 +466,7 @@ export default function App() {
                 </div>
                 <span className="text-[10px] font-black text-white/60 uppercase tracking-widest">Part B</span>
               </div>
-              <p className="text-xs text-white/50 leading-relaxed">你自身是否处于能量匮乏状态？</p>
+              <p className="text-xs text-white/50 leading-relaxed">你是否在无意识地消耗身边的人？</p>
             </div>
           </div>
 
@@ -707,7 +707,7 @@ export default function App() {
                 const score = dimScores[dim] || 0;
                 const ratio = score / maxVal;
                 let stateLabel = "平稳"; let stateColor = "text-emerald-400"; let levelKey = "stable";
-                if (ratio > 0.75) { stateLabel = isInternal ? "匮乏" : "过载"; stateColor = "text-rose-400"; levelKey = "overload"; }
+                if (ratio > 0.75) { stateLabel = isInternal ? "需关注" : "过载"; stateColor = "text-rose-400"; levelKey = "overload"; }
                 else if (ratio > 0.5) { stateLabel = "活跃"; stateColor = "text-orange-400"; levelKey = "active"; }
                 const numLabel = `0${idx + 1}`;
                 const partBDivider = isInternal ? (
@@ -717,7 +717,7 @@ export default function App() {
                     </div>
                     <div>
                       <p className="text-xs font-black text-white/70">内在能量状态</p>
-                      <p className="text-[10px] text-white/30">你自身的能量储备与补给能力</p>
+                      <p className="text-[10px] text-white/30">你是否正在无意识地消耗身边的人</p>
                     </div>
                   </div>
                 ) : null;
