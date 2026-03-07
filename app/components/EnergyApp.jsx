@@ -657,13 +657,12 @@ export default function App() {
             </div>
             {/* 能量影响 */}
             <div className="p-5 relative overflow-hidden">
-              <div className={`absolute left-0 top-0 w-1 h-full ${color.replace('text-', 'bg-')} opacity-50`}></div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3 pl-3">这种关系可能带来的消耗</p>
-              <div className="flex items-center gap-2 mb-2 pl-3">
+              <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">这种关系可能带来的消耗</p>
+              <div className="flex items-center gap-2 mb-2">
                 <HeartPulse className={`w-4 h-4 ${color}`} />
                 <span className="text-sm font-black text-white">能量损耗</span>
               </div>
-              <p className="text-white/60 text-sm leading-relaxed pl-3">{String(impact)}</p>
+              <p className="text-white/60 text-sm leading-relaxed">{String(impact)}</p>
             </div>
           </section>
 
