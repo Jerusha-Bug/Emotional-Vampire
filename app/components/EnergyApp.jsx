@@ -306,6 +306,24 @@ const RadarChart = ({ data, dark = true }) => {
 
 export default function App() {
   const [step, setStep] = useState('welcome');
+
+  // DEV: 预览结果页，模拟高分场景
+  const previewResult = () => {
+    const mockAnswers = {};
+    QUESTIONS.forEach(q => {
+      if (q.part === 'A') {
+        if (q.dim === '情绪倾倒') mockAnswers[q.id] = 5;
+        else if (q.dim === '受害叙述') mockAnswers[q.id] = 4;
+        else if (q.dim === '冲突激发') mockAnswers[q.id] = 4;
+        else mockAnswers[q.id] = 3;
+      } else {
+        mockAnswers[q.id] = 4;
+      }
+    });
+    setAnswers(mockAnswers);
+    setTargetPerson('对方');
+    setStep('result');
+  };
   const [targetPerson, setTargetPerson] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -475,6 +493,9 @@ export default function App() {
                开启测评
             </button>
             <p className="text-[10px] text-slate-500 text-center font-bold tracking-widest opacity-40 uppercase">Professional Assessment System</p>
+            <button onClick={previewResult} className="w-full py-2 text-white/20 text-[10px] font-bold tracking-widest flex items-center justify-center gap-1.5 hover:text-white/40 transition-colors">
+              <span className="w-1 h-1 rounded-full bg-white/20"></span> DEV · 预览结果页
+            </button>
           </div>
 
           <div className="bg-white/[0.02] border border-white/[0.05] p-6 rounded-[2rem] backdrop-blur-sm text-left">
@@ -612,14 +633,14 @@ export default function App() {
         <div className="max-w-md mx-auto space-y-6">
 
           {/* ① 结果标题 - 主角色 */}
-          <section className="text-center pt-4 pb-6">
-            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/15 text-[9px] font-black uppercase tracking-widest mb-5 ${color} bg-black/20 backdrop-blur-sm`}>
+          <section className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-3xl p-7 text-center">
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/15 text-[9px] font-black tracking-widest mb-5 ${color} bg-black/20`}>
               {String(status)}
             </div>
-            <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-2">关系能量分析</p>
-            <h2 className="text-4xl font-black tracking-tighter text-white mb-2">{String(roleName)}</h2>
-            <p className={`text-xs font-black mb-4 ${color}`}>{String(tag)}</p>
-            <p className="text-white/60 text-sm leading-relaxed mx-auto">{String(definition)}</p>
+            <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-3">关系能量分析</p>
+            <h2 className="text-5xl font-black tracking-tighter text-white mb-2 leading-none">{String(roleName)}</h2>
+            <p className={`text-sm font-black mb-5 ${color}`}>{String(tag)}</p>
+            <p className="text-white/60 text-sm leading-relaxed">{String(definition)}</p>
           </section>
 
           {/* ② 副机制卡片（条件显示） */}
