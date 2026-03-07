@@ -206,6 +206,22 @@ const ROLE_DATA = {
   }
 };
 
+// 角色颜色到进度条颜色的静态映射（避免 Tailwind 动态类名失效）
+const ROLE_BAR_COLOR = {
+  "情感代偿者": "bg-rose-400",
+  "情绪垃圾桶": "bg-red-500",
+  "共情透支者": "bg-fuchsia-400",
+  "关系修复者": "bg-amber-400",
+  "冲突吸引者": "bg-orange-500",
+  "责任承担者": "bg-yellow-400",
+  "依赖支柱": "bg-blue-400",
+  "情绪守护者": "bg-cyan-400",
+  "自我压缩者": "bg-purple-400",
+  "关系消耗者": "bg-slate-400",
+  "情绪循环者": "bg-indigo-400",
+  "关系清醒者": "bg-emerald-400"
+};
+
 // 维度到副机制名称的映射
 const DIM_TO_ROLE = {
   "情绪倾倒": "情感代偿者",
@@ -487,20 +503,33 @@ export default function App() {
   if (step === 'result' && resultData) {
     const { roleName, color, bg, status, tag, definition, behaviors, impact, advice, scoreA, radarData, dimScores, subRole } = resultData;
 
-    // 海报弹窗（保持不变）
+    // 海报弹窗
     if (showPoster) return (
-      <div className="min-h-screen bg-black/95 flex items-center justify-center p-6 animate-in fade-in zoom-in duration-300 z-50 text-center font-sans">
-        <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-6 h-6"/></button>
-        <div className="w-full max-w-[340px] bg-slate-950 rounded-[2.5rem] border border-white/10 overflow-hidden shadow-[0_0_50px_rgba(99,102,241,0.3)] relative text-center flex flex-col items-center">
-          <div className={`h-28 w-full bg-gradient-to-b ${bg} to-slate-950 p-6 flex flex-col items-center justify-center`}><div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-black uppercase tracking-widest`}>{String(status)} Level</div></div>
-          <div className="px-8 pb-10 flex flex-col items-center">
-            <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-5 -mt-8 ring-4 ring-slate-950"><ShieldCheck className={`w-8 h-8 ${color}`} /></div>
-            <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-1 text-center">Relationship Energy Report</p>
-            <h2 className="text-3xl font-black mb-1 tracking-tighter text-white leading-tight">{String(roleName)}</h2>
-            <p className={`text-[10px] font-black mb-3 ${color}`}>{String(tag)}</p>
-            <div className="w-full bg-white/[0.02] border border-white/5 rounded-[2rem] p-4 mb-6"><RadarChart data={radarData} /></div>
-            <div className="text-left relative pl-4 border-l-2 border-indigo-600"><p className="text-slate-300 text-xs leading-relaxed font-medium opacity-90">{String(definition)}</p></div>
-            <div className="mt-8"><p className="text-white/20 text-[9px] font-medium tracking-[0.2em] flex items-center justify-center gap-2"><Download className="w-2.5 h-2.5 opacity-50"/> 截图保存能量报告</p></div>
+      <div className={`min-h-screen bg-gradient-to-b ${bg} to-black flex items-center justify-center p-6 font-sans`}>
+        <div className="w-full max-w-[340px] relative">
+          {/* close btn 在卡片右上角 */}
+          <button onClick={() => setShowPoster(false)} className="absolute -top-3 -right-3 z-10 w-9 h-9 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/10"><X className="w-4 h-4"/></button>
+          <div className="bg-black/30 backdrop-blur-md rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl flex flex-col items-center text-center">
+            {/* 顶部 badge */}
+            <div className="pt-8 pb-4 px-8 flex flex-col items-center">
+              <div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-black uppercase tracking-widest mb-5`}>{String(status)} Level</div>
+              <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-2">Relationship Energy Report</p>
+              <h2 className="text-3xl font-black tracking-tighter text-white leading-tight mb-1">{String(roleName)}</h2>
+              <p className={`text-[9px] font-black mb-6 ${color}`}>{String(tag)}</p>
+            </div>
+            {/* 关系图形区域 placeholder */}
+            <div className="w-full px-8 mb-6">
+              <div className="rounded-2xl border border-dashed border-white/10 bg-white/5 h-44 flex items-center justify-center">
+                <p className="text-white/20 text-[10px] font-bold">关系图形</p>
+              </div>
+            </div>
+            {/* 角色定义 */}
+            <div className="px-8 pb-8 w-full">
+              <div className="relative pl-3 border-l-2 border-white/20 text-left">
+                <p className="text-white/60 text-xs leading-relaxed">{String(definition)}</p>
+              </div>
+              <p className="text-white/15 text-[9px] font-medium tracking-[0.2em] flex items-center justify-center gap-2 mt-6"><Download className="w-2.5 h-2.5 opacity-50"/> 截图保存能量报告</p>
+            </div>
           </div>
         </div>
       </div>
@@ -601,7 +630,7 @@ export default function App() {
                       <span className="text-[10px] font-black text-white/40">{score} / {maxVal}</span>
                     </div>
                     <div className="w-full h-1 rounded-full mb-2 overflow-hidden bg-white/10">
-                      <div className={`h-full rounded-full transition-all duration-700 ${color.replace('text-', 'bg-')}`} style={{ width: `${ratio * 100}%` }} />
+                      <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`} style={{ width: `${ratio * 100}%` }} />
                     </div>
                     <p className="text-[10px] leading-relaxed text-white/40">{String(DIMENSION_DESCS[dim])}</p>
                   </div>
@@ -625,7 +654,7 @@ export default function App() {
             <button onClick={() => window.location.reload()} className="flex-1 py-4 bg-black/20 backdrop-blur-sm text-white/50 rounded-2xl font-black text-xs flex items-center justify-center gap-2 border border-white/10">
               <RefreshCcw className="w-4 h-4" /> 重测
             </button>
-            <button onClick={() => setShowPoster(true)} className={`flex-[2] py-4 ${color.replace('text-', 'bg-').replace('400', '600').replace('500', '600')} bg-opacity-80 text-white rounded-2xl font-black text-xs shadow-xl active:scale-95 flex items-center justify-center gap-2 transition-all border border-white/10`}>
+            <button onClick={() => setShowPoster(true)} className="flex-[2] py-4 bg-white/10 backdrop-blur-sm text-white rounded-2xl font-black text-xs shadow-xl active:scale-95 flex items-center justify-center gap-2 transition-all border border-white/15">
               <Share2 className="w-4 h-4" /> 导出卡片报告
             </button>
           </section>
