@@ -25,7 +25,57 @@ const DIMENSION_DESCS = {
   "依赖绑定": "这反映了对方是否在通过‘没你不行’来捆绑你的自由。",
   "冲突激发": "这反映了互动中的摩擦频率。",
   "自我消耗": "这是最直接的生命力流失，代表你的自我认同感正在被磨损。",
-  "内在补能模式": "这反映了你当前内心的‘能量余额’。"
+  
+
+  "内在补能模式": "这反映了你当前内心的'能量余额'。"
+};
+
+const DIMENSION_SCORE_DESC = {
+  "情绪倾倒": "分数越高，代表你在这段关系中承受的情绪输出越多，对方越习惯把负面情绪倾倒给你。",
+  "受害叙述": "分数越高，代表对方越频繁地通过示弱、诉苦来影响你的判断，让你难以拒绝或表达自己。",
+  "责任转移": "分数越高，代表你替对方承担了越多本不属于你的责任，关系中的付出严重失衡。",
+  "依赖绑定": "分数越高，代表对方对你的情绪依赖越深，你的自由空间正在被这种依赖慢慢压缩。",
+  "冲突激发": "分数越高，代表你们的互动中摩擦越频繁，每一次冲突都在持续消耗你的情绪资源。",
+  "自我消耗": "分数越高，代表这段关系对你自我认同的磨损越严重，你越容易在其中迷失自己。",
+  "内在补能模式": "分数越高，代表你内在的能量越匮乏，自我修复和充电的能力越弱，越容易成为被消耗的目标。"
+};
+
+const DIMENSION_LEVEL_DESC = {
+  "情绪倾倒": {
+    stable: "你在这个维度目前还算平衡，对方的情绪输出没有明显压过你。继续保持对自己感受的关注，这是健康关系的基础。",
+    active: "你已经开始感受到对方情绪的重量了。有时候你可能没意识到，但那种聊完之后很累的感觉，正是情绪被倾倒的信号。",
+    overload: "你几乎成了对方的专属情绪容器。每一次对话结束，你都需要消化大量不属于你的情绪，这种长期积累会让你越来越难恢复。"
+  },
+  "受害叙述": {
+    stable: "这段关系里，对方还没有明显用我很可怜来影响你的判断。你的同情心目前是自由的，没有被绑架。",
+    active: "你有时候会因为对方的遭遇而压下自己的感受。这不一定是坏事，但值得留意——你的让步，是真心的，还是被触动的？",
+    overload: "对方擅长用脆弱来占据道德高地。你很难拒绝一个受害者，但这种模式正在让你失去表达自己的空间。"
+  },
+  "责任转移": {
+    stable: "目前你们之间的责任分配还算合理，你没有明显感到这不是我的问题但我在处理的情况。",
+    active: "你开始替对方承担一些本不属于你的事情了。有时候是因为你善良，有时候是因为不想起冲突，但结果都是你多付出了。",
+    overload: "你已经习惯性地为对方的行为找理由、善后、道歉。这种模式很消耗人，因为你在用自己的能量填补对方不愿承担的部分。"
+  },
+  "依赖绑定": {
+    stable: "对方目前没有表现出过度依赖你的迹象，你在这段关系里还保有自己的空间和节奏。",
+    active: "你开始感觉到对方需要你的频率有点高。只有你懂我听起来像赞美，但也可能是一种无形的绑定。",
+    overload: "你已经成为对方情绪系统的核心支撑。离开你，对方会陷入焦虑——而这份责任感，正在一点点压缩你的自由。"
+  },
+  "冲突激发": {
+    stable: "你们的沟通目前比较顺畅，没有频繁的摩擦或升温。这是一个好的信号，说明你们在表达上还有空间。",
+    active: "你们之间有些话题变得越来越难聊，容易擦枪走火。每次冲突消耗的不只是时间，还有你的情绪储备。",
+    overload: "你们的互动模式已经很容易触发冲突。你可能发现自己在说话前会先想这样说会不会又吵起来，这种预判本身就是一种消耗。"
+  },
+  "自我消耗": {
+    stable: "你的自我状态目前还比较稳定，这段关系还没有明显影响你对自己的看法。",
+    active: "你有时候会因为这段关系而怀疑自己——是不是我太敏感了？是不是我要求太多？这些问题值得你认真对待。",
+    overload: "你已经在这段关系里丢失了一部分自己。那个不断妥协、不断反思、不断压抑的你，正在付出非常真实的代价。"
+  },
+  "内在补能模式": {
+    stable: "你内在的能量储备目前还算充足，有足够的资源去应对外部的消耗。继续照顾好自己。",
+    active: "你的内在能量正在被消耗，补给的速度有点跟不上。这时候特别需要给自己一些真正休息的空间，而不只是暂时停下来。",
+    overload: "你的内在能量已经严重不足了。你可能发现自己很难真正放松，或者即使休息了也感觉没有恢复。这是一个需要认真对待的信号。"
+  }
 };
 
 const QUESTIONS = [
@@ -616,23 +666,45 @@ export default function App() {
                 const maxVal = isInternal ? 40 : 25;
                 const score = dimScores[dim] || 0;
                 const ratio = score / maxVal;
-                let stateLabel = "平稳"; let stateColor = "text-emerald-400";
-                if (ratio > 0.75) { stateLabel = isInternal ? "匮乏" : "过载"; stateColor = "text-rose-400"; }
-                else if (ratio > 0.5) { stateLabel = "活跃"; stateColor = "text-orange-400"; }
+                let stateLabel = "平稳"; let stateColor = "text-emerald-400"; let levelKey = "stable";
+                if (ratio > 0.75) { stateLabel = isInternal ? "匮乏" : "过载"; stateColor = "text-rose-400"; levelKey = "overload"; }
+                else if (ratio > 0.5) { stateLabel = "活跃"; stateColor = "text-orange-400"; levelKey = "active"; }
+                const numLabel = `0${idx + 1}`;
+                const levelDesc = DIMENSION_LEVEL_DESC[dim]?.[levelKey] || "";
+                const scoreDesc = DIMENSION_SCORE_DESC[dim] || "";
                 return (
-                  <div key={idx} className={`rounded-xl border p-4 backdrop-blur-sm ${isInternal ? 'bg-white/5 border-white/15' : 'bg-black/15 border-white/8'}`}>
-                    <div className="flex justify-between items-center mb-2">
+                  <div key={idx} className={`rounded-2xl border p-5 backdrop-blur-sm ${isInternal ? 'bg-white/8 border-white/20 ring-1 ring-white/10' : 'bg-black/20 border-white/8'}`}>
+                    {/* 序号 + 维度名 + 状态 + 分数 */}
+                    <div className="flex justify-between items-start mb-3">
                       <div className="flex items-center gap-2">
-                        {isInternal ? <Fingerprint className={`w-3 h-3 ${color}`} /> : <Activity className="w-3 h-3 text-white/30" />}
-                        <span className="text-xs font-black text-white/80">{String(dim)}</span>
+                        <span className={`text-[9px] font-black tabular-nums ${isInternal ? color : 'text-white/25'}`}>{numLabel}</span>
+                        {isInternal ? <Fingerprint className={`w-3 h-3 ${color}`} /> : <Activity className="w-3 h-3 text-white/25" />}
+                        <span className={`text-sm font-black ${isInternal ? 'text-white' : 'text-white/80'}`}>{String(dim)}</span>
                         <span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span>
                       </div>
-                      <span className="text-[10px] font-black text-white/40">{score} / {maxVal}</span>
+                      <span className={`text-[10px] font-black tabular-nums ${isInternal ? color : 'text-white/40'}`}>{score} / {maxVal}</span>
                     </div>
-                    <div className="w-full h-1 rounded-full mb-2 overflow-hidden bg-white/10">
+                    {/* 进度条 */}
+                    <div className="w-full h-1.5 rounded-full mb-4 overflow-hidden bg-white/10">
                       <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`} style={{ width: `${ratio * 100}%` }} />
                     </div>
-                    <p className="text-[10px] leading-relaxed text-white/40">{String(DIMENSION_DESCS[dim])}</p>
+                    {/* 固定描述 + 分数说明 */}
+                    <div className={`mb-3 pb-3 border-b ${isInternal ? 'border-white/10' : 'border-white/5'}`}>
+                      <p className="text-xs text-white/50 leading-relaxed mb-1">{String(DIMENSION_DESCS[dim])}</p>
+                      <p className={`text-[10px] leading-relaxed ${isInternal ? 'text-white/40' : 'text-white/30'}`}>{scoreDesc}</p>
+                    </div>
+                    {/* 分级解读 */}
+                    <div className="flex items-start gap-2">
+                      <span className={`text-[8px] font-black px-1.5 py-0.5 rounded mt-0.5 flex-shrink-0 ${stateColor} bg-black/20 border border-white/10`}>{stateLabel}</span>
+                      <p className={`text-xs leading-relaxed ${isInternal ? 'text-white/70' : 'text-white/55'}`}>{levelDesc}</p>
+                    </div>
+                    {/* 07 内在补能模式额外样式标记 */}
+                    {isInternal && (
+                      <div className={`mt-3 pt-3 border-t border-white/10 flex items-center gap-1.5`}>
+                        <Fingerprint className={`w-3 h-3 ${color} opacity-50`} />
+                        <span className={`text-[8px] font-black uppercase tracking-widest ${color} opacity-50`}>Individual Energy Scan</span>
+                      </div>
+                    )}
                   </div>
                 );
               })}
