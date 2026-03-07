@@ -329,7 +329,7 @@ export default function App() {
   const navigateToNext = (currentIdx) => {
     if (isNavigating) return;
     setIsNavigating(true);
-    if (currentIdx === 29) setStep('transition');
+    if (QUESTIONS[currentIdx]?.part === 'A' && (currentIdx === QUESTIONS.length - 1 || QUESTIONS[currentIdx + 1]?.part === 'B')) setStep('transition');
     else if (currentIdx < QUESTIONS.length - 1) setCurrentIndex(prev => prev + 1);
     else setStep('result');
     setTimeout(() => setIsNavigating(false), 300);
