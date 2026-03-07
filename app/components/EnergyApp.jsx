@@ -466,33 +466,11 @@ export default function App() {
 
         {/* 底部按钮及理论支持区 (移动到这里) */}
         <div className="w-full max-w-sm mx-auto mb-12 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          {/* 测试结构说明 */}
-          <div className="grid grid-cols-2 gap-3 mb-2">
-            <div className="bg-white/[0.03] border border-white/8 rounded-2xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-5 h-5 rounded-full bg-indigo-500/20 flex items-center justify-center">
-                  <span className="text-[8px] font-black text-indigo-400">A</span>
-                </div>
-                <span className="text-[10px] font-black text-white/60 uppercase tracking-widest">Part A</span>
-              </div>
-              <p className="text-xs text-white/50 leading-relaxed">外界是否正在消耗你的能量？</p>
-            </div>
-            <div className="bg-white/[0.03] border border-white/8 rounded-2xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-5 h-5 rounded-full bg-purple-500/20 flex items-center justify-center">
-                  <span className="text-[8px] font-black text-purple-400">B</span>
-                </div>
-                <span className="text-[10px] font-black text-white/60 uppercase tracking-widest">Part B</span>
-              </div>
-              <p className="text-xs text-white/50 leading-relaxed">你是否在无意识地消耗身边的人？</p>
-            </div>
-          </div>
-
           <div className="space-y-4">
             <button onClick={handleStartIdentity} className="w-full py-6 bg-indigo-600 hover:bg-indigo-500 shadow-indigo-600/40 shadow-2xl active:scale-95 transition-all rounded-[2.2rem] font-black text-xl flex items-center justify-center gap-3 cursor-pointer">
                开启测评
             </button>
-            <p className="text-[10px] text-slate-500 text-center font-bold tracking-widest opacity-40 uppercase">Professional Assessment System</p>
+
             <button onClick={previewResult} className="w-full py-2 text-white/20 text-[10px] font-bold tracking-widest flex items-center justify-center gap-1.5 hover:text-white/40 transition-colors">
               <span className="w-1 h-1 rounded-full bg-white/20"></span> DEV · 预览结果页
             </button>
@@ -633,14 +611,17 @@ export default function App() {
         <div className="max-w-md mx-auto space-y-6">
 
           {/* ① 结果标题 - 主角色 */}
-          <section className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-3xl p-7 text-center">
-            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/15 text-[9px] font-black tracking-widest mb-5 ${color} bg-black/20`}>
-              {String(status)}
+          <section className={`bg-gradient-to-b from-black/30 via-black/20 ${bg} rounded-3xl p-7 text-center border border-white/10 relative overflow-hidden`}>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40 pointer-events-none rounded-3xl" />
+            <div className="relative z-10">
+              <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/15 text-[9px] font-black tracking-widest mb-5 ${color} bg-black/20`}>
+                {String(status)}
+              </div>
+              <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-3">关系能量分析</p>
+              <h2 className="text-4xl font-black tracking-tighter text-white mb-2 leading-none">{String(roleName)}</h2>
+              <p className={`text-sm font-black mb-5 ${color}`}>{String(tag)}</p>
+              <p className="text-white/60 text-sm leading-relaxed">{String(definition)}</p>
             </div>
-            <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-3">关系能量分析</p>
-            <h2 className="text-5xl font-black tracking-tighter text-white mb-2 leading-none">{String(roleName)}</h2>
-            <p className={`text-sm font-black mb-5 ${color}`}>{String(tag)}</p>
-            <p className="text-white/60 text-sm leading-relaxed">{String(definition)}</p>
           </section>
 
           {/* ② 副机制卡片（条件显示） */}
