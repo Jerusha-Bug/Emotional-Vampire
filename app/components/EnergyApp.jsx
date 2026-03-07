@@ -776,13 +776,13 @@ export default function App() {
                     </div>
                     {/* 固定描述 + 分数说明 */}
                     <div className={`mb-3 pb-3 border-b ${isInternal ? 'border-white/10' : 'border-white/5'}`}>
-                      <p className="text-sm text-white/70 leading-relaxed mb-1">{String(DIMENSION_DESCS[dim])}</p>
-                      <p className="text-sm text-white/70 leading-relaxed">{scoreDesc}</p>
+                      <p className="text-xs text-white/50 leading-relaxed mb-1">{String(DIMENSION_DESCS[dim])}</p>
+                      <p className="text-[10px] text-white/30 leading-relaxed">{scoreDesc}</p>
                     </div>
                     {/* 分级解读 */}
                     <div className="flex items-start gap-2">
                       <span className={`text-[8px] font-black px-1.5 py-0.5 rounded mt-0.5 flex-shrink-0 ${stateColor} bg-black/20 border border-white/10`}>{stateLabel}</span>
-                      <p className={`text-xs leading-relaxed ${isInternal ? 'text-white/70' : 'text-white/55'}`}>{levelDesc}</p>
+                      <p className="text-sm text-white/70 leading-relaxed">{levelDesc}</p>
                     </div>
                     {/* 07 内在补能模式额外样式标记 */}
                     {isInternal && (
