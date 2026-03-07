@@ -654,9 +654,17 @@ export default function App() {
           <section>
             <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">Energy Structure Analysis</p>
             <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-5 mb-3">
-              <div className="flex items-center justify-between mb-2 px-1">
-                <span className="text-[10px] font-black text-white/30 uppercase tracking-widest">外部损耗雷达</span>
-                <span className={`text-[10px] font-black ${color}`}>{scoreA} pts</span>
+              <div className="px-1 mb-4">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[10px] font-black text-white/30 uppercase tracking-widest">Energy Drain Level</span>
+                  <span className={`text-[10px] font-black ${color}`}>{Math.round((scoreA / 150) * 100)}%</span>
+                </div>
+                <div className="w-full h-1.5 rounded-full overflow-hidden bg-white/10">
+                  <div
+                    className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`}
+                    style={{ width: `${Math.round((scoreA / 150) * 100)}%` }}
+                  />
+                </div>
               </div>
               <RadarChart data={radarData} />
             </div>
