@@ -127,7 +127,7 @@ const ROLE_DATA = {
     tag: "情绪修复 · 单向输出",
     color: "text-rose-400",
     bg: "from-rose-950/80",
-    status: "Warning",
+    status: "轻度损耗",
     definition: "你在这段关系中承担了大量情绪修复工作。当对方低落、焦虑或崩溃时，你会本能地去安抚、理解和承担。",
     behaviors: ["经常安慰对方", "帮对方解释他的行为", "很少表达自己的需求", "害怕让关系失去稳定"],
     impact: "你的情绪能量不断输出，但回馈很少。久而久之可能出现情绪疲惫、责任过重、自我价值感下降。",
@@ -138,7 +138,7 @@ const ROLE_DATA = {
     tag: "单向倾倒 · 极度透支",
     color: "text-red-500",
     bg: "from-red-950/80",
-    status: "Critical",
+    status: "严重损耗",
     definition: "对方习惯把所有负面情绪倒给你，但并不真正关心你的状态。",
     behaviors: ["对方只在情绪不好时找你", "聊天几乎都是他的烦恼", "你的情绪很少被关注"],
     impact: "你逐渐变成情绪容器，吸收的负面情绪越多，恢复越慢。",
@@ -149,7 +149,7 @@ const ROLE_DATA = {
     tag: "过度共情 · 自我消耗",
     color: "text-fuchsia-400",
     bg: "from-fuchsia-950/80",
-    status: "Warning",
+    status: "轻度损耗",
     definition: "你拥有很强的共情能力，但在这段关系中，这种能力被过度消耗。",
     behaviors: ["很容易理解对方", "会替对方找理由", "经常忽略自己的感受"],
     impact: "共情如果没有边界，就会变成自我消耗机制。",
@@ -160,7 +160,7 @@ const ROLE_DATA = {
     tag: "主动修复 · 单方维系",
     color: "text-amber-400",
     bg: "from-amber-950/80",
-    status: "Moderate",
+    status: "明显损耗",
     definition: "每当关系出现问题，你都会试图修复它。",
     behaviors: ["主动道歉", "主动解释误会", "不希望关系破裂"],
     impact: "你在不断修复关系，但对方未必愿意改变。",
@@ -171,7 +171,7 @@ const ROLE_DATA = {
     tag: "高频摩擦 · 能量耗散",
     color: "text-orange-500",
     bg: "from-orange-950/80",
-    status: "Critical",
+    status: "严重损耗",
     definition: "你们的互动很容易从普通交流升级为冲突。",
     behaviors: ["小问题容易变成争吵", "对话经常带有情绪", "很难真正解决问题"],
     impact: "每一次冲突都会消耗大量情绪资源。",
@@ -182,7 +182,7 @@ const ROLE_DATA = {
     tag: "失衡承担 · 自我怀疑",
     color: "text-yellow-400",
     bg: "from-yellow-950/80",
-    status: "Moderate",
+    status: "明显损耗",
     definition: "当关系出现问题时，你经常承担更多责任。",
     behaviors: ["经常反思是不是自己做错了", "会主动让步", "不希望事情变得更糟"],
     impact: "长期承担责任可能导致自我怀疑。",
@@ -193,7 +193,7 @@ const ROLE_DATA = {
     tag: "情绪依赖 · 逐渐失自由",
     color: "text-blue-400",
     bg: "from-blue-950/80",
-    status: "Warning",
+    status: "轻度损耗",
     definition: "对方在情绪上高度依赖你。",
     behaviors: ["对方经常说'只有你懂我'", "离开你他会变得很焦虑", "你成为关系的稳定中心"],
     impact: "这种依赖可能让你逐渐失去自由。",
@@ -204,7 +204,7 @@ const ROLE_DATA = {
     tag: "压抑表达 · 内耗积累",
     color: "text-cyan-400",
     bg: "from-cyan-950/80",
-    status: "Moderate",
+    status: "明显损耗",
     definition: "你会主动保护关系中的情绪稳定。",
     behaviors: ["避免冲突", "小心表达意见", "不想让对方难过"],
     impact: "长期压抑真实表达会产生情绪内耗。",
@@ -215,7 +215,7 @@ const ROLE_DATA = {
     tag: "需求压缩 · 自我迷失",
     color: "text-purple-400",
     bg: "from-purple-950/80",
-    status: "Warning",
+    status: "轻度损耗",
     definition: "为了维持关系，你不断压缩自己的需求。",
     behaviors: ["不敢表达真实想法", "经常妥协", "很少坚持自己的界限"],
     impact: "长期压抑可能导致情绪疲惫和自我迷失。",
@@ -226,7 +226,7 @@ const ROLE_DATA = {
     tag: "持续消耗 · 能量黑洞",
     color: "text-slate-400",
     bg: "from-slate-800/40",
-    status: "Warning",
+    status: "轻度损耗",
     definition: "这段关系正在持续消耗你的能量。",
     behaviors: ["互动后常感到疲惫", "需要很长时间恢复", "情绪波动明显"],
     impact: "关系本身已经成为能量黑洞。",
@@ -237,7 +237,7 @@ const ROLE_DATA = {
     tag: "重复模式 · 无解循环",
     color: "text-indigo-400",
     bg: "from-indigo-950/80",
-    status: "Warning",
+    status: "轻度损耗",
     definition: "你们的关系不断重复同样的情绪模式。",
     behaviors: ["冲突 → 和好 → 冲突", "问题没有真正解决", "情绪循环出现"],
     impact: "这种循环会让人逐渐麻木。",
@@ -248,7 +248,7 @@ const ROLE_DATA = {
     tag: "自我觉察 · 能量恢复",
     color: "text-emerald-400",
     bg: "from-emerald-950/80",
-    status: "Healthy",
+    status: "稳定",
     definition: "你已经开始意识到关系中的能量结构。",
     behaviors: ["开始观察互动模式", "不再盲目承担责任", "想要建立边界"],
     impact: "你的能量正在恢复。",
@@ -448,6 +448,28 @@ export default function App() {
 
         {/* 底部按钮及理论支持区 (移动到这里) */}
         <div className="w-full max-w-sm mx-auto mb-12 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          {/* 测试结构说明 */}
+          <div className="grid grid-cols-2 gap-3 mb-2">
+            <div className="bg-white/[0.03] border border-white/8 rounded-2xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-5 h-5 rounded-full bg-indigo-500/20 flex items-center justify-center">
+                  <span className="text-[8px] font-black text-indigo-400">A</span>
+                </div>
+                <span className="text-[10px] font-black text-white/60 uppercase tracking-widest">Part A</span>
+              </div>
+              <p className="text-xs text-white/50 leading-relaxed">外界是否正在消耗你的能量？</p>
+            </div>
+            <div className="bg-white/[0.03] border border-white/8 rounded-2xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-5 h-5 rounded-full bg-purple-500/20 flex items-center justify-center">
+                  <span className="text-[8px] font-black text-purple-400">B</span>
+                </div>
+                <span className="text-[10px] font-black text-white/60 uppercase tracking-widest">Part B</span>
+              </div>
+              <p className="text-xs text-white/50 leading-relaxed">你自身是否处于能量匮乏状态？</p>
+            </div>
+          </div>
+
           <div className="space-y-4">
             <button onClick={handleStartIdentity} className="w-full py-6 bg-indigo-600 hover:bg-indigo-500 shadow-indigo-600/40 shadow-2xl active:scale-95 transition-all rounded-[2.2rem] font-black text-xl flex items-center justify-center gap-3 cursor-pointer">
                开启测评
@@ -562,8 +584,8 @@ export default function App() {
             <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 z-10 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/10"><X className="w-3.5 h-3.5"/></button>
             {/* 顶部 badge */}
             <div className="pt-8 pb-4 px-8 flex flex-col items-center">
-              <div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-black uppercase tracking-widest mb-5`}>{String(status)} Level</div>
-              <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-2">Relationship Energy Report</p>
+              <div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-black uppercase tracking-widest mb-5`}>{String(status)}</div>
+              <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-2">关系能量分析</p>
               <h2 className="text-3xl font-black tracking-tighter text-white leading-tight mb-1">{String(roleName)}</h2>
               <p className={`text-[9px] font-black mb-6 ${color}`}>{String(tag)}</p>
             </div>
@@ -578,7 +600,7 @@ export default function App() {
               <div className="relative pl-3 border-l-2 border-white/20 text-left">
                 <p className="text-white/60 text-xs leading-relaxed">{String(definition)}</p>
               </div>
-              <p className="text-white/15 text-[9px] font-medium tracking-[0.2em] flex items-center justify-center gap-2 mt-6"><Download className="w-2.5 h-2.5 opacity-50"/> 截图保存能量报告</p>
+              <p className="text-white/15 text-[9px] font-medium tracking-[0.2em] flex items-center justify-center gap-2 mt-6"><Download className="w-2.5 h-2.5 opacity-50"/> 截图保存你的报告</p>
             </div>
           </div>
         </div>
@@ -592,9 +614,9 @@ export default function App() {
           {/* ① 结果标题 - 主角色 */}
           <section className="text-center pt-4 pb-6">
             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/15 text-[9px] font-black uppercase tracking-widest mb-5 ${color} bg-black/20 backdrop-blur-sm`}>
-              {String(status)} Level
+              {String(status)}
             </div>
-            <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-2">Relationship Energy Report</p>
+            <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-2">关系能量分析</p>
             <h2 className="text-4xl font-black tracking-tighter text-white mb-2">{String(roleName)}</h2>
             <p className={`text-xs font-black mb-4 ${color}`}>{String(tag)}</p>
             <p className="text-white/60 text-sm leading-relaxed mx-auto">{String(definition)}</p>
@@ -618,7 +640,7 @@ export default function App() {
 
           {/* ③ 关系图形 placeholder */}
           <section>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">Relationship Pattern</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">关系互动模式</p>
             <div className="rounded-2xl border border-dashed border-white/10 bg-black/10 h-48 flex items-center justify-center backdrop-blur-sm">
               <p className="text-white/20 text-xs font-bold">关系图形设计区域</p>
             </div>
@@ -626,7 +648,7 @@ export default function App() {
 
           {/* ④ 行为模式 */}
           <section>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">Typical Patterns</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">常见互动表现</p>
             <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-5 space-y-3">
               {behaviors.map((b, i) => (
                 <div key={i} className="flex items-start gap-3">
@@ -639,7 +661,7 @@ export default function App() {
 
           {/* ⑤ 能量影响 */}
           <section>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">Energy Impact</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">这种关系可能带来的消耗</p>
             <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-5 relative overflow-hidden">
               <div className={`absolute left-0 top-0 w-1 h-full ${color.replace('text-', 'bg-')} rounded-l-2xl opacity-60`}></div>
               <div className="flex items-center gap-2 mb-2 pl-3">
@@ -652,11 +674,21 @@ export default function App() {
 
           {/* ⑥ 雷达图 + 六维分值解释 */}
           <section>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">Energy Structure Analysis</p>
+            {/* Part A 标题 */}
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-6 h-6 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                <span className="text-[9px] font-black text-indigo-400">A</span>
+              </div>
+              <div>
+                <p className="text-xs font-black text-white/70">外部能量损耗分析</p>
+                <p className="text-[10px] text-white/30">这段关系对你的消耗程度</p>
+              </div>
+            </div>
+            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">关系能量结构</p>
             <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-5 mb-3">
               <div className="px-1 mb-4">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[10px] font-black text-white/30 uppercase tracking-widest">Energy Drain Level</span>
+                  <span className="text-[10px] font-black text-white/30 uppercase tracking-widest">关系消耗程度</span>
                   <span className={`text-[10px] font-black ${color}`}>{Math.round((scoreA / 150) * 100)}%</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full overflow-hidden bg-white/10">
@@ -678,10 +710,23 @@ export default function App() {
                 if (ratio > 0.75) { stateLabel = isInternal ? "匮乏" : "过载"; stateColor = "text-rose-400"; levelKey = "overload"; }
                 else if (ratio > 0.5) { stateLabel = "活跃"; stateColor = "text-orange-400"; levelKey = "active"; }
                 const numLabel = `0${idx + 1}`;
+                const partBDivider = isInternal ? (
+                  <div key="partB-divider" className="flex items-center gap-3 pt-2 pb-1">
+                    <div className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-[9px] font-black text-purple-400">B</span>
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-white/70">内在能量状态</p>
+                      <p className="text-[10px] text-white/30">你自身的能量储备与补给能力</p>
+                    </div>
+                  </div>
+                ) : null;
                 const levelDesc = DIMENSION_LEVEL_DESC[dim]?.[levelKey] || "";
                 const scoreDesc = DIMENSION_SCORE_DESC[dim] || "";
                 return (
-                  <div key={idx} className={`rounded-2xl border p-5 backdrop-blur-sm ${isInternal ? 'bg-white/8 border-white/20 ring-1 ring-white/10' : 'bg-black/20 border-white/8'}`}>
+                  <React.Fragment key={idx}>
+                  {partBDivider}
+                  <div className={`rounded-2xl border p-5 backdrop-blur-sm ${isInternal ? 'bg-white/8 border-white/20 ring-1 ring-white/10' : 'bg-black/20 border-white/8'}`}>
                     {/* 序号 + 维度名 + 状态 + 分数 */}
                     <div className="flex justify-between items-start mb-3">
                       <div className="flex items-center gap-2">
@@ -710,10 +755,11 @@ export default function App() {
                     {isInternal && (
                       <div className={`mt-3 pt-3 border-t border-white/10 flex items-center gap-1.5`}>
                         <Fingerprint className={`w-3 h-3 ${color} opacity-50`} />
-                        <span className={`text-[8px] font-black uppercase tracking-widest ${color} opacity-50`}>Individual Energy Scan</span>
+                        <span className={`text-[8px] font-black uppercase tracking-widest ${color} opacity-50`}>当前能量状态</span>
                       </div>
                     )}
                   </div>
+                  </React.Fragment>
                 );
               })}
             </div>
@@ -721,7 +767,7 @@ export default function App() {
 
           {/* ⑦ 建议 */}
           <section>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">Insight</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">你可以尝试</p>
             <div className={`bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-5 relative overflow-hidden`}>
               <Sparkles className={`absolute -right-2 -top-2 w-16 h-16 opacity-10 rotate-12 ${color}`} />
               <p className="text-[10px] font-black text-white/30 uppercase tracking-widest mb-2">止损与补能建议</p>
