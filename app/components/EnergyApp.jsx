@@ -79,7 +79,6 @@ const DIMENSION_LEVEL_DESC = {
 };
 
 const QUESTIONS = [
-  { id: 1, part: "A", dim: "情绪倾倒", text: "和{target}相处后，我会感到疲惫。" },
   { id: 2, part: "A", dim: "情绪倾倒", text: "我需要花很多精力安抚{target}的情绪。" },
   { id: 3, part: "A", dim: "情绪倾倒", text: "{target}经常向我倾倒负面情绪。" },
   { id: 4, part: "A", dim: "情绪倾倒", text: "我需要压抑自己的真实感受去配合{target}。" },
@@ -88,23 +87,18 @@ const QUESTIONS = [
   { id: 7, part: "A", dim: "受害叙述", text: "我会因为{target}的态度而情绪波动很大。" },
   { id: 8, part: "A", dim: "受害叙述", text: "我经常猜测{target}是不是对我不满。" },
   { id: 9, part: "A", dim: "受害叙述", text: "我在这段关系中缺乏稳定感。" },
-  { id: 10, part: "A", dim: "受害叙述", text: "我害怕失去这段关系。" },
   { id: 11, part: "A", dim: "责任转移", text: "{target}会干涉我的决定或生活。" },
   { id: 12, part: "A", dim: "责任转移", text: "我很难拒绝{target}的请求。" },
   { id: 13, part: "A", dim: "责任转移", text: "即使不愿意，我也会答应{target}。" },
   { id: 14, part: "A", dim: "责任转移", text: "我觉得自己需要为{target}的情绪负责。" },
-  { id: 15, part: "A", dim: "责任转移", text: "我很少向{target}表达自己的需求。" },
   { id: 16, part: "A", dim: "依赖绑定", text: "我付出的比{target}多。" },
   { id: 17, part: "A", dim: "依赖绑定", text: "{target}很少关心我的感受。" },
-  { id: 18, part: "A", dim: "依赖绑定", text: "我觉得这段关系不够公平。" },
   { id: 19, part: "A", dim: "依赖绑定", text: "{target}只在需要时才联系我。" },
   { id: 20, part: "A", dim: "依赖绑定", text: "我很少从这段关系中获得支持。" },
-  { id: 21, part: "A", dim: "冲突激发", text: "我和{target}的沟通经常变成争吵。" },
   { id: 22, part: "A", dim: "冲突激发", text: "{target}会指责或否定我。" },
   { id: 23, part: "A", dim: "冲突激发", text: "冲突后通常是我先向{target}道歉。" },
   { id: 24, part: "A", dim: "冲突激发", text: "{target}会回避问题不沟通。" },
   { id: 25, part: "A", dim: "冲突激发", text: "小问题会被放大成大矛盾。" },
-  { id: 26, part: "A", dim: "自我消耗", text: "这段关系让你怀疑自己的价值。" },
   { id: 27, part: "A", dim: "自我消耗", text: "你为了维持关系改变了自己。" },
   { id: 28, part: "A", dim: "自我消耗", text: "你会反复回想{target}说过的话。" },
   { id: 29, part: "A", dim: "自我消耗", text: "你在这段关系中感到内耗。" },
@@ -403,7 +397,7 @@ export default function App() {
 
     // 主角色判断逻辑
     let roleName;
-    if (scoreA <= 55 && scoreB <= 16) {
+    if (scoreA <= 44 && scoreB <= 16) {
       roleName = "关系清醒者";
     } else if (topDim === "情绪倾倒" && topScore > 20) {
       roleName = "情绪垃圾桶";
@@ -683,10 +677,10 @@ export default function App() {
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-[10px] font-black text-white/30 uppercase tracking-widest">关系消耗程度</span>
-                  <span className={`text-[10px] font-black ${color}`}>{Math.round((scoreA / 150) * 100)}%</span>
+                  <span className={`text-[10px] font-black ${color}`}>{Math.round((scoreA / 120) * 100)}%</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full overflow-hidden bg-white/10">
-                  <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`} style={{ width: `${Math.round((scoreA / 150) * 100)}%` }} />
+                  <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`} style={{ width: `${Math.round((scoreA / 120) * 100)}%` }} />
                 </div>
               </div>
               <RadarChart data={radarData} />
