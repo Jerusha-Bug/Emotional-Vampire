@@ -69,20 +69,154 @@ const QUESTIONS = [
   { id: 38, part: "B", dim: "内在补能模式", text: "我觉得自己付出的努力，并没有得到环境应有的认可。" }
 ];
 
-const RESULT_MATRIX = {
-  "HEALTHY_STABLE": { name: "能量自洽星人", tag: "互动平衡 · 损耗极低", color: "text-emerald-400", bg: "from-emerald-950/40", status: "Healthy", desc: "你具备强大的心理免疫力，能自然地过滤潜在的损耗。", advice: "目前的互动非常健康，保持平衡。" },
-  "FLUCTUATING_STABLE": { name: "边界探索者", tag: "隐性试探 · 动态调整", color: "text-blue-400", bg: "from-blue-950/40", status: "Moderate", desc: "关系中存在一些不稳定的能量渗漏，你们正在互相试探边界。", advice: "感到疲惫时主动表达边界。" },
-  "BURDENED_STABLE": { name: "高频负重承担者", tag: "单向透支 · 能量发电机", color: "text-orange-400", bg: "from-orange-950/40", status: "Warning", desc: "你正在这段关系中扮演‘能量供给站’的角色。", advice: "暂时关闭能量输出。" },
-  "CRISIS_STABLE": { name: "孤勇承受者", tag: "极限抗压 · 系统性流失", color: "text-rose-500", bg: "from-rose-950/40", status: "Critical", desc: "损耗已达到临界点。尽管你内核稳定，但长期的单向输出正让你陷入‘能量休克’。", advice: "物理隔离是最高优先级的自救行动。" },
-  "HEALTHY_SEEKING": { name: "内核重构状态", tag: "自我觉察 · 补给期", color: "text-indigo-400", bg: "from-indigo-950/40", status: "Cautious", desc: "外部关系平稳，但你正处于觉醒期，开始意识到能量流失。", advice: "关注你的内在节奏。" },
-  "FLUCTUATING_SEEKING": { name: "动态平衡模式", tag: "亚健康互动 · 存量博弈", color: "text-cyan-400", bg: "from-cyan-950/40", status: "Moderate", desc: "这是典型的‘拉扯地带’。能量在反复的微小磨损中被消耗。", advice: "打破‘理所当然’的互动惯性。" },
-  "BURDENED_SEEKING": { name: "疲惫维系个体", tag: "高压互动 · 局部过载", color: "text-amber-500", bg: "from-amber-950/40", status: "Warning", desc: "外部压力显著，同时内在防御也略显疲态。", advice: "优先处理让你感到疲惫的任务。" },
-  "CRISIS_SEEKING": { name: "系统性透支源", tag: "双重崩溃 · 能量工伤", color: "text-red-400", bg: "from-red-950/40", status: "Critical", desc: "警告，你的能量系统正在全面报警，处于‘为了活着而勉强互动’的濒危状态。", advice: "先去一个让你感到绝对安全的地方。" },
-  "HEALTHY_EMPTY": { name: "荒原守望者", tag: "内核空洞 · 潜在代偿", color: "text-purple-400", bg: "from-purple-950/40", status: "Cautious", desc: "虽然外部关系温和，但你内心的‘能量黑洞’极大。", advice: "学习如何无条件地支持自己。" },
-  "FLUCTUATING_EMPTY": { name: "焦虑抓取模式", tag: "恐惧驱动 · 敏感互动", color: "text-fuchsia-400", bg: "from-fuchsia-950/40", status: "Warning", desc: "由于内在能量匮乏，你对关系变动异常敏感，形成了恶性循环。", advice: "重建你的自爱储蓄池。" },
-  "BURDENED_EMPTY": { name: "情感代偿客", tag: "牺牲换爱 · 深度透支", color: "text-pink-500", bg: "from-pink-950/40", status: "Critical", desc: "你正在通过‘自我毁灭式’的付出来换取对方认可，损耗已深入骨髓。", advice: "看清‘我必须有用才值得被爱’的谎言。" },
-  "HIGH_HIGH": { name: "深度纠缠沉沦者", tag: "相互吞噬 · 能量枯竭", color: "text-red-600", bg: "from-red-950/40", status: "Danger", desc: "最高危机。你们正处于‘能量相互残杀’极端阶段，摧毁着彼此生命力。", advice: "物理与心理的‘双重撤离’是唯一生机。" }
+
+// --- 12个角色数据 ---
+const ROLE_DATA = {
+  "情感代偿者": {
+    en: "Emotional Compensator",
+    tag: "情绪修复 · 单向输出",
+    color: "text-rose-400",
+    bg: "from-rose-950/40",
+    status: "Warning",
+    definition: "你在这段关系中承担了大量情绪修复工作。当对方低落、焦虑或崩溃时，你会本能地去安抚、理解和承担。",
+    behaviors: ["经常安慰对方", "帮对方解释他的行为", "很少表达自己的需求", "害怕让关系失去稳定"],
+    impact: "你的情绪能量不断输出，但回馈很少。久而久之可能出现情绪疲惫、责任过重、自我价值感下降。",
+    advice: "停止自动承担别人的情绪责任。当对方情绪失控时，你可以选择不立刻修复它。"
+  },
+  "情绪垃圾桶": {
+    en: "Emotional Dump",
+    tag: "单向倾倒 · 极度透支",
+    color: "text-red-500",
+    bg: "from-red-950/40",
+    status: "Critical",
+    definition: "对方习惯把所有负面情绪倒给你，但并不真正关心你的状态。",
+    behaviors: ["对方只在情绪不好时找你", "聊天几乎都是他的烦恼", "你的情绪很少被关注"],
+    impact: "你逐渐变成情绪容器，吸收的负面情绪越多，恢复越慢。",
+    advice: "开始减少情绪接收。不是所有情绪都需要你去承接。"
+  },
+  "共情透支者": {
+    en: "Empathy Overload",
+    tag: "过度共情 · 自我消耗",
+    color: "text-fuchsia-400",
+    bg: "from-fuchsia-950/40",
+    status: "Warning",
+    definition: "你拥有很强的共情能力，但在这段关系中，这种能力被过度消耗。",
+    behaviors: ["很容易理解对方", "会替对方找理由", "经常忽略自己的感受"],
+    impact: "共情如果没有边界，就会变成自我消耗机制。",
+    advice: "理解对方不等于为对方负责。"
+  },
+  "关系修复者": {
+    en: "Relationship Fixer",
+    tag: "主动修复 · 单方维系",
+    color: "text-amber-400",
+    bg: "from-amber-950/40",
+    status: "Moderate",
+    definition: "每当关系出现问题，你都会试图修复它。",
+    behaviors: ["主动道歉", "主动解释误会", "不希望关系破裂"],
+    impact: "你在不断修复关系，但对方未必愿意改变。",
+    advice: "关系是两个人的责任，而不是一个人的修复工程。"
+  },
+  "冲突吸引者": {
+    en: "Conflict Magnet",
+    tag: "高频摩擦 · 能量耗散",
+    color: "text-orange-500",
+    bg: "from-orange-950/40",
+    status: "Critical",
+    definition: "你们的互动很容易从普通交流升级为冲突。",
+    behaviors: ["小问题容易变成争吵", "对话经常带有情绪", "很难真正解决问题"],
+    impact: "每一次冲突都会消耗大量情绪资源。",
+    advice: "观察冲突模式，而不是只关注冲突内容。"
+  },
+  "责任承担者": {
+    en: "Responsibility Carrier",
+    tag: "失衡承担 · 自我怀疑",
+    color: "text-yellow-400",
+    bg: "from-yellow-950/40",
+    status: "Moderate",
+    definition: "当关系出现问题时，你经常承担更多责任。",
+    behaviors: ["经常反思是不是自己做错了", "会主动让步", "不希望事情变得更糟"],
+    impact: "长期承担责任可能导致自我怀疑。",
+    advice: "关系中的责任需要被公平分配。"
+  },
+  "依赖支柱": {
+    en: "Dependency Anchor",
+    tag: "情绪依赖 · 逐渐失自由",
+    color: "text-blue-400",
+    bg: "from-blue-950/40",
+    status: "Warning",
+    definition: "对方在情绪上高度依赖你。",
+    behaviors: ["对方经常说'只有你懂我'", "离开你他会变得很焦虑", "你成为关系的稳定中心"],
+    impact: "这种依赖可能让你逐渐失去自由。",
+    advice: "支持别人不等于成为对方唯一的支撑。"
+  },
+  "情绪守护者": {
+    en: "Emotional Guardian",
+    tag: "压抑表达 · 内耗积累",
+    color: "text-cyan-400",
+    bg: "from-cyan-950/40",
+    status: "Moderate",
+    definition: "你会主动保护关系中的情绪稳定。",
+    behaviors: ["避免冲突", "小心表达意见", "不想让对方难过"],
+    impact: "长期压抑真实表达会产生情绪内耗。",
+    advice: "健康关系允许真实表达。"
+  },
+  "自我压缩者": {
+    en: "Self-Suppressor",
+    tag: "需求压缩 · 自我迷失",
+    color: "text-purple-400",
+    bg: "from-purple-950/40",
+    status: "Warning",
+    definition: "为了维持关系，你不断压缩自己的需求。",
+    behaviors: ["不敢表达真实想法", "经常妥协", "很少坚持自己的界限"],
+    impact: "长期压抑可能导致情绪疲惫和自我迷失。",
+    advice: "你的需求同样重要。"
+  },
+  "关系消耗者": {
+    en: "Energy Drained",
+    tag: "持续消耗 · 能量黑洞",
+    color: "text-slate-400",
+    bg: "from-slate-800/40",
+    status: "Warning",
+    definition: "这段关系正在持续消耗你的能量。",
+    behaviors: ["互动后常感到疲惫", "需要很长时间恢复", "情绪波动明显"],
+    impact: "关系本身已经成为能量黑洞。",
+    advice: "观察这段关系是否仍然值得投入。"
+  },
+  "情绪循环者": {
+    en: "Emotional Loop",
+    tag: "重复模式 · 无解循环",
+    color: "text-indigo-400",
+    bg: "from-indigo-950/40",
+    status: "Warning",
+    definition: "你们的关系不断重复同样的情绪模式。",
+    behaviors: ["冲突 → 和好 → 冲突", "问题没有真正解决", "情绪循环出现"],
+    impact: "这种循环会让人逐渐麻木。",
+    advice: "识别模式，是打破循环的第一步。"
+  },
+  "关系清醒者": {
+    en: "Awakened Observer",
+    tag: "自我觉察 · 能量恢复",
+    color: "text-emerald-400",
+    bg: "from-emerald-950/40",
+    status: "Healthy",
+    definition: "你已经开始意识到关系中的能量结构。",
+    behaviors: ["开始观察互动模式", "不再盲目承担责任", "想要建立边界"],
+    impact: "你的能量正在恢复。",
+    advice: "继续保持观察与自我保护。"
+  }
 };
+
+// 维度到副机制名称的映射
+const DIM_TO_ROLE = {
+  "情绪倾倒": "情感代偿者",
+  "受害叙述": "情绪守护者",
+  "责任转移": "责任承担者",
+  "依赖绑定": "依赖支柱",
+  "冲突激发": "关系修复者",
+  "自我消耗": "共情透支者"
+};
+
+
 
 const RadarChart = ({ data, dark = true }) => {
   const size = 200; const center = size / 2; const radius = center * 0.65;
@@ -172,44 +306,57 @@ export default function App() {
       if (q.part === 'A') { scoreA += val; dimScores[q.dim] += val; }
       else { scoreB += val; dimScores[q.dim] += val; }
     });
+
     const radarData = DIMENSIONS.slice(0, 6).map(key => ({ name: key, value: dimScores[key] / 5 }));
-    const topDim = DIMENSIONS.slice(0, 6).reduce((a, b) => dimScores[a] > dimScores[b] ? a : b);
-    
-    const getLevelA = (s) => {
-      if (s <= 55) return "HEALTHY";
-      if (s <= 90) return "FLUCTUATING";
-      if (s <= 120) return "BURDENED";
-      return "CRISIS";
-    };
-    const getLevelB = (s) => {
-      if (s <= 16) return "STABLE";
-      if (s <= 27) return "SEEKING";
-      return "EMPTY";
-    };
 
-    const lA = getLevelA(scoreA);
-    const lB = getLevelB(scoreB);
-    const typeKey = (lA === "CRISIS" && lB === "EMPTY") ? "HIGH_HIGH" : `${lA}_${lB}`;
-    const baseResult = RESULT_MATRIX[typeKey] || RESULT_MATRIX["HEALTHY_STABLE"];
-    
-    const vulnerabilityMap = {
-      "HEALTHY_STABLE": "你拥有极强的边界感。对方很难将你锁定为吸能目标。",
-      "FLUCTUATING_STABLE": "你成为目标源于你的‘高功能同理心’。吸能者识别出你是一个愿意解决问题的人。",
-      "BURDENED_STABLE": "你成为了对方的‘义务发电机’。因为你内核稳定，对方会潜意识里认为你‘撑得住’。",
-      "CRISIS_STABLE": "这是一种‘结构性捕获’。对方利用了你对这段关系的道德承诺或责任感。",
-      "HEALTHY_SEEKING": "你正处于觉醒期。那种‘好说话’的惯性标签还贴在身上，吸引着最后的试探。",
-      "FLUCTUATING_SEEKING": "你成为目标源于你摇摆不定的心理防线。在冲突面前，你习惯性地选择‘有限度的妥协’。",
-      "BURDENED_SEEKING": "吸能者锁定了你的‘冲突恐惧’。因为你正寻求认同，害怕拒绝会导致关系破裂。",
-      "CRISIS_SEEKING": "你陷入了‘防御疲劳’。目前的内在能量不足以支撑你筑起高墙。",
-      "HEALTHY_EMPTY": "你是一个‘荒原守望者’。因为内心的空洞，你释放出了‘我需要被需要’的信号。",
-      "FLUCTUATING_EMPTY": "你掉入了‘恐惧驱动’陷阱。极度害怕失去让你通过过度关注对方换取安全感。",
-      "BURDENED_EMPTY": "你正在进行‘自我毁灭式代偿’。你潜意识认为自己必须‘有用’才值得被爱。",
-      "HIGH_HIGH": "这是一种‘命运共同体’的错觉。两个匮乏的人在拉扯中完成了能量献祭。"
-    };
+    // 外部6个维度排序
+    const extDims = DIMENSIONS.slice(0, 6);
+    const sorted = [...extDims].sort((a, b) => dimScores[b] - dimScores[a]);
+    const topDim = sorted[0];
+    const secondDim = sorted[1];
+    const topScore = dimScores[topDim];
+    const secondScore = dimScores[secondDim];
 
-    const vulnerabilityReason = vulnerabilityMap[typeKey] || "溯源数据扫描中...";
-    return { ...baseResult, scoreA, scoreB, radarData, dimScores, topDim, vulnerabilityReason };
+    // 主角色判断逻辑
+    let roleName;
+    if (scoreA <= 55 && scoreB <= 16) {
+      roleName = "关系清醒者";
+    } else if (topDim === "情绪倾倒" && topScore > 20) {
+      roleName = "情绪垃圾桶";
+    } else if (topDim === "情绪倾倒") {
+      roleName = "情感代偿者";
+    } else if (topDim === "自我消耗" && scoreB > 27) {
+      roleName = "共情透支者";
+    } else if (topDim === "自我消耗") {
+      roleName = "自我压缩者";
+    } else if (topDim === "冲突激发" && topScore > 20) {
+      roleName = "冲突吸引者";
+    } else if (topDim === "冲突激发" && dimScores["情绪倾倒"] >= 10) {
+      roleName = "情绪循环者";
+    } else if (topDim === "冲突激发") {
+      roleName = "关系修复者";
+    } else if (topDim === "责任转移" && dimScores["自我消耗"] >= 10) {
+      roleName = "自我压缩者";
+    } else if (topDim === "责任转移") {
+      roleName = "责任承担者";
+    } else if (topDim === "依赖绑定") {
+      roleName = "依赖支柱";
+    } else if (topDim === "受害叙述") {
+      roleName = "情绪守护者";
+    } else {
+      roleName = "关系消耗者";
+    }
+
+    // 副机制判断：第二高维度 >= 10分，且对应角色不同于主角色
+    const secondRoleName = DIM_TO_ROLE[secondDim];
+    const subRole = (secondScore >= 10 && secondRoleName !== roleName)
+      ? { name: secondRoleName, dim: secondDim, score: secondScore, ...ROLE_DATA[secondRoleName] }
+      : null;
+
+    const role = ROLE_DATA[roleName];
+    return { ...role, roleName, subRole, scoreA, scoreB, radarData, dimScores, topDim };
   }, [step, answers]);
+
 
   // --- [1] 首页 (调整位置后的版本) ---
   if (step === 'welcome') {
@@ -338,179 +485,147 @@ export default function App() {
   );
 
   if (step === 'result' && resultData) {
-    const { name, tag, desc, advice, color, bg, status, scoreA, radarData, topDim, vulnerabilityReason, dimScores } = resultData;
+    const { roleName, color, bg, status, tag, definition, behaviors, impact, advice, scoreA, radarData, dimScores, subRole } = resultData;
+
+    // 海报弹窗（保持不变）
     if (showPoster) return (
       <div className="min-h-screen bg-black/95 flex items-center justify-center p-6 animate-in fade-in zoom-in duration-300 z-50 text-center font-sans">
-         <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-6 h-6"/></button>
-         <div className="w-full max-w-[340px] bg-slate-950 rounded-[2.5rem] border border-white/10 overflow-hidden shadow-[0_0_50px_rgba(99,102,241,0.3)] relative text-center flex flex-col items-center">
-            <div className={`h-28 w-full bg-gradient-to-b ${bg} to-slate-950 p-6 flex flex-col items-center justify-center`}><div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-black uppercase tracking-widest`}>{String(status)} Level</div></div>
-            <div className="px-8 pb-10 flex flex-col items-center">
-                <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-5 -mt-8 ring-4 ring-slate-950"><ShieldCheck className={`w-8 h-8 ${color}`} /></div>
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-1 text-center">Energy Loss Analysis</p>
-                <h2 className="text-3xl font-black mb-3 tracking-tighter text-white leading-tight">{String(name)}</h2>
-                <div className={`px-4 py-1.5 rounded-full text-[9px] font-black border border-white/10 ${color} bg-white/5 mb-8`}>{String(tag)}</div>
-                <div className="w-full bg-white/[0.02] border border-white/5 rounded-[2rem] p-4 mb-6"><div className="flex items-center justify-between mb-2 px-2 text-left"><span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Loss Pattern Scan</span><span className="text-[9px] font-black text-indigo-400">{scoreA} PTS</span></div><RadarChart data={radarData} /></div>
-                <div className="text-left relative pl-4 border-l-2 border-indigo-600"><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 text-left text-white">流失定性解析</h4><p className="text-slate-300 text-xs leading-relaxed text-justify font-medium opacity-90 text-left">{String(desc)}</p></div>
-                <div className="mt-8 w-full flex items-center justify-between text-left text-white"><div className="text-left"><p className="text-[10px] font-black text-white/40 uppercase tracking-widest">Energy Flow Analysis</p><p className="text-[8px] text-slate-600 italic text-left">By Stéphane Clerget System</p></div><div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-[8px] font-bold text-slate-600 border border-white/5 font-mono">QR</div></div>
-                <div className="mt-8"><p className="text-white/20 text-[9px] font-medium tracking-[0.2em] flex items-center justify-center gap-2 text-center font-sans"><Download className="w-2.5 h-2.5 opacity-50"/> 截图保存能量报告</p></div>
-            </div>
-         </div>
+        <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-6 h-6"/></button>
+        <div className="w-full max-w-[340px] bg-slate-950 rounded-[2.5rem] border border-white/10 overflow-hidden shadow-[0_0_50px_rgba(99,102,241,0.3)] relative text-center flex flex-col items-center">
+          <div className={`h-28 w-full bg-gradient-to-b ${bg} to-slate-950 p-6 flex flex-col items-center justify-center`}><div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-black uppercase tracking-widest`}>{String(status)} Level</div></div>
+          <div className="px-8 pb-10 flex flex-col items-center">
+            <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-5 -mt-8 ring-4 ring-slate-950"><ShieldCheck className={`w-8 h-8 ${color}`} /></div>
+            <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-1 text-center">Relationship Energy Report</p>
+            <h2 className="text-3xl font-black mb-1 tracking-tighter text-white leading-tight">{String(roleName)}</h2>
+            <p className={`text-[10px] font-black mb-3 ${color}`}>{String(tag)}</p>
+            <div className="w-full bg-white/[0.02] border border-white/5 rounded-[2rem] p-4 mb-6"><RadarChart data={radarData} /></div>
+            <div className="text-left relative pl-4 border-l-2 border-indigo-600"><p className="text-slate-300 text-xs leading-relaxed font-medium opacity-90">{String(definition)}</p></div>
+            <div className="mt-8"><p className="text-white/20 text-[9px] font-medium tracking-[0.2em] flex items-center justify-center gap-2"><Download className="w-2.5 h-2.5 opacity-50"/> 截图保存能量报告</p></div>
+          </div>
+        </div>
       </div>
     );
 
-    // ── 新结果页面结构 ──
     return (
       <div className="min-h-screen bg-black text-white px-6 py-10 font-sans">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-2xl mx-auto space-y-8">
 
-          {/* ① 结果标题 */}
-          <section className="text-center mb-12">
-            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-widest mb-6 ${color} bg-white/5`}>
+          {/* ① 结果标题 - 主角色 */}
+          <section className={`rounded-2xl border border-white/5 bg-gradient-to-b ${bg} to-black p-8 text-center`}>
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 text-[9px] font-black uppercase tracking-widest mb-5 ${color} bg-black/30`}>
               {String(status)} Level
             </div>
-            <h1 className="text-xs tracking-widest text-gray-400 uppercase mb-3">
-              Relationship Energy Report
-            </h1>
-            <h2 className="text-4xl font-black tracking-tighter mt-2 text-white">
-              {String(name)}
-            </h2>
-            <p className={`text-sm font-bold mt-3 ${color}`}>
-              {String(tag)}
-            </p>
-            <p className="mt-4 text-gray-400 max-w-xl mx-auto text-sm leading-relaxed">
-              {String(desc)}
-            </p>
+            <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em] mb-2">Relationship Energy Report</p>
+            <h2 className="text-4xl font-black tracking-tighter text-white mb-2">{String(roleName)}</h2>
+            <p className={`text-xs font-black mb-4 ${color}`}>{String(tag)}</p>
+            <p className="text-gray-300 text-sm leading-relaxed max-w-md mx-auto">{String(definition)}</p>
           </section>
 
-          {/* ② 能量可视化 */}
-          <section className="mb-12">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-4">
-              Relationship Energy Structure
-            </h3>
-            <div className="bg-zinc-900 border border-white/5 rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-4 px-2">
+          {/* ② 副机制卡片（条件显示） */}
+          {subRole && (
+            <section className="rounded-xl border border-white/10 bg-white/[0.03] p-5 flex items-start gap-4">
+              <div className="flex-shrink-0 px-2 py-1 rounded-md border border-white/10 bg-white/5">
+                <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">副机制</p>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className={`text-sm font-black ${subRole.color}`}>{String(subRole.name)}</span>
+                  <span className="text-[9px] text-gray-600 font-bold">· {String(subRole.dim)} 维度</span>
+                </div>
+                <p className="text-xs text-gray-500 leading-relaxed">{String(subRole.definition)}</p>
+              </div>
+            </section>
+          )}
+
+          {/* ③ 关系图形 placeholder */}
+          <section>
+            <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 mb-3">Relationship Pattern</p>
+            <div className="rounded-2xl border border-dashed border-white/10 bg-white/[0.02] h-48 flex items-center justify-center">
+              <p className="text-gray-700 text-xs font-bold">关系图形设计区域</p>
+            </div>
+          </section>
+
+          {/* ④ 行为模式 */}
+          <section>
+            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-4">Typical Patterns</p>
+            <div className="bg-zinc-900 border border-white/5 rounded-2xl p-6 space-y-3">
+              {behaviors.map((b, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${color.replace('text-', 'bg-')}`}></div>
+                  <p className="text-sm text-gray-300">{String(b)}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ⑤ 能量影响 */}
+          <section>
+            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-4">Energy Impact</p>
+            <div className="bg-zinc-900 border border-white/5 rounded-2xl p-6 relative overflow-hidden">
+              <div className="absolute left-0 top-0 w-1.5 h-full bg-rose-600 rounded-l-2xl"></div>
+              <div className="flex items-center gap-2 mb-2 pl-2">
+                <HeartPulse className="w-4 h-4 text-rose-500" />
+                <span className="text-sm font-black text-white">能量损耗</span>
+              </div>
+              <p className="text-gray-300 text-sm leading-relaxed pl-2">{String(impact)}</p>
+            </div>
+          </section>
+
+          {/* ⑥ 雷达图 + 六维分值解释 */}
+          <section>
+            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-4">Energy Structure Analysis</p>
+            <div className="bg-zinc-900 border border-white/5 rounded-2xl p-6 mb-4">
+              <div className="flex items-center justify-between mb-2 px-2">
                 <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">外部损耗雷达</span>
                 <span className="text-[10px] font-black text-indigo-400">{scoreA} pts</span>
               </div>
               <RadarChart data={radarData} />
-              <div className="mt-4 p-4 rounded-xl bg-white/5 border border-white/5 text-left">
-                <p className="text-[10px] text-gray-500 font-bold mb-1">关键流失点</p>
-                <p className="text-sm text-indigo-400 font-black">【{String(topDim)}】维度最为显著</p>
-              </div>
             </div>
-          </section>
-
-          {/* ③ 溯源：为何成为目标 */}
-          <section className="mb-12">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-4">
-              Why You Were Targeted
-            </h3>
-            <div className="bg-indigo-950/40 border border-indigo-500/20 rounded-2xl p-6 relative overflow-hidden">
-              <div className="absolute right-[-10px] top-[-10px] opacity-10 pointer-events-none">
-                <Eye className="w-24 h-24 text-indigo-400" />
-              </div>
-              <div className="flex items-center gap-2 mb-3">
-                <UserCheck className="w-4 h-4 text-indigo-400" />
-                <span className="text-sm font-black text-indigo-300">溯源：为何你成为了目标？</span>
-              </div>
-              <p className="text-indigo-100/90 text-sm leading-relaxed">
-                {String(vulnerabilityReason)}
-              </p>
-            </div>
-          </section>
-
-          {/* ④ 能量影响 */}
-          <section className="mb-12">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-4">
-              Energy Impact
-            </h3>
-            <div className="bg-zinc-900 border border-white/5 rounded-2xl p-6 relative overflow-hidden">
-              <div className="absolute left-0 top-0 w-1.5 h-full bg-indigo-600 rounded-l-2xl"></div>
-              <div className="flex items-center gap-2 mb-3 pl-2">
-                <HeartPulse className="w-4 h-4 text-rose-500" />
-                <span className="text-sm font-black text-white">损耗定性解析</span>
-              </div>
-              <p className="text-gray-300 text-sm leading-relaxed pl-2">
-                {String(desc)}
-              </p>
-            </div>
-          </section>
-
-          {/* ⑤ 六维机制 */}
-          <section className="mb-12">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-6">
-              Relationship Mechanisms
-            </h3>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {DIMENSIONS.map((dim, idx) => {
                 const isInternal = idx === 6;
                 const maxVal = isInternal ? 40 : 25;
                 const score = dimScores[dim] || 0;
                 const ratio = score / maxVal;
-                let stateLabel = "平稳";
-                let stateColor = "text-emerald-400";
+                let stateLabel = "平稳"; let stateColor = "text-emerald-400";
                 if (ratio > 0.75) { stateLabel = isInternal ? "匮乏" : "过载"; stateColor = "text-rose-500"; }
                 else if (ratio > 0.5) { stateLabel = "活跃"; stateColor = "text-orange-400"; }
                 return (
-                  <div key={idx} className={`rounded-2xl border p-5 ${isInternal ? "bg-indigo-950/50 border-indigo-400/30" : "bg-zinc-900 border-white/5"}`}>
+                  <div key={idx} className={`rounded-xl border p-4 ${isInternal ? 'bg-indigo-950/40 border-indigo-400/20' : 'bg-zinc-900 border-white/5'}`}>
                     <div className="flex justify-between items-center mb-2">
                       <div className="flex items-center gap-2">
-                        {isInternal
-                          ? <Fingerprint className="w-3.5 h-3.5 text-indigo-400" />
-                          : <Activity className="w-3.5 h-3.5 text-gray-500" />
-                        }
-                        <span className={`text-sm font-black ${isInternal ? "text-indigo-100" : "text-gray-200"}`}>
-                          {String(dim)}
-                        </span>
-                        <span className={`text-[9px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>
-                          {stateLabel}
-                        </span>
+                        {isInternal ? <Fingerprint className="w-3 h-3 text-indigo-400" /> : <Activity className="w-3 h-3 text-gray-600" />}
+                        <span className={`text-xs font-black ${isInternal ? 'text-indigo-100' : 'text-gray-200'}`}>{String(dim)}</span>
+                        <span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span>
                       </div>
-                      <span className={`text-xs font-black ${isInternal ? "text-indigo-400" : "text-gray-500"}`}>
-                        {score} / {maxVal}
-                      </span>
+                      <span className={`text-[10px] font-black ${isInternal ? 'text-indigo-400' : 'text-gray-500'}`}>{score} / {maxVal}</span>
                     </div>
-                    <div className={`w-full h-1.5 rounded-full mb-3 overflow-hidden ${isInternal ? "bg-indigo-900/50" : "bg-white/5"}`}>
-                      <div
-                        className={`h-full rounded-full transition-all duration-700 ${isInternal ? "bg-indigo-400" : "bg-purple-500"}`}
-                        style={{ width: `${ratio * 100}%` }}
-                      />
+                    <div className={`w-full h-1 rounded-full mb-2 overflow-hidden ${isInternal ? 'bg-indigo-900/50' : 'bg-white/5'}`}>
+                      <div className={`h-full rounded-full transition-all duration-700 ${isInternal ? 'bg-indigo-400' : 'bg-purple-500'}`} style={{ width: `${ratio * 100}%` }} />
                     </div>
-                    <p className={`text-xs leading-relaxed ${isInternal ? "text-indigo-200/80" : "text-gray-500"}`}>
-                      {String(DIMENSION_DESCS[dim])}
-                    </p>
+                    <p className={`text-[10px] leading-relaxed ${isInternal ? 'text-indigo-200/70' : 'text-gray-600'}`}>{String(DIMENSION_DESCS[dim])}</p>
                   </div>
                 );
               })}
             </div>
           </section>
 
-          {/* ⑥ 建议 */}
-          <section className="mb-12">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-4">
-              Insight
-            </h3>
+          {/* ⑦ 建议 */}
+          <section>
+            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-4">Insight</p>
             <div className="bg-indigo-600 rounded-2xl p-6 relative overflow-hidden shadow-2xl ring-4 ring-indigo-50/10">
               <Sparkles className="absolute -right-2 -top-2 w-16 h-16 opacity-20 rotate-12" />
               <p className="text-[10px] font-black text-white/50 uppercase tracking-widest mb-2">止损与补能建议</p>
-              <p className="text-sm font-bold italic leading-relaxed text-white relative z-10">
-                "{String(advice)}"
-              </p>
+              <p className="text-sm font-bold italic leading-relaxed text-white relative z-10">"{String(advice)}"</p>
             </div>
           </section>
 
-          {/* ⑦ 操作按钮 */}
-          <section className="flex gap-4">
-            <button
-              onClick={() => window.location.reload()}
-              className="flex-1 py-4 bg-white/5 text-gray-400 rounded-2xl font-black text-xs flex items-center justify-center gap-2 border border-white/5"
-            >
+          {/* ⑧ 操作按钮 */}
+          <section className="flex gap-4 pb-4">
+            <button onClick={() => window.location.reload()} className="flex-1 py-4 bg-white/5 text-gray-400 rounded-2xl font-black text-xs flex items-center justify-center gap-2 border border-white/5">
               <RefreshCcw className="w-4 h-4" /> 重测
             </button>
-            <button
-              onClick={() => setShowPoster(true)}
-              className="flex-[2] py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl font-black text-xs shadow-xl active:scale-95 flex items-center justify-center gap-2 transition-all"
-            >
+            <button onClick={() => setShowPoster(true)} className="flex-[2] py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl font-black text-xs shadow-xl active:scale-95 flex items-center justify-center gap-2 transition-all">
               <Share2 className="w-4 h-4" /> 导出卡片报告
             </button>
           </section>
