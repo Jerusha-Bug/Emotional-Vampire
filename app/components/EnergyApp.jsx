@@ -556,7 +556,7 @@ export default function App() {
       <Fingerprint className="w-16 h-16 text-indigo-400 mb-8 animate-pulse" />
       <h2 className="text-2xl font-black mb-4 tracking-tighter text-white">关系损耗扫描已完成</h2>
       <p className="text-slate-500 text-sm mb-12 leading-relaxed italic opacity-80 text-center">接下来扫描你当前的<span className="text-indigo-400 font-bold">内在能量补给状态</span></p>
-      <button onClick={() => { setStep('quiz'); setCurrentIndex(30); }} className="w-full max-w-xs py-5 bg-white text-slate-950 rounded-[2rem] font-black text-lg active:scale-95 shadow-xl">继续内在扫描</button>
+      <button onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }} className="w-full max-w-xs py-5 bg-white text-slate-950 rounded-[2rem] font-black text-lg active:scale-95 shadow-xl">继续内在扫描</button>
     </div>
   );
 
