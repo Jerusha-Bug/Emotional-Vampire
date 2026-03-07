@@ -523,7 +523,7 @@ export default function App() {
       <div className="min-h-screen bg-slate-950 text-white flex flex-col p-6 font-sans">
         <div className="max-w-md mx-auto w-full px-2">
             <div className="flex items-center justify-between mb-2 mt-4 px-1 text-center">
-              <div className="flex flex-col text-left"><span className="text-lg font-black tracking-tighter text-left"><span className="text-indigo-500 font-black">{currentIndex + 1}</span><span className="text-slate-700 font-bold"> / 38</span></span></div>
+              <div className="flex flex-col text-left"><span className="text-lg font-black tracking-tighter text-left"><span className="text-indigo-500 font-black">{currentIndex + 1}</span><span className="text-slate-700 font-bold"> / {QUESTIONS.length}</span></span></div>
               <div className="bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-indigo-300">PART {String(q.part)}</div>
             </div>
             <div className="w-full h-1.5 bg-slate-900 rounded-full mb-5 overflow-hidden relative mx-auto"><div className="h-full bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.8)] transition-all duration-500 ease-out" style={{ width: `${progress}%` }} /></div>
