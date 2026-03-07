@@ -455,6 +455,13 @@ export default function App() {
         </div>
 
         {/* SVG 主装饰层 */}
+        {/* 噪点纹理 overlay */}
+        <div className="absolute inset-0 pointer-events-none z-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+          opacity: 0.04,
+          mixBlendMode: 'overlay'
+        }}></div>
+
         <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice">
 
           {/* 星点背景 */}
@@ -471,11 +478,15 @@ export default function App() {
           <path d="M 50 560 C 30 540, 55 515, 78 520 S 95 545, 82 565 S 60 578, 50 560Z" fill="rgba(4,1,12,0.85)"/>
           <path d="M 260 700 C 285 680, 315 695, 318 720 S 298 742, 272 735 S 248 718, 260 700Z" fill="rgba(4,1,12,0.88)"/>
 
-          {/* 粗彩色流线 */}
-          <path d="M 15 180 C 60 140, 110 200, 80 270 S 30 330, 90 390 S 150 430, 110 500" stroke="rgba(120,80,200,0.55)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-          <path d="M 350 100 C 380 160, 340 230, 365 300 S 390 370, 355 440" stroke="rgba(60,120,210,0.5)" strokeWidth="2" fill="none" strokeLinecap="round"/>
-          <path d="M 180 750 C 220 700, 270 720, 260 780 S 210 820, 240 844" stroke="rgba(180,80,140,0.45)" strokeWidth="2" fill="none" strokeLinecap="round"/>
-          <path d="M 280 550 C 330 510, 370 560, 350 620 S 300 660, 340 710" stroke="rgba(80,180,200,0.4)" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
+          {/* 细腻流线 - 多条细线束模拟发丝感 */}
+          <path d="M 15 180 C 60 140, 110 200, 80 270 S 30 330, 90 390" stroke="rgba(120,80,200,0.25)" strokeWidth="0.7" fill="none" strokeLinecap="round"/>
+          <path d="M 20 185 C 65 145, 115 205, 85 275 S 35 335, 95 395" stroke="rgba(140,100,210,0.18)" strokeWidth="0.5" fill="none" strokeLinecap="round"/>
+          <path d="M 25 178 C 70 138, 105 198, 75 268" stroke="rgba(100,70,190,0.15)" strokeWidth="0.6" fill="none" strokeLinecap="round"/>
+          <path d="M 350 100 C 375 155, 340 225, 362 295 S 388 365, 352 435" stroke="rgba(60,120,210,0.22)" strokeWidth="0.7" fill="none" strokeLinecap="round"/>
+          <path d="M 356 102 C 380 158, 344 228, 367 298" stroke="rgba(80,140,220,0.15)" strokeWidth="0.5" fill="none" strokeLinecap="round"/>
+          <path d="M 180 750 C 218 702, 268 718, 258 778 S 208 818, 238 844" stroke="rgba(180,80,140,0.22)" strokeWidth="0.7" fill="none" strokeLinecap="round"/>
+          <path d="M 186 752 C 224 704, 274 720, 264 780" stroke="rgba(190,90,150,0.15)" strokeWidth="0.5" fill="none" strokeLinecap="round"/>
+          <path d="M 280 550 C 328 512, 368 558, 348 618 S 298 658, 338 708" stroke="rgba(80,180,200,0.2)" strokeWidth="0.7" fill="none" strokeLinecap="round"/>
 
           {/* 细白流线 */}
           <path d="M 100 50 C 130 80, 110 130, 140 160" stroke="rgba(255,255,255,0.15)" strokeWidth="0.8" fill="none" strokeLinecap="round"/>
