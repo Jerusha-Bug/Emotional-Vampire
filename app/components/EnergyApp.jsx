@@ -360,6 +360,15 @@ const RadarChart = ({ data }) => {
         {/* 极淡中心填充 */}
         <path d={buildPath(1.0)} fill="url(#fillGrad)" stroke="none"/>
 
+        {/* 六条轴线，延伸到标签处 */}
+        {data.map((_, i) => {
+          const angle = angleOf(i);
+          const x2 = center + (maxR + 26) * Math.cos(angle);
+          const y2 = center + (maxR + 26) * Math.sin(angle);
+          return <line key={i} x1={center} y1={center} x2={x2} y2={y2}
+            stroke="rgba(255,255,255,0.30)" strokeWidth="0.6" strokeLinecap="round"/>;
+        })}
+
         {/* 密集等高线，由内到外，浅色系 */}
         {contours.map((c, i) => (
           <path key={i} d={c.path} fill="none"
