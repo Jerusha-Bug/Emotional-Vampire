@@ -291,147 +291,104 @@ const DIM_TO_ROLE = {
 
 
 const RadarChart = ({ data }) => {
-  const size = 300; const center = size / 2; const radius = center * 0.58;
+  const size = 300; const center = size / 2; const maxR = center * 0.62;
   const n = data.length;
   const angleOf = i => (Math.PI * 2 * i) / n - Math.PI / 2;
 
-  const nodePoints = data.map((d, i) => {
-    const angle = angleOf(i);
-    return { x: center + radius * Math.cos(angle), y: center + radius * Math.sin(angle), value: d.value, name: d.name };
+  // 贝塞尔有机路径（缩放比例 scale，基于各维度得分）
+  const buildPath = (scale) => {
+    const pts = data.map((d, i) => {
+      const angle = angleOf(i);
+      const r = Math.max(0.12, d.value / 4) * maxR * scale;
+      return { x: center + r * Math.cos(angle), y: center + r * Math.sin(angle) };
+    });
+    const len = pts.length; const tension = 0.38; let path = '';
+    for (let i = 0; i < len; i++) {
+      const p0 = pts[(i - 1 + len) % len];
+      const p1 = pts[i];
+      const p2 = pts[(i + 1) % len];
+      const p3 = pts[(i + 2) % len];
+      const cp1x = p1.x + (p2.x - p0.x) * tension;
+      const cp1y = p1.y + (p2.y - p0.y) * tension;
+      const cp2x = p2.x - (p3.x - p1.x) * tension;
+      const cp2y = p2.y - (p3.y - p1.y) * tension;
+      if (i === 0) path += `M ${p1.x} ${p1.y} `;
+      path += `C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y} `;
+    }
+    return path + 'Z';
+  };
+
+  // 10层轮廓，从内到外 scale 0.18 → 1.0
+  const layers = 10;
+  const contours = Array.from({ length: layers }, (_, i) => {
+    const t = (i + 1) / layers; // 0.1 → 1.0
+    const scale = 0.18 + t * 0.82;
+    // 内层偏玫红/紫，外层偏蓝/淡紫
+    const rVal = Math.round(120 + (1 - t) * 131); // 251→120
+    const gVal = Math.round(60 + (1 - t) * 53);   // 113→60
+    const bVal = Math.round(200 + t * 55);         // 200→255
+    const opacity = i === layers - 1 ? 0.55 : (0.12 + (1 - t) * 0.25);
+    const strokeW = i === layers - 1 ? 1.2 : 0.65;
+    return { path: buildPath(scale), opacity, strokeW, r: rVal, g: gVal, b: bVal };
   });
 
+  // 最外层填充（极淡）
+  const outerPath = buildPath(1.0);
+
+  // 标签坐标
   const labelPoints = data.map((d, i) => {
     const angle = angleOf(i);
-    return { x: center + (radius + 32) * Math.cos(angle), y: center + (radius + 26) * Math.sin(angle), name: d.name, value: d.value };
+    const r = Math.max(0.12, d.value / 4) * maxR * 1.0;
+    return {
+      x: center + (r + 20) * Math.cos(angle),
+      y: center + (r + 16) * Math.sin(angle),
+      name: d.name, value: d.value,
+    };
   });
-
-  const dimColors = [
-    'rgba(251,113,133,', // 情绪倾倒 玫红
-    'rgba(192,132,252,', // 受害叙述 紫
-    'rgba(251,146,60,',  // 责任转移 橙
-    'rgba(96,165,250,',  // 依赖绑定 蓝
-    'rgba(34,211,238,',  // 冲突激发 青
-    'rgba(52,211,153,',  // 自我消耗 绿
-  ];
-
-  // A：中心辐射线，粗细=得分
-  const radiusLines = nodePoints.map((p, i) => {
-    const v = Math.max(0.05, p.value / 4);
-    return { x2: p.x, y2: p.y, width: v * 2.5 + 0.4, opacity: v * 0.65 + 0.12, color: dimColors[i] };
-  });
-
-  // B：维度两两弦线，贝塞尔曲线弯向中心，粗细=两端得分之积
-  const chords = [];
-  for (let i = 0; i < n; i++) {
-    for (let j = i + 1; j < n; j++) {
-      const pi = nodePoints[i]; const pj = nodePoints[j];
-      const vi = Math.max(0.05, pi.value / 4); const vj = Math.max(0.05, pj.value / 4);
-      const strength = vi * vj;
-      if (strength < 0.01) continue;
-      const cpx = center + (pi.x + pj.x - 2 * center) * 0.15;
-      const cpy = center + (pi.y + pj.y - 2 * center) * 0.15;
-      chords.push({ path: `M ${pi.x} ${pi.y} Q ${cpx} ${cpy} ${pj.x} ${pj.y}`, strength, ci: dimColors[i], cj: dimColors[j], i, j });
-    }
-  }
-  chords.sort((a, b) => a.strength - b.strength);
-
-  const nodeRadius = nodePoints.map(p => Math.max(2.5, (p.value / 4) * 7));
 
   return (
     <div className="flex flex-col items-center py-2">
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="overflow-visible">
         <defs>
-          <filter id="chordBlur" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="2.5"/>
+          <filter id="contourGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2"/>
           </filter>
-          <filter id="nodeGlow" x="-60%" y="-60%" width="220%" height="220%">
-            <feGaussianBlur stdDeviation="4"/>
-          </filter>
-          <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%"   stopColor="rgba(255,255,255,0.6)"/>
-            <stop offset="100%" stopColor="rgba(255,255,255,0.0)"/>
+          <radialGradient id="fillGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stopColor="rgba(251,113,133,0.18)"/>
+            <stop offset="50%"  stopColor="rgba(150,100,220,0.10)"/>
+            <stop offset="100%" stopColor="rgba(96,130,250,0.04)"/>
           </radialGradient>
-          {chords.map((c, idx) => (
-            <linearGradient key={idx} id={`cg${idx}`}
-              x1={nodePoints[c.i].x} y1={nodePoints[c.i].y}
-              x2={nodePoints[c.j].x} y2={nodePoints[c.j].y}
-              gradientUnits="userSpaceOnUse">
-              <stop offset="0%"   stopColor={`${c.ci}0.85)`}/>
-              <stop offset="100%" stopColor={`${c.cj}0.85)`}/>
-            </linearGradient>
-          ))}
         </defs>
 
-        {/* 极淡参考圆 */}
-        <circle cx={center} cy={center} r={radius}
-          fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="0.6"/>
-        <circle cx={center} cy={center} r={radius * 0.5}
-          fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" strokeDasharray="3 6"/>
+        {/* 最外层极淡填充 */}
+        <path d={outerPath} fill="url(#fillGrad)" stroke="none"/>
 
-        {/* B 弦线 - 模糊发光层 */}
-        {chords.map((c, idx) => (
-          <path key={`blur-${idx}`} d={c.path} fill="none"
-            stroke={`url(#cg${idx})`}
-            strokeWidth={(c.strength * 3.5 + 0.3) * 2.8}
-            opacity={c.strength * 0.10}
-            filter="url(#chordBlur)" strokeLinecap="round"/>
+        {/* 模糊发光底层（最外轮廓） */}
+        <path d={outerPath} fill="none"
+          stroke="rgba(180,140,255,0.25)"
+          strokeWidth="4" filter="url(#contourGlow)"/>
+
+        {/* 等高线轮廓，由内到外 */}
+        {contours.map((c, i) => (
+          <path key={i} d={c.path} fill="none"
+            stroke={`rgba(${c.r},${c.g},${c.b},${c.opacity})`}
+            strokeWidth={c.strokeW}
+            strokeLinejoin="round"/>
         ))}
 
-        {/* B 弦线 - 主线 */}
-        {chords.map((c, idx) => (
-          <path key={`line-${idx}`} d={c.path} fill="none"
-            stroke={`url(#cg${idx})`}
-            strokeWidth={c.strength * 3.5 + 0.3}
-            opacity={c.strength * 0.55 + 0.08}
-            strokeLinecap="round"/>
-        ))}
+        {/* 中心红点 */}
+        <circle cx={center} cy={center} r={5}
+          fill="rgba(239,68,68,0.9)"
+          style={{filter:'drop-shadow(0 0 4px rgba(239,68,68,0.7))'}}/>
+        <circle cx={center} cy={center} r={2.5}
+          fill="rgba(255,200,200,0.95)"/>
 
-        {/* A 辐射线 - 模糊层 */}
-        {radiusLines.map((l, i) => (
-          <line key={`rblur-${i}`} x1={center} y1={center} x2={l.x2} y2={l.y2}
-            stroke={`${l.color}0.9)`} strokeWidth={l.width * 3.5}
-            opacity={l.opacity * 0.18} filter="url(#chordBlur)" strokeLinecap="round"/>
-        ))}
-
-        {/* A 辐射线 - 主线 */}
-        {radiusLines.map((l, i) => (
-          <line key={`rline-${i}`} x1={center} y1={center} x2={l.x2} y2={l.y2}
-            stroke={`${l.color}0.9)`} strokeWidth={l.width}
-            opacity={l.opacity} strokeLinecap="round"/>
-        ))}
-
-        {/* 节点光晕 */}
-        {nodePoints.map((p, i) => (
-          <circle key={`halo-${i}`} cx={p.x} cy={p.y} r={nodeRadius[i] * 2.2}
-            fill={`${dimColors[i]}0.12)`} filter="url(#nodeGlow)"/>
-        ))}
-
-        {/* 节点主体 */}
-        {nodePoints.map((p, i) => (
-          <circle key={`node-${i}`} cx={p.x} cy={p.y} r={nodeRadius[i]}
-            fill={`${dimColors[i]}0.95)`}
-            style={{filter:`drop-shadow(0 0 3px ${dimColors[i]}0.8))`}}/>
-        ))}
-
-        {/* 中心核心 */}
-        <circle cx={center} cy={center} r={14}
-          fill="url(#coreGlow)" filter="url(#chordBlur)" opacity="0.5"/>
-        <circle cx={center} cy={center} r={3.5}
-          fill="rgba(255,255,255,0.92)"
-          style={{filter:'drop-shadow(0 0 5px rgba(255,255,255,0.7))'}}/>
-
-        {/* 标签 */}
+        {/* 维度标签 */}
         {labelPoints.map((p, i) => (
-          <g key={`label-${i}`}>
-            <text x={p.x} y={p.y} fontSize="7.5" textAnchor="middle"
-              fill={`${dimColors[i]}0.9)`} fontWeight="700" letterSpacing="0.3">
-              {String(p.name)}
-            </text>
-            <text x={p.x} y={p.y + 10} fontSize="6.5" textAnchor="middle"
-              fill="rgba(255,255,255,0.28)">
-              {Math.round((p.value / 4) * 100)}%
-            </text>
-          </g>
+          <text key={i} x={p.x} y={p.y} fontSize="7.5" textAnchor="middle"
+            fill="rgba(255,255,255,0.5)" fontWeight="600" letterSpacing="0.3">
+            {String(p.name)}
+          </text>
         ))}
       </svg>
     </div>
