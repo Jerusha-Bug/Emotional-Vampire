@@ -357,17 +357,17 @@ const RadarChart = ({ data }) => {
           </radialGradient>
         </defs>
 
-        {/* 极淡中心填充 */}
-        <path d={buildPath(1.0)} fill="url(#fillGrad)" stroke="none"/>
-
-        {/* 六条轴线，延伸到标签处 */}
+        {/* 六条轴线，最底层 */}
         {data.map((_, i) => {
           const angle = angleOf(i);
           const x2 = center + maxR * Math.cos(angle);
           const y2 = center + maxR * Math.sin(angle);
           return <line key={i} x1={center} y1={center} x2={x2} y2={y2}
-            stroke="rgba(255,255,255,0.15)" strokeWidth="0.6" strokeLinecap="round"/>;
+            stroke="rgba(255,255,255,0.10)" strokeWidth="0.6" strokeLinecap="round"/>;
         })}
+
+        {/* 极淡中心填充 */}
+        <path d={buildPath(1.0)} fill="url(#fillGrad)" stroke="none"/>
 
         {/* 密集等高线，由内到外，浅色系 */}
         {contours.map((c, i) => (
