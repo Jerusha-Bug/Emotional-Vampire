@@ -609,48 +609,185 @@ export default function App() {
     );
   }
 
-  // --- 其余 Quiz, Transition, Result 渲染逻辑保持不变 ---
   if (step === 'quiz') {
     const q = QUESTIONS[currentIndex]; if (!q) return null;
     const currentVal = answers[q.id]; const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
+    const isPartB = q.part === 'B';
+    const bgColor1 = isPartB ? '#0c1a2e' : '#120608';
+    const bgColor2 = isPartB ? '#0a1628' : '#0d0408';
+    const fluidColor1 = isPartB ? 'rgba(14,116,144,0.25)' : 'rgba(127,29,29,0.25)';
+    const fluidColor2 = isPartB ? 'rgba(30,58,138,0.20)' : 'rgba(88,28,135,0.18)';
     return (
-      <div className="min-h-screen bg-[#0d0a0e] text-white flex flex-col p-6 font-sans">
-        <div className="max-w-md mx-auto w-full px-2">
-            <div className="flex items-center justify-between mb-2 mt-4 px-1 text-center">
-              <div className="flex flex-col text-left"><span className="text-lg font-black tracking-tighter text-left"><span className="text-rose-400/60 font-black">{currentIndex + 1}</span><span className="text-white/20 font-bold"> / {QUESTIONS.length}</span></span></div>
-              <div className="bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-rose-300/60">PART {String(q.part)}</div>
+      <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
+        style={{background: `linear-gradient(160deg, ${bgColor1} 0%, ${bgColor2} 100%)`}}>
+
+        {/* 背景流体 */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="fluid1 absolute top-[-30%] right-[-20%] w-[70%] h-[60%] opacity-80 blur-[80px] rounded-full"
+            style={{background: `radial-gradient(ellipse, ${fluidColor1} 0%, transparent 70%)`}} />
+          <div className="fluid2 absolute bottom-[-10%] left-[-15%] w-[60%] h-[50%] opacity-80 blur-[100px] rounded-full"
+            style={{background: `radial-gradient(ellipse, ${fluidColor2} 0%, transparent 70%)`}} />
+          {/* 细线装饰 */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.04]" viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
+            <path d="M0 300 C 100 260, 200 340, 390 280" stroke="white" strokeWidth="0.8" fill="none"/>
+            <path d="M0 500 C 120 460, 250 540, 390 480" stroke="white" strokeWidth="0.6" fill="none"/>
+          </svg>
+          {/* 漂浮粒子 */}
+          {[
+            {left:'10%',top:'80%',delay:'0s',dur:'7s',size:2,c:'rgba(251,113,133,0.5)'},
+            {left:'30%',top:'85%',delay:'2s',dur:'9s',size:3,c:'rgba(167,139,250,0.4)'},
+            {left:'55%',top:'75%',delay:'1s',dur:'6s',size:2,c:'rgba(103,232,249,0.4)'},
+            {left:'75%',top:'88%',delay:'3s',dur:'8s',size:2,c:'rgba(251,113,133,0.4)'},
+            {left:'88%',top:'70%',delay:'0.5s',dur:'7s',size:3,c:'rgba(167,139,250,0.5)'},
+          ].map((p,i) => (
+            <div key={i} className="particle absolute rounded-full"
+              style={{left:p.left,top:p.top,width:p.size,height:p.size,background:p.c,
+                animationDelay:p.delay,animationDuration:p.dur,
+                boxShadow:`0 0 ${p.size*4}px ${p.c}`}} />
+          ))}
+        </div>
+
+        {/* 顶部进度区 */}
+        <div className="relative z-10 px-6 pt-8 pb-4 max-w-md mx-auto w-full">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.25)'}}>
+              <span style={{color: isPartB ? 'rgba(103,232,249,0.6)' : 'rgba(251,113,133,0.6)'}}>{currentIndex + 1}</span>
+              <span> / {QUESTIONS.length}</span>
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.25em]"
+              style={{color: isPartB ? 'rgba(103,232,249,0.4)' : 'rgba(251,113,133,0.4)'}}>
+              PART {String(q.part)}
+            </span>
+          </div>
+          {/* 有机进度条 */}
+          <div className="w-full h-[3px] rounded-full overflow-hidden mb-6" style={{background:'rgba(255,255,255,0.06)'}}>
+            <div className="h-full rounded-full transition-all duration-700"
+              style={{
+                width:`${progress}%`,
+                background: isPartB
+                  ? 'linear-gradient(90deg, rgba(14,116,144,0.8), rgba(103,232,249,0.9))'
+                  : 'linear-gradient(90deg, rgba(127,29,29,0.8), rgba(251,113,133,0.9))',
+                boxShadow: isPartB ? '0 0 12px rgba(103,232,249,0.4)' : '0 0 12px rgba(251,113,133,0.3)'
+              }} />
+          </div>
+          {/* 维度标签 */}
+          <p className="text-[10px] uppercase tracking-[0.3em] mb-2"
+            style={{color: isPartB ? 'rgba(103,232,249,0.35)' : 'rgba(251,113,133,0.35)'}}>
+            {String(q.dim)}
+          </p>
+        </div>
+
+        {/* 题目文字区 - 无容器，直接浮在背景上 */}
+        <div className="relative z-10 flex-1 flex flex-col px-8 max-w-md mx-auto w-full">
+          <div className="flex-1 flex flex-col justify-center">
+            <span className="text-[10px] font-bold tracking-[0.2em] mb-5 block"
+              style={{color:'rgba(255,255,255,0.12)', fontFamily:'monospace'}}>
+              Q{String(currentIndex+1).padStart(2,'0')}
+            </span>
+            <h2 className="text-[1.65rem] font-bold leading-[1.4] text-white/90 mb-16"
+              style={{textShadow:'0 0 40px rgba(255,255,255,0.05)'}}>
+              {String(q.text).replace('{target}', finalTarget)}
+            </h2>
+
+            {/* 选项 - 发光粒子气泡 */}
+            <div className="flex justify-between items-end gap-1 mb-10">
+              {OPTIONS.map((opt, i) => {
+                const isSelected = currentVal === opt.value;
+                const sizes = ['w-9 h-9','w-10 h-10','w-12 h-12','w-10 h-10','w-9 h-9'];
+                const glowColor = isPartB ? 'rgba(103,232,249,' : 'rgba(251,113,133,';
+                return (
+                  <button key={opt.value} onClick={() => handleAnswer(opt.value)}
+                    className={`flex flex-col items-center gap-2 flex-1 group transition-all duration-300`}>
+                    <div className={`${sizes[i]} rounded-full flex items-center justify-center transition-all duration-300 ${isSelected ? 'scale-125' : 'scale-100 hover:scale-110'}`}
+                      style={{
+                        background: isSelected
+                          ? `radial-gradient(ellipse, ${glowColor}0.5) 0%, ${glowColor}0.15) 100%)`
+                          : 'rgba(255,255,255,0.04)',
+                        border: isSelected
+                          ? `1px solid ${glowColor}0.6)`
+                          : '1px solid rgba(255,255,255,0.08)',
+                        boxShadow: isSelected
+                          ? `0 0 20px ${glowColor}0.4), 0 0 40px ${glowColor}0.15)`
+                          : 'none',
+                      }}>
+                      {isSelected && (
+                        <div className="w-2 h-2 rounded-full"
+                          style={{background: glowColor+'0.9)', boxShadow:`0 0 8px ${glowColor}1)`}} />
+                      )}
+                    </div>
+                    <span className="text-[9px] font-bold tracking-tight"
+                      style={{color: isSelected ? (isPartB ? 'rgba(103,232,249,0.8)' : 'rgba(251,113,133,0.8)') : 'rgba(255,255,255,0.2)'}}>
+                      {String(opt.label)}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-            <div className="w-full h-1.5 bg-[#120e13] rounded-full mb-5 overflow-hidden relative mx-auto"><div className="h-full bg-rose-800 shadow-[0_0_15px_rgba(136,19,55,0.6)] transition-all duration-500 ease-out" style={{ width: `${progress}%` }} /></div>
-            <div className="flex items-center gap-2 mb-8 text-left pl-1"><div className="w-1.5 h-1.5 rounded-full bg-rose-700/60"></div><span className="text-[11px] font-bold text-white/30 uppercase tracking-widest">{String(q.dim)}</span></div>
-        </div>
-        <div className="flex-1 flex flex-col max-w-md mx-auto w-full">
-          <div className="bg-white/[0.03] border border-white/[0.05] px-10 rounded-[2.5rem] mb-12 shadow-2xl backdrop-blur-sm relative h-56 flex flex-col justify-center overflow-hidden text-left">
-             <span className="absolute top-10 left-10 text-[10px] font-bold text-rose-400/20 block tracking-[0.2em] font-mono text-left">Q{String(currentIndex+1).padStart(2,'0')}</span>
-             <h2 className="text-2xl font-bold text-slate-100 leading-snug w-full text-left">{String(q.text).replace('{target}', finalTarget)}</h2>
-          </div>
-          <div className="flex justify-between items-start gap-2 mb-12 px-2 text-center">
-            {OPTIONS.map(opt => (
-              <button key={opt.value} onClick={() => handleAnswer(opt.value)} className="flex flex-col items-center gap-3 flex-1 group">
-                <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 font-black text-lg ${currentVal === opt.value ? 'bg-rose-900 border-rose-700 text-white shadow-[0_0_20px_rgba(136,19,55,0.5)] scale-110' : 'bg-white/5 border-white/10 text-white/30 group-hover:border-rose-500/30 active:scale-90'}`}>{opt.value}</div>
-                <span className={`text-[10px] font-bold tracking-tight text-center ${currentVal === opt.value ? 'text-rose-300/70 font-black' : 'text-white/25'}`}>{String(opt.label)}</span>
-              </button>
-            ))}
           </div>
         </div>
-        <div className="flex gap-4 mb-6 mt-auto max-w-md mx-auto w-full text-center">
-            <button onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)} disabled={currentIndex === 0} className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center border transition-all ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'bg-white/5 border-white/10 text-slate-500 active:scale-90'}`}><ArrowLeft className="w-6 h-6" /></button>
-            <button onClick={() => currentVal && navigateToNext(currentIndex)} disabled={!currentVal} className={`flex-1 h-16 rounded-[1.5rem] font-black text-lg transition-all ${!currentVal ? 'bg-[#120e13] text-slate-700 border border-white/5' : 'bg-rose-900/80 text-white active:scale-95'}`}>{currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}</button>
+
+        {/* 底部按钮 */}
+        <div className="relative z-10 flex gap-3 px-6 pb-10 max-w-md mx-auto w-full">
+          <button onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)}
+            disabled={currentIndex === 0}
+            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'active:scale-90'}`}
+            style={{background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)'}}>
+            <ArrowLeft className="w-5 h-5 text-white/40" />
+          </button>
+          <button onClick={() => currentVal && navigateToNext(currentIndex)}
+            disabled={!currentVal}
+            className="flex-1 h-14 rounded-full font-bold text-base transition-all active:scale-95"
+            style={{
+              background: !currentVal
+                ? 'rgba(255,255,255,0.04)'
+                : isPartB
+                  ? 'linear-gradient(135deg, rgba(14,116,144,0.8), rgba(8,145,178,0.9))'
+                  : 'linear-gradient(135deg, rgba(127,29,29,0.85), rgba(159,18,57,0.9))',
+              border: !currentVal
+                ? '1px solid rgba(255,255,255,0.06)'
+                : isPartB ? '1px solid rgba(103,232,249,0.2)' : '1px solid rgba(251,113,133,0.2)',
+              color: !currentVal ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.9)',
+              boxShadow: currentVal ? (isPartB ? '0 0 30px rgba(14,116,144,0.3)' : '0 0 30px rgba(127,29,29,0.4)') : 'none'
+            }}>
+            {currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}
+          </button>
         </div>
       </div>
     );
   }
 
   if (step === 'transition') return (
-    <div className="min-h-screen bg-[#0d0a0e] text-white flex flex-col items-center justify-center p-12 text-center font-sans">
-      <Fingerprint className="w-16 h-16 text-rose-400/60 mb-8 animate-pulse" />
-      <h2 className="text-2xl font-black mb-4 tracking-tighter text-white">关系损耗扫描已完成</h2>
-      <p className="text-white/30 text-sm mb-12 leading-relaxed italic opacity-80 text-center">接下来扫描你当前的<span className="text-rose-300 font-bold">内在能量补给状态</span></p>
-      <button onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }} className="w-full max-w-xs py-5 bg-rose-950/80 text-white/90 border border-rose-800/40 rounded-[2rem] font-black text-lg active:scale-95 shadow-xl">继续内在扫描</button>
+    <div className="min-h-screen bg-[#080608] text-white flex flex-col items-center justify-center p-12 text-center font-sans relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="fluid1 absolute top-[-20%] left-[-20%] w-[80%] h-[80%] opacity-[0.15] blur-[100px] rounded-full"
+          style={{background:'radial-gradient(ellipse, #7f1d1d 0%, transparent 70%)'}} />
+        <div className="fluid3 absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] opacity-[0.12] blur-[100px] rounded-full"
+          style={{background:'radial-gradient(ellipse, #164e63 0%, transparent 70%)'}} />
+      </div>
+      <div className="relative z-10 flex flex-col items-center">
+        <div className="w-16 h-16 rounded-full mb-10 flex items-center justify-center"
+          style={{background:'radial-gradient(ellipse, rgba(127,29,29,0.5) 0%, transparent 70%)',
+            boxShadow:'0 0 40px rgba(127,29,29,0.3)', border:'1px solid rgba(251,113,133,0.15)'}}>
+          <Fingerprint className="w-7 h-7 text-rose-400/60" />
+        </div>
+        <p className="text-[10px] uppercase tracking-[0.35em] text-white/25 mb-4">PART A 完成</p>
+        <h2 className="text-2xl font-bold mb-4 text-white/90" style={{letterSpacing:'-0.02em'}}>关系损耗扫描完成</h2>
+        <p className="text-white/30 text-sm mb-14 leading-relaxed max-w-[240px]">
+          接下来扫描你当前的<br/>
+          <span style={{color:'rgba(103,232,249,0.6)'}}>内在能量补给状态</span>
+        </p>
+        <button onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }}
+          className="px-12 py-4 font-bold text-base active:scale-95 transition-all"
+          style={{
+            background:'linear-gradient(135deg, rgba(8,145,178,0.6), rgba(14,116,144,0.7))',
+            borderRadius:'50% 50% 50% 50% / 40% 40% 60% 60%',
+            border:'1px solid rgba(103,232,249,0.2)',
+            boxShadow:'0 0 40px rgba(8,145,178,0.25)',
+            color:'rgba(255,255,255,0.85)'
+          }}>
+          继续内在扫描
+        </button>
+      </div>
     </div>
   );
 
@@ -689,204 +826,228 @@ export default function App() {
       </div>
     );
 
-    return (
-      <div className={`min-h-screen bg-gradient-to-b ${bg} via-slate-950 to-black text-white px-5 py-10 font-sans`}>
-        <div className="max-w-md mx-auto space-y-4">
+    // 从 color class 提取实际颜色值用于 inline style
+    const roleColorMap = {
+      'text-rose-400': 'rgba(251,113,133,', 'text-red-500': 'rgba(239,68,68,',
+      'text-fuchsia-400': 'rgba(232,121,249,', 'text-purple-400': 'rgba(192,132,252,',
+      'text-orange-500': 'rgba(249,115,22,', 'text-indigo-400': 'rgba(129,140,248,',
+      'text-amber-400': 'rgba(251,191,36,', 'text-yellow-400': 'rgba(250,204,21,',
+      'text-blue-400': 'rgba(96,165,250,', 'text-cyan-400': 'rgba(34,211,238,',
+      'text-emerald-400': 'rgba(52,211,153,', 'text-slate-400': 'rgba(148,163,184,',
+    };
+    const rc = roleColorMap[color] || 'rgba(251,113,133,';
 
-          {/* ① 主角色卡片（含副机制） */}
-          <section className={`bg-gradient-to-b from-black/30 via-black/20 ${bg} rounded-3xl border border-white/10 relative overflow-hidden`}>
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40 pointer-events-none rounded-3xl" />
-            <div className="relative z-10 p-7 text-center">
-              <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/15 text-[9px] font-black tracking-widest mb-5 ${color} bg-black/20`}>
-                {String(status)}
-              </div>
-              <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-3">关系能量分析</p>
-              <h2 className="text-4xl font-black tracking-tighter text-white mb-2 leading-none">{String(roleName)}</h2>
-              <p className={`text-sm font-black mb-5 ${color}`}>{String(tag)}</p>
-              <p className="text-white/60 text-sm leading-relaxed mb-4">{String(definition)}</p>
-              {scene && <p className={`text-sm font-bold italic leading-relaxed ${color} opacity-75`}>"{String(scene)}"</p>}
-            </div>
+    return (
+      <div className="min-h-screen text-white font-sans relative overflow-x-hidden"
+        style={{background:'#080608'}}>
+
+        {/* 全局背景流体 - 跟随角色色 */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{zIndex:0}}>
+          <div className="fluid1 absolute top-[-10%] left-[-20%] w-[90%] h-[60%] blur-[120px]"
+            style={{background:`radial-gradient(ellipse, ${rc}0.18) 0%, transparent 70%)`}} />
+          <div className="fluid2 absolute bottom-[10%] right-[-20%] w-[70%] h-[50%] blur-[100px]"
+            style={{background:`radial-gradient(ellipse, rgba(88,28,135,0.15) 0%, transparent 70%)`}} />
+          <svg className="absolute inset-0 w-full h-full opacity-[0.035]" viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
+            <path d="M-20 150 C 100 120, 200 200, 420 140" stroke="white" strokeWidth="0.8" fill="none"/>
+            <path d="M-20 400 C 80 360, 220 440, 420 380" stroke="white" strokeWidth="0.6" fill="none"/>
+            <path d="M-20 650 C 120 610, 260 680, 420 620" stroke="white" strokeWidth="0.5" fill="none"/>
+          </svg>
+          {[
+            {l:'8%',t:'20%',d:'0s',dur:'8s',s:2,c:rc},
+            {l:'25%',t:'40%',d:'3s',dur:'10s',s:3,c:'rgba(192,132,252,'},
+            {l:'70%',t:'15%',d:'1s',dur:'7s',s:2,c:'rgba(34,211,238,'},
+            {l:'85%',t:'50%',d:'4s',dur:'9s',s:2,c:rc},
+            {l:'45%',t:'70%',d:'2s',dur:'8s',s:3,c:'rgba(192,132,252,'},
+          ].map((p,i) => (
+            <div key={i} className="particle absolute rounded-full"
+              style={{left:p.l,top:p.t,width:p.s,height:p.s,
+                background:`${p.c}0.6)`,animationDelay:p.d,animationDuration:p.dur,
+                boxShadow:`0 0 ${p.s*5}px ${p.c}0.8)`}} />
+          ))}
+        </div>
+
+        <div className="relative max-w-md mx-auto px-5 py-12" style={{zIndex:1}}>
+
+          {/* ① 主角色 - 无容器，直接浮在背景上 */}
+          <section className="text-center mb-16 pt-4">
+            <p className="text-[9px] uppercase tracking-[0.4em] mb-4"
+              style={{color:`${rc}0.5)`}}>{String(status)}</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] mb-4"
+              style={{color:'rgba(255,255,255,0.2)'}}>关系能量分析</p>
+            <h2 className="text-5xl font-bold mb-3 leading-none"
+              style={{letterSpacing:'-0.03em', textShadow:`0 0 80px ${rc}0.35)`}}>
+              {String(roleName)}
+            </h2>
+            <p className="text-sm font-bold mb-8" style={{color:`${rc}0.8)`}}>{String(tag)}</p>
+            <p className="text-white/50 text-sm leading-relaxed mb-5 max-w-[280px] mx-auto">{String(definition)}</p>
+            {scene && (
+              <p className="text-sm font-bold italic leading-relaxed max-w-[260px] mx-auto"
+                style={{color:`${rc}0.65)`}}>"{String(scene)}"</p>
+            )}
+
+            {/* 副机制 - 轻量浮动，无硬边框 */}
             {subRole && (
-              <div className="relative z-10 mx-5 mb-5 rounded-2xl border border-white/10 bg-black/20 backdrop-blur-sm p-4 flex items-start gap-3">
-                <div className="flex-shrink-0 px-2 py-1 rounded-lg border border-white/10 bg-white/5">
-                  <p className="text-[8px] font-black text-white/40 uppercase tracking-widest">副机制</p>
+              <div className="mt-8 mx-auto max-w-[280px] py-4 px-5 text-left"
+                style={{background:`${rc}0.06)`, borderRadius:'20px', border:`1px solid ${rc}0.12)`}}>
+                <p className="text-[8px] uppercase tracking-[0.3em] mb-2" style={{color:'rgba(255,255,255,0.2)'}}>副机制</p>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-sm font-bold" style={{color:`${rc}0.85)`}}>{String(subRole.name)}</span>
+                  <span className="text-[9px]" style={{color:'rgba(255,255,255,0.25)'}}>· {String(subRole.dim)}</span>
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={`text-sm font-black ${subRole.color}`}>{String(subRole.name)}</span>
-                    <span className="text-[9px] text-white/30 font-bold">· {String(subRole.dim)} 维度</span>
-                  </div>
-                  <p className="text-xs text-white/50 leading-relaxed">{String(subRole.definition)}</p>
-                </div>
+                <p className="text-xs leading-relaxed" style={{color:'rgba(255,255,255,0.4)'}}>{String(subRole.definition)}</p>
               </div>
             )}
           </section>
 
-          {/* ② 关系图形 placeholder */}
-          <section>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">关系互动模式</p>
-            <div className="rounded-2xl border border-dashed border-white/10 bg-black/10 h-48 flex items-center justify-center backdrop-blur-sm">
-              <p className="text-white/20 text-xs font-bold">关系图形设计区域</p>
+          {/* ② 插画占位区 */}
+          <section className="mb-12">
+            <div className="relative h-52 flex items-center justify-center"
+              style={{background:`radial-gradient(ellipse at center, ${rc}0.08) 0%, transparent 70%)`}}>
+              <p className="text-[10px] uppercase tracking-[0.3em]" style={{color:'rgba(255,255,255,0.12)'}}>关系互动模式</p>
+              {/* 装饰线条 */}
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 340 208" fill="none">
+                <ellipse cx="170" cy="104" rx="100" ry="60" stroke={`${rc}0.12)`} strokeWidth="0.8" strokeDasharray="4 6"/>
+                <ellipse cx="170" cy="104" rx="140" ry="85" stroke={`${rc}0.06)`} strokeWidth="0.6" strokeDasharray="3 8"/>
+              </svg>
             </div>
           </section>
 
-          {/* ③ 大卡片：常见互动 + 能量影响 */}
-          <section className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-3xl overflow-hidden">
-            {/* 常见互动表现 */}
-            <div className="p-5 border-b border-white/8">
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">常见互动表现</p>
-              <div className="space-y-2.5">
+          {/* ③ 常见互动 + 消耗 - 软边框卡片 */}
+          <section className="mb-4"
+            style={{background:'rgba(255,255,255,0.03)', borderRadius:'24px', border:'1px solid rgba(255,255,255,0.06)'}}>
+            <div className="p-6 pb-5" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
+              <p className="text-[9px] uppercase tracking-[0.35em] mb-4" style={{color:'rgba(255,255,255,0.25)'}}>常见互动表现</p>
+              <div className="space-y-3">
                 {behaviors.map((b, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${color.replace('text-', 'bg-')}`}></div>
-                    <p className="text-sm text-white/70">{String(b)}</p>
+                    <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0"
+                      style={{background:`${rc}0.6)`, boxShadow:`0 0 6px ${rc}0.8)`}} />
+                    <p className="text-sm leading-relaxed" style={{color:'rgba(255,255,255,0.55)'}}>{String(b)}</p>
                   </div>
                 ))}
               </div>
             </div>
-            {/* 能量影响 */}
-            <div className="p-5 relative overflow-hidden">
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">这种关系可能带来的消耗</p>
-              <div className="flex items-center gap-2 mb-2">
-                <HeartPulse className={`w-4 h-4 ${color}`} />
-                <span className="text-sm font-black text-white">能量损耗</span>
-              </div>
-              <p className="text-white/60 text-sm leading-relaxed">{String(impact)}</p>
+            <div className="p-6 pt-5">
+              <p className="text-[9px] uppercase tracking-[0.35em] mb-3" style={{color:'rgba(255,255,255,0.25)'}}>能量消耗</p>
+              <p className="text-sm leading-relaxed" style={{color:'rgba(255,255,255,0.55)'}}>{String(impact)}</p>
             </div>
           </section>
 
-          {/* ④ 大卡片 Part A：关系能量结构 */}
-          <section className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-3xl overflow-hidden">
-            <div className="p-5 border-b border-white/8">
-              <div className="flex items-center gap-3 mb-1">
-                <div className="w-5 h-5 rounded-full bg-rose-900/30 flex items-center justify-center flex-shrink-0">
-                  <span className="text-[9px] font-black text-rose-300/70">A</span>
-                </div>
-                <div>
-                  <p className="text-xs font-black text-white/70">外部能量损耗分析</p>
-                  <p className="text-[9px] text-white/30">这段关系对你的消耗程度</p>
-                </div>
+          {/* ④ Part A 维度分析 */}
+          <section className="mb-4"
+            style={{background:'rgba(255,255,255,0.03)', borderRadius:'24px', border:'1px solid rgba(255,255,255,0.06)'}}>
+            <div className="p-6 pb-4" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
+              <p className="text-[9px] uppercase tracking-[0.35em] mb-1" style={{color:'rgba(255,255,255,0.25)'}}>A · 外部能量损耗</p>
+              <div className="flex items-center justify-between mt-3 mb-1">
+                <span className="text-[10px] uppercase tracking-widest" style={{color:'rgba(255,255,255,0.2)'}}>关系消耗程度</span>
+                <span className="text-[10px] font-bold" style={{color:`${rc}0.8)`}}>{Math.round((scoreA/120)*100)}%</span>
+              </div>
+              <div className="w-full h-[2px] rounded-full overflow-hidden" style={{background:'rgba(255,255,255,0.06)'}}>
+                <div className="h-full rounded-full transition-all duration-700"
+                  style={{width:`${Math.round((scoreA/120)*100)}%`,
+                    background:`linear-gradient(90deg, ${rc}0.5), ${rc}0.9))`,
+                    boxShadow:`0 0 10px ${rc}0.4)`}} />
               </div>
             </div>
-            <div className="p-5">
-              <div className="mb-4">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[10px] font-black text-white/30 uppercase tracking-widest">关系消耗程度</span>
-                  <span className={`text-[10px] font-black ${color}`}>{Math.round((scoreA / 120) * 100)}%</span>
-                </div>
-                <div className="w-full h-1.5 rounded-full overflow-hidden bg-white/10">
-                  <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-rose-700'}`} style={{ width: `${Math.round((scoreA / 120) * 100)}%` }} />
-                </div>
-              </div>
+            <div className="p-4">
               <RadarChart data={radarData} />
             </div>
-            {/* 01–06 维度卡片 */}
-            <div className="px-4 pb-4 space-y-2">
-              {DIMENSIONS.slice(0, 6).map((dim, idx) => {
-                const maxVal = 25;
-                const score = dimScores[dim] || 0;
-                const ratio = score / maxVal;
-                let stateLabel = "平稳"; let stateColor = "text-emerald-400"; let levelKey = "stable";
-                if (ratio > 0.75) { stateLabel = "过载"; stateColor = "text-rose-400"; levelKey = "overload"; }
-                else if (ratio > 0.5) { stateLabel = "活跃"; stateColor = "text-orange-400"; levelKey = "active"; }
-                const numLabel = `0${idx + 1}`;
-                const levelDesc = DIMENSION_LEVEL_DESC[dim]?.[levelKey] || "";
-                const scoreDesc = DIMENSION_SCORE_DESC[dim] || "";
+            {/* 维度卡片 - 更轻薄 */}
+            <div className="px-4 pb-5 space-y-2">
+              {DIMENSIONS.slice(0,6).map((dim, idx) => {
+                const maxVal=25, score=dimScores[dim]||0, ratio=score/maxVal;
+                let stateLabel="平稳", stateColor='rgba(52,211,153,0.7)', levelKey="stable";
+                if (ratio>0.75){stateLabel="过载";stateColor=`${rc}0.8)`;levelKey="overload";}
+                else if(ratio>0.5){stateLabel="活跃";stateColor='rgba(251,146,60,0.8)';levelKey="active";}
+                const levelDesc=DIMENSION_LEVEL_DESC[dim]?.[levelKey]||"";
+                const scoreDesc=DIMENSION_SCORE_DESC[dim]||"";
                 return (
-                  <div key={idx} className="rounded-2xl border bg-black/20 border-white/8 p-4 backdrop-blur-sm">
-                    <div className="flex justify-between items-start mb-3">
+                  <div key={idx} className="p-4"
+                    style={{background:'rgba(255,255,255,0.025)', borderRadius:'16px', border:'1px solid rgba(255,255,255,0.04)'}}>
+                    <div className="flex justify-between items-center mb-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-[9px] font-black tabular-nums text-white/25">{numLabel}</span>
-                        <Activity className="w-3 h-3 text-white/25" />
-                        <span className="text-sm font-black text-white/80">{String(dim)}</span>
-                        <span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span>
+                        <span className="text-[9px] tabular-nums" style={{color:'rgba(255,255,255,0.2)'}}>0{idx+1}</span>
+                        <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.75)'}}>{String(dim)}</span>
+                        <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full"
+                          style={{color:stateColor, background:`${stateColor.replace('0.7)','0.1)').replace('0.8)','0.1)')}`, border:`1px solid ${stateColor.replace('0.7)','0.2)').replace('0.8)','0.2)')}`}}>
+                          {stateLabel}
+                        </span>
                       </div>
-                      <span className="text-[10px] font-black tabular-nums text-white/40">{score} / {maxVal}</span>
+                      <span className="text-[10px] tabular-nums" style={{color:'rgba(255,255,255,0.3)'}}>{score}/{maxVal}</span>
                     </div>
-                    <div className="w-full h-1.5 rounded-full mb-3 overflow-hidden bg-white/10">
-                      <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-rose-700'}`} style={{ width: `${ratio * 100}%` }} />
+                    <div className="w-full h-[2px] rounded-full mb-3 overflow-hidden" style={{background:'rgba(255,255,255,0.06)'}}>
+                      <div className="h-full rounded-full transition-all duration-700"
+                        style={{width:`${ratio*100}%`, background:`${rc}0.7)`, boxShadow:`0 0 8px ${rc}0.4)`}} />
                     </div>
-                    <div className="mb-3 pb-3 border-b border-white/5">
-                      <p className="text-xs text-white/50 leading-relaxed mb-1">{String(DIMENSION_DESCS[dim])}</p>
-                      <p className="text-[10px] text-white/30 leading-relaxed">{scoreDesc}</p>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <p className="text-sm text-white/70 leading-relaxed">{levelDesc}</p>
-                    </div>
+                    <p className="text-xs mb-1 leading-relaxed" style={{color:'rgba(255,255,255,0.35)'}}>{String(DIMENSION_DESCS[dim])}</p>
+                    <p className="text-[10px] mb-3 leading-relaxed" style={{color:'rgba(255,255,255,0.2)'}}>{scoreDesc}</p>
+                    <p className="text-sm leading-relaxed" style={{color:'rgba(255,255,255,0.6)'}}>{levelDesc}</p>
                   </div>
                 );
               })}
             </div>
           </section>
 
-          {/* ⑤ 大卡片 Part B：内在补能模式 */}
+          {/* ⑤ Part B */}
           {(() => {
-            const dim = DIMENSIONS[6];
-            const maxVal = 40;
-            const score = dimScores[dim] || 0;
-            const ratio = score / maxVal;
-            let stateLabel = "平稳"; let stateColor = "text-emerald-400"; let levelKey = "stable";
-            if (ratio > 0.75) { stateLabel = "需关注"; stateColor = "text-rose-400"; levelKey = "overload"; }
-            else if (ratio > 0.5) { stateLabel = "活跃"; stateColor = "text-orange-400"; levelKey = "active"; }
-            const levelDesc = DIMENSION_LEVEL_DESC[dim]?.[levelKey] || "";
-            const scoreDesc = DIMENSION_SCORE_DESC[dim] || "";
+            const dim=DIMENSIONS[6], maxVal=40, score=dimScores[dim]||0, ratio=score/maxVal;
+            let stateLabel="平稳", stateColor='rgba(52,211,153,0.7)', levelKey="stable";
+            if(ratio>0.75){stateLabel="需关注";stateColor=`${rc}0.8)`;levelKey="overload";}
+            else if(ratio>0.5){stateLabel="活跃";stateColor='rgba(251,146,60,0.8)';levelKey="active";}
+            const levelDesc=DIMENSION_LEVEL_DESC[dim]?.[levelKey]||"";
+            const scoreDesc=DIMENSION_SCORE_DESC[dim]||"";
             return (
-              <section className="bg-white/[0.04] backdrop-blur-sm border border-white/15 rounded-3xl overflow-hidden ring-1 ring-white/8">
-                <div className="p-5 border-b border-white/10">
-                  <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
-                      <span className="text-[9px] font-black text-purple-400">B</span>
-                    </div>
-                    <div>
-                      <p className="text-xs font-black text-white/70">内在能量状态</p>
-                      <p className="text-[9px] text-white/30">你是否正在无意识地消耗身边的人</p>
-                    </div>
-                  </div>
+              <section className="mb-4"
+                style={{background:'rgba(88,28,135,0.08)', borderRadius:'24px', border:'1px solid rgba(192,132,252,0.1)'}}>
+                <div className="p-6 pb-4" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
+                  <p className="text-[9px] uppercase tracking-[0.35em] mb-1" style={{color:'rgba(192,132,252,0.5)'}}>B · 内在能量状态</p>
+                  <p className="text-[9px] mt-1" style={{color:'rgba(255,255,255,0.25)'}}>你是否正在无意识地消耗身边的人</p>
                 </div>
-                <div className="p-5">
-                  <div className="flex justify-between items-start mb-3">
+                <div className="p-6">
+                  <div className="flex justify-between items-center mb-2">
                     <div className="flex items-center gap-2">
-                      <Fingerprint className={`w-3 h-3 ${color}`} />
-                      <span className="text-sm font-black text-white">{String(dim)}</span>
-                      <span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span>
+                      <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.75)'}}>{String(dim)}</span>
+                      <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full"
+                        style={{color:stateColor,background:`${stateColor.replace('0.7)','0.1)').replace('0.8)','0.1)')}`,border:`1px solid ${stateColor.replace('0.7)','0.2)').replace('0.8)','0.2)')}`}}>
+                        {stateLabel}
+                      </span>
                     </div>
-                    <span className={`text-[10px] font-black tabular-nums ${color}`}>{score} / {maxVal}</span>
+                    <span className="text-[10px] tabular-nums" style={{color:'rgba(192,132,252,0.6)'}}>{score}/{maxVal}</span>
                   </div>
-                  <div className="w-full h-1.5 rounded-full mb-4 overflow-hidden bg-white/10">
-                    <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-rose-700'}`} style={{ width: `${ratio * 100}%` }} />
+                  <div className="w-full h-[2px] rounded-full mb-4 overflow-hidden" style={{background:'rgba(255,255,255,0.06)'}}>
+                    <div className="h-full rounded-full transition-all duration-700"
+                      style={{width:`${ratio*100}%`, background:'linear-gradient(90deg, rgba(88,28,135,0.8), rgba(192,132,252,0.9))',
+                        boxShadow:'0 0 10px rgba(192,132,252,0.3)'}} />
                   </div>
-                  <div className="mb-3 pb-3 border-b border-white/10">
-                    <p className="text-xs text-white/50 leading-relaxed mb-1">{String(DIMENSION_DESCS[dim])}</p>
-                    <p className="text-[10px] text-white/30 leading-relaxed">{scoreDesc}</p>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <p className="text-sm text-white/70 leading-relaxed">{levelDesc}</p>
-                  </div>
-                  <div className="mt-3 pt-3 border-t border-white/10 flex items-center gap-1.5">
-                    <Fingerprint className={`w-3 h-3 ${color} opacity-50`} />
-                    <span className={`text-[8px] font-black uppercase tracking-widest ${color} opacity-50`}>当前能量状态</span>
-                  </div>
+                  <p className="text-xs mb-1 leading-relaxed" style={{color:'rgba(255,255,255,0.35)'}}>{String(DIMENSION_DESCS[dim])}</p>
+                  <p className="text-[10px] mb-3 leading-relaxed" style={{color:'rgba(255,255,255,0.2)'}}>{scoreDesc}</p>
+                  <p className="text-sm leading-relaxed" style={{color:'rgba(255,255,255,0.6)'}}>{levelDesc}</p>
                 </div>
               </section>
             );
           })()}
 
-          {/* ⑥ 建议 */}
-          <section>
-            <div className={`bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-5 relative overflow-hidden`}>
-              <Sparkles className={`absolute -right-2 -top-2 w-16 h-16 opacity-10 rotate-12 ${color}`} />
-              <p className="text-[10px] font-black text-white/30 uppercase tracking-widest mb-2">你可以尝试</p>
-              <p className="text-sm font-bold italic leading-relaxed text-white/80 relative z-10">"{String(advice)}"</p>
-            </div>
+          {/* ⑥ 建议 - 无容器，直接浮动 */}
+          <section className="mb-8 text-center px-4">
+            <p className="text-[9px] uppercase tracking-[0.4em] mb-4" style={{color:'rgba(255,255,255,0.2)'}}>你可以尝试</p>
+            <p className="text-base font-bold italic leading-relaxed"
+              style={{color:`${rc}0.7)`, textShadow:`0 0 30px ${rc}0.2)`}}>
+              "{String(advice)}"
+            </p>
           </section>
 
           {/* ⑦ 操作按钮 */}
-          <section className="flex gap-3 pb-8">
-            <button onClick={() => window.location.reload()} className="flex-1 py-4 bg-black/20 backdrop-blur-sm text-white/50 rounded-2xl font-black text-xs flex items-center justify-center gap-2 border border-white/10">
-              <RefreshCcw className="w-4 h-4" /> 重测
+          <section className="flex gap-3 pb-10">
+            <button onClick={() => window.location.reload()}
+              className="flex-1 py-4 flex items-center justify-center gap-2 font-bold text-xs active:scale-95 transition-all"
+              style={{background:'rgba(255,255,255,0.04)', borderRadius:'50px', border:'1px solid rgba(255,255,255,0.07)', color:'rgba(255,255,255,0.4)'}}>
+              <RefreshCcw className="w-3.5 h-3.5" /> 重测
             </button>
-            <button onClick={() => setShowPoster(true)} className="flex-[2] py-4 bg-white/10 backdrop-blur-sm text-white rounded-2xl font-black text-xs shadow-xl active:scale-95 flex items-center justify-center gap-2 transition-all border border-white/15">
-              <Share2 className="w-4 h-4" /> 导出卡片报告
+            <button onClick={() => setShowPoster(true)}
+              className="flex-[2] py-4 flex items-center justify-center gap-2 font-bold text-xs active:scale-95 transition-all"
+              style={{background:`${rc}0.12)`, borderRadius:'50px', border:`1px solid ${rc}0.2)`,
+                color:'rgba(255,255,255,0.8)', boxShadow:`0 0 20px ${rc}0.1)`}}>
+              <Share2 className="w-3.5 h-3.5" /> 导出卡片报告
             </button>
           </section>
 
