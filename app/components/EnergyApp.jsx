@@ -408,33 +408,60 @@ export default function App() {
     const secondScore = dimScores[secondDim];
 
     // 主角色判断逻辑
+    // gap：最高维度与第二高维度的差值，差距不显著时用综合逻辑
+    const gap = topScore - secondScore;
+    const dominated = gap >= 3; // 至少差3分才算"显著领先"
+
     let roleName;
     if (scoreA <= 44 && scoreB <= 16) {
       roleName = "关系清醒者";
-    } else if (topDim === "情绪倾倒" && topScore > 20) {
+
+    } else if (dominated && topDim === "情绪倾倒" && topScore >= 16) {
       roleName = "情绪垃圾桶";
-    } else if (topDim === "情绪倾倒") {
+    } else if (dominated && topDim === "情绪倾倒") {
       roleName = "情感代偿者";
-    } else if (topDim === "自我消耗" && scoreB > 27) {
+    } else if (dominated && topDim === "自我消耗" && scoreB > 27) {
       roleName = "共情透支者";
-    } else if (topDim === "自我消耗") {
+    } else if (dominated && topDim === "自我消耗") {
       roleName = "自我压缩者";
-    } else if (topDim === "冲突激发" && topScore > 20) {
+    } else if (dominated && topDim === "冲突激发" && topScore >= 16) {
       roleName = "冲突吸引者";
-    } else if (topDim === "冲突激发" && dimScores["情绪倾倒"] >= 10) {
+    } else if (dominated && topDim === "冲突激发" && dimScores["情绪倾倒"] >= 10) {
       roleName = "情绪循环者";
-    } else if (topDim === "冲突激发") {
+    } else if (dominated && topDim === "冲突激发") {
       roleName = "关系修复者";
-    } else if (topDim === "责任转移" && dimScores["自我消耗"] >= 10) {
+    } else if (dominated && topDim === "责任转移" && dimScores["自我消耗"] >= 8) {
       roleName = "自我压缩者";
-    } else if (topDim === "责任转移") {
+    } else if (dominated && topDim === "责任转移") {
       roleName = "责任承担者";
-    } else if (topDim === "依赖绑定") {
+    } else if (dominated && topDim === "依赖绑定") {
       roleName = "依赖支柱";
-    } else if (topDim === "受害叙述") {
+    } else if (dominated && topDim === "受害叙述") {
       roleName = "情绪守护者";
+
     } else {
-      roleName = "关系消耗者";
+      // 差距不显著时，用综合得分最高的两个维度组合判断
+      const top2 = sorted.slice(0, 2).map(d => d);
+      const avgScore = scoreA / 6; // 平均分
+
+      if (dimScores["自我消耗"] >= avgScore && scoreB > 24) {
+        roleName = "共情透支者";
+      } else if (dimScores["冲突激发"] >= avgScore && dimScores["情绪倾倒"] >= avgScore) {
+        roleName = "情绪循环者";
+      } else if (dimScores["责任转移"] >= avgScore && dimScores["自我消耗"] >= avgScore) {
+        roleName = "自我压缩者";
+      } else if (dimScores["情绪倾倒"] >= avgScore && dimScores["受害叙述"] >= avgScore) {
+        roleName = "情感代偿者";
+      } else if (dimScores["依赖绑定"] >= avgScore) {
+        roleName = "依赖支柱";
+      } else if (dimScores["冲突激发"] >= avgScore) {
+        roleName = "关系修复者";
+      } else if (scoreA >= 80) {
+        // 整体高分但无明显维度主导 → 全面消耗型
+        roleName = "情绪垃圾桶";
+      } else {
+        roleName = "关系消耗者";
+      }
     }
 
     // 副机制判断：第二高维度 >= 10分，且对应角色不同于主角色
