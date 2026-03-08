@@ -717,6 +717,7 @@ export default function App() {
                         <span className="text-[9px] font-black tabular-nums text-white/25">{numLabel}</span>
                         <Activity className="w-3 h-3 text-white/25" />
                         <span className="text-sm font-black text-white/80">{String(dim)}</span>
+                        <span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span>
                       </div>
                       <span className="text-[10px] font-black tabular-nums text-white/40">{score} / {maxVal}</span>
                     </div>
@@ -728,7 +729,6 @@ export default function App() {
                       <p className="text-[10px] text-white/30 leading-relaxed">{scoreDesc}</p>
                     </div>
                     <div className="flex items-start gap-2">
-                      <span className={`text-[8px] font-black px-1.5 py-0.5 rounded mt-0.5 flex-shrink-0 ${stateColor} bg-black/20 border border-white/10`}>{stateLabel}</span>
                       <p className="text-sm text-white/70 leading-relaxed">{levelDesc}</p>
                     </div>
                   </div>
@@ -766,6 +766,7 @@ export default function App() {
                     <div className="flex items-center gap-2">
                       <Fingerprint className={`w-3 h-3 ${color}`} />
                       <span className="text-sm font-black text-white">{String(dim)}</span>
+                      <span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span>
                     </div>
                     <span className={`text-[10px] font-black tabular-nums ${color}`}>{score} / {maxVal}</span>
                   </div>
@@ -777,7 +778,6 @@ export default function App() {
                     <p className="text-[10px] text-white/30 leading-relaxed">{scoreDesc}</p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className={`text-[8px] font-black px-1.5 py-0.5 rounded mt-0.5 flex-shrink-0 ${stateColor} bg-black/20 border border-white/10`}>{stateLabel}</span>
                     <p className="text-sm text-white/70 leading-relaxed">{levelDesc}</p>
                   </div>
                   <div className="mt-3 pt-3 border-t border-white/10 flex items-center gap-1.5">
