@@ -621,7 +621,8 @@ export default function App() {
               <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-3">关系能量分析</p>
               <h2 className="text-4xl font-black tracking-tighter text-white mb-2 leading-none">{String(roleName)}</h2>
               <p className={`text-sm font-black mb-5 ${color}`}>{String(tag)}</p>
-              <p className="text-white/60 text-sm leading-relaxed">{String(definition)}</p>
+              <p className="text-white/60 text-sm leading-relaxed mb-4">{String(definition)}</p>
+              {scene && <p className={`text-sm font-bold italic leading-relaxed ${color} opacity-75`}>"{String(scene)}"</p>}
             </div>
             {subRole && (
               <div className="relative z-10 mx-5 mb-5 rounded-2xl border border-white/10 bg-black/20 backdrop-blur-sm p-4 flex items-start gap-3">
@@ -716,7 +717,6 @@ export default function App() {
                         <span className="text-[9px] font-black tabular-nums text-white/25">{numLabel}</span>
                         <Activity className="w-3 h-3 text-white/25" />
                         <span className="text-sm font-black text-white/80">{String(dim)}</span>
-                        <span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span>
                       </div>
                       <span className="text-[10px] font-black tabular-nums text-white/40">{score} / {maxVal}</span>
                     </div>
@@ -766,7 +766,6 @@ export default function App() {
                     <div className="flex items-center gap-2">
                       <Fingerprint className={`w-3 h-3 ${color}`} />
                       <span className="text-sm font-black text-white">{String(dim)}</span>
-                      <span className={`text-[8px] font-black px-1.5 py-0.5 rounded border border-white/10 bg-black/20 ${stateColor}`}>{stateLabel}</span>
                     </div>
                     <span className={`text-[10px] font-black tabular-nums ${color}`}>{score} / {maxVal}</span>
                   </div>
