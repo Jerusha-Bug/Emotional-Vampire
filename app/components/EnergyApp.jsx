@@ -1055,7 +1055,7 @@ export default function App() {
             const scoreDesc=DIMENSION_SCORE_DESC[dim]||"";
             return (
               <section className="mb-4"
-                style={{background:`${rc}0.25)`, borderRadius:'24px', border:`1px solid ${rc}0.2)`, boxShadow:`inset 0 0 40px ${rc}0.18)`}}>
+                style={{background:`${rc}0.07)`, borderRadius:'24px', border:`1px solid ${rc}0.2)`, boxShadow:`inset 0 0 40px ${rc}0.08)`}}>
                 <div className="p-6 pb-4" style={{borderBottom:`1px solid ${rc}0.1)`}}>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] mb-1" style={{color:`${rc}0.85)`}}>B · 内在能量状态</p>
                   <p className="text-[9px] mt-1" style={{color:'rgba(255,255,255,0.25)'}}>你是否正在无意识地消耗身边的人</p>
@@ -1114,4 +1114,5 @@ export default function App() {
   }
   return null;
 }
+
 
