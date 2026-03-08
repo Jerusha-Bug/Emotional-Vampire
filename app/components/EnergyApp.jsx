@@ -451,40 +451,122 @@ export default function App() {
   // --- [1] 首页 ---
   if (step === 'welcome') {
     return (
-      <div className="min-h-screen bg-[#0d0a0e] text-white flex flex-col p-8 font-sans overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 overflow-hidden -z-10">
-          <div className="absolute top-[-20%] left-[-10%] w-[100%] h-[100%] bg-rose-900 rounded-full blur-[150px]"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[80%] bg-purple-900 rounded-full blur-[150px]"></div>
+      <div className="min-h-screen bg-[#080608] text-white flex flex-col font-sans overflow-hidden relative">
+        <style>{`
+          @keyframes drift1 {
+            0%,100% { transform: translate(0,0) scale(1); border-radius: 60% 40% 70% 30% / 50% 60% 40% 70%; }
+            33% { transform: translate(18px,-22px) scale(1.04); border-radius: 40% 60% 30% 70% / 60% 40% 70% 50%; }
+            66% { transform: translate(-12px,14px) scale(0.97); border-radius: 70% 30% 60% 40% / 40% 70% 50% 60%; }
+          }
+          @keyframes drift2 {
+            0%,100% { transform: translate(0,0) scale(1); border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%; }
+            33% { transform: translate(-20px,16px) scale(1.06); border-radius: 60% 40% 40% 60% / 40% 60% 50% 50%; }
+            66% { transform: translate(10px,-20px) scale(0.95); border-radius: 50% 50% 60% 40% / 50% 50% 40% 60%; }
+          }
+          @keyframes drift3 {
+            0%,100% { transform: translate(0,0) scale(1); border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
+            50% { transform: translate(14px,18px) scale(1.08); border-radius: 30% 70% 60% 40% / 60% 30% 70% 40%; }
+          }
+          @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 0.6; }
+            100% { transform: translateY(-120px) scale(0.3); opacity: 0; }
+          }
+          @keyframes blobPulse {
+            0%,100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.06); opacity: 1; }
+          }
+          .fluid1 { animation: drift1 12s ease-in-out infinite; }
+          .fluid2 { animation: drift2 16s ease-in-out infinite; }
+          .fluid3 { animation: drift3 20s ease-in-out infinite; }
+          .particle { animation: floatUp linear infinite; }
+          .blob-btn { animation: blobPulse 3s ease-in-out infinite; }
+        `}</style>
+
+        {/* 背景流体层 */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* 主流体 - 深红 */}
+          <div className="fluid1 absolute top-[-15%] left-[-20%] w-[80%] h-[70%] opacity-[0.18]"
+            style={{background: 'radial-gradient(ellipse, #7f1d1d 0%, #450a0a 60%, transparent 100%)'}} />
+          {/* 副流体 - 深紫 */}
+          <div className="fluid2 absolute bottom-[-20%] right-[-15%] w-[70%] h-[65%] opacity-[0.20]"
+            style={{background: 'radial-gradient(ellipse, #581c87 0%, #2e1065 60%, transparent 100%)'}} />
+          {/* 点缀流体 - 深青 */}
+          <div className="fluid3 absolute top-[30%] right-[-10%] w-[45%] h-[40%] opacity-[0.12]"
+            style={{background: 'radial-gradient(ellipse, #164e63 0%, #0c2a32 60%, transparent 100%)'}} />
+
+          {/* SVG 流线装饰 */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.06]" viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
+            <path d="M-20 200 C 80 180, 150 280, 200 240 S 320 160, 420 200" stroke="white" strokeWidth="1" fill="none"/>
+            <path d="M-20 380 C 60 340, 180 420, 250 380 S 360 300, 430 360" stroke="white" strokeWidth="0.8" fill="none"/>
+            <path d="M50 600 C 120 560, 200 640, 300 580 S 380 520, 450 560" stroke="white" strokeWidth="0.6" fill="none"/>
+            <path d="M100 700 C 160 660, 240 730, 320 690" stroke="white" strokeWidth="0.5" fill="none"/>
+          </svg>
+
+          {/* 漂浮粒子 */}
+          {[
+            {left:'15%', delay:'0s', dur:'6s', size:3, top:'75%'},
+            {left:'28%', delay:'1.5s', dur:'8s', size:2, top:'80%'},
+            {left:'45%', delay:'0.8s', dur:'7s', size:4, top:'70%'},
+            {left:'62%', delay:'2.2s', dur:'9s', size:2, top:'85%'},
+            {left:'75%', delay:'0.3s', dur:'6.5s', size:3, top:'78%'},
+            {left:'88%', delay:'3s', dur:'7.5s', size:2, top:'72%'},
+            {left:'8%', delay:'4s', dur:'8s', size:2, top:'65%'},
+            {left:'52%', delay:'5s', dur:'6s', size:3, top:'90%'},
+          ].map((p, i) => (
+            <div key={i} className="particle absolute rounded-full"
+              style={{
+                left: p.left, top: p.top,
+                width: p.size, height: p.size,
+                background: i % 3 === 0 ? 'rgba(251,113,133,0.7)' : i % 3 === 1 ? 'rgba(167,139,250,0.6)' : 'rgba(103,232,249,0.5)',
+                animationDelay: p.delay, animationDuration: p.dur,
+                boxShadow: `0 0 ${p.size*3}px currentColor`
+              }} />
+          ))}
         </div>
 
-        <div className="flex flex-col items-center mt-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest text-rose-300/70 mb-8 bg-white/5 backdrop-blur-md">
-            <div className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></div> 流失追踪 · 能量损耗分析
+        {/* 内容层 */}
+        <div className="relative z-10 flex flex-col min-h-screen px-8">
+          {/* 上方占位 */}
+          <div className="flex-[1.2]" />
+
+          {/* 标题区 - 无容器，直接浮在背景上 */}
+          <div className="flex flex-col items-center text-center">
+            <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-rose-300/50 mb-6">
+              流失追踪 · 能量损耗分析
+            </p>
+            <h1 className="text-[2.6rem] font-bold leading-[1.1] mb-5"
+              style={{letterSpacing: '-0.02em', textShadow: '0 0 60px rgba(244,63,94,0.2)'}}>
+              关系能量与<br/>心理防御
+            </h1>
+            <p className="text-white/30 text-sm leading-relaxed max-w-[220px]">
+              这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？
+            </p>
           </div>
-          <h1 className="text-[2.2rem] font-bold mb-6 leading-[1.15] text-center" style={{letterSpacing: '-0.01em'}}>关系能量与<br/>心理防御双维度测评</h1>
-          <p className="text-white/35 text-sm max-w-xs text-center leading-relaxed">这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？</p>
-        </div>
 
-        <div className="flex-1"></div>
+          <div className="flex-[1.5]" />
 
-        <div className="w-full max-w-sm mx-auto mb-12 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          <div className="space-y-4">
-            <button onClick={handleStartIdentity} className="w-full py-6 bg-rose-900/80 hover:bg-rose-800/80 shadow-rose-900/40 shadow-2xl active:scale-95 transition-all rounded-[2.2rem] font-black text-xl flex items-center justify-center gap-3 cursor-pointer">
-              开启测评
+          {/* 按钮区 */}
+          <div className="flex flex-col items-center mb-16 gap-5">
+            {/* 主按钮 - 有机blob形状 */}
+            <button onClick={handleStartIdentity}
+              className="blob-btn relative px-16 py-5 text-white font-bold text-lg tracking-wide active:scale-95 transition-transform"
+              style={{
+                background: 'radial-gradient(ellipse at 40% 40%, #9f1239 0%, #7f1d1d 50%, #450a0a 100%)',
+                borderRadius: '62% 38% 54% 46% / 48% 52% 48% 52%',
+                boxShadow: '0 0 40px rgba(159,18,57,0.4), 0 0 80px rgba(159,18,57,0.15)',
+                border: '1px solid rgba(251,113,133,0.2)',
+              }}>
+              <span style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>开启测评</span>
             </button>
-            <button onClick={previewResult} className="w-full py-2 text-white/20 text-[10px] font-bold tracking-widest flex items-center justify-center gap-1.5 hover:text-white/40 transition-colors">
-              <span className="w-1 h-1 rounded-full bg-white/20"></span> DEV · 预览结果页
-            </button>
-          </div>
 
-          <div className="bg-white/[0.02] border border-white/[0.05] p-6 rounded-[2rem] backdrop-blur-sm text-left">
-            <div className="flex items-start gap-3">
-              <BookOpen className="w-5 h-5 text-rose-300/50 mt-1 flex-shrink-0" />
-              <div className="space-y-2">
-                <p className="text-xs text-slate-300 font-bold leading-relaxed">Stéphane Clerget 核心理论支持</p>
-                <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80">整合情绪劳动理论、依恋与关系动力学理论、家庭动力学及边界理论。<br/>不仅看"你在被谁吸取能量"，更看"你为何会成为目标"。</p>
-              </div>
-            </div>
+            {/* 理论来源 - 极淡浮动文字，无卡片 */}
+            <p className="text-white/15 text-[10px] text-center leading-relaxed max-w-[240px]">
+              基于 Stéphane Clerget 情绪劳动理论<br/>及关系动力学理论
+            </p>
+
+            <button onClick={previewResult} className="text-white/15 text-[9px] font-bold tracking-widest hover:text-white/30 transition-colors">
+              DEV · 预览结果页
+            </button>
           </div>
         </div>
       </div>
