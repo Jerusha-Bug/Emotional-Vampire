@@ -547,16 +547,15 @@ export default function App() {
 
           {/* 按钮区 */}
           <div className="flex flex-col items-center mb-16 gap-5">
-            {/* 主按钮 - 有机blob形状 */}
+            {/* 主按钮 - 圆角矩形 */}
             <button onClick={handleStartIdentity}
-              className="blob-btn relative px-16 py-5 text-white font-bold text-lg tracking-wide active:scale-95 transition-transform"
+              className="w-full max-w-xs py-5 text-white font-bold text-lg tracking-wide active:scale-95 transition-all rounded-[2rem]"
               style={{
-                background: 'radial-gradient(ellipse at 40% 40%, #9f1239 0%, #7f1d1d 50%, #450a0a 100%)',
-                borderRadius: '62% 38% 54% 46% / 48% 52% 48% 52%',
-                boxShadow: '0 0 40px rgba(159,18,57,0.4), 0 0 80px rgba(159,18,57,0.15)',
-                border: '1px solid rgba(251,113,133,0.2)',
+                background: 'linear-gradient(135deg, rgba(127,29,29,0.9), rgba(159,18,57,0.95))',
+                boxShadow: '0 0 40px rgba(159,18,57,0.35), 0 0 80px rgba(159,18,57,0.12)',
+                border: '1px solid rgba(251,113,133,0.18)',
               }}>
-              <span style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>开启测评</span>
+              <span style={{textShadow: '0 0 20px rgba(255,255,255,0.25)'}}>开启测评</span>
             </button>
 
             {/* 理论来源 - 极淡浮动文字，无卡片 */}
@@ -677,28 +676,30 @@ export default function App() {
           </p>
         </div>
 
-        {/* 题目文字区 - 无容器，直接浮在背景上 */}
-        <div className="relative z-10 flex-1 flex flex-col px-8 max-w-md mx-auto w-full">
-          <div className="flex-1 flex flex-col justify-center">
+        {/* 题目文字区 - 固定在中上方，不随选项动 */}
+        <div className="relative z-10 px-8 max-w-md mx-auto w-full mt-2 mb-8">
             <span className="text-[10px] font-bold tracking-[0.2em] mb-5 block"
               style={{color:'rgba(255,255,255,0.12)', fontFamily:'monospace'}}>
               Q{String(currentIndex+1).padStart(2,'0')}
             </span>
-            <h2 className="text-[1.65rem] font-bold leading-[1.4] text-white/90 mb-16"
+            <h2 className="text-[1.65rem] font-bold leading-[1.4] text-white/90"
               style={{textShadow:'0 0 40px rgba(255,255,255,0.05)'}}>
               {String(q.text).replace('{target}', finalTarget)}
             </h2>
+        </div>
 
-            {/* 选项 - 发光粒子气泡 */}
+        {/* 选项 - 发光粒子气泡，固定在下方 */}
+        <div className="relative z-10 flex-1 flex flex-col justify-end px-8 max-w-md mx-auto w-full">
+          <div>
+            {/* 选项 */}
             <div className="flex justify-between items-end gap-1 mb-10">
               {OPTIONS.map((opt, i) => {
                 const isSelected = currentVal === opt.value;
-                const sizes = ['w-9 h-9','w-10 h-10','w-12 h-12','w-10 h-10','w-9 h-9'];
                 const glowColor = isPartB ? 'rgba(103,232,249,' : 'rgba(251,113,133,';
                 return (
                   <button key={opt.value} onClick={() => handleAnswer(opt.value)}
                     className={`flex flex-col items-center gap-2 flex-1 group transition-all duration-300`}>
-                    <div className={`${sizes[i]} rounded-full flex items-center justify-center transition-all duration-300 ${isSelected ? 'scale-125' : 'scale-100 hover:scale-110'}`}
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${isSelected ? 'scale-125' : 'scale-100 hover:scale-110'}`}
                       style={{
                         background: isSelected
                           ? `radial-gradient(ellipse, ${glowColor}0.5) 0%, ${glowColor}0.15) 100%)`
@@ -724,6 +725,7 @@ export default function App() {
               })}
             </div>
           </div>
+        </div>
         </div>
 
         {/* 底部按钮 */}
@@ -777,13 +779,12 @@ export default function App() {
           <span style={{color:'rgba(103,232,249,0.6)'}}>内在能量补给状态</span>
         </p>
         <button onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }}
-          className="px-12 py-4 font-bold text-base active:scale-95 transition-all"
+          className="w-full max-w-xs py-5 font-bold text-base active:scale-95 transition-all rounded-[2rem]"
           style={{
-            background:'linear-gradient(135deg, rgba(8,145,178,0.6), rgba(14,116,144,0.7))',
-            borderRadius:'50% 50% 50% 50% / 40% 40% 60% 60%',
-            border:'1px solid rgba(103,232,249,0.2)',
-            boxShadow:'0 0 40px rgba(8,145,178,0.25)',
-            color:'rgba(255,255,255,0.85)'
+            background:'linear-gradient(135deg, rgba(8,145,178,0.7), rgba(14,116,144,0.8))',
+            border:'1px solid rgba(103,232,249,0.18)',
+            boxShadow:'0 0 40px rgba(8,145,178,0.22)',
+            color:'rgba(255,255,255,0.88)'
           }}>
           继续内在扫描
         </button>
@@ -874,7 +875,7 @@ export default function App() {
               style={{color:`${rc}0.5)`}}>{String(status)}</p>
             <p className="text-[10px] uppercase tracking-[0.3em] mb-4"
               style={{color:'rgba(255,255,255,0.2)'}}>关系能量分析</p>
-            <h2 className="text-5xl font-bold mb-3 leading-none"
+            <h2 className="text-[2.4rem] font-bold mb-3 leading-none"
               style={{letterSpacing:'-0.03em', textShadow:`0 0 80px ${rc}0.35)`}}>
               {String(roleName)}
             </h2>
@@ -887,9 +888,9 @@ export default function App() {
 
             {/* 副机制 - 轻量浮动，无硬边框 */}
             {subRole && (
-              <div className="mt-8 mx-auto max-w-[280px] py-4 px-5 text-left"
+              <div className="mt-8 w-full py-4 px-5 text-left"
                 style={{background:`${rc}0.06)`, borderRadius:'20px', border:`1px solid ${rc}0.12)`}}>
-                <p className="text-[8px] uppercase tracking-[0.3em] mb-2" style={{color:'rgba(255,255,255,0.2)'}}>副机制</p>
+                <p className="text-xs uppercase tracking-[0.25em] mb-2" style={{color:'rgba(255,255,255,0.35)'}}>副机制</p>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-sm font-bold" style={{color:`${rc}0.85)`}}>{String(subRole.name)}</span>
                   <span className="text-[9px]" style={{color:'rgba(255,255,255,0.25)'}}>· {String(subRole.dim)}</span>
@@ -916,7 +917,7 @@ export default function App() {
           <section className="mb-4"
             style={{background:'rgba(255,255,255,0.03)', borderRadius:'24px', border:'1px solid rgba(255,255,255,0.06)'}}>
             <div className="p-6 pb-5" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
-              <p className="text-[9px] uppercase tracking-[0.35em] mb-4" style={{color:'rgba(255,255,255,0.25)'}}>常见互动表现</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{color:'rgba(255,255,255,0.45)'}}>常见互动表现</p>
               <div className="space-y-3">
                 {behaviors.map((b, i) => (
                   <div key={i} className="flex items-start gap-3">
@@ -928,7 +929,7 @@ export default function App() {
               </div>
             </div>
             <div className="p-6 pt-5">
-              <p className="text-[9px] uppercase tracking-[0.35em] mb-3" style={{color:'rgba(255,255,255,0.25)'}}>能量消耗</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{color:'rgba(255,255,255,0.45)'}}>能量消耗</p>
               <p className="text-sm leading-relaxed" style={{color:'rgba(255,255,255,0.55)'}}>{String(impact)}</p>
             </div>
           </section>
@@ -937,7 +938,7 @@ export default function App() {
           <section className="mb-4"
             style={{background:'rgba(255,255,255,0.03)', borderRadius:'24px', border:'1px solid rgba(255,255,255,0.06)'}}>
             <div className="p-6 pb-4" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
-              <p className="text-[9px] uppercase tracking-[0.35em] mb-1" style={{color:'rgba(255,255,255,0.25)'}}>A · 外部能量损耗</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] mb-1" style={{color:'rgba(255,255,255,0.5)'}}>A · 外部能量损耗</p>
               <div className="flex items-center justify-between mt-3 mb-1">
                 <span className="text-[10px] uppercase tracking-widest" style={{color:'rgba(255,255,255,0.2)'}}>关系消耗程度</span>
                 <span className="text-[10px] font-bold" style={{color:`${rc}0.8)`}}>{Math.round((scoreA/120)*100)}%</span>
@@ -1000,7 +1001,7 @@ export default function App() {
               <section className="mb-4"
                 style={{background:'rgba(88,28,135,0.08)', borderRadius:'24px', border:'1px solid rgba(192,132,252,0.1)'}}>
                 <div className="p-6 pb-4" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
-                  <p className="text-[9px] uppercase tracking-[0.35em] mb-1" style={{color:'rgba(192,132,252,0.5)'}}>B · 内在能量状态</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] mb-1" style={{color:'rgba(192,132,252,0.7)'}}>B · 内在能量状态</p>
                   <p className="text-[9px] mt-1" style={{color:'rgba(255,255,255,0.25)'}}>你是否正在无意识地消耗身边的人</p>
                 </div>
                 <div className="p-6">
@@ -1029,7 +1030,7 @@ export default function App() {
 
           {/* ⑥ 建议 - 无容器，直接浮动 */}
           <section className="mb-8 text-center px-4">
-            <p className="text-[9px] uppercase tracking-[0.4em] mb-4" style={{color:'rgba(255,255,255,0.2)'}}>你可以尝试</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{color:'rgba(255,255,255,0.45)'}}>你可以尝试</p>
             <p className="text-base font-bold italic leading-relaxed"
               style={{color:`${rc}0.7)`, textShadow:`0 0 30px ${rc}0.2)`}}>
               "{String(advice)}"
