@@ -290,21 +290,186 @@ const DIM_TO_ROLE = {
 
 
 
-const RadarChart = ({ data, dark = true }) => {
-  const size = 200; const center = size / 2; const radius = center * 0.65;
-  const points = data.map((d, i) => {
-    const angle = (Math.PI * 2 * i) / data.length - Math.PI / 2;
-    const r = (Math.max(0.1, d.value / 5)) * radius;
-    return { x: center + r * Math.cos(angle), y: center + r * Math.sin(angle), labelX: center + (radius + 25) * Math.cos(angle), labelY: center + (radius + 20) * Math.sin(angle), name: d.name };
+const RadarChart = ({ data }) => {
+  const size = 280; const center = size / 2; const radius = center * 0.56;
+  const n = data.length;
+  const angleOf = i => (Math.PI * 2 * i) / n - Math.PI / 2;
+
+  const dataPoints = data.map((d, i) => {
+    const angle = angleOf(i);
+    const r = Math.max(0.08, d.value / 4) * radius;
+    return { x: center + r * Math.cos(angle), y: center + r * Math.sin(angle) };
   });
-  const polygonPath = points.map(p => `${p.x},${p.y}`).join(' ');
+
+  const labelPoints = data.map((d, i) => {
+    const angle = angleOf(i);
+    return {
+      x: center + (radius + 30) * Math.cos(angle),
+      y: center + (radius + 24) * Math.sin(angle),
+      name: d.name, value: d.value,
+    };
+  });
+
+  const axisEndPoints = data.map((_, i) => ({
+    x: center + radius * Math.cos(angleOf(i)),
+    y: center + radius * Math.sin(angleOf(i)),
+  }));
+
+  // 贝塞尔曲线有机路径
+  const buildOrganicPath = (pts) => {
+    const len = pts.length; const tension = 0.32; let d = '';
+    for (let i = 0; i < len; i++) {
+      const p0 = pts[(i - 1 + len) % len];
+      const p1 = pts[i];
+      const p2 = pts[(i + 1) % len];
+      const p3 = pts[(i + 2) % len];
+      const cp1x = p1.x + (p2.x - p0.x) * tension;
+      const cp1y = p1.y + (p2.y - p0.y) * tension;
+      const cp2x = p2.x - (p3.x - p1.x) * tension;
+      const cp2y = p2.y - (p3.y - p1.y) * tension;
+      if (i === 0) d += `M ${p1.x} ${p1.y} `;
+      d += `C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y} `;
+    }
+    return d + 'Z';
+  };
+
+  const organicPath = buildOrganicPath(dataPoints);
+
+  const dimColors = [
+    'rgba(251,113,133,', // 情绪倾倒 玫红
+    'rgba(192,132,252,', // 受害叙述 紫
+    'rgba(251,146,60,',  // 责任转移 橙
+    'rgba(96,165,250,',  // 依赖绑定 蓝
+    'rgba(34,211,238,',  // 冲突激发 青
+    'rgba(52,211,153,',  // 自我消耗 绿
+  ];
+
   return (
-    <div className="flex justify-center py-6 text-center">
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="overflow-visible mx-auto">
-        {[0.2, 0.4, 0.6, 0.8, 1].map(r => (<circle key={r} cx={center} cy={center} r={radius * r} fill="none" stroke={dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"} strokeWidth="1" />))}
-        {points.map((p, i) => { const angle = (Math.PI * 2 * i) / data.length - Math.PI / 2; return <line key={i} x1={center} y1={center} x2={center + radius * Math.cos(angle)} y2={center + radius * Math.sin(angle)} stroke={dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"} strokeWidth="1" />; })}
-        <polygon points={polygonPath} fill="rgba(99, 102, 241, 0.2)" stroke="#818cf8" strokeWidth="2" />
-        {points.map((p, i) => (<text key={i} x={p.labelX} y={p.labelY} fontSize="8" textAnchor="middle" fill={dark ? "#94a3b8" : "#64748b"} fontWeight="bold">{String(p.name)}</text>))}
+    <div className="flex flex-col items-center py-2">
+      <style>{`
+        @keyframes radarBreathe { 0%,100%{opacity:0.75} 50%{opacity:1} }
+        @keyframes radarCore { 0%,100%{opacity:0.5} 50%{opacity:0.9} }
+        @keyframes nodePulse0 { 0%,100%{opacity:0.7;r:3.5} 50%{opacity:1;r:5.5} }
+        @keyframes nodePulse1 { 0%,100%{opacity:0.7;r:3.5} 50%{opacity:1;r:5.5} }
+        @keyframes nodePulse2 { 0%,100%{opacity:0.7;r:3.5} 50%{opacity:1;r:5.5} }
+        @keyframes nodePulse3 { 0%,100%{opacity:0.7;r:3.5} 50%{opacity:1;r:5.5} }
+        @keyframes nodePulse4 { 0%,100%{opacity:0.7;r:3.5} 50%{opacity:1;r:5.5} }
+        @keyframes nodePulse5 { 0%,100%{opacity:0.7;r:3.5} 50%{opacity:1;r:5.5} }
+        @keyframes floatA { 0%,100%{transform:translate(0,0);opacity:0.4} 50%{transform:translate(3px,-4px);opacity:0.8} }
+        @keyframes floatB { 0%,100%{transform:translate(0,0);opacity:0.3} 50%{transform:translate(-3px,3px);opacity:0.7} }
+        @keyframes floatC { 0%,100%{transform:translate(0,0);opacity:0.35} 50%{transform:translate(4px,2px);opacity:0.75} }
+        .r-shape { animation: radarBreathe 4s ease-in-out infinite; transform-origin: ${center}px ${center}px; }
+        .r-core  { animation: radarCore 3s ease-in-out infinite; transform-origin: ${center}px ${center}px; }
+        .rn0 { animation: nodePulse0 3.0s ease-in-out infinite; }
+        .rn1 { animation: nodePulse1 3.4s ease-in-out infinite; }
+        .rn2 { animation: nodePulse2 2.8s ease-in-out infinite; }
+        .rn3 { animation: nodePulse3 3.6s ease-in-out infinite; }
+        .rn4 { animation: nodePulse4 3.2s ease-in-out infinite; }
+        .rn5 { animation: nodePulse5 2.9s ease-in-out infinite; }
+        .fp-a { animation: floatA 5s ease-in-out infinite; }
+        .fp-b { animation: floatB 6s ease-in-out infinite; }
+        .fp-c { animation: floatC 4.5s ease-in-out infinite; }
+      `}</style>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="overflow-visible">
+        <defs>
+          <radialGradient id="rShapeGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stopColor="rgba(251,113,133,0.30)"/>
+            <stop offset="45%"  stopColor="rgba(192,132,252,0.18)"/>
+            <stop offset="100%" stopColor="rgba(34,211,238,0.06)"/>
+          </radialGradient>
+          <radialGradient id="rCoreGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stopColor="rgba(255,255,255,0.95)"/>
+            <stop offset="35%"  stopColor="rgba(251,113,133,0.70)"/>
+            <stop offset="100%" stopColor="rgba(192,132,252,0.0)"/>
+          </radialGradient>
+          <radialGradient id="rHaloGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stopColor="rgba(251,113,133,0.18)"/>
+            <stop offset="100%" stopColor="rgba(251,113,133,0.0)"/>
+          </radialGradient>
+          <filter id="rBlur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3.5"/>
+          </filter>
+          <filter id="rBlurSoft" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="8"/>
+          </filter>
+        </defs>
+
+        {/* 外层大光晕 */}
+        <circle cx={center} cy={center} r={radius * 1.1}
+          fill="url(#rHaloGrad)" filter="url(#rBlurSoft)" className="r-core" opacity="0.6"/>
+
+        {/* 背景网格：极淡有机圆环 */}
+        {[0.28, 0.52, 0.76, 1.0].map((lvl, i) => (
+          <circle key={i} cx={center} cy={center} r={radius * lvl}
+            fill="none" stroke="rgba(255,255,255,0.04)"
+            strokeWidth={i === 3 ? 0.8 : 0.5}
+            strokeDasharray={i % 2 === 0 ? "none" : "3 6"}/>
+        ))}
+
+        {/* 轴线：极淡射线 */}
+        {axisEndPoints.map((ep, i) => (
+          <line key={i} x1={center} y1={center} x2={ep.x} y2={ep.y}
+            stroke="rgba(255,255,255,0.04)" strokeWidth="0.6"/>
+        ))}
+
+        {/* 数据形状：模糊发光底层 */}
+        <path d={organicPath} fill="url(#rShapeGrad)" filter="url(#rBlur)" className="r-shape" opacity="0.9"/>
+
+        {/* 数据形状：清晰边线 */}
+        <path d={organicPath} fill="url(#rShapeGrad)" className="r-shape"
+          stroke="rgba(251,113,133,0.55)" strokeWidth="1.2" strokeLinejoin="round"/>
+
+        {/* 漂浮粒子 */}
+        {[
+          {cx:center-18, cy:center-22, r:1.5, c:'rgba(251,113,133,0.7)', cls:'fp-a'},
+          {cx:center+22, cy:center-14, r:1.2, c:'rgba(192,132,252,0.6)', cls:'fp-b'},
+          {cx:center+16, cy:center+20, r:1.5, c:'rgba(34,211,238,0.6)',  cls:'fp-c'},
+          {cx:center-20, cy:center+16, r:1.0, c:'rgba(251,146,60,0.5)',  cls:'fp-a'},
+          {cx:center+5,  cy:center-28, r:1.2, c:'rgba(96,165,250,0.6)',  cls:'fp-b'},
+          {cx:center-8,  cy:center+26, r:1.0, c:'rgba(52,211,153,0.5)',  cls:'fp-c'},
+        ].map((p,i) => (
+          <circle key={i} cx={p.cx} cy={p.cy} r={p.r}
+            fill={p.c} className={p.cls}
+            style={{boxShadow:`0 0 6px ${p.c}`}}/>
+        ))}
+
+        {/* 维度节点：发光粒子 */}
+        {dataPoints.map((p, i) => (
+          <g key={i}>
+            {/* 外层光晕 */}
+            <circle cx={p.x} cy={p.y} r={9}
+              fill={`${dimColors[i]}0.15)`} filter="url(#rBlur)"/>
+            {/* 节点主体 */}
+            <circle cx={p.x} cy={p.y} r={3.5}
+              fill={`${dimColors[i]}0.9)`}
+              className={`rn${i}`}
+              style={{filter:`drop-shadow(0 0 4px ${dimColors[i]}0.9))`}}/>
+          </g>
+        ))}
+
+        {/* 中心能量核心 */}
+        <circle cx={center} cy={center} r={16}
+          fill="url(#rCoreGrad)" filter="url(#rBlur)" className="r-core"/>
+        <circle cx={center} cy={center} r={4}
+          fill="rgba(255,255,255,0.95)"
+          style={{filter:'drop-shadow(0 0 6px rgba(255,255,255,0.8))'}}>
+          <animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
+        </circle>
+
+        {/* 维度标签 */}
+        {labelPoints.map((p, i) => (
+          <g key={i}>
+            <text x={p.x} y={p.y - 2} fontSize="7.5" textAnchor="middle"
+              fill={`${dimColors[i]}0.85)`} fontWeight="700" letterSpacing="0.5">
+              {String(p.name)}
+            </text>
+            <text x={p.x} y={p.y + 9} fontSize="6.5" textAnchor="middle"
+              fill="rgba(255,255,255,0.25)" fontWeight="400">
+              {Math.round(p.value * 25)}%
+            </text>
+          </g>
+        ))}
       </svg>
     </div>
   );
@@ -1116,6 +1281,3 @@ export default function App() {
   }
   return null;
 }
-
-
-
