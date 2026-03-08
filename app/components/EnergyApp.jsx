@@ -451,25 +451,25 @@ export default function App() {
   // --- [1] 首页 ---
   if (step === 'welcome') {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex flex-col p-8 font-sans overflow-hidden">
+      <div className="min-h-screen bg-[#0d0a0e] text-white flex flex-col p-8 font-sans overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 overflow-hidden -z-10">
-          <div className="absolute top-[-20%] left-[-10%] w-[100%] h-[100%] bg-indigo-600 rounded-full blur-[150px]"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[80%] bg-purple-600 rounded-full blur-[150px]"></div>
+          <div className="absolute top-[-20%] left-[-10%] w-[100%] h-[100%] bg-rose-900 rounded-full blur-[150px]"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[80%] bg-purple-900 rounded-full blur-[150px]"></div>
         </div>
 
         <div className="flex flex-col items-center mt-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest text-indigo-300 mb-8 bg-white/5 backdrop-blur-md">
-            <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></div> 流失追踪 · 能量损耗分析
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest text-rose-300/70 mb-8 bg-white/5 backdrop-blur-md">
+            <div className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></div> 流失追踪 · 能量损耗分析
           </div>
           <h1 className="text-[2.2rem] font-bold mb-6 leading-[1.15] text-center" style={{letterSpacing: '-0.01em'}}>关系能量与<br/>心理防御双维度测评</h1>
-          <p className="text-slate-400 text-sm max-w-xs text-center leading-relaxed opacity-70">这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？</p>
+          <p className="text-white/35 text-sm max-w-xs text-center leading-relaxed">这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？</p>
         </div>
 
         <div className="flex-1"></div>
 
         <div className="w-full max-w-sm mx-auto mb-12 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
           <div className="space-y-4">
-            <button onClick={handleStartIdentity} className="w-full py-6 bg-indigo-600 hover:bg-indigo-500 shadow-indigo-600/40 shadow-2xl active:scale-95 transition-all rounded-[2.2rem] font-black text-xl flex items-center justify-center gap-3 cursor-pointer">
+            <button onClick={handleStartIdentity} className="w-full py-6 bg-rose-900/80 hover:bg-rose-800/80 shadow-rose-900/40 shadow-2xl active:scale-95 transition-all rounded-[2.2rem] font-black text-xl flex items-center justify-center gap-3 cursor-pointer">
               开启测评
             </button>
             <button onClick={previewResult} className="w-full py-2 text-white/20 text-[10px] font-bold tracking-widest flex items-center justify-center gap-1.5 hover:text-white/40 transition-colors">
@@ -479,7 +479,7 @@ export default function App() {
 
           <div className="bg-white/[0.02] border border-white/[0.05] p-6 rounded-[2rem] backdrop-blur-sm text-left">
             <div className="flex items-start gap-3">
-              <BookOpen className="w-5 h-5 text-indigo-400 mt-1 flex-shrink-0" />
+              <BookOpen className="w-5 h-5 text-rose-300/50 mt-1 flex-shrink-0" />
               <div className="space-y-2">
                 <p className="text-xs text-slate-300 font-bold leading-relaxed">Stéphane Clerget 核心理论支持</p>
                 <p className="text-[10px] text-slate-500 leading-relaxed italic opacity-80">整合情绪劳动理论、依恋与关系动力学理论、家庭动力学及边界理论。<br/>不仅看"你在被谁吸取能量"，更看"你为何会成为目标"。</p>
@@ -494,12 +494,12 @@ export default function App() {
   // --- [2] Identity Step ---
   if (step === 'identity') {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden">
-        <div className="w-20 h-20 bg-indigo-600/10 rounded-full flex items-center justify-center mb-8 ring-8 ring-indigo-500/5">
+      <div className="min-h-screen bg-[#0d0a0e] text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden">
+        <div className="w-20 h-20 bg-rose-900/20 rounded-full flex items-center justify-center mb-8 ring-8 ring-rose-500/5">
            <Heart className="w-10 h-10 text-rose-500 animate-pulse" fill="currentColor" />
         </div>
         <h2 className="text-3xl font-black mb-4 tracking-tighter text-center">锁定分析对象</h2>
-        <p className="text-slate-400 text-sm mb-12 text-center opacity-70">告诉我们，你最想扫描哪段互动的能量流失？</p>
+        <p className="text-white/35 text-sm mb-12 text-center">告诉我们，你最想扫描哪段互动的能量流失？</p>
         
         <div className="w-full max-w-sm space-y-6">
           <div className="relative">
@@ -507,7 +507,7 @@ export default function App() {
                autoFocus
                type="text" 
                placeholder="例如：妈妈 / 爱人 / 同事" 
-               className="w-full bg-white/5 border border-white/10 p-6 rounded-[2.2rem] text-lg text-center focus:outline-none focus:border-indigo-500/50 transition-all placeholder:text-slate-700" 
+               className="w-full bg-white/5 border border-white/10 p-6 rounded-[2.2rem] text-lg text-center focus:outline-none focus:border-rose-500/30 transition-all placeholder:text-white/15" 
                value={targetPerson} 
                onChange={(e) => setTargetPerson(e.target.value)} 
              />
@@ -516,12 +516,12 @@ export default function App() {
           <button 
             disabled={!targetPerson.trim()}
             onClick={handleStartQuiz} 
-            className={`w-full py-5 rounded-[2.2rem] font-black text-lg transition-all flex items-center justify-center gap-2 ${targetPerson.trim() ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20 active:scale-95' : 'bg-slate-900 text-slate-700 cursor-not-allowed border border-white/5'}`}
+            className={`w-full py-5 rounded-[2.2rem] font-black text-lg transition-all flex items-center justify-center gap-2 ${targetPerson.trim() ? 'bg-rose-900/80 text-white shadow-xl shadow-rose-900/20 active:scale-95' : 'bg-[#120e13] text-slate-700 cursor-not-allowed border border-white/5'}`}
           >
              进入扫描仪式 →
           </button>
           
-          <button onClick={() => setStep('welcome')} className="w-full text-[10px] font-bold text-slate-600 uppercase tracking-widest hover:text-slate-400 transition-colors">返回首页</button>
+          <button onClick={() => setStep('welcome')} className="w-full text-[10px] font-bold text-white/20 uppercase tracking-widest hover:text-white/40 transition-colors">返回首页</button>
         </div>
       </div>
     );
@@ -532,43 +532,43 @@ export default function App() {
     const q = QUESTIONS[currentIndex]; if (!q) return null;
     const currentVal = answers[q.id]; const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex flex-col p-6 font-sans">
+      <div className="min-h-screen bg-[#0d0a0e] text-white flex flex-col p-6 font-sans">
         <div className="max-w-md mx-auto w-full px-2">
             <div className="flex items-center justify-between mb-2 mt-4 px-1 text-center">
-              <div className="flex flex-col text-left"><span className="text-lg font-black tracking-tighter text-left"><span className="text-indigo-500 font-black">{currentIndex + 1}</span><span className="text-slate-700 font-bold"> / {QUESTIONS.length}</span></span></div>
-              <div className="bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-indigo-300">PART {String(q.part)}</div>
+              <div className="flex flex-col text-left"><span className="text-lg font-black tracking-tighter text-left"><span className="text-rose-400/60 font-black">{currentIndex + 1}</span><span className="text-white/20 font-bold"> / {QUESTIONS.length}</span></span></div>
+              <div className="bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-rose-300/60">PART {String(q.part)}</div>
             </div>
-            <div className="w-full h-1.5 bg-slate-900 rounded-full mb-5 overflow-hidden relative mx-auto"><div className="h-full bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.8)] transition-all duration-500 ease-out" style={{ width: `${progress}%` }} /></div>
-            <div className="flex items-center gap-2 mb-8 text-left pl-1"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500"></div><span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{String(q.dim)}</span></div>
+            <div className="w-full h-1.5 bg-[#120e13] rounded-full mb-5 overflow-hidden relative mx-auto"><div className="h-full bg-rose-800 shadow-[0_0_15px_rgba(136,19,55,0.6)] transition-all duration-500 ease-out" style={{ width: `${progress}%` }} /></div>
+            <div className="flex items-center gap-2 mb-8 text-left pl-1"><div className="w-1.5 h-1.5 rounded-full bg-rose-700/60"></div><span className="text-[11px] font-bold text-white/30 uppercase tracking-widest">{String(q.dim)}</span></div>
         </div>
         <div className="flex-1 flex flex-col max-w-md mx-auto w-full">
           <div className="bg-white/[0.03] border border-white/[0.05] px-10 rounded-[2.5rem] mb-12 shadow-2xl backdrop-blur-sm relative h-56 flex flex-col justify-center overflow-hidden text-left">
-             <span className="absolute top-10 left-10 text-[10px] font-bold text-indigo-500/40 block tracking-[0.2em] font-mono text-left">Q{String(currentIndex+1).padStart(2,'0')}</span>
+             <span className="absolute top-10 left-10 text-[10px] font-bold text-rose-400/20 block tracking-[0.2em] font-mono text-left">Q{String(currentIndex+1).padStart(2,'0')}</span>
              <h2 className="text-2xl font-bold text-slate-100 leading-snug w-full text-left">{String(q.text).replace('{target}', finalTarget)}</h2>
           </div>
           <div className="flex justify-between items-start gap-2 mb-12 px-2 text-center">
             {OPTIONS.map(opt => (
               <button key={opt.value} onClick={() => handleAnswer(opt.value)} className="flex flex-col items-center gap-3 flex-1 group">
-                <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 font-black text-lg ${currentVal === opt.value ? 'bg-indigo-600 border-indigo-600 text-white shadow-[0_0_20px_rgba(99,102,241,0.6)] scale-110' : 'bg-white/5 border-white/10 text-slate-500 group-hover:border-indigo-500/50 active:scale-90'}`}>{opt.value}</div>
-                <span className={`text-[10px] font-bold tracking-tight text-center ${currentVal === opt.value ? 'text-indigo-400 font-black' : 'text-slate-600'}`}>{String(opt.label)}</span>
+                <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 font-black text-lg ${currentVal === opt.value ? 'bg-rose-900 border-rose-700 text-white shadow-[0_0_20px_rgba(136,19,55,0.5)] scale-110' : 'bg-white/5 border-white/10 text-white/30 group-hover:border-rose-500/30 active:scale-90'}`}>{opt.value}</div>
+                <span className={`text-[10px] font-bold tracking-tight text-center ${currentVal === opt.value ? 'text-rose-300/70 font-black' : 'text-white/25'}`}>{String(opt.label)}</span>
               </button>
             ))}
           </div>
         </div>
         <div className="flex gap-4 mb-6 mt-auto max-w-md mx-auto w-full text-center">
             <button onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)} disabled={currentIndex === 0} className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center border transition-all ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'bg-white/5 border-white/10 text-slate-500 active:scale-90'}`}><ArrowLeft className="w-6 h-6" /></button>
-            <button onClick={() => currentVal && navigateToNext(currentIndex)} disabled={!currentVal} className={`flex-1 h-16 rounded-[1.5rem] font-black text-lg transition-all ${!currentVal ? 'bg-slate-900 text-slate-700 border border-white/5' : 'bg-indigo-600 text-white active:scale-95'}`}>{currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}</button>
+            <button onClick={() => currentVal && navigateToNext(currentIndex)} disabled={!currentVal} className={`flex-1 h-16 rounded-[1.5rem] font-black text-lg transition-all ${!currentVal ? 'bg-[#120e13] text-slate-700 border border-white/5' : 'bg-rose-900/80 text-white active:scale-95'}`}>{currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}</button>
         </div>
       </div>
     );
   }
 
   if (step === 'transition') return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-12 text-center font-sans">
-      <Fingerprint className="w-16 h-16 text-indigo-400 mb-8 animate-pulse" />
+    <div className="min-h-screen bg-[#0d0a0e] text-white flex flex-col items-center justify-center p-12 text-center font-sans">
+      <Fingerprint className="w-16 h-16 text-rose-400/60 mb-8 animate-pulse" />
       <h2 className="text-2xl font-black mb-4 tracking-tighter text-white">关系损耗扫描已完成</h2>
-      <p className="text-slate-500 text-sm mb-12 leading-relaxed italic opacity-80 text-center">接下来扫描你当前的<span className="text-indigo-400 font-bold">内在能量补给状态</span></p>
-      <button onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }} className="w-full max-w-xs py-5 bg-white text-slate-950 rounded-[2rem] font-black text-lg active:scale-95 shadow-xl">继续内在扫描</button>
+      <p className="text-white/30 text-sm mb-12 leading-relaxed italic opacity-80 text-center">接下来扫描你当前的<span className="text-rose-300 font-bold">内在能量补给状态</span></p>
+      <button onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }} className="w-full max-w-xs py-5 bg-rose-950/80 text-white/90 border border-rose-800/40 rounded-[2rem] font-black text-lg active:scale-95 shadow-xl">继续内在扫描</button>
     </div>
   );
 
@@ -677,8 +677,8 @@ export default function App() {
           <section className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-3xl overflow-hidden">
             <div className="p-5 border-b border-white/8">
               <div className="flex items-center gap-3 mb-1">
-                <div className="w-5 h-5 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
-                  <span className="text-[9px] font-black text-indigo-400">A</span>
+                <div className="w-5 h-5 rounded-full bg-rose-900/30 flex items-center justify-center flex-shrink-0">
+                  <span className="text-[9px] font-black text-rose-300/70">A</span>
                 </div>
                 <div>
                   <p className="text-xs font-black text-white/70">外部能量损耗分析</p>
@@ -693,7 +693,7 @@ export default function App() {
                   <span className={`text-[10px] font-black ${color}`}>{Math.round((scoreA / 120) * 100)}%</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full overflow-hidden bg-white/10">
-                  <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`} style={{ width: `${Math.round((scoreA / 120) * 100)}%` }} />
+                  <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-rose-700'}`} style={{ width: `${Math.round((scoreA / 120) * 100)}%` }} />
                 </div>
               </div>
               <RadarChart data={radarData} />
@@ -722,7 +722,7 @@ export default function App() {
                       <span className="text-[10px] font-black tabular-nums text-white/40">{score} / {maxVal}</span>
                     </div>
                     <div className="w-full h-1.5 rounded-full mb-3 overflow-hidden bg-white/10">
-                      <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`} style={{ width: `${ratio * 100}%` }} />
+                      <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-rose-700'}`} style={{ width: `${ratio * 100}%` }} />
                     </div>
                     <div className="mb-3 pb-3 border-b border-white/5">
                       <p className="text-xs text-white/50 leading-relaxed mb-1">{String(DIMENSION_DESCS[dim])}</p>
@@ -771,7 +771,7 @@ export default function App() {
                     <span className={`text-[10px] font-black tabular-nums ${color}`}>{score} / {maxVal}</span>
                   </div>
                   <div className="w-full h-1.5 rounded-full mb-4 overflow-hidden bg-white/10">
-                    <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-indigo-400'}`} style={{ width: `${ratio * 100}%` }} />
+                    <div className={`h-full rounded-full transition-all duration-700 ${ROLE_BAR_COLOR[roleName] || 'bg-rose-700'}`} style={{ width: `${ratio * 100}%` }} />
                   </div>
                   <div className="mb-3 pb-3 border-b border-white/10">
                     <p className="text-xs text-white/50 leading-relaxed mb-1">{String(DIMENSION_DESCS[dim])}</p>
