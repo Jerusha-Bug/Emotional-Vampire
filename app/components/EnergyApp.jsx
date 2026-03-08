@@ -726,7 +726,6 @@ export default function App() {
             </div>
           </div>
         </div>
-        </div>
 
         {/* 底部按钮 */}
         <div className="relative z-10 flex gap-3 px-6 pb-10 max-w-md mx-auto w-full">
@@ -838,16 +837,46 @@ export default function App() {
     };
     const rc = roleColorMap[color] || 'rgba(251,113,133,';
 
+    // 每个角色的对比色（第二流体）让背景色彩更丰富有辨识度
+    const roleAccentMap = {
+      'text-rose-400':    'rgba(88,28,135,0.22)',    // 紫
+      'text-red-500':     'rgba(30,58,138,0.20)',    // 深蓝
+      'text-fuchsia-400': 'rgba(127,29,29,0.20)',    // 深红
+      'text-purple-400':  'rgba(14,116,144,0.18)',   // 青
+      'text-orange-500':  'rgba(88,28,135,0.20)',    // 紫
+      'text-indigo-400':  'rgba(6,78,59,0.22)',      // 深绿
+      'text-amber-400':   'rgba(127,29,29,0.18)',    // 深红
+      'text-yellow-400':  'rgba(14,116,144,0.16)',   // 青
+      'text-blue-400':    'rgba(6,78,59,0.20)',      // 深绿
+      'text-cyan-400':    'rgba(30,58,138,0.22)',    // 深蓝
+      'text-emerald-400': 'rgba(14,116,144,0.20)',   // 青绿
+      'text-slate-400':   'rgba(88,28,135,0.18)',    // 紫
+    };
+    const rc2 = roleAccentMap[color] || 'rgba(88,28,135,0.18)';
+
+    // 页面底色也跟角色走，极深但有色温差异
+    const roleBgBase = {
+      'text-rose-400':    '#0e0608', 'text-red-500':     '#0d0508',
+      'text-fuchsia-400': '#0d060e', 'text-purple-400':  '#08060e',
+      'text-orange-500':  '#0e0906', 'text-indigo-400':  '#06080e',
+      'text-amber-400':   '#0e0b04', 'text-yellow-400':  '#0c0b04',
+      'text-blue-400':    '#05080e', 'text-cyan-400':    '#04090e',
+      'text-emerald-400': '#04090a', 'text-slate-400':   '#070809',
+    };
+    const pageBg = roleBgBase[color] || '#080608';
+
     return (
       <div className="min-h-screen text-white font-sans relative overflow-x-hidden"
-        style={{background:'#080608'}}>
+        style={{background: pageBg}}>
 
         {/* 全局背景流体 - 跟随角色色 */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{zIndex:0}}>
           <div className="fluid1 absolute top-[-10%] left-[-20%] w-[90%] h-[60%] blur-[120px]"
-            style={{background:`radial-gradient(ellipse, ${rc}0.18) 0%, transparent 70%)`}} />
+            style={{background:`radial-gradient(ellipse, ${rc}0.22) 0%, transparent 70%)`}} />
           <div className="fluid2 absolute bottom-[10%] right-[-20%] w-[70%] h-[50%] blur-[100px]"
-            style={{background:`radial-gradient(ellipse, rgba(88,28,135,0.15) 0%, transparent 70%)`}} />
+            style={{background:`radial-gradient(ellipse, ${rc2} 0%, transparent 70%)`}} />
+          <div className="fluid3 absolute top-[40%] left-[20%] w-[60%] h-[40%] blur-[130px]"
+            style={{background:`radial-gradient(ellipse, ${rc}0.08) 0%, transparent 70%)`}} />
           <svg className="absolute inset-0 w-full h-full opacity-[0.035]" viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
             <path d="M-20 150 C 100 120, 200 200, 420 140" stroke="white" strokeWidth="0.8" fill="none"/>
             <path d="M-20 400 C 80 360, 220 440, 420 380" stroke="white" strokeWidth="0.6" fill="none"/>
