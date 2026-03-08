@@ -323,26 +323,25 @@ const RadarChart = ({ data }) => {
   const contours = Array.from({ length: layers }, (_, i) => {
     const t = (i + 1) / layers;
     const scale = 0.12 + t * 0.88;
-    // 内层玫红，中层紫，外层蓝紫，最外淡出
-    const rVal = Math.round(180 - t * 100);
-    const gVal = Math.round(80 - t * 40);
-    const bVal = Math.round(220 + t * 35);
-    const opacity = t < 0.3
-      ? 0.55 - t * 0.3          // 内层较亮
-      : t > 0.85
-        ? (1 - t) * 1.8          // 最外层淡出
-        : 0.28 - t * 0.08;       // 中间层均匀细线
+    // 内层浅玫紫，外层浅蓝白，整体偏亮与深色背景拉开
+    const rVal = Math.round(210 - t * 60);
+    const gVal = Math.round(180 - t * 60);
+    const bVal = Math.round(255);
+    const opacity = t < 0.25
+      ? 0.70 - t * 0.4
+      : t > 0.82
+        ? (1 - t) * 2.2
+        : 0.38 - t * 0.10;
     const strokeW = 0.45;
     return { path: buildPath(scale), opacity: Math.max(0.04, opacity), strokeW, r: rVal, g: gVal, b: bVal };
   });
 
-  // 标签坐标（贴近最外层数据点）
+  // 标签固定在圆周外侧，均匀分布不随数据动
   const labelPoints = data.map((d, i) => {
     const angle = angleOf(i);
-    const r = Math.max(0.12, d.value / 4) * maxR;
     return {
-      x: center + (r + 18) * Math.cos(angle),
-      y: center + (r + 14) * Math.sin(angle),
+      x: center + (maxR + 26) * Math.cos(angle),
+      y: center + (maxR + 20) * Math.sin(angle),
       name: d.name,
     };
   });
@@ -352,16 +351,16 @@ const RadarChart = ({ data }) => {
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="overflow-visible">
         <defs>
           <radialGradient id="fillGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%"   stopColor="rgba(220,100,140,0.12)"/>
-            <stop offset="55%"  stopColor="rgba(120,80,200,0.07)"/>
-            <stop offset="100%" stopColor="rgba(80,100,220,0.02)"/>
+            <stop offset="0%"   stopColor="rgba(180,160,255,0.10)"/>
+            <stop offset="55%"  stopColor="rgba(160,140,255,0.05)"/>
+            <stop offset="100%" stopColor="rgba(140,120,240,0.01)"/>
           </radialGradient>
         </defs>
 
         {/* 极淡中心填充 */}
         <path d={buildPath(1.0)} fill="url(#fillGrad)" stroke="none"/>
 
-        {/* 密集等高线，由内到外 */}
+        {/* 密集等高线，由内到外，浅色系 */}
         {contours.map((c, i) => (
           <path key={i} d={c.path} fill="none"
             stroke={`rgba(${c.r},${c.g},${c.b},${c.opacity})`}
@@ -369,17 +368,10 @@ const RadarChart = ({ data }) => {
             strokeLinejoin="round"/>
         ))}
 
-        {/* 中心红点 */}
-        <circle cx={center} cy={center} r={4.5}
-          fill="rgba(230,60,60,0.95)"
-          style={{filter:'drop-shadow(0 0 3px rgba(220,60,60,0.8))'}}/>
-        <circle cx={center} cy={center} r={2}
-          fill="rgba(255,210,210,0.95)"/>
-
-        {/* 维度标签 */}
+        {/* 维度标签，固定位置 */}
         {labelPoints.map((p, i) => (
-          <text key={i} x={p.x} y={p.y} fontSize="7.5" textAnchor="middle"
-            fill="rgba(255,255,255,0.45)" fontWeight="600" letterSpacing="0.3">
+          <text key={i} x={p.x} y={p.y + 4} fontSize="7.5" textAnchor="middle"
+            fill="rgba(255,255,255,0.55)" fontWeight="600" letterSpacing="0.3">
             {String(p.name)}
           </text>
         ))}
