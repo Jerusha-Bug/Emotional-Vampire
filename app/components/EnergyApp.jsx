@@ -794,9 +794,9 @@ export default function App() {
       </div>
       <div className="relative z-10 flex flex-col items-center">
         <div className="w-16 h-16 rounded-full mb-10 flex items-center justify-center"
-          style={{background:'radial-gradient(ellipse, rgba(127,29,29,0.5) 0%, transparent 70%)',
-            boxShadow:'0 0 40px rgba(127,29,29,0.3)', border:'1px solid rgba(251,113,133,0.15)'}}>
-          <Fingerprint className="w-7 h-7 text-rose-400/60" />
+          style={{background:'radial-gradient(ellipse, rgba(8,145,178,0.4) 0%, transparent 70%)',
+            boxShadow:'0 0 40px rgba(8,145,178,0.25)', border:'1px solid rgba(103,232,249,0.2)'}}>
+          <Fingerprint className="w-7 h-7" style={{color:'rgba(103,232,249,0.7)'}} />
         </div>
         <p className="text-[10px] uppercase tracking-[0.35em] text-white/25 mb-4">PART A 完成</p>
         <h2 className="text-2xl font-bold mb-4 text-white/90" style={{letterSpacing:'-0.02em'}}>关系损耗扫描完成</h2>
@@ -1055,9 +1055,9 @@ export default function App() {
             const scoreDesc=DIMENSION_SCORE_DESC[dim]||"";
             return (
               <section className="mb-4"
-                style={{background:'rgba(88,28,135,0.08)', borderRadius:'24px', border:'1px solid rgba(192,132,252,0.1)'}}>
-                <div className="p-6 pb-4" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] mb-1" style={{color:'rgba(192,132,252,0.7)'}}>B · 内在能量状态</p>
+                style={{background:`${rc}0.12)`, borderRadius:'24px', border:`1px solid ${rc}0.2)`, boxShadow:`inset 0 0 40px ${rc}0.08)`}}>
+                <div className="p-6 pb-4" style={{borderBottom:`1px solid ${rc}0.1)`}}>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] mb-1" style={{color:`${rc}0.85)`}}>B · 内在能量状态</p>
                   <p className="text-[9px] mt-1" style={{color:'rgba(255,255,255,0.25)'}}>你是否正在无意识地消耗身边的人</p>
                 </div>
                 <div className="p-6">
@@ -1069,12 +1069,12 @@ export default function App() {
                         {stateLabel}
                       </span>
                     </div>
-                    <span className="text-[10px] tabular-nums" style={{color:'rgba(192,132,252,0.6)'}}>{score}/{maxVal}</span>
+                    <span className="text-[10px] tabular-nums" style={{color:`${rc}0.85)`}}>{score}/{maxVal}</span>
                   </div>
                   <div className="w-full h-[2px] rounded-full mb-4 overflow-hidden" style={{background:'rgba(255,255,255,0.06)'}}>
                     <div className="h-full rounded-full transition-all duration-700"
-                      style={{width:`${ratio*100}%`, background:'linear-gradient(90deg, rgba(88,28,135,0.8), rgba(192,132,252,0.9))',
-                        boxShadow:'0 0 10px rgba(192,132,252,0.3)'}} />
+                      style={{width:`${ratio*100}%`, background:`linear-gradient(90deg, ${rc}0.6), ${rc}1))`,
+                        boxShadow:`0 0 12px ${rc}0.5)`}} />
                   </div>
                   <p className="text-xs mb-1 leading-relaxed" style={{color:'rgba(255,255,255,0.35)'}}>{String(DIMENSION_DESCS[dim])}</p>
                   <p className="text-[10px] mb-3 leading-relaxed" style={{color:'rgba(255,255,255,0.2)'}}>{scoreDesc}</p>
