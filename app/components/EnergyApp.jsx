@@ -125,7 +125,8 @@ const ROLE_DATA = {
     definition: "你在这段关系中承担了大量情绪修复工作。当对方低落、焦虑或崩溃时，你会本能地去安抚、理解和承担。",
     behaviors: ["经常安慰对方", "帮对方解释他的行为", "很少表达自己的需求", "害怕让关系失去稳定"],
     impact: "你的情绪能量不断输出，但回馈很少。久而久之可能出现情绪疲惫、责任过重、自我价值感下降。",
-    advice: "停止自动承担别人的情绪责任。当对方情绪失控时，你可以选择不立刻修复它。"
+    advice: "停止自动承担别人的情绪责任。当对方情绪失控时，你可以选择不立刻修复它。",
+    scene: "你总在关系里多走那一步，久了忘了原来的位置在哪。"
   },
   "情绪垃圾桶": {
     en: "Emotional Dump",
@@ -136,7 +137,8 @@ const ROLE_DATA = {
     definition: "对方习惯把所有负面情绪倒给你，但并不真正关心你的状态。",
     behaviors: ["对方只在情绪不好时找你", "聊天几乎都是他的烦恼", "你的情绪很少被关注"],
     impact: "你逐渐变成情绪容器，吸收的负面情绪越多，恢复越慢。",
-    advice: "开始减少情绪接收。不是所有情绪都需要你去承接。"
+    advice: "开始减少情绪接收。不是所有情绪都需要你去承接。",
+    scene: "你习惯承接，但没人承接你。"
   },
   "共情透支者": {
     en: "Empathy Overload",
@@ -147,7 +149,8 @@ const ROLE_DATA = {
     definition: "你拥有很强的共情能力，但在这段关系中，这种能力被过度消耗。",
     behaviors: ["很容易理解对方", "会替对方找理由", "经常忽略自己的感受"],
     impact: "共情如果没有边界，就会变成自我消耗机制。",
-    advice: "理解对方不等于为对方负责。"
+    advice: "理解对方不等于为对方负责。",
+    scene: "你很擅长感受别人，却越来越不知道自己在感受什么。"
   },
   "关系修复者": {
     en: "Relationship Fixer",
@@ -158,7 +161,8 @@ const ROLE_DATA = {
     definition: "每当关系出现问题，你都会试图修复它。",
     behaviors: ["主动道歉", "主动解释误会", "不希望关系破裂"],
     impact: "你在不断修复关系，但对方未必愿意改变。",
-    advice: "关系是两个人的责任，而不是一个人的修复工程。"
+    advice: "关系是两个人的责任，而不是一个人的修复工程。",
+    scene: "每次出现裂缝都是你先去补，久了开始分不清是在乎还是习惯。"
   },
   "冲突吸引者": {
     en: "Conflict Magnet",
@@ -169,7 +173,8 @@ const ROLE_DATA = {
     definition: "你们的互动很容易从普通交流升级为冲突。",
     behaviors: ["小问题容易变成争吵", "对话经常带有情绪", "很难真正解决问题"],
     impact: "每一次冲突都会消耗大量情绪资源。",
-    advice: "观察冲突模式，而不是只关注冲突内容。"
+    advice: "观察冲突模式，而不是只关注冲突内容。",
+    scene: "你不是喜欢争吵，只是每次沟通都容易走到那一步。"
   },
   "责任承担者": {
     en: "Responsibility Carrier",
@@ -180,7 +185,8 @@ const ROLE_DATA = {
     definition: "当关系出现问题时，你经常承担更多责任。",
     behaviors: ["经常反思是不是自己做错了", "会主动让步", "不希望事情变得更糟"],
     impact: "长期承担责任可能导致自我怀疑。",
-    advice: "关系中的责任需要被公平分配。"
+    advice: "关系中的责任需要被公平分配。",
+    scene: "你不是不累，只是不接的话会更乱。"
   },
   "依赖支柱": {
     en: "Dependency Anchor",
@@ -191,7 +197,8 @@ const ROLE_DATA = {
     definition: "对方在情绪上高度依赖你。",
     behaviors: ["对方经常说'只有你懂我'", "离开你他会变得很焦虑", "你成为关系的稳定中心"],
     impact: "这种依赖可能让你逐渐失去自由。",
-    advice: "支持别人不等于成为对方唯一的支撑。"
+    advice: "支持别人不等于成为对方唯一的支撑。",
+    scene: "你知道TA只在需要时才来，但还是每次都在。"
   },
   "情绪守护者": {
     en: "Emotional Guardian",
@@ -202,7 +209,8 @@ const ROLE_DATA = {
     definition: "你会主动保护关系中的情绪稳定。",
     behaviors: ["避免冲突", "小心表达意见", "不想让对方难过"],
     impact: "长期压抑真实表达会产生情绪内耗。",
-    advice: "健康关系允许真实表达。"
+    advice: "健康关系允许真实表达。",
+    scene: "你很擅长保护别人的情绪，却忘了自己的也需要被保护。"
   },
   "自我压缩者": {
     en: "Self-Suppressor",
@@ -213,7 +221,8 @@ const ROLE_DATA = {
     definition: "为了维持关系，你不断压缩自己的需求。",
     behaviors: ["不敢表达真实想法", "经常妥协", "很少坚持自己的界限"],
     impact: "长期压抑可能导致情绪疲惫和自我迷失。",
-    advice: "你的需求同样重要。"
+    advice: "你的需求同样重要。",
+    scene: "你把自己的需求放得很后面，以为是暂时的，后来变成了习惯。"
   },
   "关系消耗者": {
     en: "Energy Drained",
@@ -224,7 +233,8 @@ const ROLE_DATA = {
     definition: "这段关系正在持续消耗你的能量。",
     behaviors: ["互动后常感到疲惫", "需要很长时间恢复", "情绪波动明显"],
     impact: "关系本身已经成为能量黑洞。",
-    advice: "观察这段关系是否仍然值得投入。"
+    advice: "观察这段关系是否仍然值得投入。",
+    scene: "你说不清哪里出了问题，只是越来越不想靠近。"
   },
   "情绪循环者": {
     en: "Emotional Loop",
@@ -235,7 +245,8 @@ const ROLE_DATA = {
     definition: "你们的关系不断重复同样的情绪模式。",
     behaviors: ["冲突 → 和好 → 冲突", "问题没有真正解决", "情绪循环出现"],
     impact: "这种循环会让人逐渐麻木。",
-    advice: "识别模式，是打破循环的第一步。"
+    advice: "识别模式，是打破循环的第一步。",
+    scene: "好了又坏，坏了又好，你以为在修复，其实只是在重复。"
   },
   "关系清醒者": {
     en: "Awakened Observer",
@@ -246,7 +257,8 @@ const ROLE_DATA = {
     definition: "你已经开始意识到关系中的能量结构。",
     behaviors: ["开始观察互动模式", "不再盲目承担责任", "想要建立边界"],
     impact: "你的能量正在恢复。",
-    advice: "继续保持观察与自我保护。"
+    advice: "继续保持观察与自我保护。",
+    scene: "你学会了把自己放在第一位，哪怕别人不理解。"
   }
 };
 
@@ -561,7 +573,7 @@ export default function App() {
   );
 
   if (step === 'result' && resultData) {
-    const { roleName, color, bg, status, tag, definition, behaviors, impact, advice, scoreA, radarData, dimScores, subRole } = resultData;
+    const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole } = resultData;
 
     // 海报弹窗
     if (showPoster) return (
