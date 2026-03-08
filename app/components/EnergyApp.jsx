@@ -318,31 +318,32 @@ const RadarChart = ({ data }) => {
     return path + 'Z';
   };
 
-  // 10层轮廓，从内到外 scale 0.18 → 1.0
-  const layers = 10;
+  // 20层密集轮廓，从内到外 scale 0.12 → 1.0
+  const layers = 20;
   const contours = Array.from({ length: layers }, (_, i) => {
-    const t = (i + 1) / layers; // 0.1 → 1.0
-    const scale = 0.18 + t * 0.82;
-    // 内层偏玫红/紫，外层偏蓝/淡紫
-    const rVal = Math.round(120 + (1 - t) * 131); // 251→120
-    const gVal = Math.round(60 + (1 - t) * 53);   // 113→60
-    const bVal = Math.round(200 + t * 55);         // 200→255
-    const opacity = i === layers - 1 ? 0.55 : (0.12 + (1 - t) * 0.25);
-    const strokeW = i === layers - 1 ? 1.2 : 0.65;
-    return { path: buildPath(scale), opacity, strokeW, r: rVal, g: gVal, b: bVal };
+    const t = (i + 1) / layers;
+    const scale = 0.12 + t * 0.88;
+    // 内层玫红，中层紫，外层蓝紫，最外淡出
+    const rVal = Math.round(180 - t * 100);
+    const gVal = Math.round(80 - t * 40);
+    const bVal = Math.round(220 + t * 35);
+    const opacity = t < 0.3
+      ? 0.55 - t * 0.3          // 内层较亮
+      : t > 0.85
+        ? (1 - t) * 1.8          // 最外层淡出
+        : 0.28 - t * 0.08;       // 中间层均匀细线
+    const strokeW = 0.45;
+    return { path: buildPath(scale), opacity: Math.max(0.04, opacity), strokeW, r: rVal, g: gVal, b: bVal };
   });
 
-  // 最外层填充（极淡）
-  const outerPath = buildPath(1.0);
-
-  // 标签坐标
+  // 标签坐标（贴近最外层数据点）
   const labelPoints = data.map((d, i) => {
     const angle = angleOf(i);
-    const r = Math.max(0.12, d.value / 4) * maxR * 1.0;
+    const r = Math.max(0.12, d.value / 4) * maxR;
     return {
-      x: center + (r + 20) * Math.cos(angle),
-      y: center + (r + 16) * Math.sin(angle),
-      name: d.name, value: d.value,
+      x: center + (r + 18) * Math.cos(angle),
+      y: center + (r + 14) * Math.sin(angle),
+      name: d.name,
     };
   });
 
@@ -350,25 +351,17 @@ const RadarChart = ({ data }) => {
     <div className="flex flex-col items-center py-2">
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="overflow-visible">
         <defs>
-          <filter id="contourGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="2"/>
-          </filter>
           <radialGradient id="fillGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%"   stopColor="rgba(251,113,133,0.18)"/>
-            <stop offset="50%"  stopColor="rgba(150,100,220,0.10)"/>
-            <stop offset="100%" stopColor="rgba(96,130,250,0.04)"/>
+            <stop offset="0%"   stopColor="rgba(220,100,140,0.12)"/>
+            <stop offset="55%"  stopColor="rgba(120,80,200,0.07)"/>
+            <stop offset="100%" stopColor="rgba(80,100,220,0.02)"/>
           </radialGradient>
         </defs>
 
-        {/* 最外层极淡填充 */}
-        <path d={outerPath} fill="url(#fillGrad)" stroke="none"/>
+        {/* 极淡中心填充 */}
+        <path d={buildPath(1.0)} fill="url(#fillGrad)" stroke="none"/>
 
-        {/* 模糊发光底层（最外轮廓） */}
-        <path d={outerPath} fill="none"
-          stroke="rgba(180,140,255,0.25)"
-          strokeWidth="4" filter="url(#contourGlow)"/>
-
-        {/* 等高线轮廓，由内到外 */}
+        {/* 密集等高线，由内到外 */}
         {contours.map((c, i) => (
           <path key={i} d={c.path} fill="none"
             stroke={`rgba(${c.r},${c.g},${c.b},${c.opacity})`}
@@ -377,16 +370,16 @@ const RadarChart = ({ data }) => {
         ))}
 
         {/* 中心红点 */}
-        <circle cx={center} cy={center} r={5}
-          fill="rgba(239,68,68,0.9)"
-          style={{filter:'drop-shadow(0 0 4px rgba(239,68,68,0.7))'}}/>
-        <circle cx={center} cy={center} r={2.5}
-          fill="rgba(255,200,200,0.95)"/>
+        <circle cx={center} cy={center} r={4.5}
+          fill="rgba(230,60,60,0.95)"
+          style={{filter:'drop-shadow(0 0 3px rgba(220,60,60,0.8))'}}/>
+        <circle cx={center} cy={center} r={2}
+          fill="rgba(255,210,210,0.95)"/>
 
         {/* 维度标签 */}
         {labelPoints.map((p, i) => (
           <text key={i} x={p.x} y={p.y} fontSize="7.5" textAnchor="middle"
-            fill="rgba(255,255,255,0.5)" fontWeight="600" letterSpacing="0.3">
+            fill="rgba(255,255,255,0.45)" fontWeight="600" letterSpacing="0.3">
             {String(p.name)}
           </text>
         ))}
