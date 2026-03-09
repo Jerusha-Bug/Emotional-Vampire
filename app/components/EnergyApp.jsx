@@ -290,6 +290,54 @@ const DIM_TO_ROLE = {
 
 
 
+// 波浪卷云纹背景组件，左淡右显
+const WaveTexture = ({ seed = 0, opacity = 0.07 }) => {
+  const w = 340; const h = 120;
+  // 根据seed生成不同的波浪参数
+  const rows = 7;
+  const amp   = [6, 8, 5, 9, 6, 7, 5][seed % 7];
+  const freq  = [18, 22, 16, 20, 24, 18, 14][seed % 7];
+  const phase = [0, 0.4, 0.8, 1.2, 0.2, 0.6, 1.0][seed % 7];
+  const curl  = [0.4, 0.6, 0.3, 0.5, 0.7, 0.4, 0.5][seed % 7];
+
+  const buildWavePath = (rowIdx) => {
+    const y0 = (h / (rows + 1)) * (rowIdx + 1);
+    const pts = [];
+    const steps = 60;
+    for (let i = 0; i <= steps; i++) {
+      const x = (w / steps) * i;
+      const t = (x / w) * Math.PI * 2 * (w / freq) + phase + rowIdx * 0.3;
+      const y = y0 + Math.sin(t) * amp + Math.sin(t * 2 + curl) * (amp * 0.4);
+      pts.push(`${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`);
+    }
+    return pts.join(' ');
+  };
+
+  const uid = `wt${seed}`;
+  return (
+    <svg className="absolute inset-0 w-full h-full pointer-events-none"
+      viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="xMidYMid slice"
+      style={{borderRadius:'inherit'}}>
+      <defs>
+        <linearGradient id={`wm${uid}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stopColor="black" stopOpacity="1"/>
+          <stop offset="40%"  stopColor="black" stopOpacity="0.6"/>
+          <stop offset="100%" stopColor="black" stopOpacity="0"/>
+        </linearGradient>
+        <mask id={`wmask${uid}`}>
+          <rect width={w} height={h} fill={`url(#wm${uid})`}/>
+        </mask>
+      </defs>
+      <g mask={`url(#wmask${uid})`} opacity={opacity}>
+        {Array.from({length: rows}, (_, i) => (
+          <path key={i} d={buildWavePath(i)} fill="none"
+            stroke="white" strokeWidth="0.7" strokeLinecap="round"/>
+        ))}
+      </g>
+    </svg>
+  );
+};
+
 const RadarChart = ({ data }) => {
   const size = 300; const center = size / 2; const maxR = center * 0.62;
   const n = data.length;
@@ -1049,9 +1097,10 @@ export default function App() {
           </section>
 
           {/* ③ 常见互动 + 消耗 - 软边框卡片 */}
-          <section className="mb-4"
+          <section className="mb-4 relative overflow-hidden"
             style={{background:'rgba(255,255,255,0.03)', borderRadius:'24px', border:'1px solid rgba(255,255,255,0.06)'}}>
-            <div className="p-6 pb-5" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
+            <WaveTexture seed={0} opacity={0.06} />
+            <div className="relative p-6 pb-5" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
               <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{color:'rgba(255,255,255,0.45)'}}>常见互动表现</p>
               <div className="space-y-3">
                 {behaviors.map((b, i) => (
@@ -1063,16 +1112,16 @@ export default function App() {
                 ))}
               </div>
             </div>
-            <div className="p-6 pt-5">
+            <div className="relative p-6 pt-5">
               <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{color:'rgba(255,255,255,0.45)'}}>能量消耗</p>
               <p className="text-sm leading-relaxed" style={{color:'rgba(255,255,255,0.55)'}}>{String(impact)}</p>
             </div>
           </section>
 
           {/* ④ Part A 维度分析 */}
-          <section className="mb-4"
+          <section className="mb-4 relative overflow-hidden"
             style={{background:'rgba(255,255,255,0.03)', borderRadius:'24px', border:'1px solid rgba(255,255,255,0.06)'}}>
-            <div className="p-6 pb-4" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
+            <WaveTexture seed={2} opacity={0.05} />            <div className="relative p-6 pb-4" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
               <p className="text-xs font-bold uppercase tracking-[0.2em] mb-1" style={{color:'rgba(255,255,255,0.5)'}}>A · 外部能量损耗</p>
               <div className="flex items-center justify-between mt-3 mb-1">
                 <span className="text-[10px] uppercase tracking-widest" style={{color:'rgba(255,255,255,0.2)'}}>关系消耗程度</span>
@@ -1135,6 +1184,7 @@ export default function App() {
             return (
               <section className="mb-4 relative overflow-hidden"
                 style={{background:`${rc}0.03)`, borderRadius:'24px', border:`1px solid ${rc}0.2)`, boxShadow:`inset 0 0 40px ${rc}0.05)`}}>
+                <WaveTexture seed={4} opacity={0.07} />
                 <Fingerprint className="absolute top-2 right-2 pointer-events-none"
                   style={{width:'80px', height:'80px', color:`${rc}0.05)`, strokeWidth:2}} />
                 <div className="p-6 pb-4" style={{borderBottom:`1px solid ${rc}0.1)`}}>
