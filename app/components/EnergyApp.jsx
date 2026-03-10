@@ -118,7 +118,7 @@ const QUESTIONS = [
 const ROLE_DATA = {
   "情感代偿者": {
     en: "Emotional Compensator",
-    tag: "情绪修复 · 单向输出",
+    tag: "情绪承接 · 单向消耗",
     color: "text-rose-400",
     bg: "from-rose-950/80",
     status: "轻度损耗",
@@ -154,7 +154,7 @@ const ROLE_DATA = {
   },
   "关系修复者": {
     en: "Relationship Fixer",
-    tag: "主动修复 · 单方维系",
+    tag: "主动维系 · 单方努力",
     color: "text-amber-400",
     bg: "from-amber-950/80",
     status: "明显损耗",
@@ -1074,7 +1074,6 @@ export default function App() {
             {subRole && (
               <div className="mt-8 w-full py-4 px-5 text-left relative overflow-hidden"
                 style={{background:`${rc}0.06)`, borderRadius:'20px', border:`1px solid ${rc}0.12)`}}>
-                <WaveTexture seed={1} opacity={0.13} />
                 <p className="relative text-xs uppercase tracking-[0.25em] mb-2" style={{color:'rgba(255,255,255,0.35)'}}>副机制</p>
                 <div className="relative flex items-center gap-2 mb-1">
                   <span className="text-sm font-bold" style={{color:`${rc}0.85)`}}>{String(subRole.name)}</span>
@@ -1101,7 +1100,6 @@ export default function App() {
           {/* ③ 常见互动 + 消耗 - 软边框卡片 */}
           <section className="mb-4 relative overflow-hidden"
             style={{background:'rgba(255,255,255,0.03)', borderRadius:'24px', border:'1px solid rgba(255,255,255,0.06)'}}>
-            <WaveTexture seed={0} opacity={0.13} />
             <div className="relative p-6 pb-5" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
               <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{color:'rgba(255,255,255,0.45)'}}>常见互动表现</p>
               <div className="space-y-3">
