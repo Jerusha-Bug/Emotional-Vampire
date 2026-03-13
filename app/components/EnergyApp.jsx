@@ -476,7 +476,7 @@ export default function App() {
   };
 
   const handleStartIdentity = async () => { 
-     setStep('identity'); 
+     setStep('quiz'); 
   };
 
   const handleStartQuiz = async () => {
@@ -803,6 +803,11 @@ export default function App() {
 
         {/* 顶部进度区 */}
         <div className="relative z-10 px-6 pt-8 pb-4 max-w-md mx-auto w-full">
+          {currentIndex === 0 && (
+            <p className="text-center text-xs mb-4 leading-relaxed" style={{color:'rgba(255,255,255,0.3)'}}>
+              想一段最近让你产生情绪消耗的关系
+            </p>
+          )}
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.25)'}}>
               <span style={{color: isPartB ? 'rgba(103,232,249,0.6)' : 'rgba(251,113,133,0.6)'}}>{currentIndex + 1}</span>
