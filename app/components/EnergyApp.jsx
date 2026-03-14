@@ -1219,13 +1219,20 @@ export default function App() {
             );
           })()}
 
-          {/* ⑥ 建议 - 无容器，直接浮动 */}
-          <section className="mb-8 text-center px-4">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{color:'rgba(255,255,255,0.45)'}}>你可以尝试</p>
-            <p className="text-base font-bold italic leading-relaxed"
-              style={{color:`${rc}0.7)`, textShadow:`0 0 30px ${rc}0.2)`}}>
-              "{String(advice)}"
-            </p>
+          {/* ⑥ 建议卡片 */}
+          <section className="mb-8 relative overflow-hidden"
+            style={{borderRadius:'24px', border:`1px solid ${rc}0.25)`,
+              background:`linear-gradient(135deg, ${rc}0.08) 0%, ${rc}0.03) 100%)`,
+              boxShadow:`0 0 40px ${rc}0.08), inset 0 0 30px ${rc}0.04)`}}>
+            <div className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-1 h-4 rounded-full" style={{background:`${rc}0.8)`, boxShadow:`0 0 8px ${rc}0.6)`}}/>
+                <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{color:`${rc}0.7)`}}>你可以尝试</p>
+              </div>
+              <p className="text-base font-bold leading-relaxed" style={{color:'rgba(255,255,255,0.85)'}}>
+                {String(advice)}
+              </p>
+            </div>
           </section>
 
           {/* ⑦ 操作按钮 */}
