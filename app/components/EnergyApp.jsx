@@ -702,6 +702,11 @@ export default function App() {
 
           {/* 按钮区 */}
           <div className="flex flex-col items-center mb-16 gap-5">
+            {/* 引导语 */}
+            <p className="text-center text-xs leading-relaxed max-w-[240px]" style={{color:'rgba(255,255,255,0.28)'}}>
+              在开始之前，想一想<br/>最近让你感到情绪消耗的那个人
+            </p>
+
             {/* 主按钮 - 圆角矩形 */}
             <button onClick={handleStartIdentity}
               className="w-full max-w-xs py-5 text-white font-bold text-lg tracking-wide active:scale-95 transition-all rounded-[2rem]"
@@ -803,11 +808,6 @@ export default function App() {
 
         {/* 顶部进度区 */}
         <div className="relative z-10 px-6 pt-8 pb-4 max-w-md mx-auto w-full">
-          {currentIndex === 0 && (
-            <p className="text-center text-xs mb-4 leading-relaxed" style={{color:'rgba(255,255,255,0.3)'}}>
-              想一段最近让你产生情绪消耗的关系
-            </p>
-          )}
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.25)'}}>
               <span style={{color: isPartB ? 'rgba(103,232,249,0.6)' : 'rgba(251,113,133,0.6)'}}>{currentIndex + 1}</span>
