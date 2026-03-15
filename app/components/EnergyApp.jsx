@@ -743,9 +743,7 @@ export default function App() {
     const q = QUESTIONS[currentIndex]; if (!q) return null;
     const currentVal = answers[q.id]; const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
     const isPartB = q.part === 'B';
-    const bgGrad = isPartB
-      ? 'linear-gradient(135deg, #1f1c2c 0%, #353342 60%, #635e79 100%)'
-      : 'linear-gradient(135deg, #1f1c2c 0%, #4a446b 60%, #928dab 100%)';
+    const bgGrad = 'linear-gradient(135deg, #1f1c2c 0%, #534e64 50%, #928dab 100%)';
     return (
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
         style={{background: bgGrad}}>
@@ -825,7 +823,7 @@ export default function App() {
             <div className="flex justify-between items-end gap-1 mb-10">
               {OPTIONS.map((opt, i) => {
                 const isSelected = currentVal === opt.value;
-                const glowColor = isPartB ? 'rgba(103,232,249,' : 'rgba(148,130,210,';
+                const glowColor = isPartB ? 'rgba(188,190,229,' : 'rgba(188,190,229,';
                 return (
                   <button key={opt.value} onClick={() => handleAnswer(opt.value)}
                     className={`flex flex-col items-center gap-2 flex-1 group transition-all duration-300`}>
@@ -847,7 +845,7 @@ export default function App() {
                       )}
                     </div>
                     <span className="text-[9px] font-bold tracking-tight"
-                      style={{color: isSelected ? (isPartB ? 'rgba(103,232,249,0.8)' : 'rgba(148,130,210,0.9)') : 'rgba(255,255,255,0.2)'}}>
+                      style={{color: isSelected ? '#BCBEE5' : 'rgba(255,255,255,0.25)'}}>
                       {String(opt.label)}
                     </span>
                   </button>
@@ -871,14 +869,12 @@ export default function App() {
             style={{
               background: !currentVal
                 ? 'rgba(255,255,255,0.04)'
-                : isPartB
-                  ? 'linear-gradient(135deg, #1f1c2c, #6b8cae)'
-                  : 'linear-gradient(135deg, #1f1c2c, #928dab)',
+                : 'rgba(188,190,229,0.15)',
               border: !currentVal
                 ? '1px solid rgba(255,255,255,0.06)'
-                : '1px solid rgba(255,255,255,0.12)',
-              color: !currentVal ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.92)',
-              boxShadow: currentVal ? '0 4px 24px rgba(0,0,0,0.4)' : 'none'
+                : '1px solid rgba(188,190,229,0.35)',
+              color: !currentVal ? 'rgba(255,255,255,0.2)' : '#E8E9F7',
+              boxShadow: currentVal ? '0 0 24px rgba(188,190,229,0.15)' : 'none'
             }}>
             {currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}
           </button>
