@@ -712,9 +712,9 @@ export default function App() {
             <button onClick={handleStartIdentity}
               className="w-full max-w-xs py-5 text-white font-bold text-lg tracking-wide active:scale-95 transition-all rounded-[2rem]"
               style={{
-                background: 'linear-gradient(135deg, rgba(30,58,95,0.95), rgba(67,56,202,0.95))',
-                boxShadow: '0 0 40px rgba(67,56,202,0.35), 0 0 80px rgba(67,56,202,0.12)',
-                border: '1px solid rgba(129,140,248,0.25)',
+                background: 'linear-gradient(135deg, #1f1c2c, #928dab)',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+                border: '1px solid rgba(255,255,255,0.12)',
               }}>
               <span style={{textShadow: '0 0 20px rgba(255,255,255,0.25)'}}>开启测评</span>
             </button>
@@ -857,7 +857,7 @@ export default function App() {
             <div className="flex justify-between items-end gap-1 mb-10">
               {OPTIONS.map((opt, i) => {
                 const isSelected = currentVal === opt.value;
-                const glowColor = isPartB ? 'rgba(103,232,249,' : 'rgba(251,113,133,';
+                const glowColor = isPartB ? 'rgba(103,232,249,' : 'rgba(148,130,210,';
                 return (
                   <button key={opt.value} onClick={() => handleAnswer(opt.value)}
                     className={`flex flex-col items-center gap-2 flex-1 group transition-all duration-300`}>
@@ -879,7 +879,7 @@ export default function App() {
                       )}
                     </div>
                     <span className="text-[9px] font-bold tracking-tight"
-                      style={{color: isSelected ? (isPartB ? 'rgba(103,232,249,0.8)' : 'rgba(99,102,241,0.8)') : 'rgba(255,255,255,0.2)'}}>
+                      style={{color: isSelected ? (isPartB ? 'rgba(103,232,249,0.8)' : 'rgba(148,130,210,0.9)') : 'rgba(255,255,255,0.2)'}}>
                       {String(opt.label)}
                     </span>
                   </button>
@@ -904,13 +904,13 @@ export default function App() {
               background: !currentVal
                 ? 'rgba(255,255,255,0.04)'
                 : isPartB
-                  ? 'linear-gradient(135deg, rgba(14,116,144,0.8), rgba(8,145,178,0.9))'
-                  : 'linear-gradient(135deg, rgba(30,58,95,0.85), rgba(67,56,202,0.9))',
+                  ? 'linear-gradient(135deg, #1f1c2c, #6b8cae)'
+                  : 'linear-gradient(135deg, #1f1c2c, #928dab)',
               border: !currentVal
                 ? '1px solid rgba(255,255,255,0.06)'
-                : isPartB ? '1px solid rgba(103,232,249,0.2)' : '1px solid rgba(99,102,241,0.2)',
-              color: !currentVal ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.9)',
-              boxShadow: currentVal ? (isPartB ? '0 0 30px rgba(14,116,144,0.3)' : '0 0 30px rgba(67,56,202,0.4)') : 'none'
+                : '1px solid rgba(255,255,255,0.12)',
+              color: !currentVal ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.92)',
+              boxShadow: currentVal ? '0 4px 24px rgba(0,0,0,0.4)' : 'none'
             }}>
             {currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}
           </button>
