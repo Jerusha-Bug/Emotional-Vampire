@@ -607,6 +607,17 @@ export default function App() {
   if (step === 'welcome') {
     return (
       <div className="min-h-screen bg-[#080608] text-white flex flex-col font-sans overflow-hidden relative">
+        {/* 极光背景图 */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'url(/aurora.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            opacity: 0.45,
+          }}/>
+        {/* 遮罩：底部加深确保文字可读 */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{background: 'linear-gradient(to bottom, rgba(8,6,8,0.3) 0%, rgba(8,6,8,0.5) 50%, rgba(8,6,8,0.92) 100%)'}}/>
         <style>{`
           @keyframes drift1 {
             0%,100% { transform: translate(0,0) scale(1); border-radius: 60% 40% 70% 30% / 50% 60% 40% 70%; }
@@ -779,6 +790,18 @@ export default function App() {
     return (
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
         style={{background: `linear-gradient(160deg, ${bgColor1} 0%, ${bgColor2} 100%)`}}>
+
+        {/* 极光背景图 */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'url(/aurora.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: isPartB ? 'center bottom' : 'center top',
+            opacity: 0.18,
+          }}/>
+        {/* 色调遮罩 */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{background: `linear-gradient(160deg, ${bgColor1}cc 0%, ${bgColor2}ee 100%)`}}/>
 
         {/* 背景流体 */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
