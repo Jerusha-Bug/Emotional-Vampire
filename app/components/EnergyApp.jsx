@@ -606,7 +606,7 @@ export default function App() {
   // --- [1] 首页 ---
   if (step === 'welcome') {
     return (
-      <div className="min-h-screen bg-[#080608] text-white flex flex-col font-sans overflow-hidden relative">
+      <div className="min-h-screen bg-[#152331] text-white flex flex-col font-sans overflow-hidden relative">
         {/* 极光背景图 */}
         <div className="absolute inset-0 pointer-events-none"
           style={{
@@ -652,7 +652,7 @@ export default function App() {
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {/* 主流体 - 深红 */}
           <div className="fluid1 absolute top-[-15%] left-[-20%] w-[80%] h-[70%] opacity-[0.18]"
-            style={{background: 'radial-gradient(ellipse, #7f1d1d 0%, #450a0a 60%, transparent 100%)'}} />
+            style={{background: 'radial-gradient(ellipse, #1e3a5f 0%, #0f2040 60%, transparent 100%)'}} />
           {/* 副流体 - 深紫 */}
           <div className="fluid2 absolute bottom-[-20%] right-[-15%] w-[70%] h-[65%] opacity-[0.20]"
             style={{background: 'radial-gradient(ellipse, #581c87 0%, #2e1065 60%, transparent 100%)'}} />
@@ -722,9 +722,9 @@ export default function App() {
             <button onClick={handleStartIdentity}
               className="w-full max-w-xs py-5 text-white font-bold text-lg tracking-wide active:scale-95 transition-all rounded-[2rem]"
               style={{
-                background: 'linear-gradient(135deg, rgba(127,29,29,0.9), rgba(159,18,57,0.95))',
-                boxShadow: '0 0 40px rgba(159,18,57,0.35), 0 0 80px rgba(159,18,57,0.12)',
-                border: '1px solid rgba(251,113,133,0.18)',
+                background: 'linear-gradient(135deg, rgba(30,58,95,0.95), rgba(67,56,202,0.95))',
+                boxShadow: '0 0 40px rgba(67,56,202,0.35), 0 0 80px rgba(67,56,202,0.12)',
+                border: '1px solid rgba(129,140,248,0.25)',
               }}>
               <span style={{textShadow: '0 0 20px rgba(255,255,255,0.25)'}}>开启测评</span>
             </button>
@@ -746,7 +746,7 @@ export default function App() {
   // --- [2] Identity Step ---
   if (step === 'identity') {
     return (
-      <div className="min-h-screen bg-[#0d0a0e] text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden">
+      <div className="min-h-screen bg-[#152331] text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden">
         <div className="w-20 h-20 bg-rose-900/20 rounded-full flex items-center justify-center mb-8 ring-8 ring-rose-500/5">
            <Heart className="w-10 h-10 text-rose-500 animate-pulse" fill="currentColor" />
         </div>
@@ -783,9 +783,9 @@ export default function App() {
     const q = QUESTIONS[currentIndex]; if (!q) return null;
     const currentVal = answers[q.id]; const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
     const isPartB = q.part === 'B';
-    const bgColor1 = isPartB ? '#0c1a2e' : '#120608';
-    const bgColor2 = isPartB ? '#0a1628' : '#0d0408';
-    const fluidColor1 = isPartB ? 'rgba(14,116,144,0.25)' : 'rgba(127,29,29,0.25)';
+    const bgColor1 = isPartB ? '#0d1f30' : '#0e1a27';
+    const bgColor2 = isPartB ? '#0b1c2a' : '#0c1820';
+    const fluidColor1 = isPartB ? 'rgba(14,116,144,0.25)' : 'rgba(30,58,95,0.30)';
     const fluidColor2 = isPartB ? 'rgba(30,58,138,0.20)' : 'rgba(88,28,135,0.18)';
     return (
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
@@ -848,7 +848,7 @@ export default function App() {
                 width:`${progress}%`,
                 background: isPartB
                   ? 'linear-gradient(90deg, rgba(14,116,144,0.8), rgba(103,232,249,0.9))'
-                  : 'linear-gradient(90deg, rgba(127,29,29,0.8), rgba(251,113,133,0.9))',
+                  : 'linear-gradient(90deg, rgba(30,58,95,0.8), rgba(99,102,241,0.9))',
                 boxShadow: isPartB ? '0 0 12px rgba(103,232,249,0.4)' : '0 0 12px rgba(251,113,133,0.3)'
               }} />
           </div>
@@ -926,12 +926,12 @@ export default function App() {
                 ? 'rgba(255,255,255,0.04)'
                 : isPartB
                   ? 'linear-gradient(135deg, rgba(14,116,144,0.8), rgba(8,145,178,0.9))'
-                  : 'linear-gradient(135deg, rgba(127,29,29,0.85), rgba(159,18,57,0.9))',
+                  : 'linear-gradient(135deg, rgba(30,58,95,0.85), rgba(67,56,202,0.9))',
               border: !currentVal
                 ? '1px solid rgba(255,255,255,0.06)'
                 : isPartB ? '1px solid rgba(103,232,249,0.2)' : '1px solid rgba(251,113,133,0.2)',
               color: !currentVal ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.9)',
-              boxShadow: currentVal ? (isPartB ? '0 0 30px rgba(14,116,144,0.3)' : '0 0 30px rgba(127,29,29,0.4)') : 'none'
+              boxShadow: currentVal ? (isPartB ? '0 0 30px rgba(14,116,144,0.3)' : '0 0 30px rgba(67,56,202,0.4)') : 'none'
             }}>
             {currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}
           </button>
@@ -941,10 +941,10 @@ export default function App() {
   }
 
   if (step === 'transition') return (
-    <div className="min-h-screen bg-[#080608] text-white flex flex-col items-center justify-center p-12 text-center font-sans relative overflow-hidden">
+    <div className="min-h-screen bg-[#152331] text-white flex flex-col items-center justify-center p-12 text-center font-sans relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="fluid1 absolute top-[-20%] left-[-20%] w-[80%] h-[80%] opacity-[0.15] blur-[100px] rounded-full"
-          style={{background:'radial-gradient(ellipse, #7f1d1d 0%, transparent 70%)'}} />
+          style={{background:'radial-gradient(ellipse, #1e3a5f 0%, transparent 70%)'}} />
         <div className="fluid3 absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] opacity-[0.12] blur-[100px] rounded-full"
           style={{background:'radial-gradient(ellipse, #164e63 0%, transparent 70%)'}} />
       </div>
@@ -1046,7 +1046,7 @@ export default function App() {
       'text-blue-400':    '#05080e', 'text-cyan-400':    '#04090e',
       'text-emerald-400': '#04090a', 'text-slate-400':   '#070809',
     };
-    const pageBg = roleBgBase[color] || '#080608';
+    const pageBg = roleBgBase[color] || '#152331';
 
     return (
       <div className="min-h-screen text-white font-sans relative overflow-x-hidden"
