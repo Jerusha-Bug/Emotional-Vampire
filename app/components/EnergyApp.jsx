@@ -606,76 +606,44 @@ export default function App() {
   // --- [1] 首页 ---
   if (step === 'welcome') {
     return (
-      <div className="min-h-screen bg-[#152331] text-white flex flex-col font-sans overflow-hidden relative">
+      <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
+        style={{background: 'linear-gradient(135deg, #1f1c2c 0%, #534e64 50%, #928dab 100%)'}}>
 
         <style>{`
-          @keyframes drift1 {
-            0%,100% { transform: translate(0,0) scale(1); border-radius: 60% 40% 70% 30% / 50% 60% 40% 70%; }
-            33% { transform: translate(18px,-22px) scale(1.04); border-radius: 40% 60% 30% 70% / 60% 40% 70% 50%; }
-            66% { transform: translate(-12px,14px) scale(0.97); border-radius: 70% 30% 60% 40% / 40% 70% 50% 60%; }
-          }
-          @keyframes drift2 {
-            0%,100% { transform: translate(0,0) scale(1); border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%; }
-            33% { transform: translate(-20px,16px) scale(1.06); border-radius: 60% 40% 40% 60% / 40% 60% 50% 50%; }
-            66% { transform: translate(10px,-20px) scale(0.95); border-radius: 50% 50% 60% 40% / 50% 50% 40% 60%; }
-          }
-          @keyframes drift3 {
-            0%,100% { transform: translate(0,0) scale(1); border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
-            50% { transform: translate(14px,18px) scale(1.08); border-radius: 30% 70% 60% 40% / 60% 30% 70% 40%; }
-          }
           @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 0.6; }
+            0% { transform: translateY(0) scale(1); opacity: 0.5; }
             100% { transform: translateY(-120px) scale(0.3); opacity: 0; }
           }
-          @keyframes blobPulse {
-            0%,100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.06); opacity: 1; }
-          }
-          .fluid1 { animation: drift1 12s ease-in-out infinite; }
-          .fluid2 { animation: drift2 16s ease-in-out infinite; }
-          .fluid3 { animation: drift3 20s ease-in-out infinite; }
           .particle { animation: floatUp linear infinite; }
-          .blob-btn { animation: blobPulse 3s ease-in-out infinite; }
         `}</style>
 
-        {/* 背景流体层 */}
+        {/* 极淡噪点纹理感 */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{background: 'radial-gradient(ellipse at 30% 20%, rgba(146,141,171,0.15) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(31,28,44,0.4) 0%, transparent 60%)'}}/>
+
+        {/* SVG 流线装饰 */}
+        <svg className="absolute inset-0 w-full h-full opacity-[0.06]" viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
+          <path d="M-20 200 C 80 180, 150 280, 200 240 S 320 160, 420 200" stroke="white" strokeWidth="1" fill="none"/>
+          <path d="M-20 380 C 60 340, 180 420, 250 380 S 360 300, 430 360" stroke="white" strokeWidth="0.8" fill="none"/>
+          <path d="M50 600 C 120 560, 200 640, 300 580 S 380 520, 450 560" stroke="white" strokeWidth="0.6" fill="none"/>
+        </svg>
+
+        {/* 漂浮粒子 */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* 主流体 - 深红 */}
-          <div className="fluid1 absolute top-[-15%] left-[-20%] w-[80%] h-[70%] opacity-[0.18]"
-            style={{background: 'radial-gradient(ellipse, #1e3a5f 0%, #0f2040 60%, transparent 100%)'}} />
-          {/* 副流体 - 深紫 */}
-          <div className="fluid2 absolute bottom-[-20%] right-[-15%] w-[70%] h-[65%] opacity-[0.20]"
-            style={{background: 'radial-gradient(ellipse, #581c87 0%, #2e1065 60%, transparent 100%)'}} />
-          {/* 点缀流体 - 深青 */}
-          <div className="fluid3 absolute top-[30%] right-[-10%] w-[45%] h-[40%] opacity-[0.12]"
-            style={{background: 'radial-gradient(ellipse, #164e63 0%, #0c2a32 60%, transparent 100%)'}} />
-
-          {/* SVG 流线装饰 */}
-          <svg className="absolute inset-0 w-full h-full opacity-[0.06]" viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
-            <path d="M-20 200 C 80 180, 150 280, 200 240 S 320 160, 420 200" stroke="white" strokeWidth="1" fill="none"/>
-            <path d="M-20 380 C 60 340, 180 420, 250 380 S 360 300, 430 360" stroke="white" strokeWidth="0.8" fill="none"/>
-            <path d="M50 600 C 120 560, 200 640, 300 580 S 380 520, 450 560" stroke="white" strokeWidth="0.6" fill="none"/>
-            <path d="M100 700 C 160 660, 240 730, 320 690" stroke="white" strokeWidth="0.5" fill="none"/>
-          </svg>
-
-          {/* 漂浮粒子 */}
           {[
-            {left:'15%', delay:'0s', dur:'6s', size:3, top:'75%'},
+            {left:'15%', delay:'0s', dur:'6s', size:2, top:'75%'},
             {left:'28%', delay:'1.5s', dur:'8s', size:2, top:'80%'},
-            {left:'45%', delay:'0.8s', dur:'7s', size:4, top:'70%'},
+            {left:'45%', delay:'0.8s', dur:'7s', size:3, top:'70%'},
             {left:'62%', delay:'2.2s', dur:'9s', size:2, top:'85%'},
-            {left:'75%', delay:'0.3s', dur:'6.5s', size:3, top:'78%'},
+            {left:'75%', delay:'0.3s', dur:'6.5s', size:2, top:'78%'},
             {left:'88%', delay:'3s', dur:'7.5s', size:2, top:'72%'},
-            {left:'8%', delay:'4s', dur:'8s', size:2, top:'65%'},
-            {left:'52%', delay:'5s', dur:'6s', size:3, top:'90%'},
           ].map((p, i) => (
             <div key={i} className="particle absolute rounded-full"
               style={{
                 left: p.left, top: p.top,
                 width: p.size, height: p.size,
-                background: i % 3 === 0 ? 'rgba(99,102,241,0.7)' : i % 3 === 1 ? 'rgba(167,139,250,0.6)' : 'rgba(103,232,249,0.5)',
+                background: 'rgba(255,255,255,0.5)',
                 animationDelay: p.delay, animationDuration: p.dur,
-                boxShadow: `0 0 ${p.size*3}px currentColor`
               }} />
           ))}
         </div>
@@ -687,14 +655,16 @@ export default function App() {
 
           {/* 标题区 - 无容器，直接浮在背景上 */}
           <div className="flex flex-col items-center text-center">
-            <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-rose-300/50 mb-6">
+            <p className="text-[10px] font-bold uppercase tracking-[0.35em] mb-6"
+              style={{color:'#928dab'}}>
               流失追踪 · 能量损耗分析
             </p>
             <h1 className="text-[2.6rem] font-bold leading-[1.1] mb-5"
-              style={{letterSpacing: '-0.02em', textShadow: '0 0 60px rgba(244,63,94,0.2)'}}>
+              style={{letterSpacing: '-0.02em', color:'#F2F3FB'}}>
               关系能量与<br/>心理防御
             </h1>
-            <p className="text-white/30 text-sm leading-relaxed max-w-[220px]">
+            <p className="text-sm leading-relaxed max-w-[220px]"
+              style={{color:'#767091'}}>
               这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？
             </p>
           </div>
@@ -773,21 +743,19 @@ export default function App() {
     const q = QUESTIONS[currentIndex]; if (!q) return null;
     const currentVal = answers[q.id]; const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
     const isPartB = q.part === 'B';
-    const bgColor1 = isPartB ? '#0d1f30' : '#0e1a27';
-    const bgColor2 = isPartB ? '#0b1c2a' : '#0c1820';
-    const fluidColor1 = isPartB ? 'rgba(14,116,144,0.25)' : 'rgba(30,58,95,0.30)';
-    const fluidColor2 = isPartB ? 'rgba(30,58,138,0.20)' : 'rgba(88,28,135,0.18)';
+    const bgGrad = isPartB
+      ? 'linear-gradient(135deg, #1f1c2c 0%, #353342 60%, #635e79 100%)'
+      : 'linear-gradient(135deg, #1f1c2c 0%, #4a446b 60%, #928dab 100%)';
     return (
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
-        style={{background: `linear-gradient(160deg, ${bgColor1} 0%, ${bgColor2} 100%)`}}>
-
+        style={{background: bgGrad}}>
 
         {/* 背景流体 */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="fluid1 absolute top-[-30%] right-[-20%] w-[70%] h-[60%] opacity-80 blur-[80px] rounded-full"
-            style={{background: `radial-gradient(ellipse, ${fluidColor1} 0%, transparent 70%)`}} />
-          <div className="fluid2 absolute bottom-[-10%] left-[-15%] w-[60%] h-[50%] opacity-80 blur-[100px] rounded-full"
-            style={{background: `radial-gradient(ellipse, ${fluidColor2} 0%, transparent 70%)`}} />
+          <div className="absolute inset-0"
+            style={{background: isPartB
+              ? 'radial-gradient(ellipse at 70% 25%, rgba(99,94,121,0.2) 0%, transparent 55%)'
+              : 'radial-gradient(ellipse at 30% 20%, rgba(146,141,171,0.15) 0%, transparent 55%)'}} />
           {/* 细线装饰 */}
           <svg className="absolute inset-0 w-full h-full opacity-[0.04]" viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
             <path d="M0 300 C 100 260, 200 340, 390 280" stroke="white" strokeWidth="0.8" fill="none"/>
@@ -795,16 +763,16 @@ export default function App() {
           </svg>
           {/* 漂浮粒子 */}
           {[
-            {left:'10%',top:'80%',delay:'0s',dur:'7s',size:2,c:'rgba(99,102,241,0.5)'},
-            {left:'30%',top:'85%',delay:'2s',dur:'9s',size:3,c:'rgba(167,139,250,0.4)'},
-            {left:'55%',top:'75%',delay:'1s',dur:'6s',size:2,c:'rgba(103,232,249,0.4)'},
-            {left:'75%',top:'88%',delay:'3s',dur:'8s',size:2,c:'rgba(99,102,241,0.4)'},
-            {left:'88%',top:'70%',delay:'0.5s',dur:'7s',size:3,c:'rgba(167,139,250,0.5)'},
+            {left:'10%',top:'80%',delay:'0s',dur:'7s',size:2},
+            {left:'30%',top:'85%',delay:'2s',dur:'9s',size:2},
+            {left:'55%',top:'75%',delay:'1s',dur:'6s',size:2},
+            {left:'75%',top:'88%',delay:'3s',dur:'8s',size:2},
+            {left:'88%',top:'70%',delay:'0.5s',dur:'7s',size:2},
           ].map((p,i) => (
             <div key={i} className="particle absolute rounded-full"
-              style={{left:p.left,top:p.top,width:p.size,height:p.size,background:p.c,
-                animationDelay:p.delay,animationDuration:p.dur,
-                boxShadow:`0 0 ${p.size*4}px ${p.c}`}} />
+              style={{left:p.left,top:p.top,width:p.size,height:p.size,
+                background:'rgba(255,255,255,0.35)',
+                animationDelay:p.delay,animationDuration:p.dur}} />
           ))}
         </div>
 
@@ -812,11 +780,11 @@ export default function App() {
         <div className="relative z-10 px-6 pt-8 pb-4 max-w-md mx-auto w-full">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.25)'}}>
-              <span style={{color: isPartB ? 'rgba(103,232,249,0.6)' : 'rgba(99,102,241,0.6)'}}>{currentIndex + 1}</span>
+              <span style={{color: isPartB ? '#9E9BB7' : '#BCBEE5'}}>{currentIndex + 1}</span>
               <span> / {QUESTIONS.length}</span>
             </span>
             <span className="text-[10px] font-bold uppercase tracking-[0.25em]"
-              style={{color: isPartB ? 'rgba(103,232,249,0.4)' : 'rgba(99,102,241,0.4)'}}>
+              style={{color: isPartB ? '#767091' : '#928dab'}}>
               PART {String(q.part)}
             </span>
           </div>
@@ -828,12 +796,12 @@ export default function App() {
                 background: isPartB
                   ? 'linear-gradient(90deg, rgba(14,116,144,0.8), rgba(103,232,249,0.9))'
                   : 'linear-gradient(90deg, rgba(30,58,95,0.8), rgba(99,102,241,0.9))',
-                boxShadow: isPartB ? '0 0 12px rgba(103,232,249,0.4)' : '0 0 12px rgba(99,102,241,0.3)'
+                boxShadow: isPartB ? '0 0 12px rgba(118,112,145,0.5)' : '0 0 12px rgba(146,141,171,0.5)'
               }} />
           </div>
           {/* 维度标签 */}
           <p className="text-[10px] uppercase tracking-[0.3em] mb-2"
-            style={{color: isPartB ? 'rgba(103,232,249,0.35)' : 'rgba(99,102,241,0.35)'}}>
+            style={{color: isPartB ? '#635e79' : '#928dab'}}>
             {String(q.dim)}
           </p>
         </div>
@@ -1137,7 +1105,7 @@ export default function App() {
               <div className="w-full h-[2px] rounded-full overflow-hidden" style={{background:'rgba(255,255,255,0.06)'}}>
                 <div className="h-full rounded-full transition-all duration-700"
                   style={{width:`${Math.round((scoreA/120)*100)}%`,
-                    background:`linear-gradient(90deg, ${rc}0.5), ${rc}0.9))`,
+                    background:'linear-gradient(90deg, #4a446b, #928dab)',
                     boxShadow:`0 0 10px ${rc}0.4)`}} />
               </div>
             </div>
