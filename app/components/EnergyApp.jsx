@@ -607,17 +607,7 @@ export default function App() {
   if (step === 'welcome') {
     return (
       <div className="min-h-screen bg-[#152331] text-white flex flex-col font-sans overflow-hidden relative">
-        {/* 极光背景图 */}
-        <div className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: 'url(/aurora.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            opacity: 0.45,
-          }}/>
-        {/* 遮罩：底部加深确保文字可读 */}
-        <div className="absolute inset-0 pointer-events-none"
-          style={{background: 'linear-gradient(to bottom, rgba(8,6,8,0.3) 0%, rgba(8,6,8,0.5) 50%, rgba(8,6,8,0.92) 100%)'}}/>
+
         <style>{`
           @keyframes drift1 {
             0%,100% { transform: translate(0,0) scale(1); border-radius: 60% 40% 70% 30% / 50% 60% 40% 70%; }
@@ -683,7 +673,7 @@ export default function App() {
               style={{
                 left: p.left, top: p.top,
                 width: p.size, height: p.size,
-                background: i % 3 === 0 ? 'rgba(251,113,133,0.7)' : i % 3 === 1 ? 'rgba(167,139,250,0.6)' : 'rgba(103,232,249,0.5)',
+                background: i % 3 === 0 ? 'rgba(99,102,241,0.7)' : i % 3 === 1 ? 'rgba(167,139,250,0.6)' : 'rgba(103,232,249,0.5)',
                 animationDelay: p.delay, animationDuration: p.dur,
                 boxShadow: `0 0 ${p.size*3}px currentColor`
               }} />
@@ -747,8 +737,8 @@ export default function App() {
   if (step === 'identity') {
     return (
       <div className="min-h-screen bg-[#152331] text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden">
-        <div className="w-20 h-20 bg-rose-900/20 rounded-full flex items-center justify-center mb-8 ring-8 ring-rose-500/5">
-           <Heart className="w-10 h-10 text-rose-500 animate-pulse" fill="currentColor" />
+        <div className="w-20 h-20 bg-indigo-900/20 rounded-full flex items-center justify-center mb-8 ring-8 ring-indigo-500/5">
+           <Heart className="w-10 h-10 text-indigo-400 animate-pulse" fill="currentColor" />
         </div>
         <h2 className="text-3xl font-black mb-4 tracking-tighter text-center">锁定分析对象</h2>
         <p className="text-white/35 text-sm mb-12 text-center">告诉我们，你最想扫描哪段互动的能量流失？</p>
@@ -759,7 +749,7 @@ export default function App() {
                autoFocus
                type="text" 
                placeholder="例如：妈妈 / 爱人 / 同事" 
-               className="w-full bg-white/5 border border-white/10 p-6 rounded-[2.2rem] text-lg text-center focus:outline-none focus:border-rose-500/30 transition-all placeholder:text-white/15" 
+               className="w-full bg-white/5 border border-white/10 p-6 rounded-[2.2rem] text-lg text-center focus:outline-none focus:border-indigo-500/30 transition-all placeholder:text-white/15" 
                value={targetPerson} 
                onChange={(e) => setTargetPerson(e.target.value)} 
              />
@@ -768,7 +758,7 @@ export default function App() {
           <button 
             disabled={!targetPerson.trim()}
             onClick={handleStartQuiz} 
-            className={`w-full py-5 rounded-[2.2rem] font-black text-lg transition-all flex items-center justify-center gap-2 ${targetPerson.trim() ? 'bg-rose-900/80 text-white shadow-xl shadow-rose-900/20 active:scale-95' : 'bg-[#120e13] text-slate-700 cursor-not-allowed border border-white/5'}`}
+            className={`w-full py-5 rounded-[2.2rem] font-black text-lg transition-all flex items-center justify-center gap-2 ${targetPerson.trim() ? 'bg-indigo-900/80 text-white shadow-xl shadow-indigo-900/20 active:scale-95' : 'bg-[#120e13] text-slate-700 cursor-not-allowed border border-white/5'}`}
           >
              进入扫描仪式 →
           </button>
@@ -791,17 +781,6 @@ export default function App() {
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
         style={{background: `linear-gradient(160deg, ${bgColor1} 0%, ${bgColor2} 100%)`}}>
 
-        {/* 极光背景图 */}
-        <div className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: 'url(/aurora.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: isPartB ? 'center bottom' : 'center top',
-            opacity: 0.18,
-          }}/>
-        {/* 色调遮罩 */}
-        <div className="absolute inset-0 pointer-events-none"
-          style={{background: `linear-gradient(160deg, ${bgColor1}cc 0%, ${bgColor2}ee 100%)`}}/>
 
         {/* 背景流体 */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -816,10 +795,10 @@ export default function App() {
           </svg>
           {/* 漂浮粒子 */}
           {[
-            {left:'10%',top:'80%',delay:'0s',dur:'7s',size:2,c:'rgba(251,113,133,0.5)'},
+            {left:'10%',top:'80%',delay:'0s',dur:'7s',size:2,c:'rgba(99,102,241,0.5)'},
             {left:'30%',top:'85%',delay:'2s',dur:'9s',size:3,c:'rgba(167,139,250,0.4)'},
             {left:'55%',top:'75%',delay:'1s',dur:'6s',size:2,c:'rgba(103,232,249,0.4)'},
-            {left:'75%',top:'88%',delay:'3s',dur:'8s',size:2,c:'rgba(251,113,133,0.4)'},
+            {left:'75%',top:'88%',delay:'3s',dur:'8s',size:2,c:'rgba(99,102,241,0.4)'},
             {left:'88%',top:'70%',delay:'0.5s',dur:'7s',size:3,c:'rgba(167,139,250,0.5)'},
           ].map((p,i) => (
             <div key={i} className="particle absolute rounded-full"
@@ -833,11 +812,11 @@ export default function App() {
         <div className="relative z-10 px-6 pt-8 pb-4 max-w-md mx-auto w-full">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.25)'}}>
-              <span style={{color: isPartB ? 'rgba(103,232,249,0.6)' : 'rgba(251,113,133,0.6)'}}>{currentIndex + 1}</span>
+              <span style={{color: isPartB ? 'rgba(103,232,249,0.6)' : 'rgba(99,102,241,0.6)'}}>{currentIndex + 1}</span>
               <span> / {QUESTIONS.length}</span>
             </span>
             <span className="text-[10px] font-bold uppercase tracking-[0.25em]"
-              style={{color: isPartB ? 'rgba(103,232,249,0.4)' : 'rgba(251,113,133,0.4)'}}>
+              style={{color: isPartB ? 'rgba(103,232,249,0.4)' : 'rgba(99,102,241,0.4)'}}>
               PART {String(q.part)}
             </span>
           </div>
@@ -849,12 +828,12 @@ export default function App() {
                 background: isPartB
                   ? 'linear-gradient(90deg, rgba(14,116,144,0.8), rgba(103,232,249,0.9))'
                   : 'linear-gradient(90deg, rgba(30,58,95,0.8), rgba(99,102,241,0.9))',
-                boxShadow: isPartB ? '0 0 12px rgba(103,232,249,0.4)' : '0 0 12px rgba(251,113,133,0.3)'
+                boxShadow: isPartB ? '0 0 12px rgba(103,232,249,0.4)' : '0 0 12px rgba(99,102,241,0.3)'
               }} />
           </div>
           {/* 维度标签 */}
           <p className="text-[10px] uppercase tracking-[0.3em] mb-2"
-            style={{color: isPartB ? 'rgba(103,232,249,0.35)' : 'rgba(251,113,133,0.35)'}}>
+            style={{color: isPartB ? 'rgba(103,232,249,0.35)' : 'rgba(99,102,241,0.35)'}}>
             {String(q.dim)}
           </p>
         </div>
@@ -900,7 +879,7 @@ export default function App() {
                       )}
                     </div>
                     <span className="text-[9px] font-bold tracking-tight"
-                      style={{color: isSelected ? (isPartB ? 'rgba(103,232,249,0.8)' : 'rgba(251,113,133,0.8)') : 'rgba(255,255,255,0.2)'}}>
+                      style={{color: isSelected ? (isPartB ? 'rgba(103,232,249,0.8)' : 'rgba(99,102,241,0.8)') : 'rgba(255,255,255,0.2)'}}>
                       {String(opt.label)}
                     </span>
                   </button>
@@ -929,7 +908,7 @@ export default function App() {
                   : 'linear-gradient(135deg, rgba(30,58,95,0.85), rgba(67,56,202,0.9))',
               border: !currentVal
                 ? '1px solid rgba(255,255,255,0.06)'
-                : isPartB ? '1px solid rgba(103,232,249,0.2)' : '1px solid rgba(251,113,133,0.2)',
+                : isPartB ? '1px solid rgba(103,232,249,0.2)' : '1px solid rgba(99,102,241,0.2)',
               color: !currentVal ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.9)',
               boxShadow: currentVal ? (isPartB ? '0 0 30px rgba(14,116,144,0.3)' : '0 0 30px rgba(67,56,202,0.4)') : 'none'
             }}>
@@ -1018,17 +997,17 @@ export default function App() {
       'text-blue-400': 'rgba(96,165,250,', 'text-cyan-400': 'rgba(34,211,238,',
       'text-emerald-400': 'rgba(52,211,153,', 'text-slate-400': 'rgba(148,163,184,',
     };
-    const rc = roleColorMap[color] || 'rgba(251,113,133,';
+    const rc = roleColorMap[color] || 'rgba(99,102,241,';
 
     // 每个角色的对比色（第二流体）让背景色彩更丰富有辨识度
     const roleAccentMap = {
       'text-rose-400':    'rgba(88,28,135,0.22)',    // 紫
       'text-red-500':     'rgba(30,58,138,0.20)',    // 深蓝
-      'text-fuchsia-400': 'rgba(127,29,29,0.20)',    // 深红
+      'text-fuchsia-400': 'rgba(30,58,138,0.20)',    // 深红
       'text-purple-400':  'rgba(14,116,144,0.18)',   // 青
       'text-orange-500':  'rgba(88,28,135,0.20)',    // 紫
       'text-indigo-400':  'rgba(6,78,59,0.22)',      // 深绿
-      'text-amber-400':   'rgba(127,29,29,0.18)',    // 深红
+      'text-amber-400':   'rgba(30,58,138,0.18)',    // 深红
       'text-yellow-400':  'rgba(14,116,144,0.16)',   // 青
       'text-blue-400':    'rgba(6,78,59,0.20)',      // 深绿
       'text-cyan-400':    'rgba(30,58,138,0.22)',    // 深蓝
