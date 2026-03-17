@@ -62,13 +62,13 @@ const DS = {
     transition: 'width 0.6s cubic-bezier(.4,0,.2,1)',
   }),
 
-  // 进度条填充（Part B）
+  // 进度条填充（Part B）— 与整体紫灰色系统一，比 A 段稍亮
   progressFillB: (pct) => ({
     width: `${pct}%`,
     height: '100%',
     borderRadius: '2px',
-    background: 'linear-gradient(90deg, rgba(8,145,178,0.8), rgba(103,232,249,0.9))',
-    boxShadow: '0 0 10px rgba(103,232,249,0.35)',
+    background: 'linear-gradient(90deg, rgba(83,78,100,0.9), rgba(188,190,229,0.95))',
+    boxShadow: '0 0 10px rgba(188,190,229,0.4)',
     transition: 'width 0.6s cubic-bezier(.4,0,.2,1)',
   }),
 
@@ -724,7 +724,7 @@ export default function App() {
     const currentVal = answers[q.id];
     const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
     const isPartB = q.part === 'B';
-    const accentColor = isPartB ? 'rgba(103,232,249,' : 'rgba(188,190,229,';
+    const accentColor = isPartB ? 'rgba(200,198,230,' : 'rgba(188,190,229,';
 
     return (
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
@@ -781,23 +781,25 @@ export default function App() {
                     style={{
                       transform: isSelected ? 'scale(1.25)' : 'scale(1)',
                       background: isSelected
-                        ? `radial-gradient(ellipse, ${accentColor}0.6) 0%, ${accentColor}0.2) 100%)`
-                        : 'rgba(255,255,255,0.08)',
+                        ? `radial-gradient(ellipse, ${accentColor}0.55) 0%, ${accentColor}0.15) 100%)`
+                        : 'rgba(255,255,255,0.07)',
                       border: isSelected
-                        ? `2px solid ${accentColor}0.9)`
-                        : '1px solid rgba(255,255,255,0.22)',
+                        ? `2px solid ${accentColor}0.85)`
+                        : '1px solid rgba(255,255,255,0.18)',
+                      // 未选中：无阴影，轻盈浮动感
+                      // 选中：只有内发光，不是整体阴影
                       boxShadow: isSelected
-                        ? `0 0 24px ${accentColor}0.5), 0 0 48px ${accentColor}0.2)`
-                        : '0 2px 8px rgba(0,0,0,0.3)',
+                        ? `0 0 16px ${accentColor}0.35) inset, 0 0 24px ${accentColor}0.15)`
+                        : 'none',
                     }}>
                     {isSelected && (
                       <div className="w-2 h-2 rounded-full"
-                        style={{background: `${accentColor}0.9)`, boxShadow:`0 0 8px ${accentColor}1)`}} />
+                        style={{background: `${accentColor}0.9)`, boxShadow:`0 0 6px ${accentColor}0.8)`}} />
                     )}
                   </div>
                   <span style={{
                     fontSize: '9px', fontWeight: 700, letterSpacing: '0.04em',
-                    color: isSelected ? (isPartB ? 'rgba(103,232,249,0.95)' : '#BCBEE5') : 'rgba(255,255,255,0.25)'
+                    color: isSelected ? '#D0CEF0' : 'rgba(255,255,255,0.25)'
                   }}>
                     {String(opt.label)}
                   </span>
@@ -831,7 +833,7 @@ export default function App() {
             style={currentVal
               ? {...DS.btnPrimary(accentColor), height: '56px',
                   background: isPartB
-                    ? 'linear-gradient(135deg, rgba(8,145,178,0.75), rgba(14,116,144,0.85))'
+                    ? 'linear-gradient(135deg, #2a2640, #7b78a8)'
                     : 'linear-gradient(135deg, #1f1c2c, #928dab)'}
               : {...DS.btnSecondary, height: '56px', cursor: 'not-allowed', opacity: 0.4}}>
             {currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}
@@ -848,18 +850,18 @@ export default function App() {
     <div className="min-h-screen text-white flex flex-col items-center justify-center p-12 text-center font-sans relative overflow-hidden"
       style={{background: DS.pageBg}}>
       <div className="absolute inset-0 pointer-events-none"
-        style={{background: 'radial-gradient(ellipse at 50% 40%, rgba(8,145,178,0.15) 0%, transparent 60%)'}} />
+        style={{background: 'radial-gradient(ellipse at 50% 40%, rgba(146,141,171,0.18) 0%, transparent 60%)'}} />
       {DS.waveSvg}
       <Particles />
 
       <div className="relative z-10 flex flex-col items-center">
         <div className="w-16 h-16 rounded-full mb-10 flex items-center justify-center"
           style={{
-            background: 'radial-gradient(ellipse, rgba(8,145,178,0.35) 0%, transparent 70%)',
-            boxShadow: '0 0 40px rgba(8,145,178,0.22)',
-            border: '1px solid rgba(103,232,249,0.18)'
+            background: 'radial-gradient(ellipse, rgba(146,141,171,0.28) 0%, transparent 70%)',
+            boxShadow: '0 0 40px rgba(146,141,171,0.18)',
+            border: '1px solid rgba(188,190,229,0.2)'
           }}>
-          <Fingerprint className="w-7 h-7" style={{color:'rgba(103,232,249,0.7)'}} />
+          <Fingerprint className="w-7 h-7" style={{color:'rgba(188,190,229,0.75)'}} />
         </div>
 
         <p style={{...DS.label, marginBottom: '16px'}}>PART A 完成</p>
@@ -868,17 +870,17 @@ export default function App() {
         </h2>
         <p className="text-sm mb-14 leading-relaxed max-w-[240px]" style={{color:'rgba(255,255,255,0.30)'}}>
           接下来扫描你当前的<br/>
-          <span style={{color:'rgba(103,232,249,0.6)'}}>内在能量补给状态</span>
+          <span style={{color:'rgba(200,198,230,0.7)'}}>内在能量补给状态</span>
         </p>
 
-        {/* 过渡页按钮 — 同样用 btnPrimary，但色调偏青 */}
+        {/* 过渡页按钮 — 统一 btnPrimary，紫灰色系，比首页稍亮 */}
         <button
           onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }}
           className="w-full max-w-xs py-5 active:scale-95"
           style={{
-            ...DS.btnPrimary('rgba(103,232,249,'),
-            background: 'linear-gradient(135deg, rgba(8,145,178,0.75), rgba(14,116,144,0.88))',
-            boxShadow: '0 4px 24px rgba(0,0,0,0.4), 0 0 20px rgba(8,145,178,0.25)',
+            ...DS.btnPrimary(),
+            background: 'linear-gradient(135deg, #2a2640, #7b78a8)',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.4), 0 0 20px rgba(188,190,229,0.2)',
           }}>
           继续内在扫描
         </button>
