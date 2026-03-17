@@ -50,9 +50,9 @@ const DS = {
 
   // 主按钮（开启测评 / 下一题 / 继续内在扫描）
   btnPrimary: (glowColor = 'rgba(146,141,171,') => ({
-    background: 'linear-gradient(135deg, #1f1c2c, #928dab)',
-    boxShadow: `0 4px 24px rgba(0,0,0,0.45), 0 0 20px ${glowColor}0.25)`,
-    border: '1px solid rgba(255,255,255,0.13)',
+    background: 'linear-gradient(135deg, #2d2844, #7a7599)',
+    boxShadow: `0 4px 28px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.18), 0 0 20px ${glowColor}0.20)`,
+    border: 'none',
     borderRadius: '1.75rem',
     color: '#F2F3FB',
     fontWeight: 700,
