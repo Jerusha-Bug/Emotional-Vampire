@@ -53,7 +53,7 @@ const DS = {
     background: 'linear-gradient(135deg, #1f1c2c, #928dab)',
     boxShadow: `0 4px 24px rgba(0,0,0,0.45), 0 0 20px ${glowColor}0.25)`,
     border: '1px solid rgba(255,255,255,0.13)',
-    borderRadius: '2rem',
+    borderRadius: '1.75rem',
     color: '#F2F3FB',
     fontWeight: 700,
     fontSize: '1rem',
@@ -700,15 +700,20 @@ export default function App() {
 
           <div className="flex-[1.5]" />
 
-          <div className="flex flex-col items-center mb-16" style={{gap: DS.space.md}}>
+          <div className="flex flex-col items-center mb-16" style={{gap: DS.space.md, width:'100%'}}>
             <p style={{...DS.type.t4, color: DS.text.tertiary, textAlign:'center', maxWidth:'240px'}}>
               在开始之前，想一想<br/>最近让你感到情绪消耗的那个人
             </p>
 
-            {/* 主按钮 */}
+            {/* 主按钮 — 全宽撑满 px-8 容器，不再限制 max-w-xs */}
             <button onClick={handleStartIdentity}
-              className="w-full max-w-xs active:scale-95"
-              style={{...DS.btnPrimary(), height:'56px'}}>
+              className="w-full active:scale-95"
+              style={{
+                ...DS.btnPrimary(),
+                height:'56px',
+                maxWidth:'360px',   /* 防止在宽屏上过宽 */
+                minWidth:'0',
+              }}>
               <span style={{textShadow: '0 0 20px rgba(255,255,255,0.25)'}}>开启测评</span>
             </button>
 
@@ -1025,181 +1030,278 @@ export default function App() {
       <div className="min-h-screen text-white font-sans relative overflow-x-hidden" style={{background: pageBg}}>
         <style>{`
           @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 0.5; }
-            100% { transform: translateY(-120px) scale(0.3); opacity: 0; }
+            0%   { transform: translateY(0) scale(1); opacity: 0.6; }
+            100% { transform: translateY(-140px) scale(0.2); opacity: 0; }
           }
           .particle { animation: floatUp linear infinite; }
+          @keyframes pulseGlow {
+            0%,100% { opacity: 0.55; }
+            50%      { opacity: 0.85; }
+          }
         `}</style>
 
-        {/* 背景流体 */}
+        {/* ── 背景流体：更强的色彩饱和度 ── */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{zIndex:0}}>
-          <div className="particle absolute top-[-10%] left-[-20%] w-[90%] h-[60%]"
-            style={{background:`radial-gradient(ellipse, ${rc}0.22) 0%, transparent 70%)`, filter:'blur(120px)'}} />
-          <div className="absolute bottom-[10%] right-[-20%] w-[70%] h-[50%]"
-            style={{background:`radial-gradient(ellipse, ${rc2} 0%, transparent 70%)`, filter:'blur(100px)'}} />
-          <div className="absolute top-[40%] left-[20%] w-[60%] h-[40%]"
-            style={{background:`radial-gradient(ellipse, ${rc}0.08) 0%, transparent 70%)`, filter:'blur(130px)'}} />
-          <svg className="absolute inset-0 w-full h-full opacity-[0.035]" viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
-            <path d="M-20 150 C 100 120, 200 200, 420 140" stroke="white" strokeWidth="0.8" fill="none"/>
-            <path d="M-20 400 C 80 360, 220 440, 420 380" stroke="white" strokeWidth="0.6" fill="none"/>
-            <path d="M-20 650 C 120 610, 260 680, 420 620" stroke="white" strokeWidth="0.5" fill="none"/>
+          {/* 主光晕：左上，更大更亮 */}
+          <div style={{
+            position:'absolute', top:'-15%', left:'-25%',
+            width:'100%', height:'70%',
+            background:`radial-gradient(ellipse, ${rc}0.40) 0%, transparent 65%)`,
+            filter:'blur(90px)',
+            animation:'pulseGlow 6s ease-in-out infinite',
+          }}/>
+          {/* 副光晕：右下，对比色 */}
+          <div style={{
+            position:'absolute', bottom:'5%', right:'-20%',
+            width:'75%', height:'55%',
+            background:`radial-gradient(ellipse, ${rc2} 0%, transparent 65%)`,
+            filter:'blur(80px)',
+          }}/>
+          {/* 中间晕：让颜色渗透整个页面 */}
+          <div style={{
+            position:'absolute', top:'35%', left:'10%',
+            width:'80%', height:'50%',
+            background:`radial-gradient(ellipse, ${rc}0.14) 0%, transparent 65%)`,
+            filter:'blur(110px)',
+          }}/>
+          {/* 流线装饰 */}
+          <svg className="absolute inset-0 w-full h-full" style={{opacity:0.06}}
+            viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
+            <path d="M-20 150 C 100 120, 200 200, 420 140" stroke="white" strokeWidth="1" fill="none"/>
+            <path d="M-20 400 C 80 360, 220 440, 420 380" stroke="white" strokeWidth="0.8" fill="none"/>
+            <path d="M-20 650 C 120 610, 260 680, 420 620" stroke="white" strokeWidth="0.6" fill="none"/>
           </svg>
+          {/* 粒子 */}
           {[
-            {l:'8%',t:'20%',d:'0s',dur:'8s',s:2,c:rc},
-            {l:'25%',t:'40%',d:'3s',dur:'10s',s:3,c:'rgba(192,132,252,'},
-            {l:'70%',t:'15%',d:'1s',dur:'7s',s:2,c:'rgba(34,211,238,'},
-            {l:'85%',t:'50%',d:'4s',dur:'9s',s:2,c:rc},
-            {l:'45%',t:'70%',d:'2s',dur:'8s',s:3,c:'rgba(192,132,252,'},
-          ].map((p,i) => (
-            <div key={i} className="particle absolute rounded-full"
-              style={{left:p.l,top:p.t,width:p.s,height:p.s,
-                background:`${p.c}0.6)`,animationDelay:p.d,animationDuration:p.dur,
-                boxShadow:`0 0 ${p.s*5}px ${p.c}0.8)`}} />
+            {l:'8%', t:'22%',d:'0s',  dur:'8s', s:2.5,c:rc},
+            {l:'22%',t:'45%',d:'3s',  dur:'10s',s:3,  c:rc},
+            {l:'68%',t:'18%',d:'1.2s',dur:'7s', s:2,  c:rc},
+            {l:'82%',t:'52%',d:'4s',  dur:'9s', s:2.5,c:rc},
+            {l:'44%',t:'72%',d:'2s',  dur:'8s', s:3,  c:rc},
+          ].map((p,i)=>(
+            <div key={i} className="particle absolute rounded-full" style={{
+              left:p.l, top:p.t, width:p.s, height:p.s,
+              background:`${p.c}0.7)`,
+              animationDelay:p.d, animationDuration:p.dur,
+              boxShadow:`0 0 ${p.s*6}px ${p.c}1)`,
+            }}/>
           ))}
         </div>
 
-        {/* 统一间距容器：水平 px-5，顶部 pt-10，section 间距统一用 mb-lg(32px) */}
         <div className="relative max-w-md mx-auto px-5 pt-10 pb-12" style={{zIndex:1}}>
 
-          {/* ① 主角色 ── section 间距 mb-lg */}
-          <section className="text-center" style={{marginBottom: DS.space.lg}}>
-            {/* 双标签：状态 + 类型 */}
-            <div className="flex items-center justify-center gap-3 mb-3">
-              <p style={{...DS.label, color:`${rc}0.55)`}}>{String(status)}</p>
-              <span style={{...DS.label, color: DS.text.ghost}}>·</span>
-              <p style={{...DS.label}}>关系能量分析</p>
+          {/* ① HERO ── 角色名超大，视觉锚点 */}
+          <section className="text-center" style={{marginBottom:'48px'}}>
+
+            {/* 状态 badge — 实色背景，不透明 */}
+            <div style={{
+              display:'inline-flex', alignItems:'center', gap:'6px',
+              background:`${rc}0.18)`, border:`1px solid ${rc}0.5)`,
+              borderRadius:'999px', padding:'4px 14px', marginBottom:'20px',
+            }}>
+              <div style={{
+                width:'5px', height:'5px', borderRadius:'50%',
+                background:`${rc}1)`, boxShadow:`0 0 8px ${rc}1)`,
+              }}/>
+              <span style={{...DS.label, color:`${rc}1)`, letterSpacing:'0.2em'}}>
+                {String(status)}
+              </span>
             </div>
-            {/* t1 大标题 */}
-            <h2 style={{...DS.type.t1, color: DS.text.primary,
-              textShadow:`0 0 80px ${rc}0.35)`, marginBottom: DS.space.xs}}>
+
+            {/* 角色名 ── 超大，层级拉满 */}
+            <h2 style={{
+              fontSize: 'clamp(3rem, 12vw, 4.5rem)',
+              fontWeight: 800,
+              lineHeight: 1.0,
+              letterSpacing: '-0.04em',
+              color: DS.text.primary,
+              textShadow: `0 0 60px ${rc}0.6), 0 0 120px ${rc}0.25)`,
+              marginBottom: '12px',
+            }}>
               {String(roleName)}
             </h2>
-            {/* tag — t4 辅助 */}
-            <p style={{...DS.type.t4, fontWeight: 700, color:`${rc}0.85)`,
-              marginBottom: DS.space.md}}>
+
+            {/* tag ── 角色色全量，成为第二视觉焦点 */}
+            <p style={{
+              fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.18em',
+              color:`${rc}1)`,
+              textShadow:`0 0 20px ${rc}0.5)`,
+              marginBottom:'28px',
+            }}>
               {String(tag)}
             </p>
-            {/* definition — t3 正文 */}
-            <p style={{...DS.type.t3, color: DS.text.secondary,
-              maxWidth: '280px', margin:`0 auto ${DS.space.sm}`}}>
+
+            {/* 分割线 */}
+            <div style={{
+              width:'40px', height:'1px', margin:'0 auto 24px',
+              background:`linear-gradient(90deg, transparent, ${rc}0.8), transparent)`,
+            }}/>
+
+            {/* definition ── t3，稍微提亮 */}
+            <p style={{
+              ...DS.type.t3, color:'rgba(255,255,255,0.72)',
+              maxWidth:'280px', margin:`0 auto ${DS.space.sm}`,
+            }}>
               {String(definition)}
             </p>
-            {/* scene — t3 斜体引言 */}
+
+            {/* scene ── 引言，角色色斜体，比之前更醒目 */}
             {scene && (
-              <p style={{...DS.type.t3, fontStyle:'italic', fontWeight:700,
-                color:`${rc}0.65)`, maxWidth:'260px', margin:'0 auto'}}>
-                "{String(scene)}"
+              <p style={{
+                ...DS.type.t3, fontStyle:'italic', fontWeight:700,
+                color:`${rc}0.9)`,
+                textShadow:`0 0 16px ${rc}0.3)`,
+                maxWidth:'260px', margin:'16px auto 0',
+                borderLeft:`2px solid ${rc}0.5)`,
+                paddingLeft:'12px', textAlign:'left',
+              }}>
+                {String(scene)}
               </p>
             )}
-            {/* 副机制 — 内层子卡片风格 */}
+
+            {/* 副机制 ── 更强的边框 */}
             {subRole && (
-              <div style={{...DS.cardInner,
-                background:`${rc}0.06)`, border:`1px solid ${rc}0.12)`,
-                marginTop: DS.space.md, padding:`${DS.space.sm} 20px`, textAlign:'left'}}>
-                <p style={{...DS.label, color: DS.text.tertiary, marginBottom: DS.space.xs}}>副机制</p>
+              <div style={{
+                ...DS.cardInner,
+                background:`${rc}0.08)`,
+                border:`1px solid ${rc}0.28)`,
+                marginTop:'24px', padding:'16px 20px', textAlign:'left',
+              }}>
+                <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.xs}}>副机制</p>
                 <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'6px'}}>
-                  <span style={{...DS.type.t2, color:`${rc}0.9)`}}>{String(subRole.name)}</span>
-                  <span style={{...DS.type.t4, color: DS.text.muted}}>· {String(subRole.dim)}</span>
+                  <span style={{...DS.type.t2, color:`${rc}1)`,
+                    textShadow:`0 0 12px ${rc}0.4)`}}>
+                    {String(subRole.name)}
+                  </span>
+                  <span style={{...DS.type.t4, color:DS.text.muted}}>· {String(subRole.dim)}</span>
                 </div>
-                <p style={{...DS.type.t3, color: DS.text.tertiary}}>{String(subRole.definition)}</p>
+                <p style={{...DS.type.t3, color:DS.text.tertiary}}>{String(subRole.definition)}</p>
               </div>
             )}
           </section>
 
-          {/* ② 插画占位区 ── mb-lg */}
-          <section style={{marginBottom: DS.space.lg}}>
-            <div className="relative h-52 flex items-center justify-center"
-              style={{background:`radial-gradient(ellipse at center, ${rc}0.08) 0%, transparent 70%)`}}>
-              <p style={{...DS.label, color: DS.text.ghost}}>关系互动模式</p>
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 340 208" fill="none">
-                <ellipse cx="170" cy="104" rx="100" ry="60"
-                  stroke={`${rc}0.12)`} strokeWidth="0.8" strokeDasharray="4 6"/>
-                <ellipse cx="170" cy="104" rx="140" ry="85"
-                  stroke={`${rc}0.06)`} strokeWidth="0.6" strokeDasharray="3 8"/>
+          {/* ② 插画占位 ── 背景光晕更强 */}
+          <section style={{marginBottom:'40px'}}>
+            <div style={{
+              position:'relative', height:'220px',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              background:`radial-gradient(ellipse at center, ${rc}0.14) 0%, transparent 65%)`,
+              borderRadius:'20px',
+              border:`1px solid ${rc}0.12)`,
+            }}>
+              <p style={{...DS.label, color:`${rc}0.25)`}}>插画 · {String(roleName)}</p>
+              <svg style={{position:'absolute',inset:0,width:'100%',height:'100%'}}
+                viewBox="0 0 340 220" fill="none">
+                <ellipse cx="170" cy="110" rx="110" ry="65"
+                  stroke={`${rc}0.22)`} strokeWidth="1" strokeDasharray="4 7"/>
+                <ellipse cx="170" cy="110" rx="150" ry="90"
+                  stroke={`${rc}0.10)`} strokeWidth="0.8" strokeDasharray="3 9"/>
               </svg>
             </div>
           </section>
 
-          {/* ③ 常见互动 + 消耗 ── 外层卡片，统一 p-6，mb-sm(16px) */}
-          <section style={{...DS.card, marginBottom: DS.space.sm}}>
-            <div style={{padding:'24px 24px 20px', ...DS.divider}}>
-              <p style={{...DS.label, color: DS.text.tertiary, marginBottom: DS.space.sm}}>常见互动表现</p>
+          {/* ③ 常见互动 + 消耗 ── 卡片边框用角色色，更有存在感 */}
+          <section style={{
+            ...DS.card,
+            border:`1px solid ${rc}0.20)`,
+            marginBottom:DS.space.sm,
+          }}>
+            <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.10)`}}>
+              <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.sm}}>常见互动表现</p>
               <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
-                {behaviors.map((b, i) => (
+                {behaviors.map((b,i)=>(
                   <div key={i} style={{display:'flex', alignItems:'flex-start', gap:'12px'}}>
-                    <div style={{width:'4px', height:'4px', borderRadius:'50%', marginTop:'8px', flexShrink:0,
-                      background:`${rc}0.7)`, boxShadow:`0 0 5px ${rc}0.6)`}} />
-                    <p style={{...DS.type.t3, color: DS.text.secondary}}>{String(b)}</p>
+                    <div style={{
+                      width:'5px', height:'5px', borderRadius:'50%',
+                      marginTop:'8px', flexShrink:0,
+                      background:`${rc}1)`,
+                      boxShadow:`0 0 6px ${rc}0.8)`,
+                    }}/>
+                    <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(b)}</p>
                   </div>
                 ))}
               </div>
             </div>
             <div style={{padding:'20px 24px 24px'}}>
-              <p style={{...DS.label, color: DS.text.tertiary, marginBottom: DS.space.sm}}>能量消耗</p>
-              <p style={{...DS.type.t3, color: DS.text.secondary}}>{String(impact)}</p>
+              <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.sm}}>能量消耗</p>
+              <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(impact)}</p>
             </div>
           </section>
 
-          {/* ④ Part A 维度分析 ── 外层卡片，mb-sm */}
-          <section style={{...DS.card, marginBottom: DS.space.sm}}>
-            {/* 区块标题 + 总进度 */}
-            <div style={{padding:'24px 24px 20px', ...DS.divider}}>
-              <p style={{...DS.label, color: DS.text.tertiary, marginBottom: DS.space.xs}}>A · 外部能量损耗</p>
+          {/* ④ Part A 维度分析 */}
+          <section style={{
+            ...DS.card,
+            border:`1px solid ${rc}0.18)`,
+            marginBottom:DS.space.sm,
+          }}>
+            <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.10)`}}>
+              <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.xs}}>A · 外部能量损耗</p>
               <div style={{display:'flex', alignItems:'center', justifyContent:'space-between',
-                marginTop: DS.space.sm, marginBottom:'8px'}}>
-                <span style={{...DS.label, color: DS.text.muted}}>关系消耗程度</span>
-                <span style={{...DS.type.t4, fontWeight:700, color:`${rc}0.85)`}}>
+                marginTop:DS.space.sm, marginBottom:'8px'}}>
+                <span style={{...DS.label, color:DS.text.muted}}>关系消耗程度</span>
+                {/* 总分大数字 — 拉开层级 */}
+                <span style={{
+                  fontSize:'1.5rem', fontWeight:800, letterSpacing:'-0.02em',
+                  color:`${rc}1)`,
+                  textShadow:`0 0 20px ${rc}0.5)`,
+                  lineHeight:1,
+                }}>
                   {Math.round((scoreA/120)*100)}%
                 </span>
               </div>
               <div style={DS.progressTrack}>
-                <div style={roleProgressFill(Math.round((scoreA/120)*100))} />
+                <div style={roleProgressFill(Math.round((scoreA/120)*100))}/>
               </div>
             </div>
-            {/* 雷达图 */}
             <div style={{padding:'4px 16px 0'}}>
-              <RadarChart data={radarData} />
+              <RadarChart data={radarData}/>
             </div>
-            {/* 维度列表 ── 子卡片统一 cardInner + p-4 + gap-sm */}
             <div style={{padding:`0 16px ${DS.space.md}`,
-              display:'flex', flexDirection:'column', gap: DS.space.xs}}>
-              {DIMENSIONS.slice(0,6).map((dim, idx) => {
+              display:'flex', flexDirection:'column', gap:DS.space.xs}}>
+              {DIMENSIONS.slice(0,6).map((dim,idx)=>{
                 const maxVal=25, score=dimScores[dim]||0, ratio=score/maxVal;
-                let stateLabel='平稳', stateColor='rgba(52,211,153,0.75)', levelKey='stable';
-                if(ratio>0.75){stateLabel='过载'; stateColor=`${rc}0.85)`; levelKey='overload';}
-                else if(ratio>0.5){stateLabel='活跃'; stateColor='rgba(251,146,60,0.85)'; levelKey='active';}
-                const bgState = stateColor.replace(/,[\d.]+\)$/,',0.1)');
-                const borderState = stateColor.replace(/,[\d.]+\)$/,',0.22)');
+                let stateLabel='平稳', stateColor='rgba(52,211,153,0.9)', levelKey='stable';
+                if(ratio>0.75){stateLabel='过载'; stateColor=`${rc}1)`; levelKey='overload';}
+                else if(ratio>0.5){stateLabel='活跃'; stateColor='rgba(251,146,60,0.9)'; levelKey='active';}
+                const bgState  = stateColor.replace(/,[\d.]+\)$/,',0.12)');
+                const brdState = stateColor.replace(/,[\d.]+\)$/,',0.35)');
                 return (
                   <div key={idx} style={{...DS.cardInner, padding:`${DS.space.sm} 16px`}}>
-                    {/* 行：序号 + 维度名 + badge + 分数 */}
                     <div style={{display:'flex', justifyContent:'space-between',
                       alignItems:'center', marginBottom:'10px'}}>
                       <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
-                        <span style={{...DS.label, color: DS.text.ghost}}>{String(idx+1).padStart(2,'0')}</span>
-                        <span style={{...DS.type.t2, color: DS.text.primary}}>{String(dim)}</span>
-                        <span style={{fontSize:'8px', fontWeight:700,
-                          padding:'2px 7px', borderRadius:'20px',
-                          color: stateColor, background: bgState, border:`1px solid ${borderState}`}}>
+                        <span style={{...DS.label, color:DS.text.ghost}}>
+                          {String(idx+1).padStart(2,'0')}
+                        </span>
+                        <span style={{...DS.type.t2, color:DS.text.primary}}>{String(dim)}</span>
+                        <span style={{
+                          fontSize:'8px', fontWeight:700,
+                          padding:'2px 8px', borderRadius:'999px',
+                          color:stateColor, background:bgState, border:`1px solid ${brdState}`,
+                        }}>
                           {stateLabel}
                         </span>
                       </div>
-                      <span style={{...DS.type.t4, color: DS.text.muted, fontVariantNumeric:'tabular-nums'}}>
+                      {/* 分数：用角色色 + 更大 */}
+                      <span style={{
+                        fontSize:'0.875rem', fontWeight:700,
+                        color: ratio>0.5 ? `${rc}1)` : DS.text.muted,
+                        fontVariantNumeric:'tabular-nums',
+                        textShadow: ratio>0.5 ? `0 0 10px ${rc}0.4)` : 'none',
+                      }}>
                         {score}/{maxVal}
                       </span>
                     </div>
-                    {/* 进度条 */}
-                    <div style={{...DS.progressTrack, marginBottom: DS.space.sm}}>
-                      <div style={roleProgressFill(ratio*100)} />
+                    <div style={{...DS.progressTrack, marginBottom:DS.space.sm}}>
+                      <div style={roleProgressFill(ratio*100)}/>
                     </div>
-                    {/* 三行文字：desc → scoreDesc → levelDesc，颜色递增 */}
-                    <p style={{...DS.type.t4, color: DS.text.muted, marginBottom:'6px'}}>
+                    <p style={{...DS.type.t4, color:DS.text.muted, marginBottom:'6px'}}>
                       {String(DIMENSION_DESCS[dim])}
                     </p>
-                    <p style={{...DS.type.t4, color: DS.text.ghost, marginBottom: DS.space.sm}}>
+                    <p style={{...DS.type.t4, color:DS.text.ghost, marginBottom:DS.space.sm}}>
                       {String(DIMENSION_SCORE_DESC[dim])}
                     </p>
-                    <p style={{...DS.type.t3, color: DS.text.secondary}}>
+                    <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>
                       {String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}
                     </p>
                   </div>
@@ -1208,53 +1310,63 @@ export default function App() {
             </div>
           </section>
 
-          {/* ⑤ Part B ── 与外层卡片同圆角，用角色色作 tint，mb-sm */}
-          {(() => {
+          {/* ⑤ Part B */}
+          {(()=>{
             const dim=DIMENSIONS[6], maxVal=40, score=dimScores[dim]||0, ratio=score/maxVal;
-            let stateLabel='平稳', stateColor='rgba(52,211,153,0.75)', levelKey='stable';
-            if(ratio>0.75){stateLabel='需关注'; stateColor=`${rc}0.85)`; levelKey='overload';}
-            else if(ratio>0.5){stateLabel='活跃'; stateColor='rgba(251,146,60,0.85)'; levelKey='active';}
-            const bgState = stateColor.replace(/,[\d.]+\)$/,',0.1)');
-            const borderState = stateColor.replace(/,[\d.]+\)$/,',0.22)');
+            let stateLabel='平稳', stateColor='rgba(52,211,153,0.9)', levelKey='stable';
+            if(ratio>0.75){stateLabel='需关注'; stateColor=`${rc}1)`; levelKey='overload';}
+            else if(ratio>0.5){stateLabel='活跃'; stateColor='rgba(251,146,60,0.9)'; levelKey='active';}
+            const bgState  = stateColor.replace(/,[\d.]+\)$/,',0.12)');
+            const brdState = stateColor.replace(/,[\d.]+\)$/,',0.35)');
             return (
               <section style={{
                 ...DS.card,
-                background:`${rc}0.04)`, border:`1px solid ${rc}0.18)`,
-                marginBottom: DS.space.sm, position:'relative', overflow:'hidden'}}>
-                <Fingerprint className="absolute top-3 right-3 pointer-events-none"
-                  style={{width:'72px', height:'72px', color:`${rc}0.06)`, strokeWidth:1.5}} />
-                {/* 标题行 */}
-                <div style={{padding:'24px 24px 20px',
-                  borderBottom:`1px solid ${rc}0.12)`}}>
-                  <p style={{...DS.label, color:`${rc}0.9)`, marginBottom:'6px'}}>B · 内在能量状态</p>
-                  <p style={{...DS.type.t4, color: DS.text.muted}}>你是否正在无意识地消耗身边的人</p>
+                background:`${rc}0.06)`,
+                border:`1px solid ${rc}0.28)`,
+                marginBottom:DS.space.sm, position:'relative', overflow:'hidden',
+              }}>
+                <Fingerprint style={{
+                  position:'absolute', top:'12px', right:'12px',
+                  width:'80px', height:'80px', pointerEvents:'none',
+                  color:`${rc}0.08)`, strokeWidth:1.5,
+                }}/>
+                <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.15)`}}>
+                  <p style={{...DS.label, color:`${rc}1)`, marginBottom:'6px',
+                    textShadow:`0 0 12px ${rc}0.4)`}}>
+                    B · 内在能量状态
+                  </p>
+                  <p style={{...DS.type.t4, color:DS.text.muted}}>你是否正在无意识地消耗身边的人</p>
                 </div>
                 <div style={{padding:'20px 24px 24px'}}>
                   <div style={{display:'flex', justifyContent:'space-between',
                     alignItems:'center', marginBottom:'10px'}}>
                     <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
-                      <span style={{...DS.type.t2, color: DS.text.primary}}>{String(dim)}</span>
-                      <span style={{fontSize:'8px', fontWeight:700,
-                        padding:'2px 7px', borderRadius:'20px',
-                        color: stateColor, background: bgState, border:`1px solid ${borderState}`}}>
+                      <span style={{...DS.type.t2, color:DS.text.primary}}>{String(dim)}</span>
+                      <span style={{fontSize:'8px',fontWeight:700,
+                        padding:'2px 8px',borderRadius:'999px',
+                        color:stateColor, background:bgState, border:`1px solid ${brdState}`}}>
                         {stateLabel}
                       </span>
                     </div>
-                    <span style={{...DS.type.t4, fontWeight:700, color:`${rc}0.9)`,
-                      fontVariantNumeric:'tabular-nums'}}>
+                    <span style={{
+                      fontSize:'0.875rem', fontWeight:700,
+                      color: ratio>0.5 ? `${rc}1)` : DS.text.muted,
+                      fontVariantNumeric:'tabular-nums',
+                      textShadow: ratio>0.5 ? `0 0 10px ${rc}0.4)` : 'none',
+                    }}>
                       {score}/{maxVal}
                     </span>
                   </div>
-                  <div style={{...DS.progressTrack, marginBottom: DS.space.md}}>
-                    <div style={roleProgressFill(ratio*100)} />
+                  <div style={{...DS.progressTrack, marginBottom:DS.space.md}}>
+                    <div style={roleProgressFill(ratio*100)}/>
                   </div>
-                  <p style={{...DS.type.t4, color: DS.text.muted, marginBottom:'6px'}}>
+                  <p style={{...DS.type.t4, color:DS.text.muted, marginBottom:'6px'}}>
                     {String(DIMENSION_DESCS[dim])}
                   </p>
-                  <p style={{...DS.type.t4, color: DS.text.ghost, marginBottom: DS.space.sm}}>
+                  <p style={{...DS.type.t4, color:DS.text.ghost, marginBottom:DS.space.sm}}>
                     {String(DIMENSION_SCORE_DESC[dim])}
                   </p>
-                  <p style={{...DS.type.t3, color: DS.text.secondary}}>
+                  <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>
                     {String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}
                   </p>
                 </div>
@@ -1262,40 +1374,71 @@ export default function App() {
             );
           })()}
 
-          {/* ⑥ 建议卡片 ── 角色色 tint，mb-lg */}
+          {/* ⑥ 建议卡片 ── 实色背景，最醒目的内容卡片 */}
           <section style={{
-            ...DS.card,
-            background:`linear-gradient(135deg, ${rc}0.09), ${rc}0.04))`,
-            border:`1px solid ${rc}0.22)`,
-            marginBottom: DS.space.lg}}>
+            borderRadius:'20px',
+            background:`linear-gradient(135deg, ${rc}0.22), ${rc}0.10))`,
+            border:`1px solid ${rc}0.45)`,
+            boxShadow:`0 0 40px ${rc}0.15), inset 0 0 30px ${rc}0.06)`,
+            marginBottom:'40px',
+          }}>
             <div style={{padding:'24px'}}>
-              <div style={{display:'flex', alignItems:'center', gap:'8px',
-                marginBottom: DS.space.sm}}>
-                <div style={{width:'3px', height:'18px', borderRadius:'2px',
-                  background:`${rc}0.85)`, flexShrink:0}} />
-                <p style={{...DS.label, color:`${rc}0.75)`}}>你可以尝试</p>
+              <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:DS.space.sm}}>
+                <div style={{
+                  width:'3px', height:'20px', borderRadius:'2px',
+                  background:`${rc}1)`,
+                  boxShadow:`0 0 10px ${rc}0.7)`,
+                  flexShrink:0,
+                }}/>
+                <p style={{...DS.label, color:`${rc}1)`,
+                  textShadow:`0 0 10px ${rc}0.5)`}}>
+                  你可以尝试
+                </p>
               </div>
-              <p style={{...DS.type.t3, fontWeight:700, color: DS.text.primary, lineHeight:1.75}}>
+              <p style={{...DS.type.t3, fontWeight:700,
+                color:DS.text.primary, lineHeight:1.8}}>
                 {String(advice)}
               </p>
             </div>
           </section>
 
-          {/* ⑦ 操作按钮 ── 统一 DS.btnSecondary + DS.btnRole，高度统一 52px */}
-          <section style={{display:'flex', gap:'12px', paddingBottom:'40px'}}>
-            <button onClick={() => window.location.reload()}
-              className="active:scale-95"
-              style={{...DS.btnSecondary,
-                flex:1, height:'52px',
-                display:'flex', alignItems:'center', justifyContent:'center', gap:'8px'}}>
-              <RefreshCcw style={{width:'14px', height:'14px'}} /> 重测
-            </button>
+          {/* ⑦ 操作按钮 ── 主次对比彻底拉开 */}
+          <section style={{display:'flex', flexDirection:'column', gap:'12px', paddingBottom:'40px'}}>
+            {/* 主按钮：全实色，角色色，全宽，高度更大 */}
             <button onClick={() => setShowPoster(true)}
-              className="active:scale-95"
-              style={{...DS.btnRole(rc),
-                flex:2, height:'52px',
-                display:'flex', alignItems:'center', justifyContent:'center', gap:'8px'}}>
-              <Share2 style={{width:'14px', height:'14px'}} /> 导出卡片报告
+              className="active:scale-95 w-full"
+              style={{
+                height:'60px',
+                background:`linear-gradient(135deg, ${rc}0.9), ${rc}0.75))`,
+                border:`1px solid ${rc}1)`,
+                borderRadius:'2rem',
+                color:'#fff',
+                fontWeight:800,
+                fontSize:'1rem',
+                letterSpacing:'0.04em',
+                boxShadow:`0 6px 32px ${rc}0.45), 0 0 0 1px ${rc}0.2) inset`,
+                display:'flex', alignItems:'center', justifyContent:'center', gap:'10px',
+                transition:'transform 0.15s, box-shadow 0.15s',
+                textShadow:'0 1px 4px rgba(0,0,0,0.3)',
+              }}>
+              <Share2 style={{width:'16px', height:'16px'}}/> 导出卡片报告
+            </button>
+            {/* 次按钮：幽灵，文字小，退到背景里 */}
+            <button onClick={() => window.location.reload()}
+              className="active:scale-95 w-full"
+              style={{
+                height:'44px',
+                background:'transparent',
+                border:'none',
+                borderRadius:'2rem',
+                color:DS.text.muted,
+                fontWeight:400,
+                fontSize:'0.75rem',
+                letterSpacing:'0.06em',
+                display:'flex', alignItems:'center', justifyContent:'center', gap:'6px',
+                transition:'opacity 0.15s',
+              }}>
+              <RefreshCcw style={{width:'12px', height:'12px'}}/> 重新测评
             </button>
           </section>
 
