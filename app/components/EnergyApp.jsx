@@ -19,6 +19,35 @@ const DS = {
   // 背景渐变（首页/题目页/过渡页共用）
   pageBg: 'linear-gradient(135deg, #1f1c2c 0%, #534e64 50%, #928dab 100%)',
 
+  // ── 间距系统（只用这 4 档）──
+  // space.xs  = 8px   → 元素内部微间距
+  // space.sm  = 16px  → 标签与内容之间
+  // space.md  = 24px  → 区块内段落间
+  // space.lg  = 32px  → section 之间
+  space: { xs: '8px', sm: '16px', md: '24px', lg: '32px' },
+
+  // ── 字体层级（4档，不再出现其他尺寸）──
+  // t1: 大标题   2.4–2.6rem / bold / ls -0.02em
+  // t2: 小标题   1rem / bold
+  // t3: 正文     0.875rem (14px) / normal / lh 1.75
+  // t4: 辅助     0.75rem (12px) / normal / lh 1.6
+  // label: 全大写小标签  10px / bold / ls 0.28em
+  type: {
+    t1: { fontSize: '2.4rem',   fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1 },
+    t2: { fontSize: '1rem',     fontWeight: 700, letterSpacing: '0em',     lineHeight: 1.4 },
+    t3: { fontSize: '0.875rem', fontWeight: 400, letterSpacing: '0em',     lineHeight: 1.75 },
+    t4: { fontSize: '0.75rem',  fontWeight: 400, letterSpacing: '0em',     lineHeight: 1.6 },
+  },
+
+  // ── 颜色语义 ──
+  text: {
+    primary:   '#F2F3FB',
+    secondary: 'rgba(255,255,255,0.60)',
+    tertiary:  'rgba(255,255,255,0.35)',
+    muted:     'rgba(255,255,255,0.20)',
+    ghost:     'rgba(255,255,255,0.12)',
+  },
+
   // 主按钮（开启测评 / 下一题 / 继续内在扫描）
   btnPrimary: (glowColor = 'rgba(146,141,171,') => ({
     background: 'linear-gradient(135deg, #1f1c2c, #928dab)',
@@ -30,6 +59,7 @@ const DS = {
     fontSize: '1rem',
     letterSpacing: '0.02em',
     transition: 'transform 0.15s, box-shadow 0.15s',
+    padding: '0 24px',
   }),
 
   // 次要按钮（返回 / 重测 / 上一题箭头）
@@ -42,7 +72,22 @@ const DS = {
     fontSize: '0.75rem',
     letterSpacing: '0.04em',
     transition: 'transform 0.15s, opacity 0.15s',
+    padding: '0 20px',
   },
+
+  // 角色色主按钮（结果页"导出"）— 接收 rc 颜色字符串
+  btnRole: (rc) => ({
+    background: `linear-gradient(135deg, ${rc}0.20), ${rc}0.10))`,
+    borderRadius: '2rem',
+    border: `1px solid ${rc}0.28)`,
+    color: '#F2F3FB',
+    fontWeight: 700,
+    fontSize: '0.75rem',
+    letterSpacing: '0.04em',
+    boxShadow: `0 4px 20px rgba(0,0,0,0.28), 0 0 14px ${rc}0.14)`,
+    transition: 'transform 0.15s',
+    padding: '0 20px',
+  }),
 
   // 进度条轨道
   progressTrack: {
@@ -72,21 +117,31 @@ const DS = {
     transition: 'width 0.6s cubic-bezier(.4,0,.2,1)',
   }),
 
-  // 全站标签（PART A / 维度名 / 状态 badge 上方文字）
+  // 全站标签 — 全大写小字，用于 PART A / 维度名 / section title
   label: {
     fontSize: '10px',
     fontWeight: 700,
-    letterSpacing: '0.30em',
+    letterSpacing: '0.28em',
     textTransform: 'uppercase',
     color: 'rgba(255,255,255,0.28)',
   },
 
-  // 卡片（结果页区块）
+  // 外层卡片（结果页大区块）
   card: {
     background: 'rgba(255,255,255,0.03)',
-    borderRadius: '24px',
+    borderRadius: '20px',
     border: '1px solid rgba(255,255,255,0.07)',
   },
+
+  // 内层子卡片（维度条目）— 圆角比外层小一档
+  cardInner: {
+    background: 'rgba(255,255,255,0.025)',
+    borderRadius: '14px',
+    border: '1px solid rgba(255,255,255,0.05)',
+  },
+
+  // 卡片内分割线
+  divider: { borderTop: '1px solid rgba(255,255,255,0.05)' },
 
   // 流线 SVG 装饰（所有页面共用同一组路径）
   waveSvg: (
@@ -632,40 +687,38 @@ export default function App() {
           <div className="flex-[1.2]" />
 
           <div className="flex flex-col items-center text-center">
-            <p style={{...DS.label, color: '#928dab', marginBottom: '24px'}}>
+            <p style={{...DS.label, color: '#928dab', marginBottom: DS.space.md}}>
               流失追踪 · 能量损耗分析
             </p>
-            <h1 className="text-[2.6rem] font-bold leading-[1.1] mb-5"
-              style={{letterSpacing: '-0.02em', color:'#F2F3FB'}}>
+            <h1 style={{...DS.type.t1, color: DS.text.primary, marginBottom: DS.space.sm}}>
               关系能量与<br/>心理防御
             </h1>
-            <p className="text-sm leading-relaxed max-w-[220px]"
-              style={{color:'#767091'}}>
+            <p style={{...DS.type.t3, color: '#767091', maxWidth:'220px'}}>
               这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？
             </p>
           </div>
 
           <div className="flex-[1.5]" />
 
-          <div className="flex flex-col items-center mb-16 gap-5">
-            <p className="text-center text-xs leading-relaxed max-w-[240px]"
-              style={{color:'rgba(255,255,255,0.28)'}}>
+          <div className="flex flex-col items-center mb-16" style={{gap: DS.space.md}}>
+            <p style={{...DS.type.t4, color: DS.text.tertiary, textAlign:'center', maxWidth:'240px'}}>
               在开始之前，想一想<br/>最近让你感到情绪消耗的那个人
             </p>
 
-            {/* 主按钮 — 首页专属，渐变+阴影 */}
+            {/* 主按钮 */}
             <button onClick={handleStartIdentity}
-              className="w-full max-w-xs py-5 active:scale-95"
-              style={DS.btnPrimary()}>
+              className="w-full max-w-xs active:scale-95"
+              style={{...DS.btnPrimary(), height:'56px'}}>
               <span style={{textShadow: '0 0 20px rgba(255,255,255,0.25)'}}>开启测评</span>
             </button>
 
-            <p style={{...DS.label, color: 'rgba(255,255,255,0.15)', letterSpacing: '0.12em', textAlign: 'center', lineHeight: 1.8, maxWidth: '240px'}}>
+            <p style={{...DS.label, color: DS.text.ghost, letterSpacing: '0.12em',
+              textAlign: 'center', lineHeight: 1.8, maxWidth: '240px'}}>
               基于 Stéphane Clerget 情绪劳动理论<br/>及关系动力学理论
             </p>
 
             <button onClick={previewResult}
-              style={{...DS.label, color: 'rgba(255,255,255,0.15)', background: 'none', border: 'none', cursor: 'pointer'}}>
+              style={{...DS.label, color: DS.text.ghost, background: 'none', border: 'none', cursor: 'pointer'}}>
               DEV · 预览结果页
             </button>
           </div>
@@ -739,32 +792,34 @@ export default function App() {
         {/* 顶部进度 */}
         <div className="relative z-10 px-6 pt-8 pb-4 max-w-md mx-auto w-full">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.25)'}}>
-              <span style={{color: isPartB ? 'rgba(103,232,249,0.9)' : 'rgba(188,190,229,0.9)'}}>
+            <span style={{...DS.type.t4, fontWeight:700, color: DS.text.muted}}>
+              <span style={{color: isPartB ? 'rgba(200,198,230,0.9)' : 'rgba(188,190,229,0.9)'}}>
                 {currentIndex + 1}
               </span>
-              <span> / {QUESTIONS.length}</span>
+              {' '}/{' '}{QUESTIONS.length}
             </span>
-            <span style={{...DS.label, color: isPartB ? 'rgba(103,232,249,0.55)' : 'rgba(146,141,171,0.7)'}}>
+            <span style={{...DS.label, color: isPartB ? 'rgba(200,198,230,0.55)' : 'rgba(146,141,171,0.7)'}}>
               PART {String(q.part)}
             </span>
           </div>
-          {/* 进度条 — 统一 3px */}
-          <div style={DS.progressTrack} className="mb-6">
+          {/* 进度条 */}
+          <div style={{...DS.progressTrack, marginBottom: DS.space.md}}>
             <div style={isPartB ? DS.progressFillB(progress) : DS.progressFillA(progress)} />
           </div>
-          <p style={{...DS.label, color: isPartB ? 'rgba(103,232,249,0.45)' : 'rgba(146,141,171,0.6)', marginBottom: '0'}}>
+          <p style={{...DS.label, color: isPartB ? 'rgba(200,198,230,0.45)' : 'rgba(146,141,171,0.6)'}}>
             {String(q.dim)}
           </p>
         </div>
 
         {/* 题目 */}
-        <div className="relative z-10 px-8 max-w-md mx-auto w-full mt-2 mb-8">
-          <span style={{...DS.label, color: 'rgba(255,255,255,0.12)', fontFamily: 'monospace', display: 'block', marginBottom: '20px'}}>
+        <div className="relative z-10 px-8 max-w-md mx-auto w-full"
+          style={{marginTop: DS.space.sm, marginBottom: DS.space.lg}}>
+          <span style={{...DS.label, color: DS.text.ghost, fontFamily:'monospace',
+            display:'block', marginBottom: DS.space.md}}>
             Q{String(currentIndex+1).padStart(2,'0')}
           </span>
-          <h2 className="text-[1.65rem] font-bold leading-[1.4] text-white/90"
-            style={{textShadow:'0 0 40px rgba(255,255,255,0.05)'}}>
+          <h2 style={{...DS.type.t1, fontSize:'1.65rem', color: DS.text.primary,
+            textShadow:'0 0 40px rgba(255,255,255,0.05)'}}>
             {String(q.text).replace('{target}', finalTarget)}
           </h2>
         </div>
@@ -864,11 +919,13 @@ export default function App() {
           <Fingerprint className="w-7 h-7" style={{color:'rgba(188,190,229,0.75)'}} />
         </div>
 
-        <p style={{...DS.label, marginBottom: '16px'}}>PART A 完成</p>
-        <h2 className="text-2xl font-bold mb-4 text-white/90" style={{letterSpacing:'-0.02em'}}>
+        <p style={{...DS.label, marginBottom: DS.space.sm}}>PART A 完成</p>
+        <h2 style={{...DS.type.t1, fontSize:'1.5rem', color: DS.text.primary,
+          marginBottom: DS.space.sm}}>
           关系损耗扫描完成
         </h2>
-        <p className="text-sm mb-14 leading-relaxed max-w-[240px]" style={{color:'rgba(255,255,255,0.30)'}}>
+        <p style={{...DS.type.t3, color: DS.text.tertiary,
+          marginBottom: DS.space.lg, maxWidth:'240px', textAlign:'center'}}>
           接下来扫描你当前的<br/>
           <span style={{color:'rgba(200,198,230,0.7)'}}>内在能量补给状态</span>
         </p>
@@ -876,11 +933,12 @@ export default function App() {
         {/* 过渡页按钮 — 统一 btnPrimary，紫灰色系，比首页稍亮 */}
         <button
           onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }}
-          className="w-full max-w-xs py-5 active:scale-95"
+          className="w-full max-w-xs active:scale-95"
           style={{
             ...DS.btnPrimary(),
             background: 'linear-gradient(135deg, #2a2640, #7b78a8)',
             boxShadow: '0 4px 24px rgba(0,0,0,0.4), 0 0 20px rgba(188,190,229,0.2)',
+            height: '56px',
           }}>
           继续内在扫描
         </button>
@@ -1000,198 +1058,244 @@ export default function App() {
           ))}
         </div>
 
-        <div className="relative max-w-md mx-auto px-5 py-12" style={{zIndex:1}}>
+        {/* 统一间距容器：水平 px-5，顶部 pt-10，section 间距统一用 mb-lg(32px) */}
+        <div className="relative max-w-md mx-auto px-5 pt-10 pb-12" style={{zIndex:1}}>
 
-          {/* ① 主角色 */}
-          <section className="text-center mb-16 pt-4">
-            <p style={{...DS.label, color:`${rc}0.5)`, marginBottom:'16px'}}>{String(status)}</p>
-            <p style={{...DS.label, marginBottom:'16px'}}>关系能量分析</p>
-            <h2 className="text-[2.4rem] font-bold mb-3 leading-none"
-              style={{letterSpacing:'-0.03em', textShadow:`0 0 80px ${rc}0.35)`}}>
+          {/* ① 主角色 ── section 间距 mb-lg */}
+          <section className="text-center" style={{marginBottom: DS.space.lg}}>
+            {/* 双标签：状态 + 类型 */}
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <p style={{...DS.label, color:`${rc}0.55)`}}>{String(status)}</p>
+              <span style={{...DS.label, color: DS.text.ghost}}>·</span>
+              <p style={{...DS.label}}>关系能量分析</p>
+            </div>
+            {/* t1 大标题 */}
+            <h2 style={{...DS.type.t1, color: DS.text.primary,
+              textShadow:`0 0 80px ${rc}0.35)`, marginBottom: DS.space.xs}}>
               {String(roleName)}
             </h2>
-            <p className="text-sm font-bold mb-8" style={{color:`${rc}0.8)`}}>{String(tag)}</p>
-            <p className="text-white/50 text-sm leading-relaxed mb-5 max-w-[280px] mx-auto">{String(definition)}</p>
+            {/* tag — t4 辅助 */}
+            <p style={{...DS.type.t4, fontWeight: 700, color:`${rc}0.85)`,
+              marginBottom: DS.space.md}}>
+              {String(tag)}
+            </p>
+            {/* definition — t3 正文 */}
+            <p style={{...DS.type.t3, color: DS.text.secondary,
+              maxWidth: '280px', margin:`0 auto ${DS.space.sm}`}}>
+              {String(definition)}
+            </p>
+            {/* scene — t3 斜体引言 */}
             {scene && (
-              <p className="text-sm font-bold italic leading-relaxed max-w-[260px] mx-auto"
-                style={{color:`${rc}0.65)`}}>"{String(scene)}"</p>
+              <p style={{...DS.type.t3, fontStyle:'italic', fontWeight:700,
+                color:`${rc}0.65)`, maxWidth:'260px', margin:'0 auto'}}>
+                "{String(scene)}"
+              </p>
             )}
+            {/* 副机制 — 内层子卡片风格 */}
             {subRole && (
-              <div className="mt-8 w-full py-4 px-5 text-left relative overflow-hidden"
-                style={{background:`${rc}0.06)`, borderRadius:'20px', border:`1px solid ${rc}0.12)`}}>
-                <p style={{...DS.label, marginBottom:'8px', color:'rgba(255,255,255,0.35)'}}>副机制</p>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm font-bold" style={{color:`${rc}0.85)`}}>{String(subRole.name)}</span>
-                  <span className="text-[9px]" style={{color:'rgba(255,255,255,0.25)'}}>· {String(subRole.dim)}</span>
+              <div style={{...DS.cardInner,
+                background:`${rc}0.06)`, border:`1px solid ${rc}0.12)`,
+                marginTop: DS.space.md, padding:`${DS.space.sm} 20px`, textAlign:'left'}}>
+                <p style={{...DS.label, color: DS.text.tertiary, marginBottom: DS.space.xs}}>副机制</p>
+                <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'6px'}}>
+                  <span style={{...DS.type.t2, color:`${rc}0.9)`}}>{String(subRole.name)}</span>
+                  <span style={{...DS.type.t4, color: DS.text.muted}}>· {String(subRole.dim)}</span>
                 </div>
-                <p className="text-xs leading-relaxed" style={{color:'rgba(255,255,255,0.4)'}}>{String(subRole.definition)}</p>
+                <p style={{...DS.type.t3, color: DS.text.tertiary}}>{String(subRole.definition)}</p>
               </div>
             )}
           </section>
 
-          {/* ② 插画占位区 */}
-          <section className="mb-12">
+          {/* ② 插画占位区 ── mb-lg */}
+          <section style={{marginBottom: DS.space.lg}}>
             <div className="relative h-52 flex items-center justify-center"
               style={{background:`radial-gradient(ellipse at center, ${rc}0.08) 0%, transparent 70%)`}}>
-              <p style={{...DS.label, color:'rgba(255,255,255,0.12)'}}>关系互动模式</p>
+              <p style={{...DS.label, color: DS.text.ghost}}>关系互动模式</p>
               <svg className="absolute inset-0 w-full h-full" viewBox="0 0 340 208" fill="none">
-                <ellipse cx="170" cy="104" rx="100" ry="60" stroke={`${rc}0.12)`} strokeWidth="0.8" strokeDasharray="4 6"/>
-                <ellipse cx="170" cy="104" rx="140" ry="85" stroke={`${rc}0.06)`} strokeWidth="0.6" strokeDasharray="3 8"/>
+                <ellipse cx="170" cy="104" rx="100" ry="60"
+                  stroke={`${rc}0.12)`} strokeWidth="0.8" strokeDasharray="4 6"/>
+                <ellipse cx="170" cy="104" rx="140" ry="85"
+                  stroke={`${rc}0.06)`} strokeWidth="0.6" strokeDasharray="3 8"/>
               </svg>
             </div>
           </section>
 
-          {/* ③ 常见互动 + 消耗 */}
-          <section className="mb-4 relative overflow-hidden" style={DS.card}>
-            <div className="relative p-6 pb-5" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
-              <p style={{...DS.label, marginBottom:'16px', color:'rgba(255,255,255,0.45)'}}>常见互动表现</p>
-              <div className="space-y-3">
+          {/* ③ 常见互动 + 消耗 ── 外层卡片，统一 p-6，mb-sm(16px) */}
+          <section style={{...DS.card, marginBottom: DS.space.sm}}>
+            <div style={{padding:'24px 24px 20px', ...DS.divider}}>
+              <p style={{...DS.label, color: DS.text.tertiary, marginBottom: DS.space.sm}}>常见互动表现</p>
+              <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
                 {behaviors.map((b, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0"
-                      style={{background:`${rc}0.6)`, boxShadow:`0 0 6px ${rc}0.8)`}} />
-                    <p className="text-sm leading-relaxed" style={{color:'rgba(255,255,255,0.55)'}}>{String(b)}</p>
+                  <div key={i} style={{display:'flex', alignItems:'flex-start', gap:'12px'}}>
+                    <div style={{width:'4px', height:'4px', borderRadius:'50%', marginTop:'8px', flexShrink:0,
+                      background:`${rc}0.7)`, boxShadow:`0 0 5px ${rc}0.6)`}} />
+                    <p style={{...DS.type.t3, color: DS.text.secondary}}>{String(b)}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="relative p-6 pt-5">
-              <p style={{...DS.label, marginBottom:'12px', color:'rgba(255,255,255,0.45)'}}>能量消耗</p>
-              <p className="text-sm leading-relaxed" style={{color:'rgba(255,255,255,0.55)'}}>{String(impact)}</p>
+            <div style={{padding:'20px 24px 24px'}}>
+              <p style={{...DS.label, color: DS.text.tertiary, marginBottom: DS.space.sm}}>能量消耗</p>
+              <p style={{...DS.type.t3, color: DS.text.secondary}}>{String(impact)}</p>
             </div>
           </section>
 
-          {/* ④ Part A 维度分析 */}
-          <section className="mb-4 relative overflow-hidden" style={DS.card}>
-            <div className="relative p-6 pb-4" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
-              <p style={{...DS.label, color:'rgba(255,255,255,0.5)', marginBottom:'4px'}}>A · 外部能量损耗</p>
-              <div className="flex items-center justify-between mt-3 mb-1">
-                <span style={{...DS.label, color:'rgba(255,255,255,0.2)', letterSpacing:'0.18em'}}>关系消耗程度</span>
-                <span className="text-[10px] font-bold" style={{color:`${rc}0.8)`}}>{Math.round((scoreA/120)*100)}%</span>
+          {/* ④ Part A 维度分析 ── 外层卡片，mb-sm */}
+          <section style={{...DS.card, marginBottom: DS.space.sm}}>
+            {/* 区块标题 + 总进度 */}
+            <div style={{padding:'24px 24px 20px', ...DS.divider}}>
+              <p style={{...DS.label, color: DS.text.tertiary, marginBottom: DS.space.xs}}>A · 外部能量损耗</p>
+              <div style={{display:'flex', alignItems:'center', justifyContent:'space-between',
+                marginTop: DS.space.sm, marginBottom:'8px'}}>
+                <span style={{...DS.label, color: DS.text.muted}}>关系消耗程度</span>
+                <span style={{...DS.type.t4, fontWeight:700, color:`${rc}0.85)`}}>
+                  {Math.round((scoreA/120)*100)}%
+                </span>
               </div>
               <div style={DS.progressTrack}>
                 <div style={roleProgressFill(Math.round((scoreA/120)*100))} />
               </div>
             </div>
-            <div className="p-4">
+            {/* 雷达图 */}
+            <div style={{padding:'4px 16px 0'}}>
               <RadarChart data={radarData} />
             </div>
-            <div className="px-4 pb-5 space-y-2">
+            {/* 维度列表 ── 子卡片统一 cardInner + p-4 + gap-sm */}
+            <div style={{padding:`0 16px ${DS.space.md}`,
+              display:'flex', flexDirection:'column', gap: DS.space.xs}}>
               {DIMENSIONS.slice(0,6).map((dim, idx) => {
                 const maxVal=25, score=dimScores[dim]||0, ratio=score/maxVal;
-                let stateLabel="平稳", stateColor='rgba(52,211,153,0.7)', levelKey="stable";
-                if (ratio>0.75){stateLabel="过载";stateColor=`${rc}0.8)`;levelKey="overload";}
-                else if(ratio>0.5){stateLabel="活跃";stateColor='rgba(251,146,60,0.8)';levelKey="active";}
-                const levelDesc=DIMENSION_LEVEL_DESC[dim]?.[levelKey]||"";
-                const scoreDesc=DIMENSION_SCORE_DESC[dim]||"";
+                let stateLabel='平稳', stateColor='rgba(52,211,153,0.75)', levelKey='stable';
+                if(ratio>0.75){stateLabel='过载'; stateColor=`${rc}0.85)`; levelKey='overload';}
+                else if(ratio>0.5){stateLabel='活跃'; stateColor='rgba(251,146,60,0.85)'; levelKey='active';}
+                const bgState = stateColor.replace(/,[\d.]+\)$/,',0.1)');
+                const borderState = stateColor.replace(/,[\d.]+\)$/,',0.22)');
                 return (
-                  <div key={idx} className="p-4"
-                    style={{background:'rgba(255,255,255,0.025)', borderRadius:'16px', border:'1px solid rgba(255,255,255,0.04)'}}>
-                    <div className="flex justify-between items-center mb-2">
-                      <div className="flex items-center gap-2">
-                        <span style={{...DS.label, color:'rgba(255,255,255,0.2)', letterSpacing:'0.1em'}}>0{idx+1}</span>
-                        <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.75)'}}>{String(dim)}</span>
-                        <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full"
-                          style={{color:stateColor,
-                            background:stateColor.replace(/,[\d.]+\)$/,',0.1)'),
-                            border:`1px solid ${stateColor.replace(/,[\d.]+\)$/,',0.2)')}`}}>
+                  <div key={idx} style={{...DS.cardInner, padding:`${DS.space.sm} 16px`}}>
+                    {/* 行：序号 + 维度名 + badge + 分数 */}
+                    <div style={{display:'flex', justifyContent:'space-between',
+                      alignItems:'center', marginBottom:'10px'}}>
+                      <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
+                        <span style={{...DS.label, color: DS.text.ghost}}>{String(idx+1).padStart(2,'0')}</span>
+                        <span style={{...DS.type.t2, color: DS.text.primary}}>{String(dim)}</span>
+                        <span style={{fontSize:'8px', fontWeight:700,
+                          padding:'2px 7px', borderRadius:'20px',
+                          color: stateColor, background: bgState, border:`1px solid ${borderState}`}}>
                           {stateLabel}
                         </span>
                       </div>
-                      <span className="text-[10px] tabular-nums" style={{color:'rgba(255,255,255,0.3)'}}>{score}/{maxVal}</span>
+                      <span style={{...DS.type.t4, color: DS.text.muted, fontVariantNumeric:'tabular-nums'}}>
+                        {score}/{maxVal}
+                      </span>
                     </div>
-                    <div style={{...DS.progressTrack, marginBottom:'12px'}}>
-                      <div style={roleProgressFill(ratio * 100)} />
+                    {/* 进度条 */}
+                    <div style={{...DS.progressTrack, marginBottom: DS.space.sm}}>
+                      <div style={roleProgressFill(ratio*100)} />
                     </div>
-                    <p className="text-xs mb-1 leading-relaxed" style={{color:'rgba(255,255,255,0.35)'}}>{String(DIMENSION_DESCS[dim])}</p>
-                    <p className="text-[10px] mb-3 leading-relaxed" style={{color:'rgba(255,255,255,0.2)'}}>{scoreDesc}</p>
-                    <p className="text-sm leading-relaxed" style={{color:'rgba(255,255,255,0.6)'}}>{levelDesc}</p>
+                    {/* 三行文字：desc → scoreDesc → levelDesc，颜色递增 */}
+                    <p style={{...DS.type.t4, color: DS.text.muted, marginBottom:'6px'}}>
+                      {String(DIMENSION_DESCS[dim])}
+                    </p>
+                    <p style={{...DS.type.t4, color: DS.text.ghost, marginBottom: DS.space.sm}}>
+                      {String(DIMENSION_SCORE_DESC[dim])}
+                    </p>
+                    <p style={{...DS.type.t3, color: DS.text.secondary}}>
+                      {String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}
+                    </p>
                   </div>
                 );
               })}
             </div>
           </section>
 
-          {/* ⑤ Part B */}
+          {/* ⑤ Part B ── 与外层卡片同圆角，用角色色作 tint，mb-sm */}
           {(() => {
             const dim=DIMENSIONS[6], maxVal=40, score=dimScores[dim]||0, ratio=score/maxVal;
-            let stateLabel="平稳", stateColor='rgba(52,211,153,0.7)', levelKey="stable";
-            if(ratio>0.75){stateLabel="需关注";stateColor=`${rc}0.8)`;levelKey="overload";}
-            else if(ratio>0.5){stateLabel="活跃";stateColor='rgba(251,146,60,0.8)';levelKey="active";}
-            const levelDesc=DIMENSION_LEVEL_DESC[dim]?.[levelKey]||"";
-            const scoreDesc=DIMENSION_SCORE_DESC[dim]||"";
+            let stateLabel='平稳', stateColor='rgba(52,211,153,0.75)', levelKey='stable';
+            if(ratio>0.75){stateLabel='需关注'; stateColor=`${rc}0.85)`; levelKey='overload';}
+            else if(ratio>0.5){stateLabel='活跃'; stateColor='rgba(251,146,60,0.85)'; levelKey='active';}
+            const bgState = stateColor.replace(/,[\d.]+\)$/,',0.1)');
+            const borderState = stateColor.replace(/,[\d.]+\)$/,',0.22)');
             return (
-              <section className="mb-4 relative overflow-hidden"
-                style={{background:`${rc}0.03)`, borderRadius:'24px', border:`1px solid ${rc}0.2)`,
-                  boxShadow:`inset 0 0 40px ${rc}0.05)`}}>
-                <Fingerprint className="absolute top-2 right-2 pointer-events-none"
-                  style={{width:'80px', height:'80px', color:`${rc}0.05)`, strokeWidth:2}} />
-                <div className="p-6 pb-4" style={{borderBottom:`1px solid ${rc}0.1)`}}>
-                  <p style={{...DS.label, color:`${rc}0.85)`, marginBottom:'4px'}}>B · 内在能量状态</p>
-                  <p className="text-[9px] mt-1" style={{color:'rgba(255,255,255,0.25)'}}>你是否正在无意识地消耗身边的人</p>
+              <section style={{
+                ...DS.card,
+                background:`${rc}0.04)`, border:`1px solid ${rc}0.18)`,
+                marginBottom: DS.space.sm, position:'relative', overflow:'hidden'}}>
+                <Fingerprint className="absolute top-3 right-3 pointer-events-none"
+                  style={{width:'72px', height:'72px', color:`${rc}0.06)`, strokeWidth:1.5}} />
+                {/* 标题行 */}
+                <div style={{padding:'24px 24px 20px',
+                  borderBottom:`1px solid ${rc}0.12)`}}>
+                  <p style={{...DS.label, color:`${rc}0.9)`, marginBottom:'6px'}}>B · 内在能量状态</p>
+                  <p style={{...DS.type.t4, color: DS.text.muted}}>你是否正在无意识地消耗身边的人</p>
                 </div>
-                <div className="p-6">
-                  <div className="flex justify-between items-center mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.75)'}}>{String(dim)}</span>
-                      <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full"
-                        style={{color:stateColor,
-                          background:stateColor.replace(/,[\d.]+\)$/,',0.1)'),
-                          border:`1px solid ${stateColor.replace(/,[\d.]+\)$/,',0.2)')}`}}>
+                <div style={{padding:'20px 24px 24px'}}>
+                  <div style={{display:'flex', justifyContent:'space-between',
+                    alignItems:'center', marginBottom:'10px'}}>
+                    <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
+                      <span style={{...DS.type.t2, color: DS.text.primary}}>{String(dim)}</span>
+                      <span style={{fontSize:'8px', fontWeight:700,
+                        padding:'2px 7px', borderRadius:'20px',
+                        color: stateColor, background: bgState, border:`1px solid ${borderState}`}}>
                         {stateLabel}
                       </span>
                     </div>
-                    <span className="text-[10px] tabular-nums" style={{color:`${rc}0.85)`}}>{score}/{maxVal}</span>
+                    <span style={{...DS.type.t4, fontWeight:700, color:`${rc}0.9)`,
+                      fontVariantNumeric:'tabular-nums'}}>
+                      {score}/{maxVal}
+                    </span>
                   </div>
-                  <div style={{...DS.progressTrack, marginBottom:'16px'}}>
-                    <div style={roleProgressFill(ratio * 100)} />
+                  <div style={{...DS.progressTrack, marginBottom: DS.space.md}}>
+                    <div style={roleProgressFill(ratio*100)} />
                   </div>
-                  <p className="text-xs mb-1 leading-relaxed" style={{color:'rgba(255,255,255,0.35)'}}>{String(DIMENSION_DESCS[dim])}</p>
-                  <p className="text-[10px] mb-3 leading-relaxed" style={{color:'rgba(255,255,255,0.2)'}}>{scoreDesc}</p>
-                  <p className="text-sm leading-relaxed" style={{color:'rgba(255,255,255,0.6)'}}>{levelDesc}</p>
+                  <p style={{...DS.type.t4, color: DS.text.muted, marginBottom:'6px'}}>
+                    {String(DIMENSION_DESCS[dim])}
+                  </p>
+                  <p style={{...DS.type.t4, color: DS.text.ghost, marginBottom: DS.space.sm}}>
+                    {String(DIMENSION_SCORE_DESC[dim])}
+                  </p>
+                  <p style={{...DS.type.t3, color: DS.text.secondary}}>
+                    {String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}
+                  </p>
                 </div>
               </section>
             );
           })()}
 
-          {/* ⑥ 建议卡片 */}
-          <section className="mb-8 relative overflow-hidden"
-            style={{borderRadius:'24px', border:`1px solid ${rc}0.25)`,
-              background:`linear-gradient(135deg, ${rc}0.08) 0%, ${rc}0.03) 100%)`,
-              boxShadow:`0 0 40px ${rc}0.08), inset 0 0 30px ${rc}0.04)`}}>
-            <div className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-1 h-4 rounded-full"
-                  style={{background:`${rc}0.8)`, boxShadow:`0 0 8px ${rc}0.6)`}}/>
-                <p style={{...DS.label, color:`${rc}0.7)`}}>你可以尝试</p>
+          {/* ⑥ 建议卡片 ── 角色色 tint，mb-lg */}
+          <section style={{
+            ...DS.card,
+            background:`linear-gradient(135deg, ${rc}0.09), ${rc}0.04))`,
+            border:`1px solid ${rc}0.22)`,
+            marginBottom: DS.space.lg}}>
+            <div style={{padding:'24px'}}>
+              <div style={{display:'flex', alignItems:'center', gap:'8px',
+                marginBottom: DS.space.sm}}>
+                <div style={{width:'3px', height:'18px', borderRadius:'2px',
+                  background:`${rc}0.85)`, flexShrink:0}} />
+                <p style={{...DS.label, color:`${rc}0.75)`}}>你可以尝试</p>
               </div>
-              <p className="text-base font-bold leading-relaxed" style={{color:'rgba(255,255,255,0.85)'}}>
+              <p style={{...DS.type.t3, fontWeight:700, color: DS.text.primary, lineHeight:1.75}}>
                 {String(advice)}
               </p>
             </div>
           </section>
 
-          {/* ⑦ 操作按钮 — 统一风格 */}
-          <section className="flex gap-3 pb-10">
+          {/* ⑦ 操作按钮 ── 统一 DS.btnSecondary + DS.btnRole，高度统一 52px */}
+          <section style={{display:'flex', gap:'12px', paddingBottom:'40px'}}>
             <button onClick={() => window.location.reload()}
-              className="flex-1 py-4 flex items-center justify-center gap-2 active:scale-95"
-              style={DS.btnSecondary}>
-              <RefreshCcw className="w-3.5 h-3.5" /> 重测
+              className="active:scale-95"
+              style={{...DS.btnSecondary,
+                flex:1, height:'52px',
+                display:'flex', alignItems:'center', justifyContent:'center', gap:'8px'}}>
+              <RefreshCcw style={{width:'14px', height:'14px'}} /> 重测
             </button>
             <button onClick={() => setShowPoster(true)}
-              className="flex-[2] py-4 flex items-center justify-center gap-2 active:scale-95"
-              style={{
-                background: `linear-gradient(135deg, ${rc}0.18), ${rc}0.10))`,
-                borderRadius: '2rem',
-                border: `1px solid ${rc}0.28)`,
-                color: 'rgba(255,255,255,0.85)',
-                fontWeight: 700,
-                fontSize: '0.75rem',
-                letterSpacing: '0.04em',
-                boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 16px ${rc}0.15)`,
-                transition: 'transform 0.15s',
-              }}>
-              <Share2 className="w-3.5 h-3.5" /> 导出卡片报告
+              className="active:scale-95"
+              style={{...DS.btnRole(rc),
+                flex:2, height:'52px',
+                display:'flex', alignItems:'center', justifyContent:'center', gap:'8px'}}>
+              <Share2 style={{width:'14px', height:'14px'}} /> 导出卡片报告
             </button>
           </section>
 
