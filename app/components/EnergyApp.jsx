@@ -53,7 +53,7 @@ const DS = {
     background: 'linear-gradient(135deg, #2d2844, #7a7599)',
     boxShadow: `0 4px 28px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.18), 0 0 20px ${glowColor}0.20)`,
     border: 'none',
-    borderRadius: '1.75rem',
+    borderRadius: '9999px',
     color: '#F2F3FB',
     fontWeight: 700,
     fontSize: '1rem',
@@ -66,7 +66,7 @@ const DS = {
   btnSecondary: {
     background: 'rgba(255,255,255,0.05)',
     border: '1px solid rgba(255,255,255,0.10)',
-    borderRadius: '2rem',
+    borderRadius: '9999px',
     color: 'rgba(255,255,255,0.38)',
     fontWeight: 700,
     fontSize: '0.75rem',
@@ -78,7 +78,7 @@ const DS = {
   // 角色色主按钮（结果页"导出"）— 接收 rc 颜色字符串
   btnRole: (rc) => ({
     background: `linear-gradient(135deg, ${rc}0.20), ${rc}0.10))`,
-    borderRadius: '2rem',
+    borderRadius: '9999px',
     border: `1px solid ${rc}0.28)`,
     color: '#F2F3FB',
     fontWeight: 700,
@@ -1396,43 +1396,31 @@ export default function App() {
             </div>
           </section>
 
-          {/* ⑦ 操作按钮 ── 主次对比彻底拉开 */}
-          <section style={{display:'flex', flexDirection:'column', gap:'12px', paddingBottom:'40px'}}>
-            {/* 主按钮：全实色，角色色，全宽，高度更大 */}
+          {/* ⑦ 操作按钮 ── 横排，主次对比拉开 */}
+          <section style={{display:'flex', flexDirection:'row', gap:'12px', paddingBottom:'40px'}}>
+            <button onClick={() => window.location.reload()}
+              className="active:scale-95"
+              style={{...DS.btnSecondary,
+                flex:1, height:'56px',
+                display:'flex', alignItems:'center', justifyContent:'center', gap:'6px'}}>
+              <RefreshCcw style={{width:'13px', height:'13px'}}/> 重测
+            </button>
             <button onClick={() => setShowPoster(true)}
-              className="active:scale-95 w-full"
+              className="active:scale-95"
               style={{
-                height:'60px',
+                flex:2, height:'56px',
                 background:`linear-gradient(135deg, ${rc}0.9), ${rc}0.75))`,
                 border:`1px solid ${rc}1)`,
-                borderRadius:'2rem',
+                borderRadius:'9999px',
                 color:'#fff',
                 fontWeight:800,
-                fontSize:'1rem',
+                fontSize:'0.9rem',
                 letterSpacing:'0.04em',
                 boxShadow:`0 6px 32px ${rc}0.45), 0 0 0 1px ${rc}0.2) inset`,
-                display:'flex', alignItems:'center', justifyContent:'center', gap:'10px',
-                transition:'transform 0.15s, box-shadow 0.15s',
-                textShadow:'0 1px 4px rgba(0,0,0,0.3)',
+                display:'flex', alignItems:'center', justifyContent:'center', gap:'8px',
+                transition:'transform 0.15s',
               }}>
-              <Share2 style={{width:'16px', height:'16px'}}/> 导出卡片报告
-            </button>
-            {/* 次按钮：幽灵，文字小，退到背景里 */}
-            <button onClick={() => window.location.reload()}
-              className="active:scale-95 w-full"
-              style={{
-                height:'44px',
-                background:'transparent',
-                border:'none',
-                borderRadius:'2rem',
-                color:DS.text.muted,
-                fontWeight:400,
-                fontSize:'0.75rem',
-                letterSpacing:'0.06em',
-                display:'flex', alignItems:'center', justifyContent:'center', gap:'6px',
-                transition:'opacity 0.15s',
-              }}>
-              <RefreshCcw style={{width:'12px', height:'12px'}}/> 重新测评
+              <Share2 style={{width:'15px', height:'15px'}}/> 导出卡片报告
             </button>
           </section>
 
