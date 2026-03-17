@@ -705,15 +705,9 @@ export default function App() {
               在开始之前，想一想<br/>最近让你感到情绪消耗的那个人
             </p>
 
-            {/* 主按钮 — 全宽撑满 px-8 容器，不再限制 max-w-xs */}
             <button onClick={handleStartIdentity}
-              className="w-full active:scale-95"
-              style={{
-                ...DS.btnPrimary(),
-                height:'56px',
-                maxWidth:'360px',   /* 防止在宽屏上过宽 */
-                minWidth:'0',
-              }}>
+              className="w-full max-w-xs active:scale-95"
+              style={{...DS.btnPrimary(), height:'56px'}}>
               <span style={{textShadow: '0 0 20px rgba(255,255,255,0.25)'}}>开启测评</span>
             </button>
 
