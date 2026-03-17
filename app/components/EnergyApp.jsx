@@ -12,6 +12,115 @@ const SUPABASE_URL = 'https://rfazkfbaqmrxcsudefiu.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_9ksrRzUpTr_nUM4cAwN0WQ_NBD-gcfN';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ─────────────────────────────────────────────
+// DESIGN SYSTEM — 全站唯一真相来源
+// ─────────────────────────────────────────────
+const DS = {
+  // 背景渐变（首页/题目页/过渡页共用）
+  pageBg: 'linear-gradient(135deg, #1f1c2c 0%, #534e64 50%, #928dab 100%)',
+
+  // 主按钮（开启测评 / 下一题 / 继续内在扫描）
+  btnPrimary: (glowColor = 'rgba(146,141,171,') => ({
+    background: 'linear-gradient(135deg, #1f1c2c, #928dab)',
+    boxShadow: `0 4px 24px rgba(0,0,0,0.45), 0 0 20px ${glowColor}0.25)`,
+    border: '1px solid rgba(255,255,255,0.13)',
+    borderRadius: '2rem',
+    color: '#F2F3FB',
+    fontWeight: 700,
+    fontSize: '1rem',
+    letterSpacing: '0.02em',
+    transition: 'transform 0.15s, box-shadow 0.15s',
+  }),
+
+  // 次要按钮（返回 / 重测 / 上一题箭头）
+  btnSecondary: {
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.10)',
+    borderRadius: '2rem',
+    color: 'rgba(255,255,255,0.38)',
+    fontWeight: 700,
+    fontSize: '0.75rem',
+    letterSpacing: '0.04em',
+    transition: 'transform 0.15s, opacity 0.15s',
+  },
+
+  // 进度条轨道
+  progressTrack: {
+    height: '3px',
+    borderRadius: '2px',
+    background: 'rgba(255,255,255,0.07)',
+    overflow: 'hidden',
+  },
+
+  // 进度条填充（Part A）
+  progressFillA: (pct) => ({
+    width: `${pct}%`,
+    height: '100%',
+    borderRadius: '2px',
+    background: 'linear-gradient(90deg, rgba(30,58,95,0.85), rgba(146,141,171,0.95))',
+    boxShadow: '0 0 10px rgba(146,141,171,0.45)',
+    transition: 'width 0.6s cubic-bezier(.4,0,.2,1)',
+  }),
+
+  // 进度条填充（Part B）
+  progressFillB: (pct) => ({
+    width: `${pct}%`,
+    height: '100%',
+    borderRadius: '2px',
+    background: 'linear-gradient(90deg, rgba(8,145,178,0.8), rgba(103,232,249,0.9))',
+    boxShadow: '0 0 10px rgba(103,232,249,0.35)',
+    transition: 'width 0.6s cubic-bezier(.4,0,.2,1)',
+  }),
+
+  // 全站标签（PART A / 维度名 / 状态 badge 上方文字）
+  label: {
+    fontSize: '10px',
+    fontWeight: 700,
+    letterSpacing: '0.30em',
+    textTransform: 'uppercase',
+    color: 'rgba(255,255,255,0.28)',
+  },
+
+  // 卡片（结果页区块）
+  card: {
+    background: 'rgba(255,255,255,0.03)',
+    borderRadius: '24px',
+    border: '1px solid rgba(255,255,255,0.07)',
+  },
+
+  // 流线 SVG 装饰（所有页面共用同一组路径）
+  waveSvg: (
+    <svg className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{opacity: 0.045}} viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
+      <path d="M-20 200 C 80 180, 150 280, 200 240 S 320 160, 420 200" stroke="white" strokeWidth="1" fill="none"/>
+      <path d="M-20 380 C 60 340, 180 420, 250 380 S 360 300, 430 360" stroke="white" strokeWidth="0.8" fill="none"/>
+      <path d="M50 600 C 120 560, 200 640, 300 580 S 380 520, 450 560" stroke="white" strokeWidth="0.6" fill="none"/>
+    </svg>
+  ),
+};
+
+// 全站粒子（完全相同的配置，所有页面共用）
+const Particles = () => (
+  <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    {[
+      {left:'15%', delay:'0s',  dur:'6s',  size:2, top:'75%'},
+      {left:'28%', delay:'1.5s',dur:'8s',  size:2, top:'80%'},
+      {left:'45%', delay:'0.8s',dur:'7s',  size:3, top:'70%'},
+      {left:'62%', delay:'2.2s',dur:'9s',  size:2, top:'85%'},
+      {left:'75%', delay:'0.3s',dur:'6.5s',size:2, top:'78%'},
+      {left:'88%', delay:'3s',  dur:'7.5s',size:2, top:'72%'},
+    ].map((p, i) => (
+      <div key={i} className="particle absolute rounded-full"
+        style={{left:p.left, top:p.top, width:p.size, height:p.size,
+          background:'rgba(255,255,255,0.45)',
+          animationDelay:p.delay, animationDuration:p.dur}} />
+    ))}
+  </div>
+);
+
+// ─────────────────────────────────────────────
+// 以下数据层完全不改
+// ─────────────────────────────────────────────
 const OPTIONS = [
   { label: "从不", value: 1 }, { label: "很少", value: 2 }, { label: "有时", value: 3 }, { label: "经常", value: 4 }, { label: "总是", value: 5 }
 ];
@@ -22,11 +131,9 @@ const DIMENSION_DESCS = {
   "情绪倾倒": "这反映了对方是否将你视为单纯的情绪宣泄口。",
   "受害叙述": "这反映了对方是否通过展示弱势来博取你的同情。",
   "责任转移": "这反映了关系中责任承担的失衡。",
-  "依赖绑定": "这反映了对方是否在通过‘没你不行’来捆绑你的自由。",
+  "依赖绑定": "这反映了对方是否在通过'没你不行'来捆绑你的自由。",
   "冲突激发": "这反映了互动中的摩擦频率。",
   "自我消耗": "这是最直接的生命力流失，代表你的自我认同感正在被磨损。",
-  
-
   "内在补能模式": "这反映了你当前内在的能量储备状态，以及你是否可能在无意识地向外寻求情绪补给。"
 };
 
@@ -113,8 +220,6 @@ const QUESTIONS = [
   { id: 38, part: "B", dim: "内在补能模式", text: "我觉得自己付出的努力，并没有得到环境应有的认可。" }
 ];
 
-
-// --- 12个角色数据 ---
 const ROLE_DATA = {
   "情感代偿者": {
     en: "Emotional Compensator",
@@ -262,35 +367,21 @@ const ROLE_DATA = {
   }
 };
 
-// 角色颜色到进度条颜色的静态映射（避免 Tailwind 动态类名失效）
 const ROLE_BAR_COLOR = {
-  "情感代偿者": "bg-rose-400",
-  "情绪垃圾桶": "bg-red-500",
-  "共情透支者": "bg-fuchsia-400",
-  "关系修复者": "bg-amber-400",
-  "冲突吸引者": "bg-orange-500",
-  "责任承担者": "bg-yellow-400",
-  "依赖支柱": "bg-blue-400",
-  "情绪守护者": "bg-cyan-400",
-  "自我压缩者": "bg-purple-400",
-  "关系消耗者": "bg-slate-400",
-  "情绪循环者": "bg-indigo-400",
-  "关系清醒者": "bg-emerald-400"
+  "情感代偿者": "bg-rose-400", "情绪垃圾桶": "bg-red-500",
+  "共情透支者": "bg-fuchsia-400", "关系修复者": "bg-amber-400",
+  "冲突吸引者": "bg-orange-500", "责任承担者": "bg-yellow-400",
+  "依赖支柱": "bg-blue-400", "情绪守护者": "bg-cyan-400",
+  "自我压缩者": "bg-purple-400", "关系消耗者": "bg-slate-400",
+  "情绪循环者": "bg-indigo-400", "关系清醒者": "bg-emerald-400"
 };
 
-// 维度到副机制名称的映射
 const DIM_TO_ROLE = {
-  "情绪倾倒": "情感代偿者",
-  "受害叙述": "情绪守护者",
-  "责任转移": "责任承担者",
-  "依赖绑定": "依赖支柱",
-  "冲突激发": "关系修复者",
-  "自我消耗": "共情透支者"
+  "情绪倾倒": "情感代偿者", "受害叙述": "情绪守护者",
+  "责任转移": "责任承担者", "依赖绑定": "依赖支柱",
+  "冲突激发": "关系修复者", "自我消耗": "共情透支者"
 };
 
-
-
-// 波浪卷云纹背景组件，左淡右显
 const WaveTexture = ({ seed = 0, opacity = 0.12 }) => {
   const w = 340; const h = 160;
   const rows = 8;
@@ -298,7 +389,6 @@ const WaveTexture = ({ seed = 0, opacity = 0.12 }) => {
   const freq  = [18, 22, 16, 20, 24, 18, 14, 20][seed % 8];
   const phase = [0, 0.4, 0.8, 1.2, 0.2, 0.6, 1.0, 0.3][seed % 8];
   const curl  = [0.4, 0.6, 0.3, 0.5, 0.7, 0.4, 0.5, 0.6][seed % 8];
-
   const buildWavePath = (rowIdx) => {
     const y0 = (h / (rows + 1)) * (rowIdx + 1);
     const pts = [];
@@ -311,14 +401,12 @@ const WaveTexture = ({ seed = 0, opacity = 0.12 }) => {
     }
     return pts.join(' ');
   };
-
   const uid = `wt${seed}`;
   return (
     <svg className="absolute inset-0 w-full h-full pointer-events-none"
       viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="xMidYMid slice"
       style={{borderRadius:'inherit'}}>
       <defs>
-        {/* 白色=显示，黑色=隐藏；左边黑（遮住）→右边白（显示） */}
         <linearGradient id={`wm${uid}`} x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%"   stopColor="black" stopOpacity="1"/>
           <stop offset="45%"  stopColor="black" stopOpacity="1"/>
@@ -343,8 +431,6 @@ const RadarChart = ({ data }) => {
   const size = 300; const center = size / 2; const maxR = center * 0.62;
   const n = data.length;
   const angleOf = i => (Math.PI * 2 * i) / n - Math.PI / 2;
-
-  // 贝塞尔有机路径（缩放比例 scale，基于各维度得分）
   const buildPath = (scale) => {
     const pts = data.map((d, i) => {
       const angle = angleOf(i);
@@ -366,35 +452,20 @@ const RadarChart = ({ data }) => {
     }
     return path + 'Z';
   };
-
-  // 20层密集轮廓，从内到外 scale 0.12 → 1.0
   const layers = 20;
   const contours = Array.from({ length: layers }, (_, i) => {
     const t = (i + 1) / layers;
     const scale = 0.12 + t * 0.88;
-    // 内层浅玫紫，外层浅蓝白，整体偏亮与深色背景拉开
     const rVal = Math.round(210 - t * 60);
     const gVal = Math.round(180 - t * 60);
-    const bVal = Math.round(255);
-    const opacity = t < 0.25
-      ? 0.70 - t * 0.4
-      : t > 0.82
-        ? (1 - t) * 2.2
-        : 0.38 - t * 0.10;
-    const strokeW = 0.45;
-    return { path: buildPath(scale), opacity: Math.max(0.04, opacity), strokeW, r: rVal, g: gVal, b: bVal };
+    const bVal = 255;
+    const opacity = t < 0.25 ? 0.70 - t * 0.4 : t > 0.82 ? (1 - t) * 2.2 : 0.38 - t * 0.10;
+    return { path: buildPath(scale), opacity: Math.max(0.04, opacity), strokeW: 0.45, r: rVal, g: gVal, b: bVal };
   });
-
-  // 标签固定在圆周外侧，均匀分布不随数据动
   const labelPoints = data.map((d, i) => {
     const angle = angleOf(i);
-    return {
-      x: center + (maxR + 26) * Math.cos(angle),
-      y: center + (maxR + 20) * Math.sin(angle),
-      name: d.name,
-    };
+    return { x: center + (maxR + 26) * Math.cos(angle), y: center + (maxR + 20) * Math.sin(angle), name: d.name };
   });
-
   return (
     <div className="flex flex-col items-center py-2">
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="overflow-visible">
@@ -405,8 +476,6 @@ const RadarChart = ({ data }) => {
             <stop offset="100%" stopColor="rgba(140,120,240,0.01)"/>
           </radialGradient>
         </defs>
-
-        {/* 六条轴线，最底层 */}
         {data.map((_, i) => {
           const angle = angleOf(i);
           const x2 = center + maxR * Math.cos(angle);
@@ -414,19 +483,12 @@ const RadarChart = ({ data }) => {
           return <line key={i} x1={center} y1={center} x2={x2} y2={y2}
             stroke="rgba(255,255,255,0.10)" strokeWidth="0.6" strokeLinecap="round"/>;
         })}
-
-        {/* 极淡中心填充 */}
         <path d={buildPath(1.0)} fill="url(#fillGrad)" stroke="none"/>
-
-        {/* 密集等高线，由内到外，浅色系 */}
         {contours.map((c, i) => (
           <path key={i} d={c.path} fill="none"
             stroke={`rgba(${c.r},${c.g},${c.b},${c.opacity})`}
-            strokeWidth={c.strokeW}
-            strokeLinejoin="round"/>
+            strokeWidth={c.strokeW} strokeLinejoin="round"/>
         ))}
-
-        {/* 维度标签，固定位置 */}
         {labelPoints.map((p, i) => (
           <text key={i} x={p.x} y={p.y + 4} fontSize="7.5" textAnchor="middle"
             fill="rgba(255,255,255,0.55)" fontWeight="600" letterSpacing="0.3">
@@ -440,8 +502,6 @@ const RadarChart = ({ data }) => {
 
 export default function App() {
   const [step, setStep] = useState('welcome');
-
-  // DEV: 预览结果页，模拟高分场景
   const previewResult = () => {
     const mockAnswers = {};
     QUESTIONS.forEach(q => {
@@ -450,9 +510,7 @@ export default function App() {
         else if (q.dim === '受害叙述') mockAnswers[q.id] = 4;
         else if (q.dim === '冲突激发') mockAnswers[q.id] = 4;
         else mockAnswers[q.id] = 3;
-      } else {
-        mockAnswers[q.id] = 4;
-      }
+      } else { mockAnswers[q.id] = 4; }
     });
     setAnswers(mockAnswers);
     setTargetPerson('对方');
@@ -475,15 +533,8 @@ export default function App() {
     setTimeout(() => setIsNavigating(false), 300);
   };
 
-  const handleStartIdentity = async () => { 
-     setStep('quiz'); 
-  };
-
-  const handleStartQuiz = async () => {
-    if (finalTarget) {
-       setStep('quiz');
-    }
-  };
+  const handleStartIdentity = async () => { setStep('quiz'); };
+  const handleStartQuiz = async () => { if (finalTarget) setStep('quiz'); };
 
   const handleAnswer = async (val) => {
     if (isNavigating) return;
@@ -491,16 +542,12 @@ export default function App() {
     if (!currentQ) return;
     const newAnswers = { ...answers, [currentQ.id]: val };
     setAnswers(newAnswers);
-
     if (currentIndex === QUESTIONS.length - 1) {
       const dimTotals = {};
       DIMENSIONS.forEach(dim => dimTotals[dim] = 0);
-      QUESTIONS.forEach(q => {
-        const score = newAnswers[q.id] || 0;
-        if (dimTotals[q.dim] !== undefined) dimTotals[q.dim] += score;
-      });
+      QUESTIONS.forEach(q => { const score = newAnswers[q.id] || 0; if (dimTotals[q.dim] !== undefined) dimTotals[q.dim] += score; });
       try {
-        await supabase.from('test_results').insert([{ 
+        await supabase.from('test_results').insert([{
           relation_type: finalTarget,
           dim_dumping: dimTotals["情绪倾倒"] / 5,
           dim_narrative: dimTotals["受害叙述"] / 5,
@@ -524,91 +571,50 @@ export default function App() {
       if (q.part === 'A') { scoreA += val; dimScores[q.dim] += val; }
       else { scoreB += val; dimScores[q.dim] += val; }
     });
-
     const radarData = DIMENSIONS.slice(0, 6).map(key => ({ name: key, value: dimScores[key] / 5 }));
-
-    // 外部6个维度排序
     const extDims = DIMENSIONS.slice(0, 6);
     const sorted = [...extDims].sort((a, b) => dimScores[b] - dimScores[a]);
-    const topDim = sorted[0];
-    const secondDim = sorted[1];
-    const topScore = dimScores[topDim];
-    const secondScore = dimScores[secondDim];
-
-    // 主角色判断逻辑
-    // gap：最高维度与第二高维度的差值，差距不显著时用综合逻辑
-    const gap = topScore - secondScore;
-    const dominated = gap >= 3; // 至少差3分才算"显著领先"
-
+    const topDim = sorted[0]; const secondDim = sorted[1];
+    const topScore = dimScores[topDim]; const secondScore = dimScores[secondDim];
+    const gap = topScore - secondScore; const dominated = gap >= 3;
     let roleName;
-    if (scoreA <= 44 && scoreB <= 16) {
-      roleName = "关系清醒者";
-
-    } else if (dominated && topDim === "情绪倾倒" && topScore >= 16) {
-      roleName = "情绪垃圾桶";
-    } else if (dominated && topDim === "情绪倾倒") {
-      roleName = "情感代偿者";
-    } else if (dominated && topDim === "自我消耗" && scoreB > 27) {
-      roleName = "共情透支者";
-    } else if (dominated && topDim === "自我消耗") {
-      roleName = "自我压缩者";
-    } else if (dominated && topDim === "冲突激发" && topScore >= 16) {
-      roleName = "冲突吸引者";
-    } else if (dominated && topDim === "冲突激发" && dimScores["情绪倾倒"] >= 10) {
-      roleName = "情绪循环者";
-    } else if (dominated && topDim === "冲突激发") {
-      roleName = "关系修复者";
-    } else if (dominated && topDim === "责任转移" && dimScores["自我消耗"] >= 8) {
-      roleName = "自我压缩者";
-    } else if (dominated && topDim === "责任转移") {
-      roleName = "责任承担者";
-    } else if (dominated && topDim === "依赖绑定") {
-      roleName = "依赖支柱";
-    } else if (dominated && topDim === "受害叙述") {
-      roleName = "情绪守护者";
-
-    } else {
-      // 差距不显著时，用综合得分最高的两个维度组合判断
-      const top2 = sorted.slice(0, 2).map(d => d);
-      const avgScore = scoreA / 6; // 平均分
-
-      if (dimScores["自我消耗"] >= avgScore && scoreB > 24) {
-        roleName = "共情透支者";
-      } else if (dimScores["冲突激发"] >= avgScore && dimScores["情绪倾倒"] >= avgScore) {
-        roleName = "情绪循环者";
-      } else if (dimScores["责任转移"] >= avgScore && dimScores["自我消耗"] >= avgScore) {
-        roleName = "自我压缩者";
-      } else if (dimScores["情绪倾倒"] >= avgScore && dimScores["受害叙述"] >= avgScore) {
-        roleName = "情感代偿者";
-      } else if (dimScores["依赖绑定"] >= avgScore) {
-        roleName = "依赖支柱";
-      } else if (dimScores["冲突激发"] >= avgScore) {
-        roleName = "关系修复者";
-      } else if (scoreA >= 80) {
-        // 整体高分但无明显维度主导 → 全面消耗型
-        roleName = "情绪垃圾桶";
-      } else {
-        roleName = "关系消耗者";
-      }
+    if (scoreA <= 44 && scoreB <= 16) { roleName = "关系清醒者"; }
+    else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪垃圾桶"; }
+    else if (dominated && topDim === "情绪倾倒") { roleName = "情感代偿者"; }
+    else if (dominated && topDim === "自我消耗" && scoreB > 27) { roleName = "共情透支者"; }
+    else if (dominated && topDim === "自我消耗") { roleName = "自我压缩者"; }
+    else if (dominated && topDim === "冲突激发" && topScore >= 16) { roleName = "冲突吸引者"; }
+    else if (dominated && topDim === "冲突激发" && dimScores["情绪倾倒"] >= 10) { roleName = "情绪循环者"; }
+    else if (dominated && topDim === "冲突激发") { roleName = "关系修复者"; }
+    else if (dominated && topDim === "责任转移" && dimScores["自我消耗"] >= 8) { roleName = "自我压缩者"; }
+    else if (dominated && topDim === "责任转移") { roleName = "责任承担者"; }
+    else if (dominated && topDim === "依赖绑定") { roleName = "依赖支柱"; }
+    else if (dominated && topDim === "受害叙述") { roleName = "情绪守护者"; }
+    else {
+      const avgScore = scoreA / 6;
+      if (dimScores["自我消耗"] >= avgScore && scoreB > 24) { roleName = "共情透支者"; }
+      else if (dimScores["冲突激发"] >= avgScore && dimScores["情绪倾倒"] >= avgScore) { roleName = "情绪循环者"; }
+      else if (dimScores["责任转移"] >= avgScore && dimScores["自我消耗"] >= avgScore) { roleName = "自我压缩者"; }
+      else if (dimScores["情绪倾倒"] >= avgScore && dimScores["受害叙述"] >= avgScore) { roleName = "情感代偿者"; }
+      else if (dimScores["依赖绑定"] >= avgScore) { roleName = "依赖支柱"; }
+      else if (dimScores["冲突激发"] >= avgScore) { roleName = "关系修复者"; }
+      else if (scoreA >= 80) { roleName = "情绪垃圾桶"; }
+      else { roleName = "关系消耗者"; }
     }
-
-    // 副机制判断：第二高维度 >= 10分，且对应角色不同于主角色
     const secondRoleName = DIM_TO_ROLE[secondDim];
     const subRole = (secondScore >= 10 && secondRoleName !== roleName)
-      ? { name: secondRoleName, dim: secondDim, score: secondScore, ...ROLE_DATA[secondRoleName] }
-      : null;
-
+      ? { name: secondRoleName, dim: secondDim, score: secondScore, ...ROLE_DATA[secondRoleName] } : null;
     const role = ROLE_DATA[roleName];
     return { ...role, roleName, subRole, scoreA, scoreB, radarData, dimScores, topDim };
   }, [step, answers]);
 
-
-  // --- [1] 首页 ---
+  // ─────────────────────────────────────────────
+  // [1] 首页 welcome
+  // ─────────────────────────────────────────────
   if (step === 'welcome') {
     return (
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
-        style={{background: 'linear-gradient(135deg, #1f1c2c 0%, #534e64 50%, #928dab 100%)'}}>
-
+        style={{background: DS.pageBg}}>
         <style>{`
           @keyframes floatUp {
             0% { transform: translateY(0) scale(1); opacity: 0.5; }
@@ -617,46 +623,16 @@ export default function App() {
           .particle { animation: floatUp linear infinite; }
         `}</style>
 
-        {/* 极淡噪点纹理感 */}
         <div className="absolute inset-0 pointer-events-none"
           style={{background: 'radial-gradient(ellipse at 30% 20%, rgba(146,141,171,0.15) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(31,28,44,0.4) 0%, transparent 60%)'}}/>
+        {DS.waveSvg}
+        <Particles />
 
-        {/* SVG 流线装饰 */}
-        <svg className="absolute inset-0 w-full h-full opacity-[0.06]" viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
-          <path d="M-20 200 C 80 180, 150 280, 200 240 S 320 160, 420 200" stroke="white" strokeWidth="1" fill="none"/>
-          <path d="M-20 380 C 60 340, 180 420, 250 380 S 360 300, 430 360" stroke="white" strokeWidth="0.8" fill="none"/>
-          <path d="M50 600 C 120 560, 200 640, 300 580 S 380 520, 450 560" stroke="white" strokeWidth="0.6" fill="none"/>
-        </svg>
-
-        {/* 漂浮粒子 */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {[
-            {left:'15%', delay:'0s', dur:'6s', size:2, top:'75%'},
-            {left:'28%', delay:'1.5s', dur:'8s', size:2, top:'80%'},
-            {left:'45%', delay:'0.8s', dur:'7s', size:3, top:'70%'},
-            {left:'62%', delay:'2.2s', dur:'9s', size:2, top:'85%'},
-            {left:'75%', delay:'0.3s', dur:'6.5s', size:2, top:'78%'},
-            {left:'88%', delay:'3s', dur:'7.5s', size:2, top:'72%'},
-          ].map((p, i) => (
-            <div key={i} className="particle absolute rounded-full"
-              style={{
-                left: p.left, top: p.top,
-                width: p.size, height: p.size,
-                background: 'rgba(255,255,255,0.5)',
-                animationDelay: p.delay, animationDuration: p.dur,
-              }} />
-          ))}
-        </div>
-
-        {/* 内容层 */}
         <div className="relative z-10 flex flex-col min-h-screen px-8">
-          {/* 上方占位 */}
           <div className="flex-[1.2]" />
 
-          {/* 标题区 - 无容器，直接浮在背景上 */}
           <div className="flex flex-col items-center text-center">
-            <p className="text-[10px] font-bold uppercase tracking-[0.35em] mb-6"
-              style={{color:'#928dab'}}>
+            <p style={{...DS.label, color: '#928dab', marginBottom: '24px'}}>
               流失追踪 · 能量损耗分析
             </p>
             <h1 className="text-[2.6rem] font-bold leading-[1.1] mb-5"
@@ -671,30 +647,25 @@ export default function App() {
 
           <div className="flex-[1.5]" />
 
-          {/* 按钮区 */}
           <div className="flex flex-col items-center mb-16 gap-5">
-            {/* 引导语 */}
-            <p className="text-center text-xs leading-relaxed max-w-[240px]" style={{color:'rgba(255,255,255,0.28)'}}>
+            <p className="text-center text-xs leading-relaxed max-w-[240px]"
+              style={{color:'rgba(255,255,255,0.28)'}}>
               在开始之前，想一想<br/>最近让你感到情绪消耗的那个人
             </p>
 
-            {/* 主按钮 - 圆角矩形 */}
+            {/* 主按钮 — 首页专属，渐变+阴影 */}
             <button onClick={handleStartIdentity}
-              className="w-full max-w-xs py-5 text-white font-bold text-lg tracking-wide active:scale-95 transition-all rounded-[2rem]"
-              style={{
-                background: 'linear-gradient(135deg, #1f1c2c, #928dab)',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
-                border: '1px solid rgba(255,255,255,0.12)',
-              }}>
+              className="w-full max-w-xs py-5 active:scale-95"
+              style={DS.btnPrimary()}>
               <span style={{textShadow: '0 0 20px rgba(255,255,255,0.25)'}}>开启测评</span>
             </button>
 
-            {/* 理论来源 - 极淡浮动文字，无卡片 */}
-            <p className="text-white/15 text-[10px] text-center leading-relaxed max-w-[240px]">
+            <p style={{...DS.label, color: 'rgba(255,255,255,0.15)', letterSpacing: '0.12em', textAlign: 'center', lineHeight: 1.8, maxWidth: '240px'}}>
               基于 Stéphane Clerget 情绪劳动理论<br/>及关系动力学理论
             </p>
 
-            <button onClick={previewResult} className="text-white/15 text-[9px] font-bold tracking-widest hover:text-white/30 transition-colors">
+            <button onClick={previewResult}
+              style={{...DS.label, color: 'rgba(255,255,255,0.15)', background: 'none', border: 'none', cursor: 'pointer'}}>
               DEV · 预览结果页
             </button>
           </div>
@@ -703,179 +674,166 @@ export default function App() {
     );
   }
 
-  // --- [2] Identity Step ---
+  // ─────────────────────────────────────────────
+  // [2] Identity Step（保留原逻辑，统一 button）
+  // ─────────────────────────────────────────────
   if (step === 'identity') {
     return (
-      <div className="min-h-screen bg-[#152331] text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden">
-        <div className="w-20 h-20 bg-indigo-900/20 rounded-full flex items-center justify-center mb-8 ring-8 ring-indigo-500/5">
-           <Heart className="w-10 h-10 text-indigo-400 animate-pulse" fill="currentColor" />
-        </div>
-        <h2 className="text-3xl font-black mb-4 tracking-tighter text-center">锁定分析对象</h2>
-        <p className="text-white/35 text-sm mb-12 text-center">告诉我们，你最想扫描哪段互动的能量流失？</p>
-        
-        <div className="w-full max-w-sm space-y-6">
-          <div className="relative">
-             <input 
-               autoFocus
-               type="text" 
-               placeholder="例如：妈妈 / 爱人 / 同事" 
-               className="w-full bg-white/5 border border-white/10 p-6 rounded-[2.2rem] text-lg text-center focus:outline-none focus:border-indigo-500/30 transition-all placeholder:text-white/15" 
-               value={targetPerson} 
-               onChange={(e) => setTargetPerson(e.target.value)} 
-             />
+      <div className="min-h-screen text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden relative"
+        style={{background: DS.pageBg}}>
+        {DS.waveSvg}
+        <Particles />
+        <div className="relative z-10 flex flex-col items-center w-full">
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-8"
+            style={{background: 'rgba(146,141,171,0.12)', border: '1px solid rgba(146,141,171,0.2)'}}>
+            <Heart className="w-10 h-10 animate-pulse" style={{color: 'rgba(146,141,171,0.8)'}} fill="currentColor" />
           </div>
-          
-          <button 
-            disabled={!targetPerson.trim()}
-            onClick={handleStartQuiz} 
-            className={`w-full py-5 rounded-[2.2rem] font-black text-lg transition-all flex items-center justify-center gap-2 ${targetPerson.trim() ? 'bg-indigo-900/80 text-white shadow-xl shadow-indigo-900/20 active:scale-95' : 'bg-[#120e13] text-slate-700 cursor-not-allowed border border-white/5'}`}
-          >
-             进入扫描仪式 →
-          </button>
-          
-          <button onClick={() => setStep('welcome')} className="w-full text-[10px] font-bold text-white/20 uppercase tracking-widest hover:text-white/40 transition-colors">返回首页</button>
+          <h2 className="text-3xl font-bold mb-4 text-center" style={{letterSpacing: '-0.02em'}}>锁定分析对象</h2>
+          <p className="text-sm mb-12 text-center" style={{color: 'rgba(255,255,255,0.35)'}}>告诉我们，你最想扫描哪段互动的能量流失？</p>
+          <div className="w-full max-w-sm space-y-4">
+            <input
+              autoFocus type="text"
+              placeholder="例如：妈妈 / 爱人 / 同事"
+              className="w-full p-6 text-lg text-center focus:outline-none placeholder:text-white/15 transition-all"
+              style={{background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.10)', borderRadius: '2rem', color: 'white'}}
+              value={targetPerson}
+              onChange={(e) => setTargetPerson(e.target.value)}
+            />
+            <button
+              disabled={!targetPerson.trim()}
+              onClick={handleStartQuiz}
+              className="w-full py-5 active:scale-95"
+              style={targetPerson.trim() ? DS.btnPrimary() : {...DS.btnSecondary, cursor: 'not-allowed', opacity: 0.5}}>
+              进入扫描仪式 →
+            </button>
+            <button onClick={() => setStep('welcome')} className="w-full py-3"
+              style={DS.btnSecondary}>
+              返回首页
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
+  // ─────────────────────────────────────────────
+  // [3] 题目页 quiz
+  // ─────────────────────────────────────────────
   if (step === 'quiz') {
     const q = QUESTIONS[currentIndex]; if (!q) return null;
-    const currentVal = answers[q.id]; const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
+    const currentVal = answers[q.id];
+    const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
     const isPartB = q.part === 'B';
-    const bgGrad = 'linear-gradient(135deg, #1f1c2c 0%, #534e64 50%, #928dab 100%)';
+    const accentColor = isPartB ? 'rgba(103,232,249,' : 'rgba(188,190,229,';
+
     return (
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
-        style={{background: bgGrad}}>
+        style={{background: DS.pageBg}}>
+        <div className="absolute inset-0 pointer-events-none"
+          style={{background: isPartB
+            ? 'radial-gradient(ellipse at 70% 25%, rgba(99,94,121,0.2) 0%, transparent 55%)'
+            : 'radial-gradient(ellipse at 30% 20%, rgba(146,141,171,0.15) 0%, transparent 55%)'}} />
+        {DS.waveSvg}
+        <Particles />
 
-        {/* 背景流体 */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute inset-0"
-            style={{background: isPartB
-              ? 'radial-gradient(ellipse at 70% 25%, rgba(99,94,121,0.2) 0%, transparent 55%)'
-              : 'radial-gradient(ellipse at 30% 20%, rgba(146,141,171,0.15) 0%, transparent 55%)'}} />
-          {/* 细线装饰 */}
-          <svg className="absolute inset-0 w-full h-full opacity-[0.04]" viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
-            <path d="M0 300 C 100 260, 200 340, 390 280" stroke="white" strokeWidth="0.8" fill="none"/>
-            <path d="M0 500 C 120 460, 250 540, 390 480" stroke="white" strokeWidth="0.6" fill="none"/>
-          </svg>
-          {/* 漂浮粒子 */}
-          {[
-            {left:'10%',top:'80%',delay:'0s',dur:'7s',size:2},
-            {left:'30%',top:'85%',delay:'2s',dur:'9s',size:2},
-            {left:'55%',top:'75%',delay:'1s',dur:'6s',size:2},
-            {left:'75%',top:'88%',delay:'3s',dur:'8s',size:2},
-            {left:'88%',top:'70%',delay:'0.5s',dur:'7s',size:2},
-          ].map((p,i) => (
-            <div key={i} className="particle absolute rounded-full"
-              style={{left:p.left,top:p.top,width:p.size,height:p.size,
-                background:'rgba(255,255,255,0.35)',
-                animationDelay:p.delay,animationDuration:p.dur}} />
-          ))}
-        </div>
-
-        {/* 顶部进度区 */}
+        {/* 顶部进度 */}
         <div className="relative z-10 px-6 pt-8 pb-4 max-w-md mx-auto w-full">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.25)'}}>
-              <span style={{color: isPartB ? '#9E9BB7' : '#BCBEE5'}}>{currentIndex + 1}</span>
+              <span style={{color: isPartB ? 'rgba(103,232,249,0.9)' : 'rgba(188,190,229,0.9)'}}>
+                {currentIndex + 1}
+              </span>
               <span> / {QUESTIONS.length}</span>
             </span>
-            <span className="text-[10px] font-bold uppercase tracking-[0.25em]"
-              style={{color: isPartB ? '#767091' : '#928dab'}}>
+            <span style={{...DS.label, color: isPartB ? 'rgba(103,232,249,0.55)' : 'rgba(146,141,171,0.7)'}}>
               PART {String(q.part)}
             </span>
           </div>
-          {/* 有机进度条 */}
-          <div className="w-full h-[3px] rounded-full overflow-hidden mb-6" style={{background:'rgba(255,255,255,0.06)'}}>
-            <div className="h-full rounded-full transition-all duration-700"
-              style={{
-                width:`${progress}%`,
-                background: isPartB
-                  ? 'linear-gradient(90deg, rgba(14,116,144,0.8), rgba(103,232,249,0.9))'
-                  : 'linear-gradient(90deg, rgba(30,58,95,0.8), rgba(99,102,241,0.9))',
-                boxShadow: isPartB ? '0 0 12px rgba(118,112,145,0.5)' : '0 0 12px rgba(146,141,171,0.5)'
-              }} />
+          {/* 进度条 — 统一 3px */}
+          <div style={DS.progressTrack} className="mb-6">
+            <div style={isPartB ? DS.progressFillB(progress) : DS.progressFillA(progress)} />
           </div>
-          {/* 维度标签 */}
-          <p className="text-[10px] uppercase tracking-[0.3em] mb-2"
-            style={{color: isPartB ? '#635e79' : '#928dab'}}>
+          <p style={{...DS.label, color: isPartB ? 'rgba(103,232,249,0.45)' : 'rgba(146,141,171,0.6)', marginBottom: '0'}}>
             {String(q.dim)}
           </p>
         </div>
 
-        {/* 题目文字区 - 固定在中上方，不随选项动 */}
+        {/* 题目 */}
         <div className="relative z-10 px-8 max-w-md mx-auto w-full mt-2 mb-8">
-            <span className="text-[10px] font-bold tracking-[0.2em] mb-5 block"
-              style={{color:'rgba(255,255,255,0.12)', fontFamily:'monospace'}}>
-              Q{String(currentIndex+1).padStart(2,'0')}
-            </span>
-            <h2 className="text-[1.65rem] font-bold leading-[1.4] text-white/90"
-              style={{textShadow:'0 0 40px rgba(255,255,255,0.05)'}}>
-              {String(q.text).replace('{target}', finalTarget)}
-            </h2>
+          <span style={{...DS.label, color: 'rgba(255,255,255,0.12)', fontFamily: 'monospace', display: 'block', marginBottom: '20px'}}>
+            Q{String(currentIndex+1).padStart(2,'0')}
+          </span>
+          <h2 className="text-[1.65rem] font-bold leading-[1.4] text-white/90"
+            style={{textShadow:'0 0 40px rgba(255,255,255,0.05)'}}>
+            {String(q.text).replace('{target}', finalTarget)}
+          </h2>
         </div>
 
-        {/* 选项 - 发光粒子气泡，固定在下方 */}
+        {/* 选项气泡 */}
         <div className="relative z-10 flex-1 flex flex-col justify-end px-8 max-w-md mx-auto w-full">
-          <div>
-            {/* 选项 */}
-            <div className="flex justify-between items-end gap-1 mb-10">
-              {OPTIONS.map((opt, i) => {
-                const isSelected = currentVal === opt.value;
-                const glowColor = isPartB ? 'rgba(188,190,229,' : 'rgba(188,190,229,';
-                return (
-                  <button key={opt.value} onClick={() => handleAnswer(opt.value)}
-                    className={`flex flex-col items-center gap-2 flex-1 group transition-all duration-300`}>
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${isSelected ? 'scale-125' : 'scale-100 hover:scale-110'}`}
-                      style={{
-                        background: isSelected
-                          ? `radial-gradient(ellipse, ${glowColor}0.5) 0%, ${glowColor}0.15) 100%)`
-                          : 'rgba(255,255,255,0.04)',
-                        border: isSelected
-                          ? `1px solid ${glowColor}0.6)`
-                          : '1px solid rgba(255,255,255,0.08)',
-                        boxShadow: isSelected
-                          ? `0 0 20px ${glowColor}0.4), 0 0 40px ${glowColor}0.15)`
-                          : 'none',
-                      }}>
-                      {isSelected && (
-                        <div className="w-2 h-2 rounded-full"
-                          style={{background: glowColor+'0.9)', boxShadow:`0 0 8px ${glowColor}1)`}} />
-                      )}
-                    </div>
-                    <span className="text-[9px] font-bold tracking-tight"
-                      style={{color: isSelected ? '#BCBEE5' : 'rgba(255,255,255,0.25)'}}>
-                      {String(opt.label)}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+          <div className="flex justify-between items-end gap-1 mb-10">
+            {OPTIONS.map((opt) => {
+              const isSelected = currentVal === opt.value;
+              return (
+                <button key={opt.value} onClick={() => handleAnswer(opt.value)}
+                  className="flex flex-col items-center gap-2 flex-1 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
+                    style={{
+                      transform: isSelected ? 'scale(1.25)' : 'scale(1)',
+                      background: isSelected
+                        ? `radial-gradient(ellipse, ${accentColor}0.6) 0%, ${accentColor}0.2) 100%)`
+                        : 'rgba(255,255,255,0.08)',
+                      border: isSelected
+                        ? `2px solid ${accentColor}0.9)`
+                        : '1px solid rgba(255,255,255,0.22)',
+                      boxShadow: isSelected
+                        ? `0 0 24px ${accentColor}0.5), 0 0 48px ${accentColor}0.2)`
+                        : '0 2px 8px rgba(0,0,0,0.3)',
+                    }}>
+                    {isSelected && (
+                      <div className="w-2 h-2 rounded-full"
+                        style={{background: `${accentColor}0.9)`, boxShadow:`0 0 8px ${accentColor}1)`}} />
+                    )}
+                  </div>
+                  <span style={{
+                    fontSize: '9px', fontWeight: 700, letterSpacing: '0.04em',
+                    color: isSelected ? (isPartB ? 'rgba(103,232,249,0.95)' : '#BCBEE5') : 'rgba(255,255,255,0.25)'
+                  }}>
+                    {String(opt.label)}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* 底部按钮 */}
+        {/* 底部按钮 — 统一风格 */}
         <div className="relative z-10 flex gap-3 px-6 pb-10 max-w-md mx-auto w-full">
-          <button onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)}
+          <button
+            onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)}
             disabled={currentIndex === 0}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'active:scale-90'}`}
-            style={{background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)'}}>
-            <ArrowLeft className="w-5 h-5 text-white/40" />
-          </button>
-          <button onClick={() => currentVal && navigateToNext(currentIndex)}
-            disabled={!currentVal}
-            className="flex-1 h-14 rounded-full font-bold text-base transition-all active:scale-95"
+            className="active:scale-90"
             style={{
-              background: !currentVal
-                ? 'rgba(255,255,255,0.04)'
-                : 'rgba(188,190,229,0.15)',
-              border: !currentVal
-                ? '1px solid rgba(255,255,255,0.06)'
-                : '1px solid rgba(188,190,229,0.35)',
-              color: !currentVal ? 'rgba(255,255,255,0.2)' : '#E8E9F7',
-              boxShadow: currentVal ? '0 0 24px rgba(188,190,229,0.15)' : 'none'
+              ...DS.btnSecondary,
+              width: '56px', height: '56px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              borderRadius: '50%',
+              opacity: currentIndex === 0 ? 0 : 1,
+              pointerEvents: currentIndex === 0 ? 'none' : 'auto',
+              padding: 0,
             }}>
+            <ArrowLeft className="w-5 h-5" style={{color: 'rgba(255,255,255,0.4)'}} />
+          </button>
+          <button
+            onClick={() => currentVal && navigateToNext(currentIndex)}
+            disabled={!currentVal}
+            className="flex-1 active:scale-95"
+            style={currentVal
+              ? {...DS.btnPrimary(accentColor), height: '56px',
+                  background: isPartB
+                    ? 'linear-gradient(135deg, rgba(8,145,178,0.75), rgba(14,116,144,0.85))'
+                    : 'linear-gradient(135deg, #1f1c2c, #928dab)'}
+              : {...DS.btnSecondary, height: '56px', cursor: 'not-allowed', opacity: 0.4}}>
             {currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}
           </button>
         </div>
@@ -883,33 +841,44 @@ export default function App() {
     );
   }
 
+  // ─────────────────────────────────────────────
+  // [4] 过渡页 transition
+  // ─────────────────────────────────────────────
   if (step === 'transition') return (
-    <div className="min-h-screen bg-[#152331] text-white flex flex-col items-center justify-center p-12 text-center font-sans relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="fluid1 absolute top-[-20%] left-[-20%] w-[80%] h-[80%] opacity-[0.15] blur-[100px] rounded-full"
-          style={{background:'radial-gradient(ellipse, #1e3a5f 0%, transparent 70%)'}} />
-        <div className="fluid3 absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] opacity-[0.12] blur-[100px] rounded-full"
-          style={{background:'radial-gradient(ellipse, #164e63 0%, transparent 70%)'}} />
-      </div>
+    <div className="min-h-screen text-white flex flex-col items-center justify-center p-12 text-center font-sans relative overflow-hidden"
+      style={{background: DS.pageBg}}>
+      <div className="absolute inset-0 pointer-events-none"
+        style={{background: 'radial-gradient(ellipse at 50% 40%, rgba(8,145,178,0.15) 0%, transparent 60%)'}} />
+      {DS.waveSvg}
+      <Particles />
+
       <div className="relative z-10 flex flex-col items-center">
         <div className="w-16 h-16 rounded-full mb-10 flex items-center justify-center"
-          style={{background:'radial-gradient(ellipse, rgba(8,145,178,0.4) 0%, transparent 70%)',
-            boxShadow:'0 0 40px rgba(8,145,178,0.25)', border:'1px solid rgba(103,232,249,0.2)'}}>
+          style={{
+            background: 'radial-gradient(ellipse, rgba(8,145,178,0.35) 0%, transparent 70%)',
+            boxShadow: '0 0 40px rgba(8,145,178,0.22)',
+            border: '1px solid rgba(103,232,249,0.18)'
+          }}>
           <Fingerprint className="w-7 h-7" style={{color:'rgba(103,232,249,0.7)'}} />
         </div>
-        <p className="text-[10px] uppercase tracking-[0.35em] text-white/25 mb-4">PART A 完成</p>
-        <h2 className="text-2xl font-bold mb-4 text-white/90" style={{letterSpacing:'-0.02em'}}>关系损耗扫描完成</h2>
-        <p className="text-white/30 text-sm mb-14 leading-relaxed max-w-[240px]">
+
+        <p style={{...DS.label, marginBottom: '16px'}}>PART A 完成</p>
+        <h2 className="text-2xl font-bold mb-4 text-white/90" style={{letterSpacing:'-0.02em'}}>
+          关系损耗扫描完成
+        </h2>
+        <p className="text-sm mb-14 leading-relaxed max-w-[240px]" style={{color:'rgba(255,255,255,0.30)'}}>
           接下来扫描你当前的<br/>
           <span style={{color:'rgba(103,232,249,0.6)'}}>内在能量补给状态</span>
         </p>
-        <button onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }}
-          className="w-full max-w-xs py-5 font-bold text-base active:scale-95 transition-all rounded-[2rem]"
+
+        {/* 过渡页按钮 — 同样用 btnPrimary，但色调偏青 */}
+        <button
+          onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }}
+          className="w-full max-w-xs py-5 active:scale-95"
           style={{
-            background:'linear-gradient(135deg, rgba(8,145,178,0.7), rgba(14,116,144,0.8))',
-            border:'1px solid rgba(103,232,249,0.18)',
-            boxShadow:'0 0 40px rgba(8,145,178,0.22)',
-            color:'rgba(255,255,255,0.88)'
+            ...DS.btnPrimary('rgba(103,232,249,'),
+            background: 'linear-gradient(135deg, rgba(8,145,178,0.75), rgba(14,116,144,0.88))',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.4), 0 0 20px rgba(8,145,178,0.25)',
           }}>
           继续内在扫描
         </button>
@@ -917,42 +886,43 @@ export default function App() {
     </div>
   );
 
+  // ─────────────────────────────────────────────
+  // [5] 结果页 result — 内容完全不变，只统一样式
+  // ─────────────────────────────────────────────
   if (step === 'result' && resultData) {
     const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole } = resultData;
 
-    // 海报弹窗
     if (showPoster) return (
       <div className={`min-h-screen bg-gradient-to-b ${bg} via-slate-950 to-black flex items-center justify-center p-6 font-sans`}>
         <div className="w-full max-w-[340px]">
           <div className="bg-black/30 backdrop-blur-md rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl flex flex-col items-center text-center relative">
-            {/* close btn 卡片内右上角 top-6 right-6 */}
-            <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 z-10 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/10"><X className="w-3.5 h-3.5"/></button>
-            {/* 顶部 badge */}
+            <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 z-10 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/10">
+              <X className="w-3.5 h-3.5"/>
+            </button>
             <div className="pt-8 pb-4 px-8 flex flex-col items-center">
-              <div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-black uppercase tracking-widest mb-5`}>{String(status)}</div>
-              <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-2">关系能量分析</p>
-              <h2 className="text-3xl font-black tracking-tighter text-white leading-tight mb-1">{String(roleName)}</h2>
-              <p className={`text-[9px] font-black mb-6 ${color}`}>{String(tag)}</p>
+              <div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-bold uppercase tracking-widest mb-5`}>{String(status)}</div>
+              <p style={{...DS.label, marginBottom: '8px'}}>关系能量分析</p>
+              <h2 className="text-3xl font-bold tracking-tight text-white leading-tight mb-1">{String(roleName)}</h2>
+              <p className={`text-[9px] font-bold mb-6 ${color}`}>{String(tag)}</p>
             </div>
-            {/* 关系图形区域 placeholder */}
             <div className="w-full px-8 mb-6">
               <div className="rounded-2xl border border-dashed border-white/10 bg-white/5 h-44 flex items-center justify-center">
                 <p className="text-white/20 text-[10px] font-bold">关系图形</p>
               </div>
             </div>
-            {/* 角色定义 */}
             <div className="px-8 pb-8 w-full">
               <div className="relative pl-3 border-l-2 border-white/20 text-left">
                 <p className="text-white/60 text-xs leading-relaxed">{String(definition)}</p>
               </div>
-              <p className="text-white/15 text-[9px] font-medium tracking-[0.2em] flex items-center justify-center gap-2 mt-6"><Download className="w-2.5 h-2.5 opacity-50"/> 截图保存你的报告</p>
+              <p className="text-white/15 text-[9px] tracking-[0.2em] flex items-center justify-center gap-2 mt-6">
+                <Download className="w-2.5 h-2.5 opacity-50"/> 截图保存你的报告
+              </p>
             </div>
           </div>
         </div>
       </div>
     );
 
-    // 从 color class 提取实际颜色值用于 inline style
     const roleColorMap = {
       'text-rose-400': 'rgba(251,113,133,', 'text-red-500': 'rgba(239,68,68,',
       'text-fuchsia-400': 'rgba(232,121,249,', 'text-purple-400': 'rgba(192,132,252,',
@@ -963,46 +933,52 @@ export default function App() {
     };
     const rc = roleColorMap[color] || 'rgba(99,102,241,';
 
-    // 每个角色的对比色（第二流体）让背景色彩更丰富有辨识度
     const roleAccentMap = {
-      'text-rose-400':    'rgba(88,28,135,0.22)',    // 紫
-      'text-red-500':     'rgba(30,58,138,0.20)',    // 深蓝
-      'text-fuchsia-400': 'rgba(30,58,138,0.20)',    // 深红
-      'text-purple-400':  'rgba(14,116,144,0.18)',   // 青
-      'text-orange-500':  'rgba(88,28,135,0.20)',    // 紫
-      'text-indigo-400':  'rgba(6,78,59,0.22)',      // 深绿
-      'text-amber-400':   'rgba(30,58,138,0.18)',    // 深红
-      'text-yellow-400':  'rgba(14,116,144,0.16)',   // 青
-      'text-blue-400':    'rgba(6,78,59,0.20)',      // 深绿
-      'text-cyan-400':    'rgba(30,58,138,0.22)',    // 深蓝
-      'text-emerald-400': 'rgba(14,116,144,0.20)',   // 青绿
-      'text-slate-400':   'rgba(88,28,135,0.18)',    // 紫
+      'text-rose-400': 'rgba(88,28,135,0.22)', 'text-red-500': 'rgba(30,58,138,0.20)',
+      'text-fuchsia-400': 'rgba(30,58,138,0.20)', 'text-purple-400': 'rgba(14,116,144,0.18)',
+      'text-orange-500': 'rgba(88,28,135,0.20)', 'text-indigo-400': 'rgba(6,78,59,0.22)',
+      'text-amber-400': 'rgba(30,58,138,0.18)', 'text-yellow-400': 'rgba(14,116,144,0.16)',
+      'text-blue-400': 'rgba(6,78,59,0.20)', 'text-cyan-400': 'rgba(30,58,138,0.22)',
+      'text-emerald-400': 'rgba(14,116,144,0.20)', 'text-slate-400': 'rgba(88,28,135,0.18)',
     };
     const rc2 = roleAccentMap[color] || 'rgba(88,28,135,0.18)';
 
-    // 页面底色也跟角色走，极深但有色温差异
     const roleBgBase = {
-      'text-rose-400':    '#0e0608', 'text-red-500':     '#0d0508',
-      'text-fuchsia-400': '#0d060e', 'text-purple-400':  '#08060e',
-      'text-orange-500':  '#0e0906', 'text-indigo-400':  '#06080e',
-      'text-amber-400':   '#0e0b04', 'text-yellow-400':  '#0c0b04',
-      'text-blue-400':    '#05080e', 'text-cyan-400':    '#04090e',
-      'text-emerald-400': '#04090a', 'text-slate-400':   '#070809',
+      'text-rose-400': '#0e0608', 'text-red-500': '#0d0508',
+      'text-fuchsia-400': '#0d060e', 'text-purple-400': '#08060e',
+      'text-orange-500': '#0e0906', 'text-indigo-400': '#06080e',
+      'text-amber-400': '#0e0b04', 'text-yellow-400': '#0c0b04',
+      'text-blue-400': '#05080e', 'text-cyan-400': '#04090e',
+      'text-emerald-400': '#04090a', 'text-slate-400': '#070809',
     };
     const pageBg = roleBgBase[color] || '#152331';
 
-    return (
-      <div className="min-h-screen text-white font-sans relative overflow-x-hidden"
-        style={{background: pageBg}}>
+    // 结果页进度条（跟随角色色）
+    const roleProgressFill = (pct) => ({
+      width: `${pct}%`, height: '100%', borderRadius: '2px',
+      background: `linear-gradient(90deg, ${rc}0.5), ${rc}0.85))`,
+      boxShadow: `0 0 10px ${rc}0.4)`,
+      transition: 'width 0.6s cubic-bezier(.4,0,.2,1)',
+    });
 
-        {/* 全局背景流体 - 跟随角色色 */}
+    return (
+      <div className="min-h-screen text-white font-sans relative overflow-x-hidden" style={{background: pageBg}}>
+        <style>{`
+          @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 0.5; }
+            100% { transform: translateY(-120px) scale(0.3); opacity: 0; }
+          }
+          .particle { animation: floatUp linear infinite; }
+        `}</style>
+
+        {/* 背景流体 */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{zIndex:0}}>
-          <div className="fluid1 absolute top-[-10%] left-[-20%] w-[90%] h-[60%] blur-[120px]"
-            style={{background:`radial-gradient(ellipse, ${rc}0.22) 0%, transparent 70%)`}} />
-          <div className="fluid2 absolute bottom-[10%] right-[-20%] w-[70%] h-[50%] blur-[100px]"
-            style={{background:`radial-gradient(ellipse, ${rc2} 0%, transparent 70%)`}} />
-          <div className="fluid3 absolute top-[40%] left-[20%] w-[60%] h-[40%] blur-[130px]"
-            style={{background:`radial-gradient(ellipse, ${rc}0.08) 0%, transparent 70%)`}} />
+          <div className="particle absolute top-[-10%] left-[-20%] w-[90%] h-[60%]"
+            style={{background:`radial-gradient(ellipse, ${rc}0.22) 0%, transparent 70%)`, filter:'blur(120px)'}} />
+          <div className="absolute bottom-[10%] right-[-20%] w-[70%] h-[50%]"
+            style={{background:`radial-gradient(ellipse, ${rc2} 0%, transparent 70%)`, filter:'blur(100px)'}} />
+          <div className="absolute top-[40%] left-[20%] w-[60%] h-[40%]"
+            style={{background:`radial-gradient(ellipse, ${rc}0.08) 0%, transparent 70%)`, filter:'blur(130px)'}} />
           <svg className="absolute inset-0 w-full h-full opacity-[0.035]" viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
             <path d="M-20 150 C 100 120, 200 200, 420 140" stroke="white" strokeWidth="0.8" fill="none"/>
             <path d="M-20 400 C 80 360, 220 440, 420 380" stroke="white" strokeWidth="0.6" fill="none"/>
@@ -1024,12 +1000,10 @@ export default function App() {
 
         <div className="relative max-w-md mx-auto px-5 py-12" style={{zIndex:1}}>
 
-          {/* ① 主角色 - 无容器，直接浮在背景上 */}
+          {/* ① 主角色 */}
           <section className="text-center mb-16 pt-4">
-            <p className="text-[9px] uppercase tracking-[0.4em] mb-4"
-              style={{color:`${rc}0.5)`}}>{String(status)}</p>
-            <p className="text-[10px] uppercase tracking-[0.3em] mb-4"
-              style={{color:'rgba(255,255,255,0.2)'}}>关系能量分析</p>
+            <p style={{...DS.label, color:`${rc}0.5)`, marginBottom:'16px'}}>{String(status)}</p>
+            <p style={{...DS.label, marginBottom:'16px'}}>关系能量分析</p>
             <h2 className="text-[2.4rem] font-bold mb-3 leading-none"
               style={{letterSpacing:'-0.03em', textShadow:`0 0 80px ${rc}0.35)`}}>
               {String(roleName)}
@@ -1040,17 +1014,15 @@ export default function App() {
               <p className="text-sm font-bold italic leading-relaxed max-w-[260px] mx-auto"
                 style={{color:`${rc}0.65)`}}>"{String(scene)}"</p>
             )}
-
-            {/* 副机制 - 轻量浮动，无硬边框 */}
             {subRole && (
               <div className="mt-8 w-full py-4 px-5 text-left relative overflow-hidden"
                 style={{background:`${rc}0.06)`, borderRadius:'20px', border:`1px solid ${rc}0.12)`}}>
-                <p className="relative text-xs uppercase tracking-[0.25em] mb-2" style={{color:'rgba(255,255,255,0.35)'}}>副机制</p>
-                <div className="relative flex items-center gap-2 mb-1">
+                <p style={{...DS.label, marginBottom:'8px', color:'rgba(255,255,255,0.35)'}}>副机制</p>
+                <div className="flex items-center gap-2 mb-1">
                   <span className="text-sm font-bold" style={{color:`${rc}0.85)`}}>{String(subRole.name)}</span>
                   <span className="text-[9px]" style={{color:'rgba(255,255,255,0.25)'}}>· {String(subRole.dim)}</span>
                 </div>
-                <p className="relative text-xs leading-relaxed" style={{color:'rgba(255,255,255,0.4)'}}>{String(subRole.definition)}</p>
+                <p className="text-xs leading-relaxed" style={{color:'rgba(255,255,255,0.4)'}}>{String(subRole.definition)}</p>
               </div>
             )}
           </section>
@@ -1059,8 +1031,7 @@ export default function App() {
           <section className="mb-12">
             <div className="relative h-52 flex items-center justify-center"
               style={{background:`radial-gradient(ellipse at center, ${rc}0.08) 0%, transparent 70%)`}}>
-              <p className="text-[10px] uppercase tracking-[0.3em]" style={{color:'rgba(255,255,255,0.12)'}}>关系互动模式</p>
-              {/* 装饰线条 */}
+              <p style={{...DS.label, color:'rgba(255,255,255,0.12)'}}>关系互动模式</p>
               <svg className="absolute inset-0 w-full h-full" viewBox="0 0 340 208" fill="none">
                 <ellipse cx="170" cy="104" rx="100" ry="60" stroke={`${rc}0.12)`} strokeWidth="0.8" strokeDasharray="4 6"/>
                 <ellipse cx="170" cy="104" rx="140" ry="85" stroke={`${rc}0.06)`} strokeWidth="0.6" strokeDasharray="3 8"/>
@@ -1068,11 +1039,10 @@ export default function App() {
             </div>
           </section>
 
-          {/* ③ 常见互动 + 消耗 - 软边框卡片 */}
-          <section className="mb-4 relative overflow-hidden"
-            style={{background:'rgba(255,255,255,0.03)', borderRadius:'24px', border:'1px solid rgba(255,255,255,0.06)'}}>
+          {/* ③ 常见互动 + 消耗 */}
+          <section className="mb-4 relative overflow-hidden" style={DS.card}>
             <div className="relative p-6 pb-5" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{color:'rgba(255,255,255,0.45)'}}>常见互动表现</p>
+              <p style={{...DS.label, marginBottom:'16px', color:'rgba(255,255,255,0.45)'}}>常见互动表现</p>
               <div className="space-y-3">
                 {behaviors.map((b, i) => (
                   <div key={i} className="flex items-start gap-3">
@@ -1084,31 +1054,26 @@ export default function App() {
               </div>
             </div>
             <div className="relative p-6 pt-5">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{color:'rgba(255,255,255,0.45)'}}>能量消耗</p>
+              <p style={{...DS.label, marginBottom:'12px', color:'rgba(255,255,255,0.45)'}}>能量消耗</p>
               <p className="text-sm leading-relaxed" style={{color:'rgba(255,255,255,0.55)'}}>{String(impact)}</p>
             </div>
           </section>
 
           {/* ④ Part A 维度分析 */}
-          <section className="mb-4 relative overflow-hidden"
-            style={{background:'rgba(255,255,255,0.03)', borderRadius:'24px', border:'1px solid rgba(255,255,255,0.06)'}}>
+          <section className="mb-4 relative overflow-hidden" style={DS.card}>
             <div className="relative p-6 pb-4" style={{borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] mb-1" style={{color:'rgba(255,255,255,0.5)'}}>A · 外部能量损耗</p>
+              <p style={{...DS.label, color:'rgba(255,255,255,0.5)', marginBottom:'4px'}}>A · 外部能量损耗</p>
               <div className="flex items-center justify-between mt-3 mb-1">
-                <span className="text-[10px] uppercase tracking-widest" style={{color:'rgba(255,255,255,0.2)'}}>关系消耗程度</span>
+                <span style={{...DS.label, color:'rgba(255,255,255,0.2)', letterSpacing:'0.18em'}}>关系消耗程度</span>
                 <span className="text-[10px] font-bold" style={{color:`${rc}0.8)`}}>{Math.round((scoreA/120)*100)}%</span>
               </div>
-              <div className="w-full h-[2px] rounded-full overflow-hidden" style={{background:'rgba(255,255,255,0.06)'}}>
-                <div className="h-full rounded-full transition-all duration-700"
-                  style={{width:`${Math.round((scoreA/120)*100)}%`,
-                    background:'linear-gradient(90deg, #4a446b, #928dab)',
-                    boxShadow:`0 0 10px ${rc}0.4)`}} />
+              <div style={DS.progressTrack}>
+                <div style={roleProgressFill(Math.round((scoreA/120)*100))} />
               </div>
             </div>
             <div className="p-4">
               <RadarChart data={radarData} />
             </div>
-            {/* 维度卡片 - 更轻薄 */}
             <div className="px-4 pb-5 space-y-2">
               {DIMENSIONS.slice(0,6).map((dim, idx) => {
                 const maxVal=25, score=dimScores[dim]||0, ratio=score/maxVal;
@@ -1122,18 +1087,19 @@ export default function App() {
                     style={{background:'rgba(255,255,255,0.025)', borderRadius:'16px', border:'1px solid rgba(255,255,255,0.04)'}}>
                     <div className="flex justify-between items-center mb-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-[9px] tabular-nums" style={{color:'rgba(255,255,255,0.2)'}}>0{idx+1}</span>
+                        <span style={{...DS.label, color:'rgba(255,255,255,0.2)', letterSpacing:'0.1em'}}>0{idx+1}</span>
                         <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.75)'}}>{String(dim)}</span>
                         <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full"
-                          style={{color:stateColor, background:`${stateColor.replace('0.7)','0.1)').replace('0.8)','0.1)')}`, border:`1px solid ${stateColor.replace('0.7)','0.2)').replace('0.8)','0.2)')}`}}>
+                          style={{color:stateColor,
+                            background:stateColor.replace(/,[\d.]+\)$/,',0.1)'),
+                            border:`1px solid ${stateColor.replace(/,[\d.]+\)$/,',0.2)')}`}}>
                           {stateLabel}
                         </span>
                       </div>
                       <span className="text-[10px] tabular-nums" style={{color:'rgba(255,255,255,0.3)'}}>{score}/{maxVal}</span>
                     </div>
-                    <div className="w-full h-[2px] rounded-full mb-3 overflow-hidden" style={{background:'rgba(255,255,255,0.06)'}}>
-                      <div className="h-full rounded-full transition-all duration-700"
-                        style={{width:`${ratio*100}%`, background:`${rc}0.7)`, boxShadow:`0 0 8px ${rc}0.4)`}} />
+                    <div style={{...DS.progressTrack, marginBottom:'12px'}}>
+                      <div style={roleProgressFill(ratio * 100)} />
                     </div>
                     <p className="text-xs mb-1 leading-relaxed" style={{color:'rgba(255,255,255,0.35)'}}>{String(DIMENSION_DESCS[dim])}</p>
                     <p className="text-[10px] mb-3 leading-relaxed" style={{color:'rgba(255,255,255,0.2)'}}>{scoreDesc}</p>
@@ -1154,11 +1120,12 @@ export default function App() {
             const scoreDesc=DIMENSION_SCORE_DESC[dim]||"";
             return (
               <section className="mb-4 relative overflow-hidden"
-                style={{background:`${rc}0.03)`, borderRadius:'24px', border:`1px solid ${rc}0.2)`, boxShadow:`inset 0 0 40px ${rc}0.05)`}}>
+                style={{background:`${rc}0.03)`, borderRadius:'24px', border:`1px solid ${rc}0.2)`,
+                  boxShadow:`inset 0 0 40px ${rc}0.05)`}}>
                 <Fingerprint className="absolute top-2 right-2 pointer-events-none"
                   style={{width:'80px', height:'80px', color:`${rc}0.05)`, strokeWidth:2}} />
                 <div className="p-6 pb-4" style={{borderBottom:`1px solid ${rc}0.1)`}}>
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] mb-1" style={{color:`${rc}0.85)`}}>B · 内在能量状态</p>
+                  <p style={{...DS.label, color:`${rc}0.85)`, marginBottom:'4px'}}>B · 内在能量状态</p>
                   <p className="text-[9px] mt-1" style={{color:'rgba(255,255,255,0.25)'}}>你是否正在无意识地消耗身边的人</p>
                 </div>
                 <div className="p-6">
@@ -1166,16 +1133,16 @@ export default function App() {
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-bold" style={{color:'rgba(255,255,255,0.75)'}}>{String(dim)}</span>
                       <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full"
-                        style={{color:stateColor,background:`${stateColor.replace('0.7)','0.1)').replace('0.8)','0.1)')}`,border:`1px solid ${stateColor.replace('0.7)','0.2)').replace('0.8)','0.2)')}`}}>
+                        style={{color:stateColor,
+                          background:stateColor.replace(/,[\d.]+\)$/,',0.1)'),
+                          border:`1px solid ${stateColor.replace(/,[\d.]+\)$/,',0.2)')}`}}>
                         {stateLabel}
                       </span>
                     </div>
                     <span className="text-[10px] tabular-nums" style={{color:`${rc}0.85)`}}>{score}/{maxVal}</span>
                   </div>
-                  <div className="w-full h-[2px] rounded-full mb-4 overflow-hidden" style={{background:'rgba(255,255,255,0.06)'}}>
-                    <div className="h-full rounded-full transition-all duration-700"
-                      style={{width:`${ratio*100}%`, background:`linear-gradient(90deg, ${rc}0.6), ${rc}1))`,
-                        boxShadow:`0 0 12px ${rc}0.5)`}} />
+                  <div style={{...DS.progressTrack, marginBottom:'16px'}}>
+                    <div style={roleProgressFill(ratio * 100)} />
                   </div>
                   <p className="text-xs mb-1 leading-relaxed" style={{color:'rgba(255,255,255,0.35)'}}>{String(DIMENSION_DESCS[dim])}</p>
                   <p className="text-[10px] mb-3 leading-relaxed" style={{color:'rgba(255,255,255,0.2)'}}>{scoreDesc}</p>
@@ -1192,8 +1159,9 @@ export default function App() {
               boxShadow:`0 0 40px ${rc}0.08), inset 0 0 30px ${rc}0.04)`}}>
             <div className="p-6">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-1 h-4 rounded-full" style={{background:`${rc}0.8)`, boxShadow:`0 0 8px ${rc}0.6)`}}/>
-                <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{color:`${rc}0.7)`}}>你可以尝试</p>
+                <div className="w-1 h-4 rounded-full"
+                  style={{background:`${rc}0.8)`, boxShadow:`0 0 8px ${rc}0.6)`}}/>
+                <p style={{...DS.label, color:`${rc}0.7)`}}>你可以尝试</p>
               </div>
               <p className="text-base font-bold leading-relaxed" style={{color:'rgba(255,255,255,0.85)'}}>
                 {String(advice)}
@@ -1201,17 +1169,26 @@ export default function App() {
             </div>
           </section>
 
-          {/* ⑦ 操作按钮 */}
+          {/* ⑦ 操作按钮 — 统一风格 */}
           <section className="flex gap-3 pb-10">
             <button onClick={() => window.location.reload()}
-              className="flex-1 py-4 flex items-center justify-center gap-2 font-bold text-xs active:scale-95 transition-all"
-              style={{background:'rgba(255,255,255,0.04)', borderRadius:'50px', border:'1px solid rgba(255,255,255,0.07)', color:'rgba(255,255,255,0.4)'}}>
+              className="flex-1 py-4 flex items-center justify-center gap-2 active:scale-95"
+              style={DS.btnSecondary}>
               <RefreshCcw className="w-3.5 h-3.5" /> 重测
             </button>
             <button onClick={() => setShowPoster(true)}
-              className="flex-[2] py-4 flex items-center justify-center gap-2 font-bold text-xs active:scale-95 transition-all"
-              style={{background:`${rc}0.12)`, borderRadius:'50px', border:`1px solid ${rc}0.2)`,
-                color:'rgba(255,255,255,0.8)', boxShadow:`0 0 20px ${rc}0.1)`}}>
+              className="flex-[2] py-4 flex items-center justify-center gap-2 active:scale-95"
+              style={{
+                background: `linear-gradient(135deg, ${rc}0.18), ${rc}0.10))`,
+                borderRadius: '2rem',
+                border: `1px solid ${rc}0.28)`,
+                color: 'rgba(255,255,255,0.85)',
+                fontWeight: 700,
+                fontSize: '0.75rem',
+                letterSpacing: '0.04em',
+                boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 16px ${rc}0.15)`,
+                transition: 'transform 0.15s',
+              }}>
               <Share2 className="w-3.5 h-3.5" /> 导出卡片报告
             </button>
           </section>
