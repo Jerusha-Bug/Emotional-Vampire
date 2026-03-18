@@ -633,8 +633,13 @@ export default function App() {
     const topScore = dimScores[topDim]; const secondScore = dimScores[secondDim];
     const gap = topScore - secondScore; const dominated = gap >= 3;
     let roleName;
-    if (scoreA <= 44 && scoreB <= 16) { roleName = "关系清醒者"; }
-    else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪垃圾桶"; }
+
+    // 整体低分（平均每题 ≤ 2.5）→ 直接给关系清醒者，不再往下走
+    const avgPerQ_A = scoreA / 24;
+    const avgPerQ_B = scoreB / 8;
+    if (avgPerQ_A <= 2.5 && avgPerQ_B <= 2.5) {
+      roleName = "关系清醒者";
+    } else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪垃圾桶"; }
     else if (dominated && topDim === "情绪倾倒") { roleName = "情感代偿者"; }
     else if (dominated && topDim === "自我消耗" && scoreB > 27) { roleName = "共情透支者"; }
     else if (dominated && topDim === "自我消耗") { roleName = "自我压缩者"; }
@@ -647,7 +652,9 @@ export default function App() {
     else if (dominated && topDim === "受害叙述") { roleName = "情绪守护者"; }
     else {
       const avgScore = scoreA / 6;
-      if (dimScores["自我消耗"] >= avgScore && scoreB > 24) { roleName = "共情透支者"; }
+      // fallback 里也加保护：整体偏低时给关系消耗者而不是负面角色
+      if (avgPerQ_A <= 3.0 && avgPerQ_B <= 3.0) { roleName = "关系消耗者"; }
+      else if (dimScores["自我消耗"] >= avgScore && scoreB > 24) { roleName = "共情透支者"; }
       else if (dimScores["冲突激发"] >= avgScore && dimScores["情绪倾倒"] >= avgScore) { roleName = "情绪循环者"; }
       else if (dimScores["责任转移"] >= avgScore && dimScores["自我消耗"] >= avgScore) { roleName = "自我压缩者"; }
       else if (dimScores["情绪倾倒"] >= avgScore && dimScores["受害叙述"] >= avgScore) { roleName = "情感代偿者"; }
