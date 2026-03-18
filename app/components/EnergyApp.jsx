@@ -1022,20 +1022,20 @@ export default function App() {
     const rc2 = roleAccentMap[color] || 'rgba(88,28,135,0.18)';
 
     const roleBgBase = {
-      'text-red-500':     '#111111',
-      'text-orange-500':  '#111111',
-      'text-amber-400':   '#111111',
-      'text-yellow-400':  '#111111',
-      'text-slate-400':   '#111111',
-      'text-fuchsia-400': '#111111',
-      'text-emerald-400': '#111111',
-      'text-cyan-400':    '#111111',
-      'text-blue-400':    '#111111',
-      'text-purple-400':  '#111111',
-      'text-rose-400':    '#111111',
-      'text-indigo-400':  '#111111',
+      'text-red-500':     'linear-gradient(to bottom, #111111, #4e2020, #794747)',  // 情绪垃圾桶
+      'text-orange-500':  'linear-gradient(to bottom, #111111, #462904, #B1471D)',  // 冲突吸引者
+      'text-amber-400':   'linear-gradient(to bottom, #111111, #544a7d, #D3916D)',  // 关系修复者
+      'text-yellow-400':  'linear-gradient(to bottom, #111111, #636FA4, #E8CBC0)',  // 责任承担者
+      'text-slate-400':   'linear-gradient(to bottom, #111111, #334d50, #8BA6B5)',  // 关系消耗者
+      'text-fuchsia-400': 'linear-gradient(to bottom, #111111, #181944, #98D8D0)',  // 共情透支者
+      'text-emerald-400': 'linear-gradient(to bottom, #111111, #003D4D, #00C996)',  // 关系清醒者
+      'text-cyan-400':    'linear-gradient(to bottom, #111111, #20002C, #CBB4D4)',  // 情绪守护者
+      'text-blue-400':    'linear-gradient(to bottom, #111111, #181944, #98D8D0)',  // 依赖支柱
+      'text-purple-400':  'linear-gradient(to bottom, #111111, #5D6A73, #F6E5DE)',  // 自我压缩者
+      'text-rose-400':    'linear-gradient(to bottom, #111111, #463151, #7F81B0)',  // 情感代偿者
+      'text-indigo-400':  'linear-gradient(to bottom, #111111, #606C88, #2B3A60)',  // 情绪循环者
     };
-    const pageBg = roleBgBase[color] || '#111111';
+    const pageBg = roleBgBase[color] || 'linear-gradient(to bottom, #111111, #1a1a2e, #2B3A60)';
 
     // 结果页进度条（跟随角色色）
     const roleProgressFill = (pct) => ({
