@@ -128,9 +128,9 @@ const DS = {
 
   // 外层卡片（结果页大区块）
   card: {
-    background: 'rgba(0,0,0,0.30)',
+    background: 'rgba(0,0,0,0.10)',
     borderRadius: '20px',
-    border: '1px solid rgba(255,255,255,0.10)',
+    border: '1px solid rgba(255,255,255,0.20)',
   },
 
   // 内层子卡片（维度条目）— 圆角比外层小一档
@@ -1340,7 +1340,7 @@ export default function App() {
             return (
               <section style={{
                 ...DS.card,
-                background:`${rc}0.06)`,
+                background:`${rc}0.1)`,
                 border:`1px solid ${rc}0.28)`,
                 marginBottom:DS.space.sm, position:'relative', overflow:'hidden',
               }}>
