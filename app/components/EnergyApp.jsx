@@ -128,20 +128,20 @@ const DS = {
 
   // 外层卡片（结果页大区块）
   card: {
-    background: 'rgba(255,255,255,0.03)',
+    background: 'rgba(0,0,0,0.30)',
     borderRadius: '20px',
-    border: '1px solid rgba(255,255,255,0.07)',
+    border: '1px solid rgba(255,255,255,0.10)',
   },
 
   // 内层子卡片（维度条目）— 圆角比外层小一档
   cardInner: {
-    background: 'rgba(255,255,255,0.025)',
+    background: 'rgba(0,0,0,0.22)',
     borderRadius: '14px',
-    border: '1px solid rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.08)',
   },
 
   // 卡片内分割线
-  divider: { borderTop: '1px solid rgba(255,255,255,0.05)' },
+  divider: { borderTop: '1px solid rgba(255,255,255,0.08)' },
 
   // 流线 SVG 装饰（所有页面共用同一组路径）
   waveSvg: (
