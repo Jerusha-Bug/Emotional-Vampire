@@ -983,34 +983,52 @@ export default function App() {
     );
 
     const roleColorMap = {
-      'text-rose-400': 'rgba(251,113,133,', 'text-red-500': 'rgba(239,68,68,',
-      'text-fuchsia-400': 'rgba(232,121,249,', 'text-purple-400': 'rgba(192,132,252,',
-      'text-orange-500': 'rgba(249,115,22,', 'text-indigo-400': 'rgba(129,140,248,',
-      'text-amber-400': 'rgba(251,191,36,', 'text-yellow-400': 'rgba(250,204,21,',
-      'text-blue-400': 'rgba(96,165,250,', 'text-cyan-400': 'rgba(34,211,238,',
-      'text-emerald-400': 'rgba(52,211,153,', 'text-slate-400': 'rgba(148,163,184,',
+      'text-red-500':     'rgba(121,71,71,',    // 情绪垃圾桶  #794747
+      'text-orange-500':  'rgba(177,71,29,',    // 冲突吸引者  #B1471D
+      'text-amber-400':   'rgba(211,145,109,',  // 关系修复者  #D3916D
+      'text-yellow-400':  'rgba(232,203,192,',  // 责任承担者  #E8CBC0
+      'text-slate-400':   'rgba(139,166,181,',  // 关系消耗者  #8BA6B5
+      'text-fuchsia-400': 'rgba(152,216,208,',  // 共情透支者  #98D8D0
+      'text-emerald-400': 'rgba(0,201,150,',    // 关系清醒者  #00C996
+      'text-cyan-400':    'rgba(203,180,212,',  // 情绪守护者  #CBB4D4
+      'text-blue-400':    'rgba(152,216,208,',  // 依赖支柱    #98D8D0
+      'text-purple-400':  'rgba(246,229,222,',  // 自我压缩者  #F6E5DE
+      'text-rose-400':    'rgba(127,129,176,',  // 情感代偿者  #7F81B0
+      'text-indigo-400':  'rgba(43,58,96,',     // 情绪循环者  #2B3A60
     };
     const rc = roleColorMap[color] || 'rgba(99,102,241,';
 
     const roleAccentMap = {
-      'text-rose-400': 'rgba(88,28,135,0.22)', 'text-red-500': 'rgba(30,58,138,0.20)',
-      'text-fuchsia-400': 'rgba(30,58,138,0.20)', 'text-purple-400': 'rgba(14,116,144,0.18)',
-      'text-orange-500': 'rgba(88,28,135,0.20)', 'text-indigo-400': 'rgba(6,78,59,0.22)',
-      'text-amber-400': 'rgba(30,58,138,0.18)', 'text-yellow-400': 'rgba(14,116,144,0.16)',
-      'text-blue-400': 'rgba(6,78,59,0.20)', 'text-cyan-400': 'rgba(30,58,138,0.22)',
-      'text-emerald-400': 'rgba(14,116,144,0.20)', 'text-slate-400': 'rgba(88,28,135,0.18)',
+      'text-red-500':     'rgba(78,32,32,0.6)',    // #4e2020
+      'text-orange-500':  'rgba(70,41,4,0.6)',     // #462904
+      'text-amber-400':   'rgba(84,74,125,0.5)',   // #544a7d
+      'text-yellow-400':  'rgba(99,111,164,0.5)',  // #636FA4
+      'text-slate-400':   'rgba(51,77,80,0.6)',    // #334d50
+      'text-fuchsia-400': 'rgba(24,25,68,0.6)',    // #181944
+      'text-emerald-400': 'rgba(0,61,77,0.6)',     // #003D4D
+      'text-cyan-400':    'rgba(32,0,44,0.6)',     // #20002C
+      'text-blue-400':    'rgba(24,25,68,0.6)',    // #181944
+      'text-purple-400':  'rgba(93,106,115,0.5)',  // #5D6A73
+      'text-rose-400':    'rgba(70,49,81,0.6)',    // #463151
+      'text-indigo-400':  'rgba(96,108,136,0.5)',  // #606C88
     };
     const rc2 = roleAccentMap[color] || 'rgba(88,28,135,0.18)';
 
     const roleBgBase = {
-      'text-rose-400': '#0e0608', 'text-red-500': '#0d0508',
-      'text-fuchsia-400': '#0d060e', 'text-purple-400': '#08060e',
-      'text-orange-500': '#0e0906', 'text-indigo-400': '#06080e',
-      'text-amber-400': '#0e0b04', 'text-yellow-400': '#0c0b04',
-      'text-blue-400': '#05080e', 'text-cyan-400': '#04090e',
-      'text-emerald-400': '#04090a', 'text-slate-400': '#070809',
+      'text-red-500':     '#111111',
+      'text-orange-500':  '#111111',
+      'text-amber-400':   '#111111',
+      'text-yellow-400':  '#111111',
+      'text-slate-400':   '#111111',
+      'text-fuchsia-400': '#111111',
+      'text-emerald-400': '#111111',
+      'text-cyan-400':    '#111111',
+      'text-blue-400':    '#111111',
+      'text-purple-400':  '#111111',
+      'text-rose-400':    '#111111',
+      'text-indigo-400':  '#111111',
     };
-    const pageBg = roleBgBase[color] || '#152331';
+    const pageBg = roleBgBase[color] || '#111111';
 
     // 结果页进度条（跟随角色色）
     const roleProgressFill = (pct) => ({
