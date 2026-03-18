@@ -135,7 +135,7 @@ const DS = {
 
   // 内层子卡片（维度条目）— 圆角比外层小一档
   cardInner: {
-    background: 'rgba(0,0,0,0.22)',
+    background: 'rgba(0,0,0,0.12)',
     borderRadius: '14px',
     border: '1px solid rgba(255,255,255,0.08)',
   },
@@ -1340,7 +1340,7 @@ export default function App() {
             return (
               <section style={{
                 ...DS.card,
-                background:`${rc}0.1)`,
+                background:`${rc}0.3)`,
                 border:`1px solid ${rc}0.28)`,
                 marginBottom:DS.space.sm, position:'relative', overflow:'hidden',
               }}>
