@@ -1419,14 +1419,14 @@ export default function App() {
             </div>
           </section>
 
-          {/* ⑦ 操作按钮 */}
           <section style={{display:'flex', flexDirection:'row', gap:'12px', paddingBottom:'40px'}}>
             <button onClick={() => window.location.reload()}
               className="active:scale-95"
               style={{
                 flex:1, height:'56px',
-                background: 'linear-gradient(135deg, #2d2844, #7a7599)',
-                border: '1px solid rgba(255,255,255,0.18)',
+                background: 'rgba(255,255,255,0.10)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255,255,255,0.20)',
                 borderRadius:'9999px',
                 color:'#F2F3FB', fontWeight:700, fontSize:'0.85rem',
                 display:'flex', alignItems:'center', justifyContent:'center', gap:'6px',
@@ -1438,8 +1438,9 @@ export default function App() {
               className="active:scale-95"
               style={{
                 flex:2, height:'56px',
-                background: 'linear-gradient(135deg, #2d2844, #7a7599)',
-                border: '1px solid rgba(255,255,255,0.18)',
+                background: 'rgba(255,255,255,0.10)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255,255,255,0.20)',
                 borderRadius:'9999px',
                 color:'#F2F3FB', fontWeight:700, fontSize:'0.9rem',
                 letterSpacing:'0.04em',
