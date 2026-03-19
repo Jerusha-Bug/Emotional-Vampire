@@ -1143,8 +1143,7 @@ export default function App() {
             {/* tag ── 角色色全量，成为第二视觉焦点 */}
             <p style={{
               fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.18em',
-              color:`${rc}1)`,
-              textShadow:`0 0 20px ${rc}0.5)`,
+              color:'rgba(255,255,255,0.85)',
               marginBottom:'28px',
             }}>
               {String(tag)}
@@ -1420,28 +1419,30 @@ export default function App() {
             </div>
           </section>
 
-          {/* ⑦ 操作按钮 ── 横排，主次对比拉开 */}
+          {/* ⑦ 操作按钮 */}
           <section style={{display:'flex', flexDirection:'row', gap:'12px', paddingBottom:'40px'}}>
             <button onClick={() => window.location.reload()}
               className="active:scale-95"
-              style={{...DS.btnSecondary,
+              style={{
                 flex:1, height:'56px',
-                background: rc2,
-                display:'flex', alignItems:'center', justifyContent:'center', gap:'6px'}}>
+                background: 'linear-gradient(135deg, #2d2844, #7a7599)',
+                border: '1px solid rgba(255,255,255,0.18)',
+                borderRadius:'9999px',
+                color:'#F2F3FB', fontWeight:700, fontSize:'0.85rem',
+                display:'flex', alignItems:'center', justifyContent:'center', gap:'6px',
+                transition:'transform 0.15s',
+              }}>
               <RefreshCcw style={{width:'13px', height:'13px'}}/> 重测
             </button>
             <button onClick={() => setShowPoster(true)}
               className="active:scale-95"
               style={{
                 flex:2, height:'56px',
-                background:`linear-gradient(135deg, ${rc}0.9), ${rc}0.75))`,
-                border:`1px solid ${rc}1)`,
+                background: 'linear-gradient(135deg, #2d2844, #7a7599)',
+                border: '1px solid rgba(255,255,255,0.18)',
                 borderRadius:'9999px',
-                color:'#fff',
-                fontWeight:800,
-                fontSize:'0.9rem',
+                color:'#F2F3FB', fontWeight:700, fontSize:'0.9rem',
                 letterSpacing:'0.04em',
-                boxShadow:`0 6px 32px ${rc}0.45), 0 0 0 1px ${rc}0.2) inset`,
                 display:'flex', alignItems:'center', justifyContent:'center', gap:'8px',
                 transition:'transform 0.15s',
               }}>
