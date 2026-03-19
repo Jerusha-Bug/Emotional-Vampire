@@ -41,11 +41,11 @@ const DS = {
 
   // ── 颜色语义 ──
   text: {
-    primary:   '#F2F3FB',
-    secondary: 'rgba(255,255,255,0.60)',
-    tertiary:  'rgba(255,255,255,0.35)',
-    muted:     'rgba(255,255,255,0.20)',
-    ghost:     'rgba(255,255,255,0.12)',
+    primary:   '#FFFFFF',
+    secondary: 'rgba(255,255,255,0.90)',
+    tertiary:  'rgba(255,255,255,0.65)',
+    muted:     'rgba(255,255,255,0.50)',
+    ghost:     'rgba(255,255,255,0.30)',
   },
 
   // 主按钮（开启测评 / 下一题 / 继续内在扫描）
@@ -128,14 +128,14 @@ const DS = {
 
   // 外层卡片（结果页大区块）
   card: {
-    background: 'rgba(0,0,0,0.10)',
+    background: 'rgba(0,0,0,0.30)',
     borderRadius: '20px',
-    border: '1px solid rgba(255,255,255,0.20)',
+    border: '1px solid rgba(255,255,255,0.10)',
   },
 
   // 内层子卡片（维度条目）— 圆角比外层小一档
   cardInner: {
-    background: 'rgba(0,0,0,0.12)',
+    background: 'rgba(0,0,0,0.22)',
     borderRadius: '14px',
     border: '1px solid rgba(255,255,255,0.08)',
   },
@@ -1340,7 +1340,7 @@ export default function App() {
             return (
               <section style={{
                 ...DS.card,
-                background:`${rc}0.3)`,
+                background:`${rc}0.06)`,
                 border:`1px solid ${rc}0.28)`,
                 marginBottom:DS.space.sm, position:'relative', overflow:'hidden',
               }}>
