@@ -1396,9 +1396,8 @@ export default function App() {
           {/* ⑥ 建议卡片 ── 实色背景，最醒目的内容卡片 */}
           <section style={{
             borderRadius:'20px',
-            background:`linear-gradient(135deg, ${rc}0.22), ${rc}0.10))`,
-            border:`1px solid ${rc}0.45)`,
-            boxShadow:`0 0 40px ${rc}0.15), inset 0 0 30px ${rc}0.06)`,
+            background: rc2,
+            border:`1px solid ${rc}0.35)`,
             marginBottom:'40px',
           }}>
             <div style={{padding:'24px'}}>
@@ -1427,6 +1426,7 @@ export default function App() {
               className="active:scale-95"
               style={{...DS.btnSecondary,
                 flex:1, height:'56px',
+                background: rc2,
                 display:'flex', alignItems:'center', justifyContent:'center', gap:'6px'}}>
               <RefreshCcw style={{width:'13px', height:'13px'}}/> 重测
             </button>
