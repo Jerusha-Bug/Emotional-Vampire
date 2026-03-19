@@ -1340,7 +1340,7 @@ export default function App() {
             return (
               <section style={{
                 ...DS.card,
-                background:`rgba(0,0,0,0.38)`,
+                background:`rgba(0,0,0,0.3)`,
                 border:`1px solid ${rc}0.28)`,
                 marginBottom:DS.space.sm, position:'relative', overflow:'hidden',
               }}>
