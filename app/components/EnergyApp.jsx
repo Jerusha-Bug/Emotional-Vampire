@@ -979,7 +979,36 @@ export default function App() {
   if (step === 'result' && resultData) {
     const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole } = resultData;
 
-
+    if (showPoster) return (
+      <div className={`min-h-screen bg-gradient-to-b ${bg} via-slate-950 to-black flex items-center justify-center p-6 font-sans`}>
+        <div className="w-full max-w-[340px]">
+          <div className="bg-black/30 backdrop-blur-md rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl flex flex-col items-center text-center relative">
+            <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 z-10 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/10">
+              <X className="w-3.5 h-3.5"/>
+            </button>
+            <div className="pt-8 pb-4 px-8 flex flex-col items-center">
+              <div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-bold uppercase tracking-widest mb-5`}>{String(status)}</div>
+              <p style={{...DS.label, marginBottom: '8px'}}>关系能量分析</p>
+              <h2 className="text-3xl font-bold tracking-tight text-white leading-tight mb-1">{String(roleName)}</h2>
+              <p className={`text-[9px] font-bold mb-6 ${color}`}>{String(tag)}</p>
+            </div>
+            <div className="w-full px-8 mb-6">
+              <div className="rounded-2xl border border-dashed border-white/10 bg-white/5 h-44 flex items-center justify-center">
+                <p className="text-white/20 text-[10px] font-bold">关系图形</p>
+              </div>
+            </div>
+            <div className="px-8 pb-8 w-full">
+              <div className="relative pl-3 border-l-2 border-white/20 text-left">
+                <p className="text-white/60 text-xs leading-relaxed">{String(definition)}</p>
+              </div>
+              <p className="text-white/15 text-[9px] tracking-[0.2em] flex items-center justify-center gap-2 mt-6">
+                <Download className="w-2.5 h-2.5 opacity-50"/> 截图保存你的报告
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
 
     const roleColorMap = {
       'text-red-500':     'rgba(121,71,71,',    // 情绪垃圾桶  #794747
@@ -1028,46 +1057,6 @@ export default function App() {
       'text-indigo-400':  'linear-gradient(to bottom, #111111, #606C88, #2B3A60)',  // 情绪循环者
     };
     const pageBg = roleBgBase[color] || 'linear-gradient(to bottom, #111111, #1a1a2e, #2B3A60)';
-
-    if (showPoster) return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 font-sans"
-        style={{background: pageBg}}>
-        <div style={{
-          width:'340px', height:'454px',
-          position:'relative', borderRadius:'51px',
-          overflow:'hidden',
-          boxShadow:`0 24px 60px rgba(0,0,0,0.85), 0 0 40px ${rc}0.15)`,
-        }}>
-          <CardSVGBg />
-          <div style={{
-            position:'absolute', left:'11px', top:'33px',
-            width:'318px', height:'318px',
-            borderRadius:'50%', overflow:'hidden',
-            zIndex:2, background:'#05050d',
-            display:'flex', alignItems:'center', justifyContent:'center',
-          }}>
-            <p style={{...DS.label, color:`${rc}0.3)`}}>{String(roleName)}</p>
-          </div>
-          <div style={{
-            position:'absolute', bottom:0, left:0, right:0,
-            height:'80px', zIndex:3,
-            display:'flex', flexDirection:'column',
-            alignItems:'center', justifyContent:'center',
-            gap:'5px', paddingBottom:'16px',
-          }}>
-            <span style={{fontFamily:"'Inter','Helvetica Neue',sans-serif", fontSize:'10px', letterSpacing:'0.5em', color:'#A4B8BC', textTransform:'uppercase'}}>THE</span>
-            <span style={{fontFamily:"'Inter','Helvetica Neue',sans-serif", fontSize:'15px', fontWeight:700, letterSpacing:'0.1em', color:'#A4B8BC'}}>{String(roleName)}</span>
-            <span style={{fontFamily:"'Inter','Helvetica Neue',sans-serif", fontSize:'10px', letterSpacing:'0.28em', color:'rgba(164,184,188,0.5)', textTransform:'uppercase'}}>{String(ROLE_DATA[roleName]?.en)}</span>
-          </div>
-        </div>
-        <p style={{...DS.label, color:'rgba(255,255,255,0.2)', marginTop:'24px', letterSpacing:'0.2em'}}>截图保存你的报告</p>
-        <button onClick={() => setShowPoster(false)} className="active:scale-95"
-          style={{...DS.btnSecondary, marginTop:'20px', height:'44px', padding:'0 28px',
-            display:'flex', alignItems:'center', gap:'6px'}}>
-          <X style={{width:'12px',height:'12px'}}/> 返回
-        </button>
-      </div>
-    );
 
     // 结果页进度条（跟随角色色）
     const roleProgressFill = (pct) => ({
@@ -1230,23 +1219,38 @@ export default function App() {
             )}
           </section>
 
-          {/* ② 插画占位 ── 背景光晕更强 */}
-          <section style={{marginBottom:'40px'}}>
+          {/* ② 角色卡片 */}
+          <section style={{marginBottom:'40px', display:'flex', justifyContent:'center'}}>
             <div style={{
-              position:'relative', height:'220px',
-              display:'flex', alignItems:'center', justifyContent:'center',
-              background:`radial-gradient(ellipse at center, ${rc}0.14) 0%, transparent 65%)`,
-              borderRadius:'20px',
-              border:`1px solid ${rc}0.12)`,
+              width:'280px',
+              height:'374px',
+              position:'relative',
+              borderRadius:'42px',
+              overflow:'hidden',
+              boxShadow:`0 24px 60px rgba(0,0,0,0.85), 0 0 40px ${rc}0.15)`,
             }}>
-              <p style={{...DS.label, color:`${rc}0.25)`}}>插画 · {String(roleName)}</p>
-              <svg style={{position:'absolute',inset:0,width:'100%',height:'100%'}}
-                viewBox="0 0 340 220" fill="none">
-                <ellipse cx="170" cy="110" rx="110" ry="65"
-                  stroke={`${rc}0.22)`} strokeWidth="1" strokeDasharray="4 7"/>
-                <ellipse cx="170" cy="110" rx="150" ry="90"
-                  stroke={`${rc}0.10)`} strokeWidth="0.8" strokeDasharray="3 9"/>
-              </svg>
+              <CardSVGBg />
+              <div style={{
+                position:'absolute',
+                left:'9px', top:'27px',
+                width:'262px', height:'262px',
+                borderRadius:'50%', overflow:'hidden',
+                zIndex:2, background:'#05050d',
+                display:'flex', alignItems:'center', justifyContent:'center',
+              }}>
+                <p style={{...DS.label, color:`${rc}0.3)`}}>{String(roleName)}</p>
+              </div>
+              <div style={{
+                position:'absolute', bottom:0, left:0, right:0,
+                height:'66px', zIndex:3,
+                display:'flex', flexDirection:'column',
+                alignItems:'center', justifyContent:'center',
+                gap:'4px', paddingBottom:'13px',
+              }}>
+                <span style={{fontFamily:"'Inter','Helvetica Neue',sans-serif", fontSize:'8px', letterSpacing:'0.5em', color:'#A4B8BC', textTransform:'uppercase'}}>THE</span>
+                <span style={{fontFamily:"'Inter','Helvetica Neue',sans-serif", fontSize:'13px', fontWeight:700, letterSpacing:'0.1em', color:'#A4B8BC'}}>{String(roleName)}</span>
+                <span style={{fontFamily:"'Inter','Helvetica Neue',sans-serif", fontSize:'8px', letterSpacing:'0.22em', color:'rgba(164,184,188,0.5)', textTransform:'uppercase'}}>{String(ROLE_DATA[roleName]?.en)}</span>
+              </div>
             </div>
           </section>
 
