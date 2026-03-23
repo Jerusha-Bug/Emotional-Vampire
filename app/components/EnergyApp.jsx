@@ -1349,8 +1349,8 @@ export default function App() {
                   color:`${rc}0.08)`, strokeWidth:1.5,
                 }}/>
                 <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.15)`}}>
-                  <p style={{...DS.label, color:'rgba(164,184,188,0.9)', marginBottom:'6px',
-                    textShadow:`0 0 12px rgba(164,184,188,0.3)`}}>
+                  <p style={{...DS.label, color:'rgba(164,184,188,1.9)', marginBottom:'6px',
+                    textShadow:`0 0 12px rgba(164,184,188,0.8)`}}>
                     B · 内在能量状态
                   </p>
                   <p style={{...DS.type.t4, color:DS.text.muted}}>你是否正在无意识地消耗身边的人</p>
