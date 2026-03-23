@@ -1122,7 +1122,7 @@ export default function App() {
                 width:'5px', height:'5px', borderRadius:'50%',
                 background:`${rc}1)`, boxShadow:`0 0 8px ${rc}1)`,
               }}/>
-              <span style={{...DS.label, color:'rgba(200,210,215,0.95)', letterSpacing:'0.2em'}}>
+              <span style={{...DS.label, color:`${rc}1)`, letterSpacing:'0.2em', filter:'brightness(2.2)'}}>
                 {String(status)}
               </span>
             </div>
@@ -1185,7 +1185,7 @@ export default function App() {
                 border:`1px solid ${rc}0.28)`,
                 marginTop:'24px', padding:'16px 20px', textAlign:'left',
               }}>
-                <p style={{...DS.label, color:'rgba(200,210,215,0.75)', marginBottom:DS.space.xs}}>副机制</p>
+                <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)', marginBottom:DS.space.xs}}>副机制</p>
                 <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'6px'}}>
                   <span style={{...DS.type.t2, color:`${rc}1)`,
                     textShadow:`0 0 12px ${rc}0.4)`}}>
@@ -1225,7 +1225,7 @@ export default function App() {
             marginBottom:DS.space.sm,
           }}>
             <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.10)`}}>
-              <p style={{...DS.label, color:'rgba(200,210,215,0.75)', marginBottom:DS.space.sm}}>常见互动表现</p>
+              <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)', marginBottom:DS.space.sm}}>常见互动表现</p>
               <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
                 {behaviors.map((b,i)=>(
                   <div key={i} style={{display:'flex', alignItems:'flex-start', gap:'12px'}}>
@@ -1241,7 +1241,7 @@ export default function App() {
               </div>
             </div>
             <div style={{padding:'20px 24px 24px'}}>
-              <p style={{...DS.label, color:'rgba(200,210,215,0.75)', marginBottom:DS.space.sm}}>能量消耗</p>
+              <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)', marginBottom:DS.space.sm}}>能量消耗</p>
               <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(impact)}</p>
             </div>
           </section>
@@ -1253,7 +1253,7 @@ export default function App() {
             marginBottom:DS.space.sm,
           }}>
             <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.10)`}}>
-              <p style={{...DS.label, color:'rgba(200,210,215,0.75)', marginBottom:DS.space.xs}}>A · 外部能量损耗</p>
+              <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)', marginBottom:DS.space.xs}}>A · 外部能量损耗</p>
               <div style={{display:'flex', alignItems:'center', justifyContent:'space-between',
                 marginTop:DS.space.sm, marginBottom:'8px'}}>
                 <span style={{...DS.label, color:DS.text.muted}}>关系消耗程度</span>
@@ -1349,8 +1349,8 @@ export default function App() {
                   color:`${rc}0.08)`, strokeWidth:1.5,
                 }}/>
                 <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.15)`}}>
-                  <p style={{...DS.label, color:'rgba(164,184,188,0.9)', marginBottom:'6px',
-                    textShadow:`0 0 12px rgba(164,184,188,0.3)`}}>
+                  <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)', marginBottom:'6px',
+                    textShadow:`0 0 12px ${rc}0.4)`}}>
                     B · 内在能量状态
                   </p>
                   <p style={{...DS.type.t4, color:DS.text.muted}}>你是否正在无意识地消耗身边的人</p>
@@ -1412,8 +1412,8 @@ export default function App() {
                   boxShadow:`0 0 10px ${rc}0.7)`,
                   flexShrink:0,
                 }}/>
-                <p style={{...DS.label, color:'rgba(200,210,215,0.95)',
-                  textShadow:'0 0 10px rgba(200,210,215,0.3)'}}>
+                <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)',
+                  textShadow:`0 0 10px ${rc}0.5)`}}>
                   你可以尝试
                 </p>
               </div>
