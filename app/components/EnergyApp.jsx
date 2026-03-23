@@ -437,6 +437,27 @@ const DIM_TO_ROLE = {
   "冲突激发": "关系修复者", "自我消耗": "共情透支者"
 };
 
+const CardSVGBg = () => (
+  <svg width="100%" height="100%" viewBox="0 0 532 710" fill="none"
+    xmlns="http://www.w3.org/2000/svg" style={{position:'absolute',inset:0}}>
+    <rect width="532" height="710" rx="80" fill="#0E0E10"/>
+    <rect x="18" y="16" width="498" height="677" rx="71" fill="#0E0E10" stroke="#8E8E8E" strokeWidth="2"/>
+    <path d="M515.278 388C482.284 494.023 383.382 571 266.5 571C149.435 571 50.4052 493.781 17.5676 387.5M516.191 236C484.144 128.432 384.481 50 266.5 50C149.435 50 50.4051 127.219 17.5676 233.5" stroke="white" strokeOpacity="0.65" strokeDasharray="2 2"/>
+    <path d="M515.694 551.5C482.853 615.13 433.794 665.294 375.5 693.56M16.3062 551.5C49.147 615.13 98.2057 665.294 156.5 693.56" stroke="white" strokeOpacity="0.65" strokeDasharray="2 2"/>
+    <path d="M516.331 363C487.014 472.982 386.718 554.001 267.5 554.001C146.661 554.001 45.2633 470.765 17.5129 358.5M17.5 234.554C45.2319 122.263 146.642 39.001 267.5 39.001C387.259 39.001 487.923 120.756 516.726 231.5" stroke="#8E8E8E" strokeWidth="2"/>
+    <path d="M18.7605 233.25C19.7841 229.175 20.9054 225.139 22.1202 221.144L18 221.798V220.789L22.4431 220.084C24.0845 214.769 25.8943 209.528 27.8647 204.366H18V203.369H28.2499C31.0114 196.225 34.0809 189.235 37.4453 182.417H18V181.419H37.9424C40.0078 177.279 42.1798 173.202 44.4582 169.193L18 164.995V163.985L44.9854 168.267C48.7815 161.651 52.8651 155.222 57.2156 148.994L18 142.773V141.762L57.8517 148.084C60.0124 145.019 62.2397 142.004 64.529 139.04L18 123.896V122.848L65.1777 138.203C69.8244 132.238 74.7282 126.483 79.8726 120.956L18 100.818V99.7685L80.6245 120.151C82.6518 117.992 84.7144 115.866 86.8145 113.777L18.5739 78.9473C18.6182 78.5974 18.6655 78.2483 18.7149 77.8999L87.5624 113.04C92.8812 107.794 98.4265 102.777 104.184 98.0089L24.8086 57.4948C24.9502 57.1939 25.0939 56.8941 25.2395 56.5955L105.025 97.3181C106.787 95.8707 108.569 94.4455 110.37 93.0447L36.853 39.5401C37.0788 39.2935 37.3066 39.0488 37.5358 38.8055L111.191 92.4105C117.024 87.913 123.055 83.6618 129.269 79.6713L54.6837 25.3881C55.0038 25.2083 55.3255 25.0312 55.6486 24.8561L130.17 79.0915C131.614 78.1722 133.07 77.2681 134.534 76.3771L75.8487 17.5916C76.2432 17.5142 76.6386 17.4394 77.0354 17.3685L135.413 75.8461C141.627 72.0992 148.012 68.6093 154.554 65.3897L105.498 16.25H106.907L155.5 64.9259C156.628 64.3765 157.761 63.8351 158.898 63.3017L124.772 16.25H126.004L159.819 62.873C166.306 59.8628 172.94 57.1163 179.707 54.6469L151.858 16.25H153.088L180.679 54.2913C181.528 53.9851 182.38 53.6835 183.234 53.3861L164.344 16.25H165.461L184.184 53.0607C190.86 50.7649 197.66 48.7362 204.572 46.9897L188.936 16.25H190.054L205.564 46.7422C206.192 46.5863 206.821 46.4327 207.45 46.2814L197.709 16.25H198.756L208.422 46.0495C215.221 44.4439 222.123 43.1073 229.119 42.0558L220.749 16.25H221.797L230.119 41.9077C230.595 41.8381 231.071 41.7691 231.548 41.7021L227.524 16.25H228.531L232.444 41M515.2 229.259C514.483 226.587 513.724 223.931 512.923 221.294L516 221.782V220.773L512.596 220.232C510.942 214.866 509.118 209.576 507.129 204.366H516V203.369H506.748C503.986 196.224 500.913 189.236 497.549 182.417H516V181.419H497.056C494.968 177.234 492.768 173.114 490.462 169.063L516 165.012V164L489.933 168.136C486.132 161.521 482.044 155.092 477.689 148.865L516 142.789V141.778L477.054 147.957C474.865 144.856 472.607 141.806 470.286 138.807L516 123.93V122.88L469.635 137.971C464.98 132.007 460.067 126.256 454.913 120.732L516 100.85V99.8007L454.16 119.928C452.103 117.741 450.008 115.59 447.875 113.476L515.431 78.9961C515.387 78.6455 515.34 78.2957 515.291 77.9467L447.125 112.738C441.795 107.497 436.237 102.488 430.468 97.7263L509.21 57.5367C509.069 57.2358 508.925 56.936 508.78 56.6374L429.626 97.0365C427.834 95.5701 426.022 94.1269 424.19 92.7086L497.187 39.5839C496.961 39.3367 496.733 39.0914 496.503 38.8473L423.366 92.0753C417.52 87.5869 411.476 83.3433 405.249 79.3634L479.37 25.4183C479.05 25.2385 478.729 25.0614 478.407 24.8864L404.342 78.7885C402.871 77.8574 401.39 76.9417 399.9 76.04L458.233 17.6082C457.839 17.5305 457.444 17.4554 457.048 17.3841L399.023 75.508C392.795 71.7741 386.396 68.2975 379.84 65.0925L428.601 16.25H427.194L378.89 64.6336C377.74 64.0773 376.587 63.5256 375.428 62.9861L409.327 16.25H408.094L374.504 62.5622C368.003 59.5687 361.357 56.8398 354.577 54.3887L382.24 16.25H381.011L353.603 54.037C352.737 53.7278 351.869 53.4222 350.999 53.1221L369.755 16.25H368.636L350.045 52.7976C343.359 50.522 336.548 48.5151 329.626 46.79L345.162 16.25H344.045L328.634 46.5454C327.995 46.3887 327.354 46.2345 326.712 46.0826L336.389 16.25H335.341L325.738 45.8537C318.931 44.2705 312.021 42.9593 305.018 41.9311L313.349 16.25H312.302L304.019 41.7849C303.537 41.716 303.054 41.6495 302.57 41.5832L306.576 16.25H305.567L301.653 41" stroke="#8E8E8E" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M266 21C271.591 21 276.686 22.8104 280.407 24.6465C282.263 25.562 283.764 26.4778 284.798 27.1621C284.979 27.2816 285.144 27.3959 285.295 27.5C285.144 27.6041 284.979 27.7184 284.798 27.8379C283.764 28.5222 282.263 29.438 280.407 30.3535C276.686 32.1896 271.591 34 266 34C260.409 34 255.314 32.1896 251.593 30.3535C249.737 29.438 248.236 28.5222 247.202 27.8379C247.021 27.7182 246.856 27.6042 246.704 27.5C246.856 27.3958 247.021 27.2818 247.202 27.1621C248.236 26.4778 249.737 25.562 251.593 24.6465C255.314 22.8104 260.409 21 266 21Z" stroke="#8E8E8E" strokeWidth="2"/>
+    <path d="M266 21C269.25 21 272 23.844 272 27.5C272 31.156 269.25 34 266 34C262.75 34 260 31.156 260 27.5C260 23.844 262.75 21 266 21Z" stroke="#8E8E8E" strokeWidth="2"/>
+    <path d="M287 16L282 25" stroke="#8E8E8E" strokeWidth="2"/>
+    <path d="M245 16L250 25" stroke="#8E8E8E" strokeWidth="2"/>
+    <path d="M282 30L287 40" stroke="#8E8E8E" strokeWidth="2"/>
+    <path d="M251 30L246 40" stroke="#8E8E8E" strokeWidth="2"/>
+    <line x1="266" y1="16" x2="266" y2="20" stroke="#8E8E8E" strokeWidth="2"/>
+    <line x1="266" y1="35" x2="266" y2="39" stroke="#8E8E8E" strokeWidth="2"/>
+    <rect x="18" y="16" width="498" height="677" rx="71" stroke="#8E8E8E" strokeWidth="2"/>
+  </svg>
+);
+
 const WaveTexture = ({ seed = 0, opacity = 0.12 }) => {
   const w = 340; const h = 160;
   const rows = 8;
@@ -958,36 +979,7 @@ export default function App() {
   if (step === 'result' && resultData) {
     const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole } = resultData;
 
-    if (showPoster) return (
-      <div className={`min-h-screen bg-gradient-to-b ${bg} via-slate-950 to-black flex items-center justify-center p-6 font-sans`}>
-        <div className="w-full max-w-[340px]">
-          <div className="bg-black/30 backdrop-blur-md rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl flex flex-col items-center text-center relative">
-            <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 z-10 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/10">
-              <X className="w-3.5 h-3.5"/>
-            </button>
-            <div className="pt-8 pb-4 px-8 flex flex-col items-center">
-              <div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-bold uppercase tracking-widest mb-5`}>{String(status)}</div>
-              <p style={{...DS.label, marginBottom: '8px'}}>关系能量分析</p>
-              <h2 className="text-3xl font-bold tracking-tight text-white leading-tight mb-1">{String(roleName)}</h2>
-              <p className={`text-[9px] font-bold mb-6 ${color}`}>{String(tag)}</p>
-            </div>
-            <div className="w-full px-8 mb-6">
-              <div className="rounded-2xl border border-dashed border-white/10 bg-white/5 h-44 flex items-center justify-center">
-                <p className="text-white/20 text-[10px] font-bold">关系图形</p>
-              </div>
-            </div>
-            <div className="px-8 pb-8 w-full">
-              <div className="relative pl-3 border-l-2 border-white/20 text-left">
-                <p className="text-white/60 text-xs leading-relaxed">{String(definition)}</p>
-              </div>
-              <p className="text-white/15 text-[9px] tracking-[0.2em] flex items-center justify-center gap-2 mt-6">
-                <Download className="w-2.5 h-2.5 opacity-50"/> 截图保存你的报告
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+
 
     const roleColorMap = {
       'text-red-500':     'rgba(121,71,71,',    // 情绪垃圾桶  #794747
@@ -1036,6 +1028,46 @@ export default function App() {
       'text-indigo-400':  'linear-gradient(to bottom, #111111, #606C88, #2B3A60)',  // 情绪循环者
     };
     const pageBg = roleBgBase[color] || 'linear-gradient(to bottom, #111111, #1a1a2e, #2B3A60)';
+
+    if (showPoster) return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 font-sans"
+        style={{background: pageBg}}>
+        <div style={{
+          width:'340px', height:'454px',
+          position:'relative', borderRadius:'51px',
+          overflow:'hidden',
+          boxShadow:`0 24px 60px rgba(0,0,0,0.85), 0 0 40px ${rc}0.15)`,
+        }}>
+          <CardSVGBg />
+          <div style={{
+            position:'absolute', left:'11px', top:'33px',
+            width:'318px', height:'318px',
+            borderRadius:'50%', overflow:'hidden',
+            zIndex:2, background:'#05050d',
+            display:'flex', alignItems:'center', justifyContent:'center',
+          }}>
+            <p style={{...DS.label, color:`${rc}0.3)`}}>{String(roleName)}</p>
+          </div>
+          <div style={{
+            position:'absolute', bottom:0, left:0, right:0,
+            height:'80px', zIndex:3,
+            display:'flex', flexDirection:'column',
+            alignItems:'center', justifyContent:'center',
+            gap:'5px', paddingBottom:'16px',
+          }}>
+            <span style={{fontFamily:"'Inter','Helvetica Neue',sans-serif", fontSize:'10px', letterSpacing:'0.5em', color:'#A4B8BC', textTransform:'uppercase'}}>THE</span>
+            <span style={{fontFamily:"'Inter','Helvetica Neue',sans-serif", fontSize:'15px', fontWeight:700, letterSpacing:'0.1em', color:'#A4B8BC'}}>{String(roleName)}</span>
+            <span style={{fontFamily:"'Inter','Helvetica Neue',sans-serif", fontSize:'10px', letterSpacing:'0.28em', color:'rgba(164,184,188,0.5)', textTransform:'uppercase'}}>{String(ROLE_DATA[roleName]?.en)}</span>
+          </div>
+        </div>
+        <p style={{...DS.label, color:'rgba(255,255,255,0.2)', marginTop:'24px', letterSpacing:'0.2em'}}>截图保存你的报告</p>
+        <button onClick={() => setShowPoster(false)} className="active:scale-95"
+          style={{...DS.btnSecondary, marginTop:'20px', height:'44px', padding:'0 28px',
+            display:'flex', alignItems:'center', gap:'6px'}}>
+          <X style={{width:'12px',height:'12px'}}/> 返回
+        </button>
+      </div>
+    );
 
     // 结果页进度条（跟随角色色）
     const roleProgressFill = (pct) => ({
