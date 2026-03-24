@@ -970,36 +970,89 @@ export default function App() {
   if (step === 'result' && resultData) {
     const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole, image } = resultData;
 
-    if (showPoster) return (
-      <div className={`min-h-screen bg-gradient-to-b ${bg} via-slate-950 to-black flex items-center justify-center p-6 font-sans`}>
-        <div className="w-full max-w-[340px]">
-          <div className="bg-black/30 backdrop-blur-md rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl flex flex-col items-center text-center relative">
-            <button onClick={() => setShowPoster(false)} className="absolute top-6 right-6 z-10 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/10">
-              <X className="w-3.5 h-3.5"/>
-            </button>
-            <div className="pt-8 pb-4 px-8 flex flex-col items-center">
-              <div className={`px-3 py-1 rounded-full border border-white/10 bg-black/20 ${color} text-[8px] font-bold uppercase tracking-widest mb-5`}>{String(status)}</div>
-              <p style={{...DS.label, marginBottom: '8px'}}>关系能量分析</p>
-              <h2 className="text-3xl font-bold tracking-tight text-white leading-tight mb-1">{String(roleName)}</h2>
-              <p className={`text-[9px] font-bold mb-6 ${color}`}>{String(tag)}</p>
-            </div>
-            <div className="w-full px-8 mb-6">
-              <div className="rounded-2xl border border-dashed border-white/10 bg-white/5 h-44 flex items-center justify-center">
-                <p className="text-white/20 text-[10px] font-bold">关系图形</p>
+    if (showPoster) {
+      // 先计算 rc 和 pageBg，复用结果页的颜色逻辑
+      const _roleColorMap = {
+        'text-red-500':'rgba(121,71,71,','text-orange-500':'rgba(177,71,29,',
+        'text-amber-400':'rgba(211,145,109,','text-yellow-400':'rgba(232,203,192,',
+        'text-slate-400':'rgba(139,166,181,','text-fuchsia-400':'rgba(152,216,208,',
+        'text-emerald-400':'rgba(0,201,150,','text-cyan-400':'rgba(203,180,212,',
+        'text-blue-400':'rgba(152,216,208,','text-purple-400':'rgba(246,229,222,',
+        'text-rose-400':'rgba(127,129,176,','text-indigo-400':'rgba(43,58,96,',
+      };
+      const _rc = _roleColorMap[color] || 'rgba(99,102,241,';
+      const _roleBgMap = {
+        'text-red-500':'linear-gradient(to bottom, #111111, #4e2020, #794747)',
+        'text-orange-500':'linear-gradient(to bottom, #111111, #462904, #B1471D)',
+        'text-amber-400':'linear-gradient(to bottom, #111111, #544a7d, #D3916D)',
+        'text-yellow-400':'linear-gradient(to bottom, #111111, #636FA4, #E8CBC0)',
+        'text-slate-400':'linear-gradient(to bottom, #111111, #334d50, #8BA6B5)',
+        'text-fuchsia-400':'linear-gradient(to bottom, #111111, #181944, #98D8D0)',
+        'text-emerald-400':'linear-gradient(to bottom, #111111, #003D4D, #00C996)',
+        'text-cyan-400':'linear-gradient(to bottom, #111111, #20002C, #CBB4D4)',
+        'text-blue-400':'linear-gradient(to bottom, #111111, #181944, #98D8D0)',
+        'text-purple-400':'linear-gradient(to bottom, #111111, #5D6A73, #F6E5DE)',
+        'text-rose-400':'linear-gradient(to bottom, #111111, #463151, #7F81B0)',
+        'text-indigo-400':'linear-gradient(to bottom, #111111, #606C88, #2B3A60)',
+      };
+      const _pageBg = _roleBgMap[color] || 'linear-gradient(to bottom, #111111, #1a1a2e, #2B3A60)';
+
+      return (
+        <div style={{minHeight:'100vh', background: _pageBg,
+          display:'flex', alignItems:'center', justifyContent:'center', padding:'24px'}}>
+          <div style={{width:'100%', maxWidth:'340px'}}>
+            <div style={{background:'rgba(0,0,0,0.35)', backdropFilter:'blur(16px)',
+              borderRadius:'2.5rem', border:'1px solid rgba(255,255,255,0.12)',
+              overflow:'hidden', boxShadow:'0 24px 60px rgba(0,0,0,0.5)',
+              display:'flex', flexDirection:'column', alignItems:'center',
+              textAlign:'center', position:'relative', fontFamily:'sans-serif'}}>
+              <button onClick={() => setShowPoster(false)}
+                style={{position:'absolute', top:'24px', right:'24px', zIndex:10,
+                  width:'32px', height:'32px', background:'rgba(255,255,255,0.1)',
+                  borderRadius:'50%', border:'1px solid rgba(255,255,255,0.15)',
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                  cursor:'pointer', color:'white'}}>
+                <X style={{width:'14px', height:'14px'}}/>
+              </button>
+              {/* 插画 */}
+              {image && (
+                <div style={{width:'100%', padding:'32px 32px 0'}}>
+                  <img src={image} alt={roleName}
+                    style={{width:'100%', borderRadius:'16px', display:'block',
+                      maxHeight:'300px', objectFit:'cover', objectPosition:'center top'}}/>
+                </div>
+              )}
+              <div style={{padding:'20px 32px 8px', width:'100%'}}>
+                <p style={{...DS.label, color:`${_rc}0.7)`, marginBottom:'8px'}}>
+                  关系能量分析
+                </p>
+                <h2 style={{fontSize:'1.8rem', fontWeight:800, letterSpacing:'-0.03em',
+                  color:'#fff', lineHeight:1.1, marginBottom:'6px',
+                  textShadow:`0 0 40px ${_rc}0.4)`}}>
+                  {String(roleName)}
+                </h2>
+                <p style={{fontSize:'11px', fontWeight:700, letterSpacing:'0.15em',
+                  color:'rgba(255,255,255,0.65)', marginBottom:'16px'}}>
+                  {String(tag)}
+                </p>
               </div>
-            </div>
-            <div className="px-8 pb-8 w-full">
-              <div className="relative pl-3 border-l-2 border-white/20 text-left">
-                <p className="text-white/60 text-xs leading-relaxed">{String(definition)}</p>
+              <div style={{padding:'0 32px 32px', width:'100%'}}>
+                <div style={{borderLeft:`2px solid ${_rc}0.5)`,
+                  paddingLeft:'12px', textAlign:'left', marginBottom:'20px'}}>
+                  <p style={{fontSize:'12px', color:'rgba(255,255,255,0.65)',
+                    lineHeight:1.7}}>{String(definition)}</p>
+                </div>
+                <p style={{fontSize:'9px', letterSpacing:'0.2em',
+                  color:'rgba(255,255,255,0.2)', display:'flex',
+                  alignItems:'center', justifyContent:'center', gap:'8px'}}>
+                  <Download style={{width:'10px', height:'10px', opacity:0.5}}/> 截图保存你的报告
+                </p>
               </div>
-              <p className="text-white/15 text-[9px] tracking-[0.2em] flex items-center justify-center gap-2 mt-6">
-                <Download className="w-2.5 h-2.5 opacity-50"/> 截图保存你的报告
-              </p>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
 
     const roleColorMap = {
       'text-red-500':     'rgba(121,71,71,',    // 情绪倾倒者  #794747
@@ -1226,9 +1279,6 @@ export default function App() {
                   style={{
                     width:'100%',
                     display:'block',
-                    objectFit:'cover',
-                    objectPosition:'center top',
-                    maxHeight:'400px',
                     borderRadius:'20px',
                   }}
                 />
