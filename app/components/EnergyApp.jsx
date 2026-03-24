@@ -129,7 +129,7 @@ const DS = {
   // 外层卡片（结果页大区块）
   card: {
     background: 'rgba(0,0,0,0.12)',
-    borderRadius: '40px',
+    borderRadius: '20px',
     border: '1px solid rgba(255,255,255,0.10)',
   },
 
@@ -1019,7 +1019,7 @@ export default function App() {
 
             {/* 海报卡片 */}
             <div style={{
-              borderRadius:'40px',
+              borderRadius:'24px',
               border:`1px solid ${_rc}0.25)`,
               overflow:'hidden',
               background:'rgba(0,0,0,0.5)',
@@ -1051,7 +1051,7 @@ export default function App() {
               {image && (
                 <div style={{padding:'0 12px'}}>
                   <img src={image} alt={roleName} style={{
-                    width:'100%', display:'block', borderRadius:'40px',
+                    width:'100%', display:'block', borderRadius:'12px',
                   }}/>
                 </div>
               )}
@@ -1306,7 +1306,7 @@ export default function App() {
             <div style={{
               position:'relative',
               width:'100%',
-              borderRadius:'40px',
+              borderRadius:'20px',
               overflow:'hidden',
               background:`radial-gradient(ellipse at center, ${rc}0.12) 0%, transparent 70%)`,
             }}>
@@ -1317,14 +1317,14 @@ export default function App() {
                   style={{
                     width:'100%',
                     display:'block',
-                    borderRadius:'40px',
+                    borderRadius:'20px',
                   }}
                 />
               ) : (
                 <div style={{
                   height:'220px', display:'flex',
                   alignItems:'center', justifyContent:'center',
-                  border:`1px solid ${rc}0.12)`, borderRadius:'40px',
+                  border:`1px solid ${rc}0.12)`, borderRadius:'20px',
                 }}>
                   <p style={{...DS.label, color:`${rc}0.25)`}}>插画 · {String(roleName)}</p>
                 </div>
@@ -1507,7 +1507,7 @@ export default function App() {
 
           {/* ⑥ 建议卡片 ── 实色背景，最醒目的内容卡片 */}
           <section style={{
-            borderRadius:'40px',
+            borderRadius:'20px',
             background: rc2,
             border:`1px solid ${rc}0.35)`,
             marginBottom:'40px',
