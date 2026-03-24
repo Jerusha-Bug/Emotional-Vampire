@@ -1211,7 +1211,7 @@ export default function App() {
           </section>
 
           {/* ② 插画区 */}
-          <section style={{marginBottom:'40px'}}>
+          <section style={{marginBottom:'24px'}}>
             <div style={{
               position:'relative',
               width:'100%',
@@ -1228,7 +1228,7 @@ export default function App() {
                     display:'block',
                     objectFit:'cover',
                     objectPosition:'center top',
-                    maxHeight:'480px',
+                    maxHeight:'400px',
                     borderRadius:'20px',
                   }}
                 />
