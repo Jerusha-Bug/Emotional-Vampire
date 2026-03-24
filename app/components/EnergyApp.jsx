@@ -277,7 +277,7 @@ const QUESTIONS = [
 
 const ROLE_DATA = {
   "情感代偿者": {
-    image: "/illustrations/情感代偿者.webp",
+    image: "/illustrations/compensator.webp",
     en: "Emotional Compensator",
     tag: "情绪承接 · 单向消耗",
     color: "text-rose-400",
@@ -289,8 +289,8 @@ const ROLE_DATA = {
     advice: "停止自动承担别人的情绪责任。当对方情绪失控时，你可以选择不立刻修复它。",
     scene: "你总在关系里多走那一步，久了忘了原来的位置在哪。"
   },
-  "情绪垃圾桶": {
-    image: "/illustrations/情绪垃圾桶.webp",
+  "情绪倾倒者": {
+    image: "/illustrations/dump.webp",
     en: "Emotional Dump",
     tag: "单向倾倒 · 极度透支",
     color: "text-red-500",
@@ -303,7 +303,7 @@ const ROLE_DATA = {
     scene: "你习惯承接，但没人承接你。"
   },
   "共情透支者": {
-    image: "/illustrations/共情透支者.webp",
+    image: "/illustrations/empathy.webp",
     en: "Empathy Overload",
     tag: "过度共情 · 自我消耗",
     color: "text-fuchsia-400",
@@ -316,7 +316,7 @@ const ROLE_DATA = {
     scene: "你很擅长感受别人，却越来越不知道自己在感受什么。"
   },
   "关系修复者": {
-    image: "/illustrations/修复者.webp",
+    image: "/illustrations/fixer.webp",
     en: "Relationship Fixer",
     tag: "主动维系 · 单方努力",
     color: "text-amber-400",
@@ -329,7 +329,7 @@ const ROLE_DATA = {
     scene: "每次出现裂缝都是你先去补，久了开始分不清是在乎还是习惯。"
   },
   "冲突吸引者": {
-    image: "/illustrations/冲突吸引者.webp",
+    image: "/illustrations/conflict.webp",
     en: "Conflict Magnet",
     tag: "高频摩擦 · 能量耗散",
     color: "text-orange-500",
@@ -342,7 +342,7 @@ const ROLE_DATA = {
     scene: "你不是喜欢争吵，只是每次沟通都容易走到那一步。"
   },
   "责任承担者": {
-    image: "/illustrations/责任承担者.webp",
+    image: "/illustrations/responsibility.webp",
     en: "Responsibility Carrier",
     tag: "失衡承担 · 自我怀疑",
     color: "text-yellow-400",
@@ -355,7 +355,7 @@ const ROLE_DATA = {
     scene: "你不是不累，只是不接的话会更乱。"
   },
   "依赖支柱": {
-    image: "/illustrations/依赖支柱.webp",
+    image: "/illustrations/dependency.webp",
     en: "Dependency Anchor",
     tag: "情绪依赖 · 逐渐失自由",
     color: "text-blue-400",
@@ -368,7 +368,7 @@ const ROLE_DATA = {
     scene: "你知道TA只在需要时才来，但还是每次都在。"
   },
   "情绪守护者": {
-    image: "/illustrations/守护者.webp",
+    image: "/illustrations/guardian.webp",
     en: "Emotional Guardian",
     tag: "压抑表达 · 内耗积累",
     color: "text-cyan-400",
@@ -381,7 +381,7 @@ const ROLE_DATA = {
     scene: "你很擅长保护别人的情绪，却忘了自己的也需要被保护。"
   },
   "自我压缩者": {
-    image: "/illustrations/自我压缩者.webp",
+    image: "/illustrations/suppressor.webp",
     en: "Self-Suppressor",
     tag: "需求压缩 · 自我迷失",
     color: "text-purple-400",
@@ -394,7 +394,7 @@ const ROLE_DATA = {
     scene: "你把自己的需求放得很后面，以为是暂时的，后来变成了习惯。"
   },
   "关系消耗者": {
-    image: "/illustrations/消耗者.webp",
+    image: "/illustrations/drained.webp",
     en: "Energy Drained",
     tag: "持续消耗 · 能量黑洞",
     color: "text-slate-400",
@@ -407,7 +407,7 @@ const ROLE_DATA = {
     scene: "你说不清哪里出了问题，只是越来越不想靠近。"
   },
   "情绪循环者": {
-    image: "/illustrations/循环者.webp",
+    image: "/illustrations/loop.webp",
     en: "Emotional Loop",
     tag: "重复模式 · 无解循环",
     color: "text-indigo-400",
@@ -420,7 +420,7 @@ const ROLE_DATA = {
     scene: "好了又坏，坏了又好，你以为在修复，其实只是在重复。"
   },
   "关系清醒者": {
-    image: "/illustrations/清醒者.webp",
+    image: "/illustrations/awakened.webp",
     en: "Awakened Observer",
     tag: "自我觉察 · 能量恢复",
     color: "text-emerald-400",
@@ -435,7 +435,7 @@ const ROLE_DATA = {
 };
 
 const ROLE_BAR_COLOR = {
-  "情感代偿者": "bg-rose-400", "情绪垃圾桶": "bg-red-500",
+  "情感代偿者": "bg-rose-400", "情绪倾倒者": "bg-red-500",
   "共情透支者": "bg-fuchsia-400", "关系修复者": "bg-amber-400",
   "冲突吸引者": "bg-orange-500", "责任承担者": "bg-yellow-400",
   "依赖支柱": "bg-blue-400", "情绪守护者": "bg-cyan-400",
@@ -651,7 +651,7 @@ export default function App() {
     const avgPerQ_B = scoreB / 8;
     if (avgPerQ_A <= 2.5 && avgPerQ_B <= 2.5) {
       roleName = "关系清醒者";
-    } else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪垃圾桶"; }
+    } else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪倾倒者"; }
     else if (dominated && topDim === "情绪倾倒") { roleName = "情感代偿者"; }
     else if (dominated && topDim === "自我消耗" && scoreB > 27) { roleName = "共情透支者"; }
     else if (dominated && topDim === "自我消耗") { roleName = "自我压缩者"; }
@@ -672,7 +672,7 @@ export default function App() {
       else if (dimScores["情绪倾倒"] >= avgScore && dimScores["受害叙述"] >= avgScore) { roleName = "情感代偿者"; }
       else if (dimScores["依赖绑定"] >= avgScore) { roleName = "依赖支柱"; }
       else if (dimScores["冲突激发"] >= avgScore) { roleName = "关系修复者"; }
-      else if (scoreA >= 80) { roleName = "情绪垃圾桶"; }
+      else if (scoreA >= 80) { roleName = "情绪倾倒者"; }
       else { roleName = "关系消耗者"; }
     }
     const secondRoleName = DIM_TO_ROLE[secondDim];
@@ -1002,7 +1002,7 @@ export default function App() {
     );
 
     const roleColorMap = {
-      'text-red-500':     'rgba(121,71,71,',    // 情绪垃圾桶  #794747
+      'text-red-500':     'rgba(121,71,71,',    // 情绪倾倒者  #794747
       'text-orange-500':  'rgba(177,71,29,',    // 冲突吸引者  #B1471D
       'text-amber-400':   'rgba(211,145,109,',  // 关系修复者  #D3916D
       'text-yellow-400':  'rgba(232,203,192,',  // 责任承担者  #E8CBC0
@@ -1034,7 +1034,7 @@ export default function App() {
     const rc2 = roleAccentMap[color] || 'rgba(88,28,135,0.18)';
 
     const roleBgBase = {
-      'text-red-500':     'linear-gradient(to bottom, #111111, #4e2020, #794747)',  // 情绪垃圾桶
+      'text-red-500':     'linear-gradient(to bottom, #111111, #4e2020, #794747)',  // 情绪倾倒者
       'text-orange-500':  'linear-gradient(to bottom, #111111, #462904, #B1471D)',  // 冲突吸引者
       'text-amber-400':   'linear-gradient(to bottom, #111111, #544a7d, #D3916D)',  // 关系修复者
       'text-yellow-400':  'linear-gradient(to bottom, #111111, #636FA4, #E8CBC0)',  // 责任承担者
