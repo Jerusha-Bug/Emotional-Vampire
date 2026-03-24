@@ -1004,7 +1004,6 @@ export default function App() {
           alignItems:'center', justifyContent:'center',
           padding:'32px 24px', fontFamily:'sans-serif',
         }}>
-          {/* 海报卡片 */}
           <div style={{width:'100%', maxWidth:'300px', position:'relative'}}>
 
             {/* 关闭按钮 */}
@@ -1018,60 +1017,66 @@ export default function App() {
               <X style={{width:'13px', height:'13px'}}/>
             </button>
 
-            {/* 卡片 */}
-            <div style={{
-              borderRadius:'24px',
-              border:`1px solid ${_rc}0.30)`,
-              overflow:'hidden',
-              background:'rgba(0,0,0,0.45)',
-            }}>
-              {/* 顶部 label */}
-              <div style={{
-                padding:'20px 0 12px',
-                textAlign:'center',
-                borderBottom:`1px solid rgba(255,255,255,0.06)`,
+            {/* ① 角色名 — 顶部 */}
+            <div style={{textAlign:'center', marginBottom:'16px'}}>
+              <p style={{...DS.label, color:`${_rc}0.65)`, marginBottom:'6px'}}>
+                关系能量分析
+              </p>
+              <h2 style={{
+                fontSize:'1.8rem', fontWeight:800, letterSpacing:'-0.02em',
+                color:'#fff', lineHeight:1.1,
+                textShadow:`0 0 24px ${_rc}0.5)`,
               }}>
-                <p style={{...DS.label, color:`${_rc}0.65)`}}>关系能量分析</p>
-              </div>
+                {String(roleName)}
+              </h2>
+              <p style={{
+                fontSize:'8px', fontWeight:600, letterSpacing:'0.25em',
+                color:`${_rc}0.6)`, textTransform:'uppercase', marginTop:'4px',
+              }}>
+                {String(tag)}
+              </p>
+            </div>
 
-              {/* 插画 */}
+            {/* ② 背景卡 + 插画叠加 — 中间 */}
+            <div style={{position:'relative', width:'100%', marginBottom:'16px'}}>
+              <img src="/背景卡.svg" alt=""
+                style={{width:'100%', display:'block', borderRadius:'16px'}}/>
               {image && (
-                <img src={image} alt={roleName} style={{
-                  width:'100%', display:'block',
-                }}/>
+                <div style={{
+                  position:'absolute', inset:0,
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                  padding:'18%',
+                }}>
+                  <img src={image} alt={roleName}
+                    style={{width:'100%', display:'block'}}/>
+                </div>
               )}
+            </div>
 
-              {/* 底部文字 */}
+            {/* ③ scene 一句话 — 底部 */}
+            {scene && (
               <div style={{
-                padding:'16px 20px 20px',
                 textAlign:'center',
-                borderTop:`1px solid rgba(255,255,255,0.06)`,
-                background:'rgba(0,0,0,0.2)',
+                padding:'12px 16px',
+                background:'rgba(0,0,0,0.25)',
+                borderRadius:'12px',
+                border:`1px solid ${_rc}0.15)`,
+                marginBottom:'14px',
               }}>
                 <p style={{
-                  fontSize:'9px', fontWeight:700, letterSpacing:'0.25em',
-                  color:'rgba(255,255,255,0.30)', marginBottom:'4px',
-                }}>THE</p>
-                <h2 style={{
-                  fontSize:'1.5rem', fontWeight:800, letterSpacing:'-0.02em',
-                  color:'#fff', lineHeight:1.1, marginBottom:'5px',
-                  textShadow:`0 0 24px ${_rc}0.5)`,
+                  fontSize:'13px', fontWeight:500, lineHeight:1.7,
+                  color:'rgba(255,255,255,0.75)',
+                  fontStyle:'italic',
                 }}>
-                  {String(roleName)}
-                </h2>
-                <p style={{
-                  fontSize:'8px', fontWeight:600, letterSpacing:'0.25em',
-                  color:`${_rc}0.75)`, textTransform:'uppercase',
-                }}>
-                  Psychic Vampires
+                  {String(scene)}
                 </p>
               </div>
-            </div>
+            )}
 
             {/* 截图提示 */}
             <p style={{
               textAlign:'center', fontSize:'9px', letterSpacing:'0.12em',
-              color:'rgba(255,255,255,0.18)', marginTop:'14px',
+              color:'rgba(255,255,255,0.18)',
               display:'flex', alignItems:'center', justifyContent:'center', gap:'6px',
             }}>
               <Download style={{width:'9px', height:'9px', opacity:0.4}}/>
