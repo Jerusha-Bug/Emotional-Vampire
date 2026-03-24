@@ -999,56 +999,83 @@ export default function App() {
 
       return (
         <div style={{minHeight:'100vh', background: _pageBg,
-          display:'flex', alignItems:'center', justifyContent:'center', padding:'24px'}}>
-          <div style={{width:'100%', maxWidth:'340px'}}>
-            <div style={{background:'rgba(0,0,0,0.35)', backdropFilter:'blur(16px)',
-              borderRadius:'2.5rem', border:'1px solid rgba(255,255,255,0.12)',
-              overflow:'hidden', boxShadow:'0 24px 60px rgba(0,0,0,0.5)',
-              display:'flex', flexDirection:'column', alignItems:'center',
-              textAlign:'center', position:'relative', fontFamily:'sans-serif'}}>
-              <button onClick={() => setShowPoster(false)}
-                style={{position:'absolute', top:'24px', right:'24px', zIndex:10,
-                  width:'32px', height:'32px', background:'rgba(255,255,255,0.1)',
-                  borderRadius:'50%', border:'1px solid rgba(255,255,255,0.15)',
-                  display:'flex', alignItems:'center', justifyContent:'center',
-                  cursor:'pointer', color:'white'}}>
-                <X style={{width:'14px', height:'14px'}}/>
-              </button>
-              {/* 插画 */}
-              {image && (
-                <div style={{width:'100%', padding:'32px 32px 0'}}>
-                  <img src={image} alt={roleName}
-                    style={{width:'100%', borderRadius:'16px', display:'block',
-                      maxHeight:'300px', objectFit:'cover', objectPosition:'center top'}}/>
+          display:'flex', alignItems:'center', justifyContent:'center',
+          padding:'24px', fontFamily:'sans-serif'}}>
+          <div style={{width:'100%', maxWidth:'340px', position:'relative'}}>
+
+            {/* 关闭按钮 */}
+            <button onClick={() => setShowPoster(false)}
+              style={{position:'absolute', top:'-12px', right:'-12px', zIndex:20,
+                width:'32px', height:'32px', background:'rgba(255,255,255,0.12)',
+                borderRadius:'50%', border:'1px solid rgba(255,255,255,0.2)',
+                display:'flex', alignItems:'center', justifyContent:'center',
+                cursor:'pointer', color:'white'}}>
+              <X style={{width:'14px', height:'14px'}}/>
+            </button>
+
+            {/* 背景卡 SVG */}
+            <div style={{position:'relative', width:'100%'}}>
+              <img src="/背景卡.svg" alt=""
+                style={{width:'100%', display:'block', borderRadius:'20px'}}/>
+
+              {/* 叠加内容层 */}
+              <div style={{
+                position:'absolute', inset:0,
+                display:'flex', flexDirection:'column',
+                alignItems:'center', justifyContent:'space-between',
+                padding:'32px 28px 28px',
+              }}>
+                {/* 顶部标签 */}
+                <div style={{width:'100%', textAlign:'center'}}>
+                  <p style={{...DS.label, color:`${_rc}0.8)`, marginBottom:'4px'}}>
+                    关系能量分析
+                  </p>
                 </div>
-              )}
-              <div style={{padding:'20px 32px 8px', width:'100%'}}>
-                <p style={{...DS.label, color:`${_rc}0.7)`, marginBottom:'8px'}}>
-                  关系能量分析
-                </p>
-                <h2 style={{fontSize:'1.8rem', fontWeight:800, letterSpacing:'-0.03em',
-                  color:'#fff', lineHeight:1.1, marginBottom:'6px',
-                  textShadow:`0 0 40px ${_rc}0.4)`}}>
-                  {String(roleName)}
-                </h2>
-                <p style={{fontSize:'11px', fontWeight:700, letterSpacing:'0.15em',
-                  color:'rgba(255,255,255,0.65)', marginBottom:'16px'}}>
-                  {String(tag)}
-                </p>
-              </div>
-              <div style={{padding:'0 32px 32px', width:'100%'}}>
-                <div style={{borderLeft:`2px solid ${_rc}0.5)`,
-                  paddingLeft:'12px', textAlign:'left', marginBottom:'20px'}}>
-                  <p style={{fontSize:'12px', color:'rgba(255,255,255,0.65)',
-                    lineHeight:1.7}}>{String(definition)}</p>
+
+                {/* 插画 */}
+                {image && (
+                  <div style={{
+                    width:'75%', flex:1,
+                    display:'flex', alignItems:'center', justifyContent:'center',
+                    padding:'12px 0',
+                  }}>
+                    <img src={image} alt={roleName}
+                      style={{width:'100%', display:'block', borderRadius:'12px'}}/>
+                  </div>
+                )}
+
+                {/* 底部文字 */}
+                <div style={{width:'100%', textAlign:'center'}}>
+                  <p style={{
+                    fontSize:'10px', fontWeight:700, letterSpacing:'0.2em',
+                    color:'rgba(255,255,255,0.4)', textTransform:'uppercase',
+                    marginBottom:'4px',
+                  }}>THE</p>
+                  <h2 style={{
+                    fontSize:'1.6rem', fontWeight:800, letterSpacing:'-0.02em',
+                    color:'#fff', lineHeight:1.1, marginBottom:'4px',
+                    textShadow:`0 0 30px ${_rc}0.5)`,
+                  }}>
+                    {String(roleName)}
+                  </h2>
+                  <p style={{
+                    fontSize:'9px', fontWeight:600, letterSpacing:'0.2em',
+                    color:`${_rc}0.8)`, textTransform:'uppercase',
+                  }}>
+                    Psychic Vampires
+                  </p>
                 </div>
-                <p style={{fontSize:'9px', letterSpacing:'0.2em',
-                  color:'rgba(255,255,255,0.2)', display:'flex',
-                  alignItems:'center', justifyContent:'center', gap:'8px'}}>
-                  <Download style={{width:'10px', height:'10px', opacity:0.5}}/> 截图保存你的报告
-                </p>
               </div>
             </div>
+
+            {/* 截图提示 */}
+            <p style={{
+              textAlign:'center', fontSize:'9px', letterSpacing:'0.15em',
+              color:'rgba(255,255,255,0.2)', marginTop:'16px',
+              display:'flex', alignItems:'center', justifyContent:'center', gap:'6px',
+            }}>
+              <Download style={{width:'10px', height:'10px', opacity:0.4}}/> 截图保存你的报告
+            </p>
           </div>
         </div>
       );
