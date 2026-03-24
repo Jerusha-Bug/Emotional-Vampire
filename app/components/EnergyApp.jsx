@@ -998,70 +998,70 @@ export default function App() {
       const _pageBg = _roleBgMap[color] || 'linear-gradient(to bottom, #111111, #1a1a2e, #2B3A60)';
 
       return (
-        <div style={{minHeight:'100vh', background: _pageBg,
+        <div style={{
+          minHeight:'100vh', background: _pageBg,
           display:'flex', flexDirection:'column',
           alignItems:'center', justifyContent:'center',
-          padding:'24px', fontFamily:'sans-serif'}}>
-
+          padding:'32px 24px', fontFamily:'sans-serif',
+        }}>
           {/* 海报卡片 */}
-          <div style={{width:'100%', maxWidth:'320px', position:'relative'}}>
+          <div style={{width:'100%', maxWidth:'300px', position:'relative'}}>
 
             {/* 关闭按钮 */}
-            <button onClick={() => setShowPoster(false)}
-              style={{position:'absolute', top:'-16px', right:'-16px', zIndex:20,
-                width:'32px', height:'32px', background:'rgba(255,255,255,0.12)',
-                borderRadius:'50%', border:'1px solid rgba(255,255,255,0.2)',
-                display:'flex', alignItems:'center', justifyContent:'center',
-                cursor:'pointer', color:'white'}}>
-              <X style={{width:'14px', height:'14px'}}/>
+            <button onClick={() => setShowPoster(false)} style={{
+              position:'absolute', top:'-14px', right:'-14px', zIndex:20,
+              width:'30px', height:'30px', background:'rgba(0,0,0,0.4)',
+              borderRadius:'50%', border:'1px solid rgba(255,255,255,0.2)',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              cursor:'pointer', color:'white',
+            }}>
+              <X style={{width:'13px', height:'13px'}}/>
             </button>
 
-            {/* 卡片主体 */}
+            {/* 卡片 */}
             <div style={{
-              background:'rgba(0,0,0,0.4)',
               borderRadius:'24px',
-              border:`1px solid ${_rc}0.25)`,
+              border:`1px solid ${_rc}0.30)`,
               overflow:'hidden',
-              display:'flex', flexDirection:'column', alignItems:'center',
+              background:'rgba(0,0,0,0.45)',
             }}>
-              {/* 顶部标签 */}
-              <div style={{paddingTop:'24px', paddingBottom:'8px', textAlign:'center'}}>
-                <p style={{...DS.label, color:`${_rc}0.7)`}}>关系能量分析</p>
+              {/* 顶部 label */}
+              <div style={{
+                padding:'20px 0 12px',
+                textAlign:'center',
+                borderBottom:`1px solid rgba(255,255,255,0.06)`,
+              }}>
+                <p style={{...DS.label, color:`${_rc}0.65)`}}>关系能量分析</p>
               </div>
 
-              {/* 插画 + SVG背景卡叠加 */}
-              <div style={{width:'85%', position:'relative', margin:'8px 0'}}>
-                <img src="/背景卡.svg" alt=""
-                  style={{width:'100%', display:'block'}}/>
-                {image && (
-                  <div style={{
-                    position:'absolute', inset:0,
-                    display:'flex', alignItems:'center', justifyContent:'center',
-                    padding:'12%',
-                  }}>
-                    <img src={image} alt={roleName}
-                      style={{width:'100%', display:'block', borderRadius:'8px'}}/>
-                  </div>
-                )}
-              </div>
+              {/* 插画 */}
+              {image && (
+                <img src={image} alt={roleName} style={{
+                  width:'100%', display:'block',
+                }}/>
+              )}
 
-              {/* 角色名 */}
-              <div style={{padding:'8px 24px 24px', textAlign:'center', width:'100%'}}>
+              {/* 底部文字 */}
+              <div style={{
+                padding:'16px 20px 20px',
+                textAlign:'center',
+                borderTop:`1px solid rgba(255,255,255,0.06)`,
+                background:'rgba(0,0,0,0.2)',
+              }}>
                 <p style={{
-                  fontSize:'10px', fontWeight:700, letterSpacing:'0.2em',
-                  color:'rgba(255,255,255,0.35)', textTransform:'uppercase',
-                  marginBottom:'4px',
+                  fontSize:'9px', fontWeight:700, letterSpacing:'0.25em',
+                  color:'rgba(255,255,255,0.30)', marginBottom:'4px',
                 }}>THE</p>
                 <h2 style={{
-                  fontSize:'1.6rem', fontWeight:800, letterSpacing:'-0.02em',
-                  color:'#fff', lineHeight:1.1, marginBottom:'4px',
-                  textShadow:`0 0 30px ${_rc}0.5)`,
+                  fontSize:'1.5rem', fontWeight:800, letterSpacing:'-0.02em',
+                  color:'#fff', lineHeight:1.1, marginBottom:'5px',
+                  textShadow:`0 0 24px ${_rc}0.5)`,
                 }}>
                   {String(roleName)}
                 </h2>
                 <p style={{
-                  fontSize:'9px', fontWeight:600, letterSpacing:'0.22em',
-                  color:`${_rc}0.7)`, textTransform:'uppercase',
+                  fontSize:'8px', fontWeight:600, letterSpacing:'0.25em',
+                  color:`${_rc}0.75)`, textTransform:'uppercase',
                 }}>
                   Psychic Vampires
                 </p>
@@ -1070,11 +1070,12 @@ export default function App() {
 
             {/* 截图提示 */}
             <p style={{
-              textAlign:'center', fontSize:'9px', letterSpacing:'0.15em',
-              color:'rgba(255,255,255,0.2)', marginTop:'16px',
+              textAlign:'center', fontSize:'9px', letterSpacing:'0.12em',
+              color:'rgba(255,255,255,0.18)', marginTop:'14px',
               display:'flex', alignItems:'center', justifyContent:'center', gap:'6px',
             }}>
-              <Download style={{width:'10px', height:'10px', opacity:0.4}}/> 截图保存你的报告
+              <Download style={{width:'9px', height:'9px', opacity:0.4}}/>
+              截图保存你的报告
             </p>
           </div>
         </div>
