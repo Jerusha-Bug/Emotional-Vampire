@@ -1303,31 +1303,26 @@ export default function App() {
 
           {/* ② 插画区 */}
           <section style={{marginBottom:'16px'}}>
-            <div style={{
-              position:'relative',
-              width:'100%',
-              borderRadius:'20px',
-            }}>
-              {image ? (
-                <img
-                  src={image}
-                  alt={roleName}
-                  style={{
-                    width:'100%',
-                    display:'block',
-                    borderRadius:'20px',
-                  }}
-                />
-              ) : (
-                <div style={{
-                  height:'220px', display:'flex',
-                  alignItems:'center', justifyContent:'center',
-                  border:`1px solid ${rc}0.12)`, borderRadius:'20px',
-                }}>
-                  <p style={{...DS.label, color:`${rc}0.25)`}}>插画 · {String(roleName)}</p>
-                </div>
-              )}
-            </div>
+            {image ? (
+              <img
+                src={image}
+                alt={roleName}
+                style={{
+                  width:'100%',
+                  display:'block',
+                  borderRadius:'20px',
+                  border:`1px solid ${rc}0.20)`,
+                }}
+              />
+            ) : (
+              <div style={{
+                height:'220px', display:'flex',
+                alignItems:'center', justifyContent:'center',
+                border:`1px solid ${rc}0.12)`, borderRadius:'20px',
+              }}>
+                <p style={{...DS.label, color:`${rc}0.25)`}}>插画 · {String(roleName)}</p>
+              </div>
+            )}
           </section>
 
           {/* ③ 常见互动 + 消耗 ── 卡片边框用角色色，更有存在感 */}
