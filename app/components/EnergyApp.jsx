@@ -123,7 +123,7 @@ const DS = {
     fontWeight: 700,
     letterSpacing: '0.28em',
     textTransform: 'uppercase',
-    color: 'rgba(255,255,255,0.28)',
+    color: 'rgba(255,255,255,0.65)',
   },
 
   // 外层卡片（结果页大区块）
@@ -277,6 +277,7 @@ const QUESTIONS = [
 
 const ROLE_DATA = {
   "情感代偿者": {
+    image: "/illustrations/情感代偿者.webp",
     en: "Emotional Compensator",
     tag: "情绪承接 · 单向消耗",
     color: "text-rose-400",
@@ -289,6 +290,7 @@ const ROLE_DATA = {
     scene: "你总在关系里多走那一步，久了忘了原来的位置在哪。"
   },
   "情绪垃圾桶": {
+    image: "/illustrations/情绪垃圾桶.webp",
     en: "Emotional Dump",
     tag: "单向倾倒 · 极度透支",
     color: "text-red-500",
@@ -301,6 +303,7 @@ const ROLE_DATA = {
     scene: "你习惯承接，但没人承接你。"
   },
   "共情透支者": {
+    image: "/illustrations/共情透支者.webp",
     en: "Empathy Overload",
     tag: "过度共情 · 自我消耗",
     color: "text-fuchsia-400",
@@ -313,6 +316,7 @@ const ROLE_DATA = {
     scene: "你很擅长感受别人，却越来越不知道自己在感受什么。"
   },
   "关系修复者": {
+    image: "/illustrations/修复者.webp",
     en: "Relationship Fixer",
     tag: "主动维系 · 单方努力",
     color: "text-amber-400",
@@ -325,6 +329,7 @@ const ROLE_DATA = {
     scene: "每次出现裂缝都是你先去补，久了开始分不清是在乎还是习惯。"
   },
   "冲突吸引者": {
+    image: "/illustrations/冲突吸引者.webp",
     en: "Conflict Magnet",
     tag: "高频摩擦 · 能量耗散",
     color: "text-orange-500",
@@ -337,6 +342,7 @@ const ROLE_DATA = {
     scene: "你不是喜欢争吵，只是每次沟通都容易走到那一步。"
   },
   "责任承担者": {
+    image: "/illustrations/责任承担者.webp",
     en: "Responsibility Carrier",
     tag: "失衡承担 · 自我怀疑",
     color: "text-yellow-400",
@@ -349,6 +355,7 @@ const ROLE_DATA = {
     scene: "你不是不累，只是不接的话会更乱。"
   },
   "依赖支柱": {
+    image: "/illustrations/依赖支柱.webp",
     en: "Dependency Anchor",
     tag: "情绪依赖 · 逐渐失自由",
     color: "text-blue-400",
@@ -361,6 +368,7 @@ const ROLE_DATA = {
     scene: "你知道TA只在需要时才来，但还是每次都在。"
   },
   "情绪守护者": {
+    image: "/illustrations/守护者.webp",
     en: "Emotional Guardian",
     tag: "压抑表达 · 内耗积累",
     color: "text-cyan-400",
@@ -373,6 +381,7 @@ const ROLE_DATA = {
     scene: "你很擅长保护别人的情绪，却忘了自己的也需要被保护。"
   },
   "自我压缩者": {
+    image: "/illustrations/自我压缩者.webp",
     en: "Self-Suppressor",
     tag: "需求压缩 · 自我迷失",
     color: "text-purple-400",
@@ -385,6 +394,7 @@ const ROLE_DATA = {
     scene: "你把自己的需求放得很后面，以为是暂时的，后来变成了习惯。"
   },
   "关系消耗者": {
+    image: "/illustrations/消耗者.webp",
     en: "Energy Drained",
     tag: "持续消耗 · 能量黑洞",
     color: "text-slate-400",
@@ -397,6 +407,7 @@ const ROLE_DATA = {
     scene: "你说不清哪里出了问题，只是越来越不想靠近。"
   },
   "情绪循环者": {
+    image: "/illustrations/循环者.webp",
     en: "Emotional Loop",
     tag: "重复模式 · 无解循环",
     color: "text-indigo-400",
@@ -409,6 +420,7 @@ const ROLE_DATA = {
     scene: "好了又坏，坏了又好，你以为在修复，其实只是在重复。"
   },
   "关系清醒者": {
+    image: "/illustrations/清醒者.webp",
     en: "Awakened Observer",
     tag: "自我觉察 · 能量恢复",
     color: "text-emerald-400",
@@ -1122,7 +1134,7 @@ export default function App() {
                 width:'5px', height:'5px', borderRadius:'50%',
                 background:`${rc}1)`, boxShadow:`0 0 8px ${rc}1)`,
               }}/>
-              <span style={{...DS.label, color:`${rc}1)`, letterSpacing:'0.2em', filter:'brightness(2.2)'}}>
+              <span style={{...DS.label, color:`${rc}1)`, letterSpacing:'0.2em'}}>
                 {String(status)}
               </span>
             </div>
@@ -1185,7 +1197,7 @@ export default function App() {
                 border:`1px solid ${rc}0.28)`,
                 marginTop:'24px', padding:'16px 20px', textAlign:'left',
               }}>
-                <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)', marginBottom:DS.space.xs}}>副机制</p>
+                <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.xs}}>副机制</p>
                 <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'6px'}}>
                   <span style={{...DS.type.t2, color:`${rc}1)`,
                     textShadow:`0 0 12px ${rc}0.4)`}}>
@@ -1198,23 +1210,37 @@ export default function App() {
             )}
           </section>
 
-          {/* ② 插画占位 ── 背景光晕更强 */}
+          {/* ② 插画区 */}
           <section style={{marginBottom:'40px'}}>
             <div style={{
-              position:'relative', height:'220px',
-              display:'flex', alignItems:'center', justifyContent:'center',
-              background:`radial-gradient(ellipse at center, ${rc}0.14) 0%, transparent 65%)`,
+              position:'relative',
+              width:'100%',
               borderRadius:'20px',
-              border:`1px solid ${rc}0.12)`,
+              overflow:'hidden',
+              background:`radial-gradient(ellipse at center, ${rc}0.12) 0%, transparent 70%)`,
             }}>
-              <p style={{...DS.label, color:`${rc}0.25)`}}>插画 · {String(roleName)}</p>
-              <svg style={{position:'absolute',inset:0,width:'100%',height:'100%'}}
-                viewBox="0 0 340 220" fill="none">
-                <ellipse cx="170" cy="110" rx="110" ry="65"
-                  stroke={`${rc}0.22)`} strokeWidth="1" strokeDasharray="4 7"/>
-                <ellipse cx="170" cy="110" rx="150" ry="90"
-                  stroke={`${rc}0.10)`} strokeWidth="0.8" strokeDasharray="3 9"/>
-              </svg>
+              {resultData.image ? (
+                <img
+                  src={resultData.image}
+                  alt={roleName}
+                  style={{
+                    width:'100%',
+                    display:'block',
+                    objectFit:'cover',
+                    objectPosition:'center top',
+                    maxHeight:'480px',
+                    borderRadius:'20px',
+                  }}
+                />
+              ) : (
+                <div style={{
+                  height:'220px', display:'flex',
+                  alignItems:'center', justifyContent:'center',
+                  border:`1px solid ${rc}0.12)`, borderRadius:'20px',
+                }}>
+                  <p style={{...DS.label, color:`${rc}0.25)`}}>插画 · {String(roleName)}</p>
+                </div>
+              )}
             </div>
           </section>
 
@@ -1225,7 +1251,7 @@ export default function App() {
             marginBottom:DS.space.sm,
           }}>
             <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.10)`}}>
-              <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)', marginBottom:DS.space.sm}}>常见互动表现</p>
+              <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.sm}}>常见互动表现</p>
               <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
                 {behaviors.map((b,i)=>(
                   <div key={i} style={{display:'flex', alignItems:'flex-start', gap:'12px'}}>
@@ -1241,7 +1267,7 @@ export default function App() {
               </div>
             </div>
             <div style={{padding:'20px 24px 24px'}}>
-              <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)', marginBottom:DS.space.sm}}>能量消耗</p>
+              <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.sm}}>能量消耗</p>
               <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(impact)}</p>
             </div>
           </section>
@@ -1253,7 +1279,7 @@ export default function App() {
             marginBottom:DS.space.sm,
           }}>
             <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.10)`}}>
-              <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)', marginBottom:DS.space.xs}}>A · 外部能量损耗</p>
+              <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.xs}}>A · 外部能量损耗</p>
               <div style={{display:'flex', alignItems:'center', justifyContent:'space-between',
                 marginTop:DS.space.sm, marginBottom:'8px'}}>
                 <span style={{...DS.label, color:DS.text.muted}}>关系消耗程度</span>
@@ -1349,8 +1375,7 @@ export default function App() {
                   color:`${rc}0.08)`, strokeWidth:1.5,
                 }}/>
                 <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.15)`}}>
-                  <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)', marginBottom:'6px',
-                    textShadow:`0 0 12px ${rc}0.4)`}}>
+                  <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:'6px'}}>
                     B · 内在能量状态
                   </p>
                   <p style={{...DS.type.t4, color:DS.text.muted}}>你是否正在无意识地消耗身边的人</p>
@@ -1376,12 +1401,7 @@ export default function App() {
                     </span>
                   </div>
                   <div style={{...DS.progressTrack, marginBottom:DS.space.md}}>
-                    <div style={{
-                      width:`${ratio*100}%`, height:'100%', borderRadius:'2px',
-                      background:'linear-gradient(90deg, rgba(120,140,160,0.7), rgba(164,184,188,0.95))',
-                      boxShadow:'0 0 10px rgba(164,184,188,0.4)',
-                      transition:'width 0.6s cubic-bezier(.4,0,.2,1)',
-                    }}/>
+                    <div style={roleProgressFill(ratio*100)}/>
                   </div>
                   <p style={{...DS.type.t4, color:DS.text.muted, marginBottom:'6px'}}>
                     {String(DIMENSION_DESCS[dim])}
@@ -1412,8 +1432,7 @@ export default function App() {
                   boxShadow:`0 0 10px ${rc}0.7)`,
                   flexShrink:0,
                 }}/>
-                <p style={{...DS.label, color:`${rc}1)`, filter:'brightness(2.2)',
-                  textShadow:`0 0 10px ${rc}0.5)`}}>
+                <p style={{...DS.label, color:'rgba(255,255,255,0.80)'}}>
                   你可以尝试
                 </p>
               </div>
