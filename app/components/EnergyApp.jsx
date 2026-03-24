@@ -1213,7 +1213,7 @@ export default function App() {
         <div className="relative max-w-md mx-auto px-5 pt-10 pb-12" style={{zIndex:1}}>
 
           {/* ① HERO ── 角色名超大，视觉锚点 */}
-          <section className="text-center" style={{marginBottom:'48px'}}>
+          <section className="text-center" style={{marginBottom:'24px'}}>
 
             {/* 状态 badge — 实色背景，不透明 */}
             <div style={{
@@ -1302,13 +1302,11 @@ export default function App() {
           </section>
 
           {/* ② 插画区 */}
-          <section style={{marginBottom:'24px'}}>
+          <section style={{marginBottom:'16px'}}>
             <div style={{
               position:'relative',
               width:'100%',
               borderRadius:'20px',
-              overflow:'hidden',
-              background:`radial-gradient(ellipse at center, ${rc}0.12) 0%, transparent 70%)`,
             }}>
               {image ? (
                 <img
