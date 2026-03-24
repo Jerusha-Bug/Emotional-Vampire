@@ -51,7 +51,7 @@ const DS = {
   // 主按钮（开启测评 / 下一题 / 继续内在扫描）
   btnPrimary: (glowColor = 'rgba(146,141,171,') => ({
     background: 'linear-gradient(135deg, #2d2844, #7a7599)',
-    boxShadow: `0 4px 28px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.18), 0 0 20px ${glowColor}0.20)`,
+    boxShadow: `0 0 0 1px rgba(255,255,255,0.18), 0 0 20px ${glowColor}0.20)`,
     border: 'none',
     borderRadius: '9999px',
     color: '#F2F3FB',
@@ -999,13 +999,16 @@ export default function App() {
 
       return (
         <div style={{minHeight:'100vh', background: _pageBg,
-          display:'flex', alignItems:'center', justifyContent:'center',
+          display:'flex', flexDirection:'column',
+          alignItems:'center', justifyContent:'center',
           padding:'24px', fontFamily:'sans-serif'}}>
-          <div style={{width:'100%', maxWidth:'340px', position:'relative'}}>
+
+          {/* 海报卡片 */}
+          <div style={{width:'100%', maxWidth:'320px', position:'relative'}}>
 
             {/* 关闭按钮 */}
             <button onClick={() => setShowPoster(false)}
-              style={{position:'absolute', top:'-12px', right:'-12px', zIndex:20,
+              style={{position:'absolute', top:'-16px', right:'-16px', zIndex:20,
                 width:'32px', height:'32px', background:'rgba(255,255,255,0.12)',
                 borderRadius:'50%', border:'1px solid rgba(255,255,255,0.2)',
                 display:'flex', alignItems:'center', justifyContent:'center',
@@ -1013,58 +1016,55 @@ export default function App() {
               <X style={{width:'14px', height:'14px'}}/>
             </button>
 
-            {/* 背景卡 SVG */}
-            <div style={{position:'relative', width:'100%'}}>
-              <img src="/背景卡.svg" alt=""
-                style={{width:'100%', display:'block', borderRadius:'20px'}}/>
+            {/* 卡片主体 */}
+            <div style={{
+              background:'rgba(0,0,0,0.4)',
+              borderRadius:'24px',
+              border:`1px solid ${_rc}0.25)`,
+              overflow:'hidden',
+              display:'flex', flexDirection:'column', alignItems:'center',
+            }}>
+              {/* 顶部标签 */}
+              <div style={{paddingTop:'24px', paddingBottom:'8px', textAlign:'center'}}>
+                <p style={{...DS.label, color:`${_rc}0.7)`}}>关系能量分析</p>
+              </div>
 
-              {/* 叠加内容层 */}
-              <div style={{
-                position:'absolute', inset:0,
-                display:'flex', flexDirection:'column',
-                alignItems:'center', justifyContent:'space-between',
-                padding:'32px 28px 28px',
-              }}>
-                {/* 顶部标签 */}
-                <div style={{width:'100%', textAlign:'center'}}>
-                  <p style={{...DS.label, color:`${_rc}0.8)`, marginBottom:'4px'}}>
-                    关系能量分析
-                  </p>
-                </div>
-
-                {/* 插画 */}
+              {/* 插画 + SVG背景卡叠加 */}
+              <div style={{width:'85%', position:'relative', margin:'8px 0'}}>
+                <img src="/背景卡.svg" alt=""
+                  style={{width:'100%', display:'block'}}/>
                 {image && (
                   <div style={{
-                    width:'75%', flex:1,
+                    position:'absolute', inset:0,
                     display:'flex', alignItems:'center', justifyContent:'center',
-                    padding:'12px 0',
+                    padding:'12%',
                   }}>
                     <img src={image} alt={roleName}
-                      style={{width:'100%', display:'block', borderRadius:'12px'}}/>
+                      style={{width:'100%', display:'block', borderRadius:'8px'}}/>
                   </div>
                 )}
+              </div>
 
-                {/* 底部文字 */}
-                <div style={{width:'100%', textAlign:'center'}}>
-                  <p style={{
-                    fontSize:'10px', fontWeight:700, letterSpacing:'0.2em',
-                    color:'rgba(255,255,255,0.4)', textTransform:'uppercase',
-                    marginBottom:'4px',
-                  }}>THE</p>
-                  <h2 style={{
-                    fontSize:'1.6rem', fontWeight:800, letterSpacing:'-0.02em',
-                    color:'#fff', lineHeight:1.1, marginBottom:'4px',
-                    textShadow:`0 0 30px ${_rc}0.5)`,
-                  }}>
-                    {String(roleName)}
-                  </h2>
-                  <p style={{
-                    fontSize:'9px', fontWeight:600, letterSpacing:'0.2em',
-                    color:`${_rc}0.8)`, textTransform:'uppercase',
-                  }}>
-                    Psychic Vampires
-                  </p>
-                </div>
+              {/* 角色名 */}
+              <div style={{padding:'8px 24px 24px', textAlign:'center', width:'100%'}}>
+                <p style={{
+                  fontSize:'10px', fontWeight:700, letterSpacing:'0.2em',
+                  color:'rgba(255,255,255,0.35)', textTransform:'uppercase',
+                  marginBottom:'4px',
+                }}>THE</p>
+                <h2 style={{
+                  fontSize:'1.6rem', fontWeight:800, letterSpacing:'-0.02em',
+                  color:'#fff', lineHeight:1.1, marginBottom:'4px',
+                  textShadow:`0 0 30px ${_rc}0.5)`,
+                }}>
+                  {String(roleName)}
+                </h2>
+                <p style={{
+                  fontSize:'9px', fontWeight:600, letterSpacing:'0.22em',
+                  color:`${_rc}0.7)`, textTransform:'uppercase',
+                }}>
+                  Psychic Vampires
+                </p>
               </div>
             </div>
 
