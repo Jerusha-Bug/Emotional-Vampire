@@ -968,7 +968,7 @@ export default function App() {
   // [5] 结果页 result — 内容完全不变，只统一样式
   // ─────────────────────────────────────────────
   if (step === 'result' && resultData) {
-    const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole } = resultData;
+    const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole, image } = resultData;
 
     if (showPoster) return (
       <div className={`min-h-screen bg-gradient-to-b ${bg} via-slate-950 to-black flex items-center justify-center p-6 font-sans`}>
@@ -1219,9 +1219,9 @@ export default function App() {
               overflow:'hidden',
               background:`radial-gradient(ellipse at center, ${rc}0.12) 0%, transparent 70%)`,
             }}>
-              {resultData.image ? (
+              {image ? (
                 <img
-                  src={resultData.image}
+                  src={image}
                   alt={roleName}
                   style={{
                     width:'100%',
