@@ -75,7 +75,7 @@ const DS = {
     padding: '0 20px',
   },
 
-  // 角色色主按钮（结果页"导出"）— 接收 rc 颜色字符串
+  // 角色色主按钮（结果页导出）— 接收 rc 颜色字符串
   btnRole: (rc) => ({
     background: `linear-gradient(135deg, ${rc}0.20), ${rc}0.10))`,
     borderRadius: '9999px',
