@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "@react-router/dev": "7.12.0",
-    "@tailwindcss/postcss": "^4.2.1",
-    "@tailwindcss/vite": "^4.2.1",
+    "@react-router/postcss": "^4.2.1",
+    "@react-router/vite": "^4.2.1",
     "@types/node": "^22",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
