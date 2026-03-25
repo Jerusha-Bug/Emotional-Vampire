@@ -291,6 +291,7 @@ const ROLE_DATA = {
   },
   "情绪倾倒者": {
     image: "/illustrations/dump.webp",
+    imageResult: "/illustrations-result/dump_small.webp",
     en: "Emotional Dump",
     tag: "单向倾倒 · 极度透支",
     color: "text-red-500",
@@ -968,7 +969,8 @@ export default function App() {
   // [5] 结果页 result — 内容完全不变，只统一样式
   // ─────────────────────────────────────────────
   if (step === 'result' && resultData) {
-    const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole, image } = resultData;
+    const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole, image, imageResult } = resultData;
+    const displayImage = imageResult || image;
 
     if (showPoster) {
       // 先计算 rc 和 pageBg，复用结果页的颜色逻辑
@@ -1303,9 +1305,9 @@ export default function App() {
 
           {/* ② 插画区 */}
           <section style={{marginBottom:'16px'}}>
-            {image ? (
+            {displayImage ? (
               <img
-                src={image}
+                src={displayImage}
                 alt={roleName}
                 style={{
                   width:'100%',
