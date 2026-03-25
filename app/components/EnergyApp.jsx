@@ -278,6 +278,7 @@ const QUESTIONS = [
 const ROLE_DATA = {
   "情感代偿者": {
     image: "/illustrations/compensator.webp",
+    imageResult: "/illustrations-result/compensator_small.webp",
     en: "Emotional Compensator",
     tag: "情绪承接 · 单向消耗",
     color: "text-rose-400",
@@ -305,6 +306,7 @@ const ROLE_DATA = {
   },
   "共情透支者": {
     image: "/illustrations/empathy.webp",
+    imageResult: "/illustrations-result/empathy_small.webp",
     en: "Empathy Overload",
     tag: "过度共情 · 自我消耗",
     color: "text-fuchsia-400",
@@ -318,6 +320,7 @@ const ROLE_DATA = {
   },
   "关系修复者": {
     image: "/illustrations/fixer.webp",
+    imageResult: "/illustrations-result/fixer_small.webp",
     en: "Relationship Fixer",
     tag: "主动维系 · 单方努力",
     color: "text-amber-400",
@@ -331,6 +334,7 @@ const ROLE_DATA = {
   },
   "冲突吸引者": {
     image: "/illustrations/conflict.webp",
+    imageResult: "/illustrations-result/conflict_small.webp",
     en: "Conflict Magnet",
     tag: "高频摩擦 · 能量耗散",
     color: "text-orange-500",
@@ -344,6 +348,7 @@ const ROLE_DATA = {
   },
   "责任承担者": {
     image: "/illustrations/responsibility.webp",
+    imageResult: "/illustrations-result/responsibility_small.webp",
     en: "Responsibility Carrier",
     tag: "失衡承担 · 自我怀疑",
     color: "text-yellow-400",
@@ -357,6 +362,7 @@ const ROLE_DATA = {
   },
   "依赖支柱": {
     image: "/illustrations/dependency.webp",
+    imageResult: "/illustrations-result/dependency_small.webp",
     en: "Dependency Anchor",
     tag: "情绪依赖 · 逐渐失自由",
     color: "text-blue-400",
@@ -370,6 +376,7 @@ const ROLE_DATA = {
   },
   "情绪守护者": {
     image: "/illustrations/guardian.webp",
+    imageResult: "/illustrations-result/guardian_small.webp",
     en: "Emotional Guardian",
     tag: "压抑表达 · 内耗积累",
     color: "text-cyan-400",
@@ -383,6 +390,7 @@ const ROLE_DATA = {
   },
   "自我压缩者": {
     image: "/illustrations/suppressor.webp",
+    imageResult: "/illustrations-result/suppressor_small.webp",
     en: "Self-Suppressor",
     tag: "需求压缩 · 自我迷失",
     color: "text-purple-400",
@@ -396,6 +404,7 @@ const ROLE_DATA = {
   },
   "关系消耗者": {
     image: "/illustrations/drained.webp",
+    imageResult: "/illustrations-result/drained_small.webp",
     en: "Energy Drained",
     tag: "持续消耗 · 能量黑洞",
     color: "text-slate-400",
@@ -409,6 +418,7 @@ const ROLE_DATA = {
   },
   "情绪循环者": {
     image: "/illustrations/loop.webp",
+    imageResult: "/illustrations-result/loop_small.webp",
     en: "Emotional Loop",
     tag: "重复模式 · 无解循环",
     color: "text-indigo-400",
@@ -422,6 +432,7 @@ const ROLE_DATA = {
   },
   "关系清醒者": {
     image: "/illustrations/awakened.webp",
+    imageResult: "/illustrations-result/awakened_small.webp",
     en: "Awakened Observer",
     tag: "自我觉察 · 能量恢复",
     color: "text-emerald-400",
