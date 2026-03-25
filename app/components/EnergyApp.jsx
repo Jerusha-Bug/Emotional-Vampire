@@ -149,6 +149,121 @@ const DS = {
       style={{opacity: 0.045}} viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
       <path d="M-20 200 C 80 180, 150 280, 200 240 S 320 160, 420 200" stroke="white" strokeWidth="1" fill="none"/>
       <path d="M-20 380 C 60 340, 180 420, 250 380 S 360 300, 430 360" stroke="white" strokeWidth="0.8" fill="none"/>
+      <path d="M50    t2: { fontSize: '1rem',     fontWeight: 700, letterSpacing: '0em',     lineHeight: 1.4 },
+    t3: { fontSize: '0.875rem', fontWeight: 400, letterSpacing: '0em',     lineHeight: 1.75 },
+    t4: { fontSize: '0.75rem',  fontWeight: 400, letterSpacing: '0em',     lineHeight: 1.6 },
+  },
+
+  // ── 颜色语义 ──
+  text: {
+    primary:   '#FFFFFF',
+    secondary: 'rgba(255,255,255,0.90)',
+    tertiary:  'rgba(255,255,255,0.65)',
+    muted:     'rgba(255,255,255,0.50)',
+    ghost:     'rgba(255,255,255,0.30)',
+  },
+
+  // 主按钮（开启测评 / 下一题 / 继续内在扫描）
+  btnPrimary: (glowColor = 'rgba(146,141,171,') => ({
+    background: 'linear-gradient(135deg, #2d2844, #7a7599)',
+    boxShadow: `0 0 0 1px rgba(255,255,255,0.18), 0 0 20px ${glowColor}0.20)`,
+    border: 'none',
+    borderRadius: '9999px',
+    color: '#F2F3FB',
+    fontWeight: 700,
+    fontSize: '1rem',
+    letterSpacing: '0.02em',
+    transition: 'transform 0.15s, box-shadow 0.15s',
+    padding: '0 24px',
+  }),
+
+  // 次要按钮（返回 / 重测 / 上一题箭头）
+  btnSecondary: {
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.10)',
+    borderRadius: '9999px',
+    color: 'rgba(255,255,255,0.38)',
+    fontWeight: 700,
+    fontSize: '0.75rem',
+    letterSpacing: '0.04em',
+    transition: 'transform 0.15s, opacity 0.15s',
+    padding: '0 20px',
+  },
+
+  // 角色色主按钮（结果页"导出"）— 接收 rc 颜色字符串
+  btnRole: (rc) => ({
+    background: `linear-gradient(135deg, ${rc}0.20), ${rc}0.10))`,
+    borderRadius: '9999px',
+    border: `1px solid ${rc}0.28)`,
+    color: '#F2F3FB',
+    fontWeight: 700,
+    fontSize: '0.75rem',
+    letterSpacing: '0.04em',
+    boxShadow: `0 4px 20px rgba(0,0,0,0.28), 0 0 14px ${rc}0.14)`,
+    transition: 'transform 0.15s',
+    padding: '0 20px',
+  }),
+
+  // 进度条轨道
+  progressTrack: {
+    height: '3px',
+    borderRadius: '2px',
+    background: 'rgba(255,255,255,0.07)',
+    overflow: 'hidden',
+  },
+
+  // 进度条填充（Part A）
+  progressFillA: (pct) => ({
+    width: `${pct}%`,
+    height: '100%',
+    borderRadius: '2px',
+    background: 'linear-gradient(90deg, rgba(30,58,95,0.85), rgba(146,141,171,0.95))',
+    boxShadow: '0 0 10px rgba(146,141,171,0.45)',
+    transition: 'width 0.6s cubic-bezier(.4,0,.2,1)',
+  }),
+
+  // 进度条填充（Part B）— 与整体紫灰色系统一，比 A 段稍亮
+  progressFillB: (pct) => ({
+    width: `${pct}%`,
+    height: '100%',
+    borderRadius: '2px',
+    background: 'linear-gradient(90deg, rgba(83,78,100,0.9), rgba(188,190,229,0.95))',
+    boxShadow: '0 0 10px rgba(188,190,229,0.4)',
+    transition: 'width 0.6s cubic-bezier(.4,0,.2,1)',
+  }),
+
+  // 全站标签 — 全大写小字，用于 PART A / 维度名 / section title
+  label: {
+    fontSize: '10px',
+    fontWeight: 700,
+    letterSpacing: '0.28em',
+    textTransform: 'uppercase',
+    color: 'rgba(255,255,255,0.65)',
+  },
+
+  // 外层卡片（结果页大区块）
+  card: {
+    background: 'rgba(0,0,0,0.12)',
+    borderRadius: '20px',
+    border: '1px solid rgba(255,255,255,0.10)',
+  },
+
+  // 内层子卡片（维度条目）— 圆角比外层小一档
+  cardInner: {
+    background: 'rgba(0,0,0,0.22)',
+    borderRadius: '14px',
+    border: '1px solid rgba(255,255,255,0.08)',
+  },
+
+  // 卡片内分割线
+  divider: { borderTop: '1px solid rgba(255,255,255,0.08)' },
+
+  // 流线 SVG 装饰（所有页面共用同一组路径）
+  waveSvg: (
+    <svg className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{opacity: 0.045}} viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
+      <path d="M-20 200 C 80 180, 150 280, 200 240 S 320 160, 420 200" stroke="white" strokeWidth="1" fill="none"/>
+      <path d="M-20 380 C 60 340, 180 420, 250 380 S 360 300, 430 360" stroke="white" strokeWidth="0.8" fill="none"/>
       <path d="M50 600 C 120 560, 200 640, 300 580 S 380 520, 450 560" stroke="white" strokeWidth="0.6" fill="none"/>
     </svg>
   ),
