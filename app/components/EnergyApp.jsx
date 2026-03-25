@@ -614,16 +614,32 @@ export default function App() {
       const dimTotals = {};
       DIMENSIONS.forEach(dim => dimTotals[dim] = 0);
       QUESTIONS.forEach(q => { const score = newAnswers[q.id] || 0; if (dimTotals[q.dim] !== undefined) dimTotals[q.dim] += score; });
+      const totalScore = Object.values(newAnswers).reduce((a, b) => a + b, 0);
+      const avgPerQ = (totalScore - (dimTotals["内在补能模式"] || 0)) / 24;
+      const sorted2 = Object.entries(dimTotals).filter(([k]) => k !== "内在补能模式").sort((a,b) => b[1]-a[1]);
+      const topD = sorted2[0]?.[0]; const topS = sorted2[0]?.[1] || 0;
+      const secS = sorted2[1]?.[1] || 0; const dom = (topS - secS) >= 3;
+      let insertRole = "关系消耗者";
+      if (avgPerQ <= 2.5) insertRole = "关系清醒者";
+      else if (dom && topD === "情绪倾倒" && topS >= 16) insertRole = "情绪倾倒者";
+      else if (dom && topD === "情绪倾倒") insertRole = "情感代偿者";
+      else if (dom && topD === "冲突激发" && topS >= 16) insertRole = "冲突吸引者";
+      else if (dom && topD === "依赖绑定") insertRole = "依赖支柱";
+      else if (dom && topD === "责任转移") insertRole = "责任承担者";
+      else if (dom && topD === "受害叙述") insertRole = "情绪守护者";
+      else if (dom && topD === "自我消耗") insertRole = "自我压缩者";
+
       try {
         await supabase.from('test_results').insert([{
           relation_type: finalTarget,
+          role_name: insertRole,
           dim_dumping: dimTotals["情绪倾倒"] / 5,
           dim_narrative: dimTotals["受害叙述"] / 5,
           dim_transfer: dimTotals["责任转移"] / 5,
           dim_binding: dimTotals["依赖绑定"] / 5,
           dim_conflict: dimTotals["冲突激发"] / 5,
           dim_consumption: dimTotals["自我消耗"] / 5,
-          final_score: Object.values(newAnswers).reduce((a, b) => a + b, 0)
+          final_score: totalScore
         }]);
       } catch (e) { console.error("Sync Error:", e); }
     }
