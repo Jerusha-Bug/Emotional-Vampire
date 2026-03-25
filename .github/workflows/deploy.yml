@@ -30,6 +30,6 @@ jobs:
           username: ${{ secrets.ALIYUN_USER }}
           password: ${{ secrets.ALIYUN_PWD }}
           port: 22
-          source: "dist/*"  # Vite 默认产物是 dist
+          source: "build/*"  # Vite 默认产物是 dist
           target: "/www/wwwroot/dementor.hey-makkie.cn"
           strip_components: 1
