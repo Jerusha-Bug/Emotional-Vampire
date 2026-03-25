@@ -763,10 +763,6 @@ export default function App() {
               基于 Stéphane Clerget 情绪劳动理论<br/>及关系动力学理论
             </p>
 
-            <button onClick={previewResult}
-              style={{...DS.label, color: DS.text.ghost, background: 'none', border: 'none', cursor: 'pointer'}}>
-              DEV · 预览结果页
-            </button>
           </div>
         </div>
       </div>
