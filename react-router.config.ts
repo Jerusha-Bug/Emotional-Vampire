@@ -1,6 +1,4 @@
-import { vercelPreset } from "@react-router/dev-vercel";
 import type { Config } from "@react-router/dev/config";
-
 export default {
-  presets: [vercelPreset()],
+  ssr: true,
 } satisfies Config;
