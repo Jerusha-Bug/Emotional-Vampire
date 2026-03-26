@@ -7,75 +7,50 @@ import {
   AlertTriangle, ShieldAlert, CheckCircle2, X, Download, Lock, Unlock, Key, Eye
 } from 'lucide-react';
 
-// --- Supabase 配置 ---
 const SUPABASE_URL = 'https://rfazkfbaqmrxcsudefiu.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_9ksrRzUpTr_nUM4cAwN0WQ_NBD-gcfN';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ─────────────────────────────────────────────
-// DESIGN SYSTEM — 全站唯一真相来源
-// ─────────────────────────────────────────────
 const DS = {
-  // 背景渐变（首页/题目页/过渡页共用）
-  pageBg: 'linear-gradient(to bottom, #2C2541 0%, #685066 40%, #D38D74 75%, #F5C490 100%)',
-
-  // ── 间距系统（只用这 4 档）──
-  // space.xs  = 8px   → 元素内部微间距
-  // space.sm  = 16px  → 标签与内容之间
-  // space.md  = 24px  → 区块内段落间
-  // space.lg  = 32px  → section 之间
+  pageBg: 'linear-gradient(to bottom, #2C2541 0%, #685066 40%, #C4784E 75%, #D9A876 100%)',
   space: { xs: '8px', sm: '16px', md: '24px', lg: '32px' },
-
-  // ── 字体层级（4档，不再出现其他尺寸）──
-  // t1: 大标题   2.4–2.6rem / bold / ls -0.02em
-  // t2: 小标题   1rem / bold
-  // t3: 正文     0.875rem (14px) / normal / lh 1.75
-  // t4: 辅助     0.75rem (12px) / normal / lh 1.6
-  // label: 全大写小标签  10px / bold / ls 0.28em
   type: {
     t1: { fontSize: '2.4rem',   fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1 },
     t2: { fontSize: '1rem',     fontWeight: 700, letterSpacing: '0em',     lineHeight: 1.4 },
     t3: { fontSize: '0.875rem', fontWeight: 400, letterSpacing: '0em',     lineHeight: 1.75 },
     t4: { fontSize: '0.75rem',  fontWeight: 400, letterSpacing: '0em',     lineHeight: 1.6 },
   },
-
-  // ── 颜色语义 ──
   text: {
     primary:   '#FFFFFF',
     secondary: 'rgba(255,255,255,0.90)',
     tertiary:  'rgba(255,255,255,0.65)',
     muted:     'rgba(255,255,255,0.50)',
-    ghost:     'rgba(255,255,255,0.30)',
+    ghost:     'rgba(255,255,255,0.55)',
   },
-
-  // 主按钮（开启测评 / 下一题 / 继续内在扫描）
   btnPrimary: (glowColor = 'rgba(146,141,171,') => ({
-    background: 'linear-gradient(135deg, #2d2844, #7a7599)',
-    boxShadow: `0 0 0 1px rgba(255,255,255,0.18), 0 0 20px ${glowColor}0.20)`,
+    background: 'rgba(255,255,255,0.15)',
+    backdropFilter: 'blur(16px)',
+    boxShadow: '0 0 0 1px rgba(255,255,255,0.30)',
     border: 'none',
     borderRadius: '9999px',
-    color: '#F2F3FB',
+    color: '#FFFFFF',
     fontWeight: 700,
     fontSize: '1rem',
     letterSpacing: '0.02em',
     transition: 'transform 0.15s, box-shadow 0.15s',
     padding: '0 24px',
   }),
-
-  // 次要按钮（返回 / 重测 / 上一题箭头）
   btnSecondary: {
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.10)',
+    background: 'rgba(255,255,255,0.10)',
+    border: '1px solid rgba(255,255,255,0.25)',
     borderRadius: '9999px',
-    color: 'rgba(255,255,255,0.38)',
+    color: 'rgba(255,255,255,0.70)',
     fontWeight: 700,
     fontSize: '0.75rem',
     letterSpacing: '0.04em',
     transition: 'transform 0.15s, opacity 0.15s',
     padding: '0 20px',
   },
-
-  // 角色色主按钮（结果页导出）— 接收 rc 颜色字符串
   btnRole: (rc) => ({
     background: `linear-gradient(135deg, ${rc}0.20), ${rc}0.10))`,
     borderRadius: '9999px',
@@ -88,16 +63,12 @@ const DS = {
     transition: 'transform 0.15s',
     padding: '0 20px',
   }),
-
-  // 进度条轨道
   progressTrack: {
     height: '3px',
     borderRadius: '2px',
     background: 'rgba(255,255,255,0.07)',
     overflow: 'hidden',
   },
-
-  // 进度条填充（Part A）
   progressFillA: (pct) => ({
     width: `${pct}%`,
     height: '100%',
@@ -106,8 +77,6 @@ const DS = {
     boxShadow: '0 0 10px rgba(146,141,171,0.45)',
     transition: 'width 0.6s cubic-bezier(.4,0,.2,1)',
   }),
-
-  // 进度条填充（Part B）— 与整体紫灰色系统一，比 A 段稍亮
   progressFillB: (pct) => ({
     width: `${pct}%`,
     height: '100%',
@@ -116,34 +85,24 @@ const DS = {
     boxShadow: '0 0 10px rgba(188,190,229,0.4)',
     transition: 'width 0.6s cubic-bezier(.4,0,.2,1)',
   }),
-
-  // 全站标签 — 全大写小字，用于 PART A / 维度名 / section title
   label: {
     fontSize: '10px',
     fontWeight: 700,
     letterSpacing: '0.28em',
     textTransform: 'uppercase',
-    color: 'rgba(255,255,255,0.65)',
+    color: 'rgba(255,255,255,0.75)',
   },
-
-  // 外层卡片（结果页大区块）
   card: {
     background: 'rgba(0,0,0,0.12)',
     borderRadius: '20px',
     border: '1px solid rgba(255,255,255,0.10)',
   },
-
-  // 内层子卡片（维度条目）— 圆角比外层小一档
   cardInner: {
     background: 'rgba(0,0,0,0.22)',
     borderRadius: '14px',
     border: '1px solid rgba(255,255,255,0.08)',
   },
-
-  // 卡片内分割线
   divider: { borderTop: '1px solid rgba(255,255,255,0.08)' },
-
-  // 流线 SVG 装饰（所有页面共用同一组路径）
   waveSvg: (
     <svg className="absolute inset-0 w-full h-full pointer-events-none"
       style={{opacity: 0.045}} viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
@@ -154,7 +113,6 @@ const DS = {
   ),
 };
 
-// 全站粒子（完全相同的配置，所有页面共用）
 const Particles = () => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden">
     {[
@@ -173,9 +131,6 @@ const Particles = () => (
   </div>
 );
 
-// ─────────────────────────────────────────────
-// 以下数据层完全不改
-// ─────────────────────────────────────────────
 const OPTIONS = [
   { label: "从不", value: 1 }, { label: "很少", value: 2 }, { label: "有时", value: 3 }, { label: "经常", value: 4 }, { label: "总是", value: 5 }
 ];
@@ -287,7 +242,7 @@ const ROLE_DATA = {
     definition: "你在这段关系中承担了大量情绪修复工作。当对方低落、焦虑或崩溃时，你会本能地去安抚、理解和承担。",
     behaviors: ["经常成为对方倾诉的容器，不限于负面情绪", "帮对方解释他的行为", "很少表达自己的需求", "害怕让关系失去稳定"],
     impact: "你的情绪能量不断输出，但回馈很少。久而久之可能出现情绪疲惫、责任过重、自我价值感下降。",
-    advice: "停止自动承担别人的情绪责任。当对方情绪失控时，你可以选择不立刻修复它。",
+    advice: "停止自动承担别人的情绪责任。当对方情绪失控时，你可以选择不立刻修复它。\n\n**你可以做的第一步：** 下次对方向你倾倒情绪时，先深呼吸，告诉自己：「我可以关心，但我不需要解决。」试着用「我听到了你的感受」代替立刻给建议或道歉。\n\n**边界练习：** 每周给自己划出一段「不接收情绪」的时间——可以是睡前一小时，也可以是某个固定的休息日。告诉对方你需要这段时间，不是拒绝他，而是照顾自己。\n\n**长期建议：** 关注自己真实的感受，当你发现自己压抑了某个想法时，试着把它写下来。不需要说出口，但要承认它存在。慢慢地，你会找回自己在关系中的位置。",
     scene: "你总在关系里多走那一步，久了忘了原来的位置在哪。"
   },
   "情绪倾倒者": {
@@ -301,7 +256,7 @@ const ROLE_DATA = {
     definition: "对方习惯把所有情绪和想法单向倒给你，不管是烦恼还是日常，但并不真正关心你的状态。",
     behaviors: ["对方只在需要倾诉时找你", "聊天几乎都围绕着他", "对方分享时不需要你回应，只需要你在场", "你的情绪很少被关注"],
     impact: "你逐渐变成情绪容器，吸收的负面情绪越多，恢复越慢。",
-    advice: "开始减少情绪接收。不是所有情绪都需要你去承接。",
+    advice: "开始减少情绪接收。不是所有情绪都需要你去承接。\n\n**你可以做的第一步：** 下次对方开始倾倒情绪时，试着在心里设一个「容量上限」——当你感到开始疲惫时，可以温和地说：「我现在状态不太好，稍后再聊好吗？」\n\n**边界练习：** 观察一周，记录每次和对方互动后你的感受。是累了还是轻松了？这个记录会帮你看清这段关系的真实能量流向。\n\n**长期建议：** 你值得有人关心你的感受。如果这段关系里几乎没有人问过「你今天怎么样」，这是需要认真思考的信号。关系是双向的，如果它一直是单向的，你需要决定这是否是你想要的。",
     scene: "你习惯承接，但没人承接你。"
   },
   "共情透支者": {
@@ -315,7 +270,7 @@ const ROLE_DATA = {
     definition: "你拥有很强的共情能力，但在这段关系中，这种能力被过度消耗。",
     behaviors: ["很容易理解对方", "会替对方找理由", "经常忽略自己的感受"],
     impact: "共情如果没有边界，就会变成自我消耗机制。",
-    advice: "理解对方不等于为对方负责。",
+    advice: "理解对方不等于为对方负责。\n\n**你可以做的第一步：** 当你发现自己在替对方辩护时，停下来问自己：「如果这件事发生在朋友身上，我会怎么看？」用旁观者的视角看自己的处境，往往会更清晰。\n\n**边界练习：** 练习「共情但不解救」。你可以感受到对方的痛苦，但不代表你必须解决它。试着说「我理解你很难过」而不是「我来帮你想办法」。\n\n**长期建议：** 你的共情是一种珍贵的能力，但它需要被保护。每天花5分钟问自己：「今天我自己的感受是什么？」把注意力放回自己身上，是照顾好共情能力的基础。",
     scene: "你很擅长感受别人，却越来越不知道自己在感受什么。"
   },
   "关系修复者": {
@@ -329,7 +284,7 @@ const ROLE_DATA = {
     definition: "每当关系出现问题，你都会试图修复它。",
     behaviors: ["主动道歉", "主动解释误会", "不希望关系破裂"],
     impact: "你在不断修复关系，但对方未必愿意改变。",
-    advice: "关系是两个人的责任，而不是一个人的修复工程。",
+    advice: "关系是两个人的责任，而不是一个人的修复工程。\n\n**你可以做的第一步：** 下次出现矛盾时，先等一等，不要第一个道歉。给对方空间，也给自己空间。看看如果你不主动，会发生什么。\n\n**边界练习：** 问自己：「这个问题，是我造成的，还是我在承担不属于我的部分？」如果是后者，你不需要道歉，你需要的是表达。\n\n**长期建议：** 一段健康的关系里，双方都愿意修复。如果每次都是你先伸手，试着直接告诉对方你的感受：「我发现每次出问题都是我先来找你，这让我有点累。」看看对方的反应，会告诉你很多。",
     scene: "每次出现裂缝都是你先去补，久了开始分不清是在乎还是习惯。"
   },
   "冲突吸引者": {
@@ -343,7 +298,7 @@ const ROLE_DATA = {
     definition: "你们的互动很容易从普通交流升级为冲突。",
     behaviors: ["小问题容易变成争吵", "对话经常带有情绪", "很难真正解决问题"],
     impact: "每一次冲突都会消耗大量情绪资源。",
-    advice: "观察冲突模式，而不是只关注冲突内容。",
+    advice: "观察冲突模式，而不是只关注冲突内容。\n\n**你可以做的第一步：** 记录下最近三次冲突的触发点。不是内容本身，而是：什么时候说的？什么语气？什么状态下？你会发现冲突往往有固定的触发条件。\n\n**边界练习：** 当感到对话开始升温时，试着说：「我现在情绪有点激动，我们过一会儿再聊好吗？」暂停不是逃避，是给双方降温的空间。\n\n**长期建议：** 高频冲突往往意味着关系里有一些没被说清楚的需求。试着在平静的时候问对方：「你觉得我们为什么总是在这件事上起冲突？」把对话从内容层移到模式层，才能真正解决问题。",
     scene: "你不是喜欢争吵，只是每次沟通都容易走到那一步。"
   },
   "责任承担者": {
@@ -357,7 +312,7 @@ const ROLE_DATA = {
     definition: "当关系出现问题时，你经常承担更多责任。",
     behaviors: ["经常反思是不是自己做错了", "会主动让步", "不希望事情变得更糟"],
     impact: "长期承担责任可能导致自我怀疑。",
-    advice: "关系中的责任需要被公平分配。",
+    advice: "关系中的责任需要被公平分配。\n\n**你可以做的第一步：** 下次当你开始自我反思「是不是我的问题」时，先把这个问题换一换：「这件事里，对方有没有需要负责的部分？」两个问题都问，才是完整的。\n\n**边界练习：** 试着在一件小事上，不主动让步。不是为了争，而是练习让自己的感受有被表达的空间。\n\n**长期建议：** 长期承担责任会让你的自我评价越来越低，因为你会习惯性地把问题归咎于自己。找一个信任的朋友，把你们关系里的一些情况讲给他听，听听外部视角的判断——有时候你需要有人帮你确认，这真的不是你的错。",
     scene: "你不是不累，只是不接的话会更乱。"
   },
   "依赖支柱": {
@@ -371,7 +326,7 @@ const ROLE_DATA = {
     definition: "对方在情绪和生活上高度依赖你，不只是在低落时，日常的分享、决定、安慰都需要你在场。",
     behaviors: ["对方经常说'只有你懂我'", "离开你他会变得很焦虑", "你成为关系的稳定中心"],
     impact: "这种依赖可能让你逐渐失去自由。",
-    advice: "支持别人不等于成为对方唯一的支撑。",
+    advice: "支持别人不等于成为对方唯一的支撑。\n\n**你可以做的第一步：** 试着在一件小事上，不给对方立即的回应。不是消失，而是给对方一点时间自己处理，也给自己一点空间。\n\n**边界练习：** 当对方说「只有你懂我」时，温和地说：「我很高兴能帮到你，但我也希望你能有更多支持的人。」这不是拒绝，而是在帮对方建立更健康的支持系统。\n\n**长期建议：** 你不能成为一个人的全部。这对你不公平，对对方也不健康。试着鼓励对方拓展他的支持网络，同时重新找回你在关系以外的自己——你的爱好、你的朋友、你自己的节奏。",
     scene: "你知道TA只在需要时才来，但还是每次都在。"
   },
   "情绪守护者": {
@@ -385,7 +340,7 @@ const ROLE_DATA = {
     definition: "你会主动保护关系中的情绪稳定。",
     behaviors: ["避免冲突", "小心表达意见", "不想让对方难过"],
     impact: "长期压抑真实表达会产生情绪内耗。",
-    advice: "健康关系允许真实表达。",
+    advice: "健康关系允许真实表达。\n\n**你可以做的第一步：** 找一件你一直想说但没说的事，不需要当面说——先写下来。把它写出来，是承认它存在的第一步。\n\n**边界练习：** 试着在一件低风险的事上表达真实意见。从小事开始：「我今天不太想吃这个」「我更喜欢另一个」——练习让自己的声音被听见。\n\n**长期建议：** 你可能是在一个不安全的环境里学会了「不表达才安全」。但压抑情绪的代价是内耗，久了会让你越来越疲惫。找一个安全的人或者安全的方式（比如日记、咨询）开始表达——你的感受值得被说出来。",
     scene: "你很擅长保护别人的情绪，却忘了自己的也需要被保护。"
   },
   "自我压缩者": {
@@ -399,7 +354,7 @@ const ROLE_DATA = {
     definition: "为了维持关系，你不断压缩自己的需求。",
     behaviors: ["不敢表达真实想法", "经常妥协", "很少坚持自己的界限"],
     impact: "长期压抑可能导致情绪疲惫和自我迷失。",
-    advice: "你的需求同样重要。",
+    advice: "你的需求同样重要。\n\n**你可以做的第一步：** 今天问自己一个问题：「我现在真正想要的是什么？」不是对方想要什么，不是关系需要什么，是你自己。把答案写下来。\n\n**边界练习：** 试着把一个被你压缩掉的需求说出来——不需要很大，可以是「我想今晚一个人待着」或者「我想先做自己的事」。说出来，看看会发生什么。\n\n**长期建议：** 你压缩自己的需求，可能是因为曾经学到「我的需求会给别人带来麻烦」。但一段真正的关系，是可以容纳你的需求的。如果你发现每次表达需求都会引发问题，这个关系本身值得被重新审视。",
     scene: "你把自己的需求放得很后面，以为是暂时的，后来变成了习惯。"
   },
   "关系消耗者": {
@@ -413,7 +368,7 @@ const ROLE_DATA = {
     definition: "这段关系正在持续消耗你的能量。",
     behaviors: ["互动后常感到疲惫", "需要很长时间恢复", "情绪波动明显"],
     impact: "关系本身已经成为能量黑洞。",
-    advice: "观察这段关系是否仍然值得投入。",
+    advice: "观察这段关系是否仍然值得投入。\n\n**你可以做的第一步：** 用一周时间，每次和对方互动后记录你的感受：是充电了还是耗电了？不需要评判，只是观察。\n\n**边界练习：** 试着减少一次「不必要」的互动——不是冷漠，而是看看当你不主动维持时，这段关系会自然流向哪里。\n\n**长期建议：** 一段关系如果长期让你感到疲惫，这不是你的性格问题，也不是你不够努力。有些关系消耗你，是因为它的结构本身不平衡。你值得有让你感到轻盈的关系，而不只是让你感到有义务的关系。",
     scene: "你说不清哪里出了问题，只是越来越不想靠近。"
   },
   "情绪循环者": {
@@ -427,7 +382,7 @@ const ROLE_DATA = {
     definition: "你们的关系不断重复同样的情绪模式。",
     behaviors: ["冲突 → 和好 → 冲突", "问题没有真正解决", "情绪循环出现"],
     impact: "这种循环会让人逐渐麻木。",
-    advice: "识别模式，是打破循环的第一步。",
+    advice: "识别模式，是打破循环的第一步。\n\n**你可以做的第一步：** 把你们最近重复出现的冲突或问题写下来。你会发现它们惊人地相似——相同的触发点，相同的反应，相同的结局。\n\n**边界练习：** 下次循环开始时，试着做一件不一样的事——不是平时的反应，而是暂停，说：「我们好像又到了这个地方，我想换一种方式。」打破固定脚本，是循环改变的开始。\n\n**长期建议：** 循环往往意味着有一个核心问题从来没有被真正解决过。找一个平静的时机，和对方谈这个模式本身，而不是每次发生时谈内容。如果循环无法打破，可以考虑寻求专业帮助——心理咨询师可以帮你们找到循环背后真正的结，然后一起解开它。",
     scene: "好了又坏，坏了又好，你以为在修复，其实只是在重复。"
   },
   "关系清醒者": {
@@ -441,7 +396,7 @@ const ROLE_DATA = {
     definition: "你已经开始意识到关系中的能量结构。",
     behaviors: ["开始观察互动模式", "不再盲目承担责任", "想要建立边界"],
     impact: "你的能量正在恢复。",
-    advice: "继续保持观察与自我保护。",
+    advice: "继续保持观察与自我保护。\n\n**你现在做得很好：** 能看见关系里发生了什么，本身就是最重要的能力。很多人在消耗中待了很久，才慢慢意识到。你已经走到了觉察这一步。\n\n**下一步：** 觉察之后是选择。你可以开始想：这段关系里，有哪些模式我想改变？有哪些边界我想建立？不需要一次做完，一次一小步就好。\n\n**长期建议：** 清醒是一种力量，但也可能带来孤独——当你看见了别人没看见的东西，有时会感到疲惫。记得照顾自己的感受，不只是分析局势。你的感受也值得被关注，不只是你的判断力。",
     scene: "你学会了把自己放在第一位，哪怕别人不理解。"
   }
 };
@@ -580,7 +535,6 @@ const RadarChart = ({ data }) => {
 };
 
 export default function App() {
-  // ✅ 1. 所有的状态声明 (useState) 放在最前面
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState('welcome');
   const [targetPerson, setTargetPerson] = useState('');
@@ -589,10 +543,8 @@ export default function App() {
   const [isNavigating, setIsNavigating] = useState(false);
   const [showPoster, setShowPoster] = useState(false);
 
-  // ✅ 2. 所有的副作用 (useEffect) 紧跟其后
   useEffect(() => { setMounted(true); }, []);
 
-  // ✅ 3. 把导致崩溃的 useMemo 提前到这里！避开了 if (!mounted) return null 的拦截
   const resultData = useMemo(() => {
     if (step !== 'result') return null;
     let scoreA = 0; let scoreB = 0; const dimScores = {};
@@ -609,13 +561,10 @@ export default function App() {
     const topScore = dimScores[topDim]; const secondScore = dimScores[secondDim];
     const gap = topScore - secondScore; const dominated = gap >= 3;
     let roleName;
-
-    // 整体低分（平均每题 ≤ 2.5）→ 直接给关系清醒者，不再往下走
     const avgPerQ_A = scoreA / 24;
     const avgPerQ_B = scoreB / 8;
-    if (avgPerQ_A <= 2.5 && avgPerQ_B <= 2.5) {
-      roleName = "关系清醒者";
-    } else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪倾倒者"; }
+    if (avgPerQ_A <= 2.5 && avgPerQ_B <= 2.5) { roleName = "关系清醒者"; }
+    else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪倾倒者"; }
     else if (dominated && topDim === "情绪倾倒") { roleName = "情感代偿者"; }
     else if (dominated && topDim === "自我消耗" && scoreB > 27) { roleName = "共情透支者"; }
     else if (dominated && topDim === "自我消耗") { roleName = "自我压缩者"; }
@@ -628,7 +577,6 @@ export default function App() {
     else if (dominated && topDim === "受害叙述") { roleName = "情绪守护者"; }
     else {
       const avgScore = scoreA / 6;
-      // fallback 里也加保护：整体偏低时给关系消耗者而不是负面角色
       if (avgPerQ_A <= 3.0 && avgPerQ_B <= 3.0) { roleName = "关系消耗者"; }
       else if (dimScores["自我消耗"] >= avgScore && scoreB > 24) { roleName = "共情透支者"; }
       else if (dimScores["冲突激发"] >= avgScore && dimScores["情绪倾倒"] >= avgScore) { roleName = "情绪循环者"; }
@@ -645,22 +593,6 @@ export default function App() {
     const role = ROLE_DATA[roleName];
     return { ...role, roleName, subRole, scoreA, scoreB, radarData, dimScores, topDim };
   }, [step, answers]);
-
-  // ✅ 4. 把普通函数放在 Hook 下面
-  const previewResult = () => {
-    const mockAnswers = {};
-    QUESTIONS.forEach(q => {
-      if (q.part === 'A') {
-        if (q.dim === '情绪倾倒') mockAnswers[q.id] = 5;
-        else if (q.dim === '受害叙述') mockAnswers[q.id] = 4;
-        else if (q.dim === '冲突激发') mockAnswers[q.id] = 4;
-        else mockAnswers[q.id] = 3;
-      } else { mockAnswers[q.id] = 4; }
-    });
-    setAnswers(mockAnswers);
-    setTargetPerson('对方');
-    setStep('result');
-  };
 
   const finalTarget = targetPerson.trim() || 'TA';
 
@@ -700,7 +632,6 @@ export default function App() {
       else if (dom && topD === "责任转移") insertRole = "责任承担者";
       else if (dom && topD === "受害叙述") insertRole = "情绪守护者";
       else if (dom && topD === "自我消耗") insertRole = "自我压缩者";
-
       try {
         await supabase.from('test_results').insert([{
           relation_type: finalTarget,
@@ -718,12 +649,9 @@ export default function App() {
     setTimeout(() => { navigateToNext(currentIndex); }, 300);
   };
 
-  // ✅ 5. 所有的预处理逻辑都搞定后，才允许进行 return 拦截判断！
   if (!mounted) return null;
 
-  // ─────────────────────────────────────────────
-  // [1] 首页 welcome
-  // ─────────────────────────────────────────────
+  // [1] 首页
   if (step === 'welcome') {
     return (
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
@@ -735,54 +663,44 @@ export default function App() {
           }
           .particle { animation: floatUp linear infinite; }
         `}</style>
-
         <div className="absolute inset-0 pointer-events-none"
           style={{background: 'radial-gradient(ellipse at 30% 20%, rgba(146,141,171,0.15) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(31,28,44,0.4) 0%, transparent 60%)'}}/>
         {DS.waveSvg}
         <Particles />
-
         <div className="relative z-10 flex flex-col min-h-screen px-8">
           <div className="flex-[1.2]" />
-
           <div className="flex flex-col items-center text-center">
-            <p style={{...DS.label, color: '#928dab', marginBottom: DS.space.md}}>
+            <p style={{...DS.label, color: 'rgba(255,255,255,0.80)', marginBottom: DS.space.md}}>
               流失追踪 · 能量损耗分析
             </p>
             <h1 style={{...DS.type.t1, color: DS.text.primary, marginBottom: DS.space.sm}}>
-              关系能量与<br/>心理防御
+              关系能量测评
             </h1>
-            <p style={{...DS.type.t3, color: '#767091', maxWidth:'220px'}}>
-              这段关系，正在消耗你吗？<br/>你是在被消耗，还是正在索取？
+            <p style={{...DS.type.t3, color: 'rgba(255,255,255,0.75)', maxWidth:'220px'}}>
+              在这段关系里，你是谁
             </p>
           </div>
-
           <div className="flex-[1.5]" />
-
           <div className="flex flex-col items-center mb-16" style={{gap: DS.space.md, width:'100%'}}>
-            <p style={{...DS.type.t4, color: DS.text.tertiary, textAlign:'center', maxWidth:'240px'}}>
+            <p style={{...DS.type.t4, color: 'rgba(255,255,255,0.75)', textAlign:'center', maxWidth:'240px'}}>
               在开始之前，想一想<br/>最近让你感到情绪消耗的那个人
             </p>
-
             <button onClick={handleStartIdentity}
               className="w-full max-w-xs active:scale-95"
               style={{...DS.btnPrimary(), height:'56px'}}>
-              <span style={{textShadow: '0 0 20px rgba(255,255,255,0.25)'}}>开启测评</span>
+              <span>开启测评</span>
             </button>
-
-            <p style={{...DS.label, color: DS.text.ghost, letterSpacing: '0.12em',
+            <p style={{...DS.label, color: 'rgba(255,255,255,0.60)', letterSpacing: '0.12em',
               textAlign: 'center', lineHeight: 1.8, maxWidth: '240px'}}>
               基于 Stéphane Clerget 情绪劳动理论<br/>及关系动力学理论
             </p>
-
           </div>
         </div>
       </div>
     );
   }
 
-  // ─────────────────────────────────────────────
-  // [2] Identity Step
-  // ─────────────────────────────────────────────
+  // [2] Identity
   if (step === 'identity') {
     return (
       <div className="min-h-screen text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden relative"
@@ -795,7 +713,7 @@ export default function App() {
             <Heart className="w-10 h-10 animate-pulse" style={{color: 'rgba(146,141,171,0.8)'}} fill="currentColor" />
           </div>
           <h2 className="text-3xl font-bold mb-4 text-center" style={{letterSpacing: '-0.02em'}}>锁定分析对象</h2>
-          <p className="text-sm mb-12 text-center" style={{color: 'rgba(255,255,255,0.35)'}}>告诉我们，你最想扫描哪段互动的能量流失？</p>
+          <p className="text-sm mb-12 text-center" style={{color: 'rgba(255,255,255,0.55)'}}>告诉我们，你最想扫描哪段互动的能量流失？</p>
           <div className="w-full max-w-sm space-y-4">
             <input
               autoFocus type="text"
@@ -822,16 +740,13 @@ export default function App() {
     );
   }
 
-  // ─────────────────────────────────────────────
-  // [3] 题目页 quiz
-  // ─────────────────────────────────────────────
+  // [3] Quiz
   if (step === 'quiz') {
     const q = QUESTIONS[currentIndex]; if (!q) return null;
     const currentVal = answers[q.id];
     const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
     const isPartB = q.part === 'B';
     const accentColor = isPartB ? 'rgba(200,198,230,' : 'rgba(188,190,229,';
-
     return (
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
         style={{background: DS.pageBg}}>
@@ -841,8 +756,6 @@ export default function App() {
             : 'radial-gradient(ellipse at 30% 20%, rgba(146,141,171,0.15) 0%, transparent 55%)'}} />
         {DS.waveSvg}
         <Particles />
-
-        {/* 顶部进度 */}
         <div className="relative z-10 px-6 pt-8 pb-4 max-w-md mx-auto w-full">
           <div className="flex items-center justify-between mb-4">
             <span style={{...DS.type.t4, fontWeight:700, color: DS.text.muted}}>
@@ -851,20 +764,17 @@ export default function App() {
               </span>
               {' '}/{' '}{QUESTIONS.length}
             </span>
-            <span style={{...DS.label, color: isPartB ? 'rgba(200,198,230,0.55)' : 'rgba(146,141,171,0.7)'}}>
+            <span style={{...DS.label, color: isPartB ? 'rgba(200,198,230,0.75)' : 'rgba(146,141,171,0.85)'}}>
               PART {String(q.part)}
             </span>
           </div>
-          {/* 进度条 */}
           <div style={{...DS.progressTrack, marginBottom: DS.space.md}}>
             <div style={isPartB ? DS.progressFillB(progress) : DS.progressFillA(progress)} />
           </div>
-          <p style={{...DS.label, color: isPartB ? 'rgba(200,198,230,0.45)' : 'rgba(146,141,171,0.6)'}}>
+          <p style={{...DS.label, color: isPartB ? 'rgba(200,198,230,0.65)' : 'rgba(255,255,255,0.70)'}}>
             {String(q.dim)}
           </p>
         </div>
-
-        {/* 题目 */}
         <div className="relative z-10 px-8 max-w-md mx-auto w-full"
           style={{marginTop: DS.space.sm, marginBottom: DS.space.lg}}>
           <span style={{...DS.label, color: DS.text.ghost, fontFamily:'monospace',
@@ -876,8 +786,6 @@ export default function App() {
             {String(q.text).replace('{target}', finalTarget)}
           </h2>
         </div>
-
-        {/* 选项气泡 */}
         <div className="relative z-10 flex-1 flex flex-col justify-end px-8 max-w-md mx-auto w-full">
           <div className="flex justify-between items-end gap-1 mb-10">
             {OPTIONS.map((opt) => {
@@ -905,7 +813,7 @@ export default function App() {
                   </div>
                   <span style={{
                     fontSize: '9px', fontWeight: 700, letterSpacing: '0.04em',
-                    color: isSelected ? '#D0CEF0' : 'rgba(255,255,255,0.25)'
+                    color: isSelected ? '#D0CEF0' : 'rgba(255,255,255,0.45)'
                   }}>
                     {String(opt.label)}
                   </span>
@@ -914,8 +822,6 @@ export default function App() {
             })}
           </div>
         </div>
-
-        {/* 底部按钮 — 统一风格 */}
         <div className="relative z-10 flex gap-3 px-6 pb-10 max-w-md mx-auto w-full">
           <button
             onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)}
@@ -930,7 +836,7 @@ export default function App() {
               pointerEvents: currentIndex === 0 ? 'none' : 'auto',
               padding: 0,
             }}>
-            <ArrowLeft className="w-5 h-5" style={{color: 'rgba(255,255,255,0.4)'}} />
+            <ArrowLeft className="w-5 h-5" style={{color: 'rgba(255,255,255,0.6)'}} />
           </button>
           <button
             onClick={() => currentVal && navigateToNext(currentIndex)}
@@ -939,8 +845,8 @@ export default function App() {
             style={currentVal
               ? {...DS.btnPrimary(accentColor), height: '56px',
                   background: isPartB
-                    ? 'linear-gradient(135deg, #2a2640, #7b78a8)'
-                    : 'linear-gradient(135deg, #1f1c2c, #928dab)'}
+                    ? 'rgba(255,255,255,0.15)'
+                    : 'rgba(255,255,255,0.15)'}
               : {...DS.btnSecondary, height: '56px', cursor: 'not-allowed', opacity: 0.4}}>
             {currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}
           </button>
@@ -949,9 +855,7 @@ export default function App() {
     );
   }
 
-  // ─────────────────────────────────────────────
-  // [4] 过渡页 transition
-  // ─────────────────────────────────────────────
+  // [4] 过渡页
   if (step === 'transition') return (
     <div className="min-h-screen text-white flex flex-col items-center justify-center p-12 text-center font-sans relative overflow-hidden"
       style={{background: DS.pageBg}}>
@@ -959,7 +863,6 @@ export default function App() {
         style={{background: 'radial-gradient(ellipse at 50% 40%, rgba(146,141,171,0.18) 0%, transparent 60%)'}} />
       {DS.waveSvg}
       <Particles />
-
       <div className="relative z-10 flex flex-col items-center">
         <div className="w-16 h-16 rounded-full mb-10 flex items-center justify-center"
           style={{
@@ -969,43 +872,31 @@ export default function App() {
           }}>
           <Fingerprint className="w-7 h-7" style={{color:'rgba(188,190,229,0.75)'}} />
         </div>
-
         <p style={{...DS.label, marginBottom: DS.space.sm}}>PART A 完成</p>
-        <h2 style={{...DS.type.t1, fontSize:'1.5rem', color: DS.text.primary,
-          marginBottom: DS.space.sm}}>
+        <h2 style={{...DS.type.t1, fontSize:'1.5rem', color: DS.text.primary, marginBottom: DS.space.sm}}>
           关系损耗扫描完成
         </h2>
-        <p style={{...DS.type.t3, color: DS.text.tertiary,
+        <p style={{...DS.type.t3, color: 'rgba(255,255,255,0.75)',
           marginBottom: DS.space.lg, maxWidth:'240px', textAlign:'center'}}>
           接下来扫描你当前的<br/>
-          <span style={{color:'rgba(200,198,230,0.7)'}}>内在能量补给状态</span>
+          <span style={{color:'rgba(200,198,230,0.85)'}}>内在能量补给状态</span>
         </p>
-
-        {/* 过渡页按钮 */}
         <button
           onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }}
           className="w-full max-w-xs active:scale-95"
-          style={{
-            ...DS.btnPrimary(),
-            background: 'linear-gradient(135deg, #2a2640, #7b78a8)',
-            boxShadow: '0 4px 24px rgba(0,0,0,0.4), 0 0 20px rgba(188,190,229,0.2)',
-            height: '56px',
-          }}>
+          style={{...DS.btnPrimary(), height: '56px'}}>
           继续内在扫描
         </button>
       </div>
     </div>
   );
 
-  // ─────────────────────────────────────────────
-  // [5] 结果页 result
-  // ─────────────────────────────────────────────
+  // [5] 结果页
   if (step === 'result' && resultData) {
     const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole, image, imageResult } = resultData;
     const displayImage = imageResult || image;
 
     if (showPoster) {
-      // 先计算 rc 和 pageBg，复用结果页的颜色逻辑
       const _roleColorMap = {
         'text-red-500':'rgba(121,71,71,','text-orange-500':'rgba(177,71,29,',
         'text-amber-400':'rgba(211,145,109,','text-yellow-400':'rgba(232,203,192,',
@@ -1030,94 +921,52 @@ export default function App() {
         'text-indigo-400':'linear-gradient(to bottom, #111111, #606C88, #2B3A60)',
       };
       const _pageBg = _roleBgMap[color] || 'linear-gradient(to bottom, #111111, #1a1a2e, #2B3A60)';
-
       return (
-        <div style={{
-          minHeight:'100vh', background: _pageBg,
-          display:'flex', flexDirection:'column',
-          alignItems:'center', justifyContent:'center',
-          padding:'32px 24px', fontFamily:'sans-serif',
-        }}>
+        <div style={{minHeight:'100vh', background: _pageBg, display:'flex', flexDirection:'column',
+          alignItems:'center', justifyContent:'center', padding:'32px 24px', fontFamily:'sans-serif'}}>
           <div style={{width:'100%', maxWidth:'300px', position:'relative'}}>
-
-            {/* 关闭按钮 */}
             <button onClick={() => setShowPoster(false)} style={{
               position:'absolute', top:'-14px', right:'-14px', zIndex:20,
               width:'30px', height:'30px', background:'rgba(0,0,0,0.5)',
               borderRadius:'50%', border:'1px solid rgba(255,255,255,0.2)',
               display:'flex', alignItems:'center', justifyContent:'center',
-              cursor:'pointer', color:'white',
-            }}>
+              cursor:'pointer', color:'white'}}>
               <X style={{width:'13px', height:'13px'}}/>
             </button>
-
-            {/* 海报卡片 */}
-            <div style={{
-              borderRadius:'24px',
-              border:`1px solid ${_rc}0.25)`,
-              overflow:'hidden',
-              background:'rgba(0,0,0,0.5)',
-            }}>
-              {/* 顶部：label + 角色名 */}
+            <div style={{borderRadius:'24px', border:`1px solid ${_rc}0.25)`,
+              overflow:'hidden', background:'rgba(0,0,0,0.5)'}}>
               <div style={{padding:'20px 20px 16px', textAlign:'center'}}>
-                <p style={{...DS.label, color:`${_rc}0.6)`, marginBottom:'8px'}}>
-                  关系能量分析
-                </p>
-                <h2 style={{
-                  fontSize:'1.7rem', fontWeight:800, letterSpacing:'-0.02em',
+                <p style={{...DS.label, color:`${_rc}0.6)`, marginBottom:'8px'}}>关系能量分析</p>
+                <h2 style={{fontSize:'1.7rem', fontWeight:800, letterSpacing:'-0.02em',
                   color:'#fff', lineHeight:1.1, marginBottom:'4px',
-                  textShadow:`0 0 24px ${_rc}0.5)`,
-                }}>
+                  textShadow:`0 0 24px ${_rc}0.5)`}}>
                   {String(roleName)}
                 </h2>
-                <p style={{
-                  fontSize:'9px', fontWeight:600, letterSpacing:'0.2em',
-                  color:`${_rc}0.6)`, textTransform:'uppercase',
-                }}>
+                <p style={{fontSize:'9px', fontWeight:600, letterSpacing:'0.2em',
+                  color:`${_rc}0.6)`, textTransform:'uppercase'}}>
                   {String(tag)}
                 </p>
               </div>
-
-              {/* 分割线 */}
               <div style={{height:'1px', background:`linear-gradient(90deg, transparent, ${_rc}0.3), transparent)`}}/>
-
-              {/* 插画 */}
               {image && (
                 <div style={{padding:'0 12px'}}>
-                  <img src={image} alt={roleName} style={{
-                    width:'100%', display:'block', borderRadius:'12px',
-                  }}/>
+                  <img src={image} alt={roleName} style={{width:'100%', display:'block', borderRadius:'12px'}}/>
                 </div>
               )}
-
-              {/* 分割线 */}
               <div style={{height:'1px', background:`linear-gradient(90deg, transparent, ${_rc}0.3), transparent)`}}/>
-
-              {/* 底部：scene */}
               <div style={{padding:'16px 20px 20px', textAlign:'center'}}>
-                <p style={{
-                  fontSize:'12px', lineHeight:1.75,
-                  color:'rgba(255,255,255,0.65)',
-                  fontStyle:'italic',
-                }}>
+                <p style={{fontSize:'12px', lineHeight:1.75, color:'rgba(255,255,255,0.65)', fontStyle:'italic'}}>
                   {scene ? String(scene) : String(definition)}
                 </p>
-                <p style={{
-                  fontSize:'8px', letterSpacing:'0.2em',
-                  color:'rgba(255,255,255,0.2)', marginTop:'12px',
-                  textTransform:'uppercase',
-                }}>
+                <p style={{fontSize:'8px', letterSpacing:'0.2em', color:'rgba(255,255,255,0.2)',
+                  marginTop:'12px', textTransform:'uppercase'}}>
                   Psychic Vampires
                 </p>
               </div>
             </div>
-
-            {/* 截图提示 */}
-            <p style={{
-              textAlign:'center', fontSize:'9px', letterSpacing:'0.12em',
+            <p style={{textAlign:'center', fontSize:'9px', letterSpacing:'0.12em',
               color:'rgba(255,255,255,0.18)', marginTop:'12px',
-              display:'flex', alignItems:'center', justifyContent:'center', gap:'6px',
-            }}>
+              display:'flex', alignItems:'center', justifyContent:'center', gap:'6px'}}>
               <Download style={{width:'9px', height:'9px', opacity:0.4}}/>
               截图保存你的报告
             </p>
@@ -1127,53 +976,38 @@ export default function App() {
     }
 
     const roleColorMap = {
-      'text-red-500':     'rgba(121,71,71,',    // 情绪倾倒者
-      'text-orange-500':  'rgba(177,71,29,',    // 冲突吸引者
-      'text-amber-400':   'rgba(211,145,109,',  // 关系修复者
-      'text-yellow-400':  'rgba(232,203,192,',  // 责任承担者
-      'text-slate-400':   'rgba(139,166,181,',  // 关系消耗者
-      'text-fuchsia-400': 'rgba(152,216,208,',  // 共情透支者
-      'text-emerald-400': 'rgba(0,201,150,',    // 关系清醒者
-      'text-cyan-400':    'rgba(203,180,212,',  // 情绪守护者
-      'text-blue-400':    'rgba(152,216,208,',  // 依赖支柱
-      'text-purple-400':  'rgba(246,229,222,',  // 自我压缩者
-      'text-rose-400':    'rgba(127,129,176,',  // 情感代偿者
-      'text-indigo-400':  'rgba(43,58,96,',     // 情绪循环者
+      'text-red-500':'rgba(121,71,71,','text-orange-500':'rgba(177,71,29,',
+      'text-amber-400':'rgba(211,145,109,','text-yellow-400':'rgba(232,203,192,',
+      'text-slate-400':'rgba(139,166,181,','text-fuchsia-400':'rgba(152,216,208,',
+      'text-emerald-400':'rgba(0,201,150,','text-cyan-400':'rgba(203,180,212,',
+      'text-blue-400':'rgba(152,216,208,','text-purple-400':'rgba(246,229,222,',
+      'text-rose-400':'rgba(127,129,176,','text-indigo-400':'rgba(43,58,96,',
     };
     const rc = roleColorMap[color] || 'rgba(99,102,241,';
-
     const roleAccentMap = {
-      'text-red-500':     'rgba(78,32,32,0.6)',
-      'text-orange-500':  'rgba(70,41,4,0.6)',
-      'text-amber-400':   'rgba(84,74,125,0.5)',
-      'text-yellow-400':  'rgba(99,111,164,0.5)',
-      'text-slate-400':   'rgba(51,77,80,0.6)',
-      'text-fuchsia-400': 'rgba(24,25,68,0.6)',
-      'text-emerald-400': 'rgba(0,61,77,0.6)',
-      'text-cyan-400':    'rgba(32,0,44,0.6)',
-      'text-blue-400':    'rgba(24,25,68,0.6)',
-      'text-purple-400':  'rgba(93,106,115,0.5)',
-      'text-rose-400':    'rgba(70,49,81,0.6)',
-      'text-indigo-400':  'rgba(96,108,136,0.5)',
+      'text-red-500':'rgba(78,32,32,0.6)','text-orange-500':'rgba(70,41,4,0.6)',
+      'text-amber-400':'rgba(84,74,125,0.5)','text-yellow-400':'rgba(99,111,164,0.5)',
+      'text-slate-400':'rgba(51,77,80,0.6)','text-fuchsia-400':'rgba(24,25,68,0.6)',
+      'text-emerald-400':'rgba(0,61,77,0.6)','text-cyan-400':'rgba(32,0,44,0.6)',
+      'text-blue-400':'rgba(24,25,68,0.6)','text-purple-400':'rgba(93,106,115,0.5)',
+      'text-rose-400':'rgba(70,49,81,0.6)','text-indigo-400':'rgba(96,108,136,0.5)',
     };
     const rc2 = roleAccentMap[color] || 'rgba(88,28,135,0.18)';
-
     const roleBgBase = {
-      'text-red-500':     'linear-gradient(to bottom, #111111, #4e2020, #794747)',
-      'text-orange-500':  'linear-gradient(to bottom, #111111, #462904, #B1471D)',
-      'text-amber-400':   'linear-gradient(to bottom, #111111, #544a7d, #D3916D)',
-      'text-yellow-400':  'linear-gradient(to bottom, #111111, #636FA4, #E8CBC0)',
-      'text-slate-400':   'linear-gradient(to bottom, #111111, #334d50, #8BA6B5)',
-      'text-fuchsia-400': 'linear-gradient(to bottom, #111111, #181944, #98D8D0)',
-      'text-emerald-400': 'linear-gradient(to bottom, #111111, #003D4D, #00C996)',
-      'text-cyan-400':    'linear-gradient(to bottom, #111111, #20002C, #CBB4D4)',
-      'text-blue-400':    'linear-gradient(to bottom, #111111, #181944, #98D8D0)',
-      'text-purple-400':  'linear-gradient(to bottom, #111111, #5D6A73, #F6E5DE)',
-      'text-rose-400':    'linear-gradient(to bottom, #111111, #463151, #7F81B0)',
-      'text-indigo-400':  'linear-gradient(to bottom, #111111, #606C88, #2B3A60)',
+      'text-red-500':'linear-gradient(to bottom, #111111, #4e2020, #794747)',
+      'text-orange-500':'linear-gradient(to bottom, #111111, #462904, #B1471D)',
+      'text-amber-400':'linear-gradient(to bottom, #111111, #544a7d, #D3916D)',
+      'text-yellow-400':'linear-gradient(to bottom, #111111, #636FA4, #E8CBC0)',
+      'text-slate-400':'linear-gradient(to bottom, #111111, #334d50, #8BA6B5)',
+      'text-fuchsia-400':'linear-gradient(to bottom, #111111, #181944, #98D8D0)',
+      'text-emerald-400':'linear-gradient(to bottom, #111111, #003D4D, #00C996)',
+      'text-cyan-400':'linear-gradient(to bottom, #111111, #20002C, #CBB4D4)',
+      'text-blue-400':'linear-gradient(to bottom, #111111, #181944, #98D8D0)',
+      'text-purple-400':'linear-gradient(to bottom, #111111, #5D6A73, #F6E5DE)',
+      'text-rose-400':'linear-gradient(to bottom, #111111, #463151, #7F81B0)',
+      'text-indigo-400':'linear-gradient(to bottom, #111111, #606C88, #2B3A60)',
     };
     const pageBg = roleBgBase[color] || 'linear-gradient(to bottom, #111111, #1a1a2e, #2B3A60)';
-
     const roleProgressFill = (pct) => ({
       width: `${pct}%`, height: '100%', borderRadius: '2px',
       background: `linear-gradient(90deg, ${rc}0.5), ${rc}0.85))`,
@@ -1181,60 +1015,46 @@ export default function App() {
       transition: 'width 0.6s cubic-bezier(.4,0,.2,1)',
     });
 
+    // 把 advice 里的 **text** 转成加粗段落
+    const renderAdvice = (text) => {
+      return text.split('\n\n').map((para, i) => {
+        const boldMatch = para.match(/^\*\*(.+?)\*\*(.*)$/s);
+        if (boldMatch) {
+          return (
+            <p key={i} style={{...DS.type.t3, color:'rgba(255,255,255,0.72)', marginBottom:'10px'}}>
+              <span style={{fontWeight:700, color:`${rc}1)`, display:'block', marginBottom:'4px'}}>
+                {boldMatch[1]}
+              </span>
+              {boldMatch[2].trim()}
+            </p>
+          );
+        }
+        return <p key={i} style={{...DS.type.t3, color:'rgba(255,255,255,0.72)', marginBottom:'10px'}}>{para}</p>;
+      });
+    };
+
     return (
       <div className="min-h-screen text-white font-sans relative overflow-x-hidden" style={{background: pageBg}}>
         <style>{`
-          @keyframes floatUp {
-            0%   { transform: translateY(0) scale(1); opacity: 0.6; }
-            100% { transform: translateY(-140px) scale(0.2); opacity: 0; }
-          }
+          @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 0.6; } 100% { transform: translateY(-140px) scale(0.2); opacity: 0; } }
           .particle { animation: floatUp linear infinite; }
-          @keyframes pulseGlow {
-            0%,100% { opacity: 0.55; }
-            50%      { opacity: 0.85; }
-          }
+          @keyframes pulseGlow { 0%,100% { opacity: 0.55; } 50% { opacity: 0.85; } }
         `}</style>
-
-        {/* ── 背景流体 ── */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{zIndex:0}}>
-          <div style={{
-            position:'absolute', top:'-15%', left:'-25%',
-            width:'100%', height:'70%',
+          <div style={{position:'absolute', top:'-15%', left:'-25%', width:'100%', height:'70%',
             background:`radial-gradient(ellipse, ${rc}0.40) 0%, transparent 65%)`,
-            filter:'blur(90px)',
-            animation:'pulseGlow 6s ease-in-out infinite',
-          }}/>
-          <div style={{
-            position:'absolute', bottom:'5%', right:'-20%',
-            width:'75%', height:'55%',
-            background:`radial-gradient(ellipse, ${rc2} 0%, transparent 65%)`,
-            filter:'blur(80px)',
-          }}/>
-          <div style={{
-            position:'absolute', top:'35%', left:'10%',
-            width:'80%', height:'50%',
-            background:`radial-gradient(ellipse, ${rc}0.14) 0%, transparent 65%)`,
-            filter:'blur(110px)',
-          }}/>
-          <svg className="absolute inset-0 w-full h-full" style={{opacity:0.06}}
-            viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
-            <path d="M-20 150 C 100 120, 200 200, 420 140" stroke="white" strokeWidth="1" fill="none"/>
-            <path d="M-20 400 C 80 360, 220 440, 420 380" stroke="white" strokeWidth="0.8" fill="none"/>
-            <path d="M-20 650 C 120 610, 260 680, 420 620" stroke="white" strokeWidth="0.6" fill="none"/>
-          </svg>
-          {[
-            {l:'8%', t:'22%',d:'0s',  dur:'8s', s:2.5,c:rc},
-            {l:'22%',t:'45%',d:'3s',  dur:'10s',s:3,  c:rc},
-            {l:'68%',t:'18%',d:'1.2s',dur:'7s', s:2,  c:rc},
-            {l:'82%',t:'52%',d:'4s',  dur:'9s', s:2.5,c:rc},
-            {l:'44%',t:'72%',d:'2s',  dur:'8s', s:3,  c:rc},
-          ].map((p,i)=>(
+            filter:'blur(90px)', animation:'pulseGlow 6s ease-in-out infinite'}}/>
+          <div style={{position:'absolute', bottom:'5%', right:'-20%', width:'75%', height:'55%',
+            background:`radial-gradient(ellipse, ${rc2} 0%, transparent 65%)`, filter:'blur(80px)'}}/>
+          <div style={{position:'absolute', top:'35%', left:'10%', width:'80%', height:'50%',
+            background:`radial-gradient(ellipse, ${rc}0.14) 0%, transparent 65%)`, filter:'blur(110px)'}}/>
+          {[{l:'8%',t:'22%',d:'0s',dur:'8s',s:2.5},{l:'22%',t:'45%',d:'3s',dur:'10s',s:3},
+            {l:'68%',t:'18%',d:'1.2s',dur:'7s',s:2},{l:'82%',t:'52%',d:'4s',dur:'9s',s:2.5},
+            {l:'44%',t:'72%',d:'2s',dur:'8s',s:3}].map((p,i)=>(
             <div key={i} className="particle absolute rounded-full" style={{
               left:p.l, top:p.t, width:p.s, height:p.s,
-              background:`${p.c}0.7)`,
-              animationDelay:p.d, animationDuration:p.dur,
-              boxShadow:`0 0 ${p.s*6}px ${p.c}1)`,
-            }}/>
+              background:`${rc}0.7)`, animationDelay:p.d, animationDuration:p.dur,
+              boxShadow:`0 0 ${p.s*6}px ${rc}1)`}}/>
           ))}
         </div>
 
@@ -1242,77 +1062,40 @@ export default function App() {
 
           {/* ① HERO */}
           <section className="text-center" style={{marginBottom:'24px'}}>
-
-            <div style={{
-              display:'inline-flex', alignItems:'center', gap:'6px',
+            <div style={{display:'inline-flex', alignItems:'center', gap:'6px',
               background:`${rc}0.18)`, border:`1px solid ${rc}0.5)`,
-              borderRadius:'999px', padding:'4px 14px', marginBottom:'20px',
-            }}>
-              <div style={{
-                width:'5px', height:'5px', borderRadius:'50%',
-                background:`${rc}1)`, boxShadow:`0 0 8px ${rc}1)`,
-              }}/>
-              <span style={{...DS.label, color:`${rc}1)`, letterSpacing:'0.2em'}}>
-                {String(status)}
-              </span>
+              borderRadius:'999px', padding:'4px 14px', marginBottom:'20px'}}>
+              <div style={{width:'5px', height:'5px', borderRadius:'50%',
+                background:`${rc}1)`, boxShadow:`0 0 8px ${rc}1)`}}/>
+              <span style={{...DS.label, color:`${rc}1)`, letterSpacing:'0.2em'}}>{String(status)}</span>
             </div>
-
-            <h2 style={{
-              fontSize: 'clamp(3rem, 12vw, 4.5rem)',
-              fontWeight: 800,
-              lineHeight: 1.0,
-              letterSpacing: '-0.04em',
-              color: DS.text.primary,
-              textShadow: `0 0 60px ${rc}0.6), 0 0 120px ${rc}0.25)`,
-              marginBottom: '12px',
-            }}>
+            <h2 style={{fontSize:'clamp(3rem, 12vw, 4.5rem)', fontWeight:800, lineHeight:1.0,
+              letterSpacing:'-0.04em', color:DS.text.primary,
+              textShadow:`0 0 60px ${rc}0.6), 0 0 120px ${rc}0.25)`, marginBottom:'12px'}}>
               {String(roleName)}
             </h2>
-
-            <p style={{
-              fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.18em',
-              color:'rgba(255,255,255,0.85)',
-              marginBottom:'28px',
-            }}>
+            <p style={{fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.18em',
+              color:'rgba(255,255,255,0.85)', marginBottom:'28px'}}>
               {String(tag)}
             </p>
-
-            <div style={{
-              width:'40px', height:'1px', margin:'0 auto 24px',
-              background:`linear-gradient(90deg, transparent, ${rc}0.8), transparent)`,
-            }}/>
-
-            <p style={{
-              ...DS.type.t3, color:'rgba(255,255,255,0.72)',
-              maxWidth:'280px', margin:`0 auto ${DS.space.sm}`,
-            }}>
+            <div style={{width:'40px', height:'1px', margin:'0 auto 24px',
+              background:`linear-gradient(90deg, transparent, ${rc}0.8), transparent)`}}/>
+            <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)', maxWidth:'280px', margin:`0 auto ${DS.space.sm}`}}>
               {String(definition)}
             </p>
-
             {scene && (
-              <p style={{
-                ...DS.type.t3, fontStyle:'italic', fontWeight:700,
-                color:`${rc}0.9)`,
-                textShadow:`0 0 16px ${rc}0.3)`,
-                maxWidth:'260px', margin:'16px auto 0',
-                borderLeft:`2px solid ${rc}0.5)`,
-                paddingLeft:'12px', textAlign:'left',
-              }}>
+              <p style={{...DS.type.t3, fontStyle:'italic', fontWeight:700, color:`${rc}0.9)`,
+                textShadow:`0 0 16px ${rc}0.3)`, maxWidth:'260px', margin:'16px auto 0',
+                borderLeft:`2px solid ${rc}0.5)`, paddingLeft:'12px', textAlign:'left'}}>
                 {String(scene)}
               </p>
             )}
-
             {subRole && (
-              <div style={{
-                ...DS.cardInner,
-                background:`${rc}0.08)`,
-                border:`1px solid ${rc}0.28)`,
-                marginTop:'24px', padding:'16px 20px', textAlign:'left',
-              }}>
-                <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.xs}}>副机制</p>
+              <div style={{...DS.cardInner, background:`${rc}0.08)`, border:`1px solid ${rc}0.28)`,
+                marginTop:'24px', padding:'16px 20px', textAlign:'left'}}>
+                <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.xs}}>副机制</p>
                 <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'6px'}}>
-                  <span style={{...DS.type.t2, color:`${rc}1)`,
-                    textShadow:`0 0 12px ${rc}0.4)`}}>
+                  <span style={{...DS.type.t2, color:`${rc}1)`, textShadow:`0 0 12px ${rc}0.4)`}}>
                     {String(subRole.name)}
                   </span>
                   <span style={{...DS.type.t4, color:DS.text.muted}}>· {String(subRole.dim)}</span>
@@ -1325,72 +1108,45 @@ export default function App() {
           {/* ② 插画区 */}
           <section style={{marginBottom:'16px'}}>
             {displayImage ? (
-              <img
-                src={displayImage}
-                alt={roleName}
-                style={{
-                  width:'100%',
-                  display:'block',
-                  borderRadius:'20px',
-                  border:`1px solid ${rc}0.20)`,
-                }}
-              />
+              <img src={displayImage} alt={roleName} style={{
+                width:'100%', display:'block', borderRadius:'20px', border:`1px solid ${rc}0.20)`}}/>
             ) : (
-              <div style={{
-                height:'220px', display:'flex',
-                alignItems:'center', justifyContent:'center',
-                border:`1px solid ${rc}0.12)`, borderRadius:'20px',
-              }}>
+              <div style={{height:'220px', display:'flex', alignItems:'center', justifyContent:'center',
+                border:`1px solid ${rc}0.12)`, borderRadius:'20px'}}>
                 <p style={{...DS.label, color:`${rc}0.25)`}}>插画 · {String(roleName)}</p>
               </div>
             )}
           </section>
 
           {/* ③ 常见互动 + 消耗 */}
-          <section style={{
-            ...DS.card,
-            border:`1px solid ${rc}0.20)`,
-            marginBottom:DS.space.sm,
-          }}>
+          <section style={{...DS.card, border:`1px solid ${rc}0.20)`, marginBottom:DS.space.sm}}>
             <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.10)`}}>
-              <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.sm}}>常见互动表现</p>
+              <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.sm}}>常见互动表现</p>
               <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
                 {behaviors.map((b,i)=>(
                   <div key={i} style={{display:'flex', alignItems:'flex-start', gap:'12px'}}>
-                    <div style={{
-                      width:'5px', height:'5px', borderRadius:'50%',
-                      marginTop:'8px', flexShrink:0,
-                      background:`${rc}1)`,
-                      boxShadow:`0 0 6px ${rc}0.8)`,
-                    }}/>
+                    <div style={{width:'5px', height:'5px', borderRadius:'50%', marginTop:'8px', flexShrink:0,
+                      background:`${rc}1)`, boxShadow:`0 0 6px ${rc}0.8)`}}/>
                     <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(b)}</p>
                   </div>
                 ))}
               </div>
             </div>
             <div style={{padding:'20px 24px 24px'}}>
-              <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.sm}}>能量消耗</p>
+              <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.sm}}>能量消耗</p>
               <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(impact)}</p>
             </div>
           </section>
 
-          {/* ④ Part A 维度分析 */}
-          <section style={{
-            ...DS.card,
-            border:`1px solid ${rc}0.18)`,
-            marginBottom:DS.space.sm,
-          }}>
+          {/* ④ Part A 维度 */}
+          <section style={{...DS.card, border:`1px solid ${rc}0.18)`, marginBottom:DS.space.sm}}>
             <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.10)`}}>
-              <p style={{...DS.label, color:`${rc}0.7)`, marginBottom:DS.space.xs}}>A · 外部能量损耗</p>
+              <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.xs}}>A · 外部能量损耗</p>
               <div style={{display:'flex', alignItems:'center', justifyContent:'space-between',
                 marginTop:DS.space.sm, marginBottom:'8px'}}>
                 <span style={{...DS.label, color:DS.text.muted}}>关系消耗程度</span>
-                <span style={{
-                  fontSize:'1.5rem', fontWeight:800, letterSpacing:'-0.02em',
-                  color:`${rc}1)`,
-                  textShadow:`0 0 20px ${rc}0.5)`,
-                  lineHeight:1,
-                }}>
+                <span style={{fontSize:'1.5rem', fontWeight:800, letterSpacing:'-0.02em',
+                  color:`${rc}1)`, textShadow:`0 0 20px ${rc}0.5)`, lineHeight:1}}>
                   {Math.round((scoreA/120)*100)}%
                 </span>
               </div>
@@ -1401,53 +1157,37 @@ export default function App() {
             <div style={{padding:'4px 16px 0'}}>
               <RadarChart data={radarData}/>
             </div>
-            <div style={{padding:`0 16px ${DS.space.md}`,
-              display:'flex', flexDirection:'column', gap:DS.space.xs}}>
+            <div style={{padding:`0 16px ${DS.space.md}`, display:'flex', flexDirection:'column', gap:DS.space.xs}}>
               {DIMENSIONS.slice(0,6).map((dim,idx)=>{
                 const maxVal=25, score=dimScores[dim]||0, ratio=score/maxVal;
                 let stateLabel='平稳', stateColor='rgba(52,211,153,0.9)', levelKey='stable';
                 if(ratio>0.75){stateLabel='过载'; stateColor=`${rc}1)`; levelKey='overload';}
                 else if(ratio>0.5){stateLabel='活跃'; stateColor='rgba(251,146,60,0.9)'; levelKey='active';}
-                const bgState  = stateColor.replace(/,[\d.]+\)$/,',0.12)');
-                const brdState = stateColor.replace(/,[\d.]+\)$/,',0.35)');
+                const bgState=stateColor.replace(/,[\d.]+\)$/,',0.12)');
+                const brdState=stateColor.replace(/,[\d.]+\)$/,',0.35)');
                 return (
                   <div key={idx} style={{...DS.cardInner, padding:`${DS.space.sm} 16px`}}>
-                    <div style={{display:'flex', justifyContent:'space-between',
-                      alignItems:'center', marginBottom:'10px'}}>
+                    <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
                       <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
-                        <span style={{...DS.label, color:DS.text.ghost}}>
-                          {String(idx+1).padStart(2,'0')}
-                        </span>
+                        <span style={{...DS.label, color:DS.text.ghost}}>{String(idx+1).padStart(2,'0')}</span>
                         <span style={{...DS.type.t2, color:DS.text.primary}}>{String(dim)}</span>
-                        <span style={{
-                          fontSize:'8px', fontWeight:700,
-                          padding:'2px 8px', borderRadius:'999px',
-                          color:stateColor, background:bgState, border:`1px solid ${brdState}`,
-                        }}>
+                        <span style={{fontSize:'8px', fontWeight:700, padding:'2px 8px', borderRadius:'999px',
+                          color:stateColor, background:bgState, border:`1px solid ${brdState}`}}>
                           {stateLabel}
                         </span>
                       </div>
-                      <span style={{
-                        fontSize:'0.875rem', fontWeight:700,
-                        color: ratio>0.5 ? `${rc}1)` : DS.text.muted,
-                        fontVariantNumeric:'tabular-nums',
-                        textShadow: ratio>0.5 ? `0 0 10px ${rc}0.4)` : 'none',
-                      }}>
+                      <span style={{fontSize:'0.875rem', fontWeight:700,
+                        color:ratio>0.5?`${rc}1)`:DS.text.muted, fontVariantNumeric:'tabular-nums',
+                        textShadow:ratio>0.5?`0 0 10px ${rc}0.4)`:'none'}}>
                         {score}/{maxVal}
                       </span>
                     </div>
                     <div style={{...DS.progressTrack, marginBottom:DS.space.sm}}>
                       <div style={roleProgressFill(ratio*100)}/>
                     </div>
-                    <p style={{...DS.type.t4, color:DS.text.muted, marginBottom:'6px'}}>
-                      {String(DIMENSION_DESCS[dim])}
-                    </p>
-                    <p style={{...DS.type.t4, color:DS.text.ghost, marginBottom:DS.space.sm}}>
-                      {String(DIMENSION_SCORE_DESC[dim])}
-                    </p>
-                    <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>
-                      {String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}
-                    </p>
+                    <p style={{...DS.type.t4, color:DS.text.muted, marginBottom:'6px'}}>{String(DIMENSION_DESCS[dim])}</p>
+                    <p style={{...DS.type.t4, color:DS.text.ghost, marginBottom:DS.space.sm}}>{String(DIMENSION_SCORE_DESC[dim])}</p>
+                    <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}</p>
                   </div>
                 );
               })}
@@ -1460,117 +1200,75 @@ export default function App() {
             let stateLabel='平稳', stateColor='rgba(52,211,153,0.9)', levelKey='stable';
             if(ratio>0.75){stateLabel='需关注'; stateColor=`${rc}1)`; levelKey='overload';}
             else if(ratio>0.5){stateLabel='活跃'; stateColor='rgba(251,146,60,0.9)'; levelKey='active';}
-            const bgState  = stateColor.replace(/,[\d.]+\)$/,',0.12)');
-            const brdState = stateColor.replace(/,[\d.]+\)$/,',0.35)');
+            const bgState=stateColor.replace(/,[\d.]+\)$/,',0.12)');
+            const brdState=stateColor.replace(/,[\d.]+\)$/,',0.35)');
             return (
-              <section style={{
-                ...DS.card,
-                background:`rgba(0,0,0,0.20)`,
-                border:`1px solid ${rc}0.28)`,
-                marginBottom:DS.space.sm, position:'relative', overflow:'hidden',
-              }}>
-                <Fingerprint style={{
-                  position:'absolute', top:'12px', right:'12px',
-                  width:'80px', height:'80px', pointerEvents:'none',
-                  color:`${rc}0.08)`, strokeWidth:1.5,
-                }}/>
+              <section style={{...DS.card, background:'rgba(0,0,0,0.20)', border:`1px solid ${rc}0.28)`,
+                marginBottom:DS.space.sm, position:'relative', overflow:'hidden'}}>
+                <Fingerprint style={{position:'absolute', top:'12px', right:'12px',
+                  width:'80px', height:'80px', pointerEvents:'none', color:`${rc}0.08)`, strokeWidth:1.5}}/>
                 <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.15)`}}>
-                  <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:'6px'}}>
-                    B · 内在能量状态
-                  </p>
+                  <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:'6px'}}>B · 内在能量状态</p>
                   <p style={{...DS.type.t4, color:DS.text.muted}}>你是否正在无意识地消耗身边的人</p>
                 </div>
                 <div style={{padding:'20px 24px 24px'}}>
-                  <div style={{display:'flex', justifyContent:'space-between',
-                    alignItems:'center', marginBottom:'10px'}}>
+                  <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
                     <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
                       <span style={{...DS.type.t2, color:DS.text.primary}}>{String(dim)}</span>
-                      <span style={{fontSize:'8px',fontWeight:700,
-                        padding:'2px 8px',borderRadius:'999px',
+                      <span style={{fontSize:'8px', fontWeight:700, padding:'2px 8px', borderRadius:'999px',
                         color:stateColor, background:bgState, border:`1px solid ${brdState}`}}>
                         {stateLabel}
                       </span>
                     </div>
-                    <span style={{
-                      fontSize:'0.875rem', fontWeight:700,
-                      color: ratio>0.5 ? `${rc}1)` : DS.text.muted,
-                      fontVariantNumeric:'tabular-nums',
-                      textShadow: ratio>0.5 ? `0 0 10px ${rc}0.4)` : 'none',
-                    }}>
+                    <span style={{fontSize:'0.875rem', fontWeight:700,
+                      color:ratio>0.5?`${rc}1)`:DS.text.muted, fontVariantNumeric:'tabular-nums',
+                      textShadow:ratio>0.5?`0 0 10px ${rc}0.4)`:'none'}}>
                       {score}/{maxVal}
                     </span>
                   </div>
                   <div style={{...DS.progressTrack, marginBottom:DS.space.md}}>
                     <div style={roleProgressFill(ratio*100)}/>
                   </div>
-                  <p style={{...DS.type.t4, color:DS.text.muted, marginBottom:'6px'}}>
-                    {String(DIMENSION_DESCS[dim])}
-                  </p>
-                  <p style={{...DS.type.t4, color:DS.text.ghost, marginBottom:DS.space.sm}}>
-                    {String(DIMENSION_SCORE_DESC[dim])}
-                  </p>
-                  <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>
-                    {String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}
-                  </p>
+                  <p style={{...DS.type.t4, color:DS.text.muted, marginBottom:'6px'}}>{String(DIMENSION_DESCS[dim])}</p>
+                  <p style={{...DS.type.t4, color:DS.text.ghost, marginBottom:DS.space.sm}}>{String(DIMENSION_SCORE_DESC[dim])}</p>
+                  <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}</p>
                 </div>
               </section>
             );
           })()}
 
-          {/* ⑥ 建议卡片 */}
-          <section style={{
-            borderRadius:'20px',
-            background: rc2,
-            border:`1px solid ${rc}0.35)`,
-            marginBottom:'40px',
-          }}>
+          {/* ⑥ 建议卡片 — 内容加厚 */}
+          <section style={{borderRadius:'20px', background:rc2, border:`1px solid ${rc}0.35)`, marginBottom:'40px'}}>
             <div style={{padding:'24px'}}>
               <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:DS.space.sm}}>
-                <div style={{
-                  width:'3px', height:'20px', borderRadius:'2px',
-                  background:`${rc}1)`,
-                  boxShadow:`0 0 10px ${rc}0.7)`,
-                  flexShrink:0,
-                }}/>
-                <p style={{...DS.label, color:'rgba(255,255,255,0.80)'}}>
-                  你可以尝试
-                </p>
+                <div style={{width:'3px', height:'20px', borderRadius:'2px',
+                  background:`${rc}1)`, boxShadow:`0 0 10px ${rc}0.7)`, flexShrink:0}}/>
+                <p style={{...DS.label, color:'rgba(255,255,255,0.80)'}}>你可以尝试</p>
               </div>
-              <p style={{...DS.type.t3, fontWeight:700,
-                color:DS.text.primary, lineHeight:1.8}}>
-                {String(advice)}
-              </p>
+              <div style={{display:'flex', flexDirection:'column', gap:'4px'}}>
+                {renderAdvice(String(advice))}
+              </div>
             </div>
           </section>
 
+          {/* ⑦ 底部按钮 */}
           <section style={{display:'flex', flexDirection:'row', gap:'12px', paddingBottom:'40px'}}>
             <button onClick={() => window.location.reload()}
               className="active:scale-95"
-              style={{
-                flex:1, height:'56px',
-                background: 'rgba(255,255,255,0.10)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255,255,255,0.20)',
-                borderRadius:'9999px',
-                color:'#F2F3FB', fontWeight:700, fontSize:'0.85rem',
+              style={{flex:1, height:'56px', background:'rgba(255,255,255,0.10)',
+                backdropFilter:'blur(12px)', border:'1px solid rgba(255,255,255,0.20)',
+                borderRadius:'9999px', color:'#F2F3FB', fontWeight:700, fontSize:'0.85rem',
                 display:'flex', alignItems:'center', justifyContent:'center', gap:'6px',
-                transition:'transform 0.15s',
-              }}>
+                transition:'transform 0.15s'}}>
               <RefreshCcw style={{width:'13px', height:'13px'}}/> 重测
             </button>
             <button onClick={() => setShowPoster(true)}
               className="active:scale-95"
-              style={{
-                flex:2, height:'56px',
-                background: 'rgba(255,255,255,0.10)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255,255,255,0.20)',
-                borderRadius:'9999px',
-                color:'#F2F3FB', fontWeight:700, fontSize:'0.9rem',
-                letterSpacing:'0.04em',
-                display:'flex', alignItems:'center', justifyContent:'center', gap:'8px',
-                transition:'transform 0.15s',
-              }}>
+              style={{flex:2, height:'56px', background:'rgba(255,255,255,0.10)',
+                backdropFilter:'blur(12px)', border:'1px solid rgba(255,255,255,0.20)',
+                borderRadius:'9999px', color:'#F2F3FB', fontWeight:700, fontSize:'0.9rem',
+                letterSpacing:'0.04em', display:'flex', alignItems:'center', justifyContent:'center', gap:'8px',
+                transition:'transform 0.15s'}}>
               <Share2 style={{width:'15px', height:'15px'}}/> 导出卡片报告
             </button>
           </section>
