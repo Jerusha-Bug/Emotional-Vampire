@@ -564,6 +564,8 @@ export default function App() {
     const avgPerQ_A = scoreA / 24;
     const avgPerQ_B = scoreB / 8;
     if (avgPerQ_A <= 2.5 && avgPerQ_B <= 2.5) { roleName = "关系清醒者"; }
+    // 全面高分保护：所有维度都高，直接给严重损耗
+    else if (avgPerQ_A >= 4.0) { roleName = "情绪倾倒者"; }
     else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪倾倒者"; }
     else if (dominated && topDim === "情绪倾倒") { roleName = "情感代偿者"; }
     else if (dominated && topDim === "自我消耗" && scoreB > 27) { roleName = "共情透支者"; }
@@ -625,6 +627,7 @@ export default function App() {
       const secS = sorted2[1]?.[1] || 0; const dom = (topS - secS) >= 3;
       let insertRole = "关系消耗者";
       if (avgPerQ <= 2.5) insertRole = "关系清醒者";
+      else if (avgPerQ >= 4.0) insertRole = "情绪倾倒者";
       else if (dom && topD === "情绪倾倒" && topS >= 16) insertRole = "情绪倾倒者";
       else if (dom && topD === "情绪倾倒") insertRole = "情感代偿者";
       else if (dom && topD === "冲突激发" && topS >= 16) insertRole = "冲突吸引者";
