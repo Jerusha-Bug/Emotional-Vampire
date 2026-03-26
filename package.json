@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "emotional-vampire",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,27 +10,26 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "latest",
-    "@react-router/node": "7.12.0",
-    "@react-router/serve": "7.12.0",
+    "@react-router/node": "7.1.5",
+    "@react-router/serve": "7.1.5",
     "isbot": "^5.1.31",
     "lucide-react": "^0.575.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-router": "7.12.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "7.1.5"
   },
   "devDependencies": {
-    "@react-router/dev-vercel": "7.12.0",
-    "@react-router/dev": "7.12.0",
-    "@tailwindcss/postcss": "^4.2.1",
-    "@tailwindcss/vite": "^4.2.1",
-    "@types/node": "^22",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "autoprefixer": "^10.4.27",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.2.1",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.7",
-    "vite-tsconfig-paths": "^5.1.4"
+    "@react-router/dev": "7.1.5",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "vite-tsconfig-paths": "^5.1.0"
   }
 }
