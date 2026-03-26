@@ -17,7 +17,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 // ─────────────────────────────────────────────
 const DS = {
   // 背景渐变（首页/题目页/过渡页共用）
-  pageBg: 'linear-gradient(135deg, #1f1c2c 0%, #534e64 50%, #928dab 100%)',
+  pageBg: 'linear-gradient(to bottom, #2C2541 0%, #685066 40%, #D38D74 75%, #F5C490 100%)',
 
   // ── 间距系统（只用这 4 档）──
   // space.xs  = 8px   → 元素内部微间距
