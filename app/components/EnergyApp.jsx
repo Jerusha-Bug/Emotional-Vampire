@@ -593,7 +593,13 @@ export default function App() {
     const subRole = (secondScore >= 10 && secondRoleName !== roleName)
       ? { name: secondRoleName, dim: secondDim, score: secondScore, ...ROLE_DATA[secondRoleName] } : null;
     const role = ROLE_DATA[roleName];
-    return { ...role, roleName, subRole, scoreA, scoreB, radarData, dimScores, topDim };
+    // 动态损耗等级，基于实际分数
+    const scorePct = scoreA / 120;
+    const dynamicStatus = scorePct >= 0.75 ? '严重损耗'
+      : scorePct >= 0.58 ? '明显损耗'
+      : scorePct >= 0.40 ? '轻度损耗'
+      : '稳定';
+    return { ...role, roleName, subRole, scoreA, scoreB, radarData, dimScores, topDim, status: dynamicStatus };
   }, [step, answers]);
 
   const finalTarget = targetPerson.trim() || 'TA';
@@ -905,8 +911,8 @@ export default function App() {
         'text-amber-400':'rgba(211,145,109,','text-yellow-400':'rgba(232,203,192,',
         'text-slate-400':'rgba(139,166,181,','text-fuchsia-400':'rgba(152,216,208,',
         'text-emerald-400':'rgba(0,201,150,','text-cyan-400':'rgba(203,180,212,',
-        'text-blue-400':'rgba(152,216,208,','text-purple-400':'rgba(246,229,222,',
-        'text-rose-400':'rgba(127,129,176,','text-indigo-400':'rgba(43,58,96,',
+        'text-blue-400':'rgba(152,216,208,','text-purple-400':'rgba(200,180,220,',
+        'text-rose-400':'rgba(200,160,190,','text-indigo-400':'rgba(140,160,220,',
       };
       const _rc = _roleColorMap[color] || 'rgba(99,102,241,';
       const _roleBgMap = {
@@ -983,8 +989,8 @@ export default function App() {
       'text-amber-400':'rgba(211,145,109,','text-yellow-400':'rgba(232,203,192,',
       'text-slate-400':'rgba(139,166,181,','text-fuchsia-400':'rgba(152,216,208,',
       'text-emerald-400':'rgba(0,201,150,','text-cyan-400':'rgba(203,180,212,',
-      'text-blue-400':'rgba(152,216,208,','text-purple-400':'rgba(246,229,222,',
-      'text-rose-400':'rgba(127,129,176,','text-indigo-400':'rgba(43,58,96,',
+      'text-blue-400':'rgba(152,216,208,','text-purple-400':'rgba(200,180,220,',
+      'text-rose-400':'rgba(200,160,190,','text-indigo-400':'rgba(140,160,220,',
     };
     const rc = roleColorMap[color] || 'rgba(99,102,241,';
     const roleAccentMap = {
@@ -1073,8 +1079,9 @@ export default function App() {
               <span style={{...DS.label, color:`${rc}1)`, letterSpacing:'0.2em'}}>{String(status)}</span>
             </div>
             <h2 style={{fontSize:'clamp(3rem, 12vw, 4.5rem)', fontWeight:800, lineHeight:1.0,
-              letterSpacing:'-0.04em', color:DS.text.primary,
-              textShadow:`0 0 60px ${rc}0.6), 0 0 120px ${rc}0.25)`, marginBottom:'12px'}}>
+              letterSpacing:'-0.04em', color:'#FFFFFF',
+              textShadow:`0 2px 4px rgba(0,0,0,0.8), 0 0 60px ${rc}0.6), 0 0 120px ${rc}0.25)`,
+              marginBottom:'12px'}}>
               {String(roleName)}
             </h2>
             <p style={{fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.18em',
