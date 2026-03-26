@@ -593,12 +593,22 @@ export default function App() {
     const subRole = (secondScore >= 10 && secondRoleName !== roleName)
       ? { name: secondRoleName, dim: secondDim, score: secondScore, ...ROLE_DATA[secondRoleName] } : null;
     const role = ROLE_DATA[roleName];
-    // 动态损耗等级，基于实际分数
-    const scorePct = scoreA / 120;
-    const dynamicStatus = scorePct >= 0.75 ? '严重损耗'
-      : scorePct >= 0.58 ? '明显损耗'
-      : scorePct >= 0.40 ? '轻度损耗'
-      : '稳定';
+    // 动态损耗等级：基于主导维度的严重程度，而非总分
+    // 主导维度满分25，B维度满分40
+    let dynamicStatus = '稳定';
+    if (roleName === '关系清醒者') {
+      dynamicStatus = '稳定';
+    } else {
+      const topDimScore = dimScores[topDim] || 0;
+      const topDimRatio = topDimScore / 25;
+      const bRatio = dimScores['内在补能模式'] / 40;
+      // 主导维度占比 + B维度综合判断
+      const combinedRatio = (topDimRatio * 0.7) + (bRatio * 0.3);
+      if (combinedRatio >= 0.75) dynamicStatus = '严重损耗';
+      else if (combinedRatio >= 0.55) dynamicStatus = '明显损耗';
+      else if (combinedRatio >= 0.35) dynamicStatus = '轻度损耗';
+      else dynamicStatus = '稳定';
+    }
     return { ...role, roleName, subRole, scoreA, scoreB, radarData, dimScores, topDim, status: dynamicStatus };
   }, [step, answers]);
 
