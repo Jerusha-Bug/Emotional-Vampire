@@ -580,8 +580,73 @@ const RadarChart = ({ data }) => {
 };
 
 export default function App() {
+  // ✅ 1. 所有的状态声明 (useState) 放在最前面
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState('welcome');
+  const [targetPerson, setTargetPerson] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [isNavigating, setIsNavigating] = useState(false);
+  const [showPoster, setShowPoster] = useState(false);
+
+  // ✅ 2. 所有的副作用 (useEffect) 紧跟其后
+  useEffect(() => { setMounted(true); }, []);
+
+  // ✅ 3. 把导致崩溃的 useMemo 提前到这里！避开了 if (!mounted) return null 的拦截
+  const resultData = useMemo(() => {
+    if (step !== 'result') return null;
+    let scoreA = 0; let scoreB = 0; const dimScores = {};
+    DIMENSIONS.forEach(dim => dimScores[dim] = 0);
+    QUESTIONS.forEach(q => {
+      const val = answers[q.id] || 0;
+      if (q.part === 'A') { scoreA += val; dimScores[q.dim] += val; }
+      else { scoreB += val; dimScores[q.dim] += val; }
+    });
+    const radarData = DIMENSIONS.slice(0, 6).map(key => ({ name: key, value: dimScores[key] / 5 }));
+    const extDims = DIMENSIONS.slice(0, 6);
+    const sorted = [...extDims].sort((a, b) => dimScores[b] - dimScores[a]);
+    const topDim = sorted[0]; const secondDim = sorted[1];
+    const topScore = dimScores[topDim]; const secondScore = dimScores[secondDim];
+    const gap = topScore - secondScore; const dominated = gap >= 3;
+    let roleName;
+
+    // 整体低分（平均每题 ≤ 2.5）→ 直接给关系清醒者，不再往下走
+    const avgPerQ_A = scoreA / 24;
+    const avgPerQ_B = scoreB / 8;
+    if (avgPerQ_A <= 2.5 && avgPerQ_B <= 2.5) {
+      roleName = "关系清醒者";
+    } else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪倾倒者"; }
+    else if (dominated && topDim === "情绪倾倒") { roleName = "情感代偿者"; }
+    else if (dominated && topDim === "自我消耗" && scoreB > 27) { roleName = "共情透支者"; }
+    else if (dominated && topDim === "自我消耗") { roleName = "自我压缩者"; }
+    else if (dominated && topDim === "冲突激发" && topScore >= 16) { roleName = "冲突吸引者"; }
+    else if (dominated && topDim === "冲突激发" && dimScores["情绪倾倒"] >= 10) { roleName = "情绪循环者"; }
+    else if (dominated && topDim === "冲突激发") { roleName = "关系修复者"; }
+    else if (dominated && topDim === "责任转移" && dimScores["自我消耗"] >= 8) { roleName = "自我压缩者"; }
+    else if (dominated && topDim === "责任转移") { roleName = "责任承担者"; }
+    else if (dominated && topDim === "依赖绑定") { roleName = "依赖支柱"; }
+    else if (dominated && topDim === "受害叙述") { roleName = "情绪守护者"; }
+    else {
+      const avgScore = scoreA / 6;
+      // fallback 里也加保护：整体偏低时给关系消耗者而不是负面角色
+      if (avgPerQ_A <= 3.0 && avgPerQ_B <= 3.0) { roleName = "关系消耗者"; }
+      else if (dimScores["自我消耗"] >= avgScore && scoreB > 24) { roleName = "共情透支者"; }
+      else if (dimScores["冲突激发"] >= avgScore && dimScores["情绪倾倒"] >= avgScore) { roleName = "情绪循环者"; }
+      else if (dimScores["责任转移"] >= avgScore && dimScores["自我消耗"] >= avgScore) { roleName = "自我压缩者"; }
+      else if (dimScores["情绪倾倒"] >= avgScore && dimScores["受害叙述"] >= avgScore) { roleName = "情感代偿者"; }
+      else if (dimScores["依赖绑定"] >= avgScore) { roleName = "依赖支柱"; }
+      else if (dimScores["冲突激发"] >= avgScore) { roleName = "关系修复者"; }
+      else if (scoreA >= 80) { roleName = "情绪倾倒者"; }
+      else { roleName = "关系消耗者"; }
+    }
+    const secondRoleName = DIM_TO_ROLE[secondDim];
+    const subRole = (secondScore >= 10 && secondRoleName !== roleName)
+      ? { name: secondRoleName, dim: secondDim, score: secondScore, ...ROLE_DATA[secondRoleName] } : null;
+    const role = ROLE_DATA[roleName];
+    return { ...role, roleName, subRole, scoreA, scoreB, radarData, dimScores, topDim };
+  }, [step, answers]);
+
+  // ✅ 4. 把普通函数放在 Hook 下面
   const previewResult = () => {
     const mockAnswers = {};
     QUESTIONS.forEach(q => {
@@ -596,14 +661,6 @@ export default function App() {
     setTargetPerson('对方');
     setStep('result');
   };
-  const [targetPerson, setTargetPerson] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [isNavigating, setIsNavigating] = useState(false);
-  const [showPoster, setShowPoster] = useState(false);
-
-  useEffect(() => { setMounted(true); }, []);
-  if (!mounted) return null;
 
   const finalTarget = targetPerson.trim() || 'TA';
 
@@ -661,58 +718,8 @@ export default function App() {
     setTimeout(() => { navigateToNext(currentIndex); }, 300);
   };
 
-  const resultData = useMemo(() => {
-    if (step !== 'result') return null;
-    let scoreA = 0; let scoreB = 0; const dimScores = {};
-    DIMENSIONS.forEach(dim => dimScores[dim] = 0);
-    QUESTIONS.forEach(q => {
-      const val = answers[q.id] || 0;
-      if (q.part === 'A') { scoreA += val; dimScores[q.dim] += val; }
-      else { scoreB += val; dimScores[q.dim] += val; }
-    });
-    const radarData = DIMENSIONS.slice(0, 6).map(key => ({ name: key, value: dimScores[key] / 5 }));
-    const extDims = DIMENSIONS.slice(0, 6);
-    const sorted = [...extDims].sort((a, b) => dimScores[b] - dimScores[a]);
-    const topDim = sorted[0]; const secondDim = sorted[1];
-    const topScore = dimScores[topDim]; const secondScore = dimScores[secondDim];
-    const gap = topScore - secondScore; const dominated = gap >= 3;
-    let roleName;
-
-    // 整体低分（平均每题 ≤ 2.5）→ 直接给关系清醒者，不再往下走
-    const avgPerQ_A = scoreA / 24;
-    const avgPerQ_B = scoreB / 8;
-    if (avgPerQ_A <= 2.5 && avgPerQ_B <= 2.5) {
-      roleName = "关系清醒者";
-    } else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪倾倒者"; }
-    else if (dominated && topDim === "情绪倾倒") { roleName = "情感代偿者"; }
-    else if (dominated && topDim === "自我消耗" && scoreB > 27) { roleName = "共情透支者"; }
-    else if (dominated && topDim === "自我消耗") { roleName = "自我压缩者"; }
-    else if (dominated && topDim === "冲突激发" && topScore >= 16) { roleName = "冲突吸引者"; }
-    else if (dominated && topDim === "冲突激发" && dimScores["情绪倾倒"] >= 10) { roleName = "情绪循环者"; }
-    else if (dominated && topDim === "冲突激发") { roleName = "关系修复者"; }
-    else if (dominated && topDim === "责任转移" && dimScores["自我消耗"] >= 8) { roleName = "自我压缩者"; }
-    else if (dominated && topDim === "责任转移") { roleName = "责任承担者"; }
-    else if (dominated && topDim === "依赖绑定") { roleName = "依赖支柱"; }
-    else if (dominated && topDim === "受害叙述") { roleName = "情绪守护者"; }
-    else {
-      const avgScore = scoreA / 6;
-      // fallback 里也加保护：整体偏低时给关系消耗者而不是负面角色
-      if (avgPerQ_A <= 3.0 && avgPerQ_B <= 3.0) { roleName = "关系消耗者"; }
-      else if (dimScores["自我消耗"] >= avgScore && scoreB > 24) { roleName = "共情透支者"; }
-      else if (dimScores["冲突激发"] >= avgScore && dimScores["情绪倾倒"] >= avgScore) { roleName = "情绪循环者"; }
-      else if (dimScores["责任转移"] >= avgScore && dimScores["自我消耗"] >= avgScore) { roleName = "自我压缩者"; }
-      else if (dimScores["情绪倾倒"] >= avgScore && dimScores["受害叙述"] >= avgScore) { roleName = "情感代偿者"; }
-      else if (dimScores["依赖绑定"] >= avgScore) { roleName = "依赖支柱"; }
-      else if (dimScores["冲突激发"] >= avgScore) { roleName = "关系修复者"; }
-      else if (scoreA >= 80) { roleName = "情绪倾倒者"; }
-      else { roleName = "关系消耗者"; }
-    }
-    const secondRoleName = DIM_TO_ROLE[secondDim];
-    const subRole = (secondScore >= 10 && secondRoleName !== roleName)
-      ? { name: secondRoleName, dim: secondDim, score: secondScore, ...ROLE_DATA[secondRoleName] } : null;
-    const role = ROLE_DATA[roleName];
-    return { ...role, roleName, subRole, scoreA, scoreB, radarData, dimScores, topDim };
-  }, [step, answers]);
+  // ✅ 5. 所有的预处理逻辑都搞定后，才允许进行 return 拦截判断！
+  if (!mounted) return null;
 
   // ─────────────────────────────────────────────
   // [1] 首页 welcome
@@ -774,7 +781,7 @@ export default function App() {
   }
 
   // ─────────────────────────────────────────────
-  // [2] Identity Step（保留原逻辑，统一 button）
+  // [2] Identity Step
   // ─────────────────────────────────────────────
   if (step === 'identity') {
     return (
@@ -887,8 +894,6 @@ export default function App() {
                       border: isSelected
                         ? `2px solid ${accentColor}0.85)`
                         : '1px solid rgba(255,255,255,0.18)',
-                      // 未选中：无阴影，轻盈浮动感
-                      // 选中：只有内发光，不是整体阴影
                       boxShadow: isSelected
                         ? `0 0 16px ${accentColor}0.35) inset, 0 0 24px ${accentColor}0.15)`
                         : 'none',
@@ -976,7 +981,7 @@ export default function App() {
           <span style={{color:'rgba(200,198,230,0.7)'}}>内在能量补给状态</span>
         </p>
 
-        {/* 过渡页按钮 — 统一 btnPrimary，紫灰色系，比首页稍亮 */}
+        {/* 过渡页按钮 */}
         <button
           onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }}
           className="w-full max-w-xs active:scale-95"
@@ -993,7 +998,7 @@ export default function App() {
   );
 
   // ─────────────────────────────────────────────
-  // [5] 结果页 result — 内容完全不变，只统一样式
+  // [5] 结果页 result
   // ─────────────────────────────────────────────
   if (step === 'result' && resultData) {
     const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole, image, imageResult } = resultData;
@@ -1122,54 +1127,53 @@ export default function App() {
     }
 
     const roleColorMap = {
-      'text-red-500':     'rgba(121,71,71,',    // 情绪倾倒者  #794747
-      'text-orange-500':  'rgba(177,71,29,',    // 冲突吸引者  #B1471D
-      'text-amber-400':   'rgba(211,145,109,',  // 关系修复者  #D3916D
-      'text-yellow-400':  'rgba(232,203,192,',  // 责任承担者  #E8CBC0
-      'text-slate-400':   'rgba(139,166,181,',  // 关系消耗者  #8BA6B5
-      'text-fuchsia-400': 'rgba(152,216,208,',  // 共情透支者  #98D8D0
-      'text-emerald-400': 'rgba(0,201,150,',    // 关系清醒者  #00C996
-      'text-cyan-400':    'rgba(203,180,212,',  // 情绪守护者  #CBB4D4
-      'text-blue-400':    'rgba(152,216,208,',  // 依赖支柱    #98D8D0
-      'text-purple-400':  'rgba(246,229,222,',  // 自我压缩者  #F6E5DE
-      'text-rose-400':    'rgba(127,129,176,',  // 情感代偿者  #7F81B0
-      'text-indigo-400':  'rgba(43,58,96,',     // 情绪循环者  #2B3A60
+      'text-red-500':     'rgba(121,71,71,',    // 情绪倾倒者
+      'text-orange-500':  'rgba(177,71,29,',    // 冲突吸引者
+      'text-amber-400':   'rgba(211,145,109,',  // 关系修复者
+      'text-yellow-400':  'rgba(232,203,192,',  // 责任承担者
+      'text-slate-400':   'rgba(139,166,181,',  // 关系消耗者
+      'text-fuchsia-400': 'rgba(152,216,208,',  // 共情透支者
+      'text-emerald-400': 'rgba(0,201,150,',    // 关系清醒者
+      'text-cyan-400':    'rgba(203,180,212,',  // 情绪守护者
+      'text-blue-400':    'rgba(152,216,208,',  // 依赖支柱
+      'text-purple-400':  'rgba(246,229,222,',  // 自我压缩者
+      'text-rose-400':    'rgba(127,129,176,',  // 情感代偿者
+      'text-indigo-400':  'rgba(43,58,96,',     // 情绪循环者
     };
     const rc = roleColorMap[color] || 'rgba(99,102,241,';
 
     const roleAccentMap = {
-      'text-red-500':     'rgba(78,32,32,0.6)',    // #4e2020
-      'text-orange-500':  'rgba(70,41,4,0.6)',     // #462904
-      'text-amber-400':   'rgba(84,74,125,0.5)',   // #544a7d
-      'text-yellow-400':  'rgba(99,111,164,0.5)',  // #636FA4
-      'text-slate-400':   'rgba(51,77,80,0.6)',    // #334d50
-      'text-fuchsia-400': 'rgba(24,25,68,0.6)',    // #181944
-      'text-emerald-400': 'rgba(0,61,77,0.6)',     // #003D4D
-      'text-cyan-400':    'rgba(32,0,44,0.6)',     // #20002C
-      'text-blue-400':    'rgba(24,25,68,0.6)',    // #181944
-      'text-purple-400':  'rgba(93,106,115,0.5)',  // #5D6A73
-      'text-rose-400':    'rgba(70,49,81,0.6)',    // #463151
-      'text-indigo-400':  'rgba(96,108,136,0.5)',  // #606C88
+      'text-red-500':     'rgba(78,32,32,0.6)',
+      'text-orange-500':  'rgba(70,41,4,0.6)',
+      'text-amber-400':   'rgba(84,74,125,0.5)',
+      'text-yellow-400':  'rgba(99,111,164,0.5)',
+      'text-slate-400':   'rgba(51,77,80,0.6)',
+      'text-fuchsia-400': 'rgba(24,25,68,0.6)',
+      'text-emerald-400': 'rgba(0,61,77,0.6)',
+      'text-cyan-400':    'rgba(32,0,44,0.6)',
+      'text-blue-400':    'rgba(24,25,68,0.6)',
+      'text-purple-400':  'rgba(93,106,115,0.5)',
+      'text-rose-400':    'rgba(70,49,81,0.6)',
+      'text-indigo-400':  'rgba(96,108,136,0.5)',
     };
     const rc2 = roleAccentMap[color] || 'rgba(88,28,135,0.18)';
 
     const roleBgBase = {
-      'text-red-500':     'linear-gradient(to bottom, #111111, #4e2020, #794747)',  // 情绪倾倒者
-      'text-orange-500':  'linear-gradient(to bottom, #111111, #462904, #B1471D)',  // 冲突吸引者
-      'text-amber-400':   'linear-gradient(to bottom, #111111, #544a7d, #D3916D)',  // 关系修复者
-      'text-yellow-400':  'linear-gradient(to bottom, #111111, #636FA4, #E8CBC0)',  // 责任承担者
-      'text-slate-400':   'linear-gradient(to bottom, #111111, #334d50, #8BA6B5)',  // 关系消耗者
-      'text-fuchsia-400': 'linear-gradient(to bottom, #111111, #181944, #98D8D0)',  // 共情透支者
-      'text-emerald-400': 'linear-gradient(to bottom, #111111, #003D4D, #00C996)',  // 关系清醒者
-      'text-cyan-400':    'linear-gradient(to bottom, #111111, #20002C, #CBB4D4)',  // 情绪守护者
-      'text-blue-400':    'linear-gradient(to bottom, #111111, #181944, #98D8D0)',  // 依赖支柱
-      'text-purple-400':  'linear-gradient(to bottom, #111111, #5D6A73, #F6E5DE)',  // 自我压缩者
-      'text-rose-400':    'linear-gradient(to bottom, #111111, #463151, #7F81B0)',  // 情感代偿者
-      'text-indigo-400':  'linear-gradient(to bottom, #111111, #606C88, #2B3A60)',  // 情绪循环者
+      'text-red-500':     'linear-gradient(to bottom, #111111, #4e2020, #794747)',
+      'text-orange-500':  'linear-gradient(to bottom, #111111, #462904, #B1471D)',
+      'text-amber-400':   'linear-gradient(to bottom, #111111, #544a7d, #D3916D)',
+      'text-yellow-400':  'linear-gradient(to bottom, #111111, #636FA4, #E8CBC0)',
+      'text-slate-400':   'linear-gradient(to bottom, #111111, #334d50, #8BA6B5)',
+      'text-fuchsia-400': 'linear-gradient(to bottom, #111111, #181944, #98D8D0)',
+      'text-emerald-400': 'linear-gradient(to bottom, #111111, #003D4D, #00C996)',
+      'text-cyan-400':    'linear-gradient(to bottom, #111111, #20002C, #CBB4D4)',
+      'text-blue-400':    'linear-gradient(to bottom, #111111, #181944, #98D8D0)',
+      'text-purple-400':  'linear-gradient(to bottom, #111111, #5D6A73, #F6E5DE)',
+      'text-rose-400':    'linear-gradient(to bottom, #111111, #463151, #7F81B0)',
+      'text-indigo-400':  'linear-gradient(to bottom, #111111, #606C88, #2B3A60)',
     };
     const pageBg = roleBgBase[color] || 'linear-gradient(to bottom, #111111, #1a1a2e, #2B3A60)';
 
-    // 结果页进度条（跟随角色色）
     const roleProgressFill = (pct) => ({
       width: `${pct}%`, height: '100%', borderRadius: '2px',
       background: `linear-gradient(90deg, ${rc}0.5), ${rc}0.85))`,
@@ -1191,9 +1195,8 @@ export default function App() {
           }
         `}</style>
 
-        {/* ── 背景流体：更强的色彩饱和度 ── */}
+        {/* ── 背景流体 ── */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{zIndex:0}}>
-          {/* 主光晕：左上，更大更亮 */}
           <div style={{
             position:'absolute', top:'-15%', left:'-25%',
             width:'100%', height:'70%',
@@ -1201,28 +1204,24 @@ export default function App() {
             filter:'blur(90px)',
             animation:'pulseGlow 6s ease-in-out infinite',
           }}/>
-          {/* 副光晕：右下，对比色 */}
           <div style={{
             position:'absolute', bottom:'5%', right:'-20%',
             width:'75%', height:'55%',
             background:`radial-gradient(ellipse, ${rc2} 0%, transparent 65%)`,
             filter:'blur(80px)',
           }}/>
-          {/* 中间晕：让颜色渗透整个页面 */}
           <div style={{
             position:'absolute', top:'35%', left:'10%',
             width:'80%', height:'50%',
             background:`radial-gradient(ellipse, ${rc}0.14) 0%, transparent 65%)`,
             filter:'blur(110px)',
           }}/>
-          {/* 流线装饰 */}
           <svg className="absolute inset-0 w-full h-full" style={{opacity:0.06}}
             viewBox="0 0 390 844" fill="none" preserveAspectRatio="xMidYMid slice">
             <path d="M-20 150 C 100 120, 200 200, 420 140" stroke="white" strokeWidth="1" fill="none"/>
             <path d="M-20 400 C 80 360, 220 440, 420 380" stroke="white" strokeWidth="0.8" fill="none"/>
             <path d="M-20 650 C 120 610, 260 680, 420 620" stroke="white" strokeWidth="0.6" fill="none"/>
           </svg>
-          {/* 粒子 */}
           {[
             {l:'8%', t:'22%',d:'0s',  dur:'8s', s:2.5,c:rc},
             {l:'22%',t:'45%',d:'3s',  dur:'10s',s:3,  c:rc},
@@ -1241,10 +1240,9 @@ export default function App() {
 
         <div className="relative max-w-md mx-auto px-5 pt-10 pb-12" style={{zIndex:1}}>
 
-          {/* ① HERO ── 角色名超大，视觉锚点 */}
+          {/* ① HERO */}
           <section className="text-center" style={{marginBottom:'24px'}}>
 
-            {/* 状态 badge — 实色背景，不透明 */}
             <div style={{
               display:'inline-flex', alignItems:'center', gap:'6px',
               background:`${rc}0.18)`, border:`1px solid ${rc}0.5)`,
@@ -1259,7 +1257,6 @@ export default function App() {
               </span>
             </div>
 
-            {/* 角色名 ── 超大，层级拉满 */}
             <h2 style={{
               fontSize: 'clamp(3rem, 12vw, 4.5rem)',
               fontWeight: 800,
@@ -1272,7 +1269,6 @@ export default function App() {
               {String(roleName)}
             </h2>
 
-            {/* tag ── 角色色全量，成为第二视觉焦点 */}
             <p style={{
               fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.18em',
               color:'rgba(255,255,255,0.85)',
@@ -1281,13 +1277,11 @@ export default function App() {
               {String(tag)}
             </p>
 
-            {/* 分割线 */}
             <div style={{
               width:'40px', height:'1px', margin:'0 auto 24px',
               background:`linear-gradient(90deg, transparent, ${rc}0.8), transparent)`,
             }}/>
 
-            {/* definition ── t3，稍微提亮 */}
             <p style={{
               ...DS.type.t3, color:'rgba(255,255,255,0.72)',
               maxWidth:'280px', margin:`0 auto ${DS.space.sm}`,
@@ -1295,7 +1289,6 @@ export default function App() {
               {String(definition)}
             </p>
 
-            {/* scene ── 引言，角色色斜体，比之前更醒目 */}
             {scene && (
               <p style={{
                 ...DS.type.t3, fontStyle:'italic', fontWeight:700,
@@ -1309,7 +1302,6 @@ export default function App() {
               </p>
             )}
 
-            {/* 副机制 ── 更强的边框 */}
             {subRole && (
               <div style={{
                 ...DS.cardInner,
@@ -1354,7 +1346,7 @@ export default function App() {
             )}
           </section>
 
-          {/* ③ 常见互动 + 消耗 ── 卡片边框用角色色，更有存在感 */}
+          {/* ③ 常见互动 + 消耗 */}
           <section style={{
             ...DS.card,
             border:`1px solid ${rc}0.20)`,
@@ -1393,7 +1385,6 @@ export default function App() {
               <div style={{display:'flex', alignItems:'center', justifyContent:'space-between',
                 marginTop:DS.space.sm, marginBottom:'8px'}}>
                 <span style={{...DS.label, color:DS.text.muted}}>关系消耗程度</span>
-                {/* 总分大数字 — 拉开层级 */}
                 <span style={{
                   fontSize:'1.5rem', fontWeight:800, letterSpacing:'-0.02em',
                   color:`${rc}1)`,
@@ -1436,7 +1427,6 @@ export default function App() {
                           {stateLabel}
                         </span>
                       </div>
-                      {/* 分数：用角色色 + 更大 */}
                       <span style={{
                         fontSize:'0.875rem', fontWeight:700,
                         color: ratio>0.5 ? `${rc}1)` : DS.text.muted,
@@ -1527,7 +1517,7 @@ export default function App() {
             );
           })()}
 
-          {/* ⑥ 建议卡片 ── 实色背景，最醒目的内容卡片 */}
+          {/* ⑥ 建议卡片 */}
           <section style={{
             borderRadius:'20px',
             background: rc2,
