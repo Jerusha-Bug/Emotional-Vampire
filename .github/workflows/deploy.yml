@@ -1,29 +1,22 @@
 name: 自动构建并部署到阿里云
-
 on:
   push:
     branches:
       - main
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: 1. 获取代码
         uses: actions/checkout@v3
-
       - name: 2. 安装 Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # 这里改成了 20
-
+          node-version: '20'
       - name: 3. 安装依赖并打包
         run: |
           npm install
           npm run build
-          ls -F
-
       - name: 4. 传输文件到阿里云
         uses: appleboy/scp-action@master
         with:
@@ -31,6 +24,16 @@ jobs:
           username: ${{ secrets.ALIYUN_USER }}
           password: ${{ secrets.ALIYUN_PWD }}
           port: 22
-          source: "build/*"  # 这里从 dist 改成 build
-          target: "/www/wwwroot/dementor.hey-makkie.cn"
+          source: "build/*"
+          target: "/var/www/emotional-vampire/build"
           strip_components: 1
+      - name: 5. 重启服务
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ALIYUN_HOST }}
+          username: ${{ secrets.ALIYUN_USER }}
+          password: ${{ secrets.ALIYUN_PWD }}
+          port: 22
+          script: |
+            cd /var/www/emotional-vampire
+            pm2 restart dementor
