@@ -1354,8 +1354,7 @@ export default function App() {
             </button>
             <button onClick={() => setShowPoster(true)}
               className="active:scale-95"
-              
-style={{flex：2， height：'56px'， background：'rgba（255,255,255,0.10）'，style={{flex:2, height:'56px', background:'rgba(255,255,255,0.10)',  
+              style={{flex:2, height:'56px', background:'rgba(255,255,255,0.10)',
                 backdropFilter:'blur(12px)', border:'1px solid rgba(255,255,255,0.20)',
                 borderRadius:'9999px', color:'#F2F3FB', fontWeight:700, fontSize:'0.9rem',
                 letterSpacing:'0.04em', display:'flex', alignItems:'center', justifyContent:'center', gap:'8px',
