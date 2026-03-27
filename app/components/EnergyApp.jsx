@@ -560,51 +560,95 @@ export default function App() {
     const sorted = [...extDims].sort((a, b) => dimScores[b] - dimScores[a]);
     const topDim = sorted[0]; const secondDim = sorted[1];
     const topScore = dimScores[topDim]; const secondScore = dimScores[secondDim];
-    const gap = topScore - secondScore; const dominated = gap >= 3;
     let roleName;
     const avgPerQ_A = scoreA / 24;
-    const avgPerQ_B = scoreB / 8;
-    if (avgPerQ_A <= 2.5) { roleName = "关系清醒者"; }
-    else if (avgPerQ_A >= 4.0) { roleName = "情绪倾倒者"; }
-    else if (dominated && topDim === "情绪互动" && topScore >= 16) { roleName = "情绪倾倒者"; }
-    else if (dominated && topDim === "情绪互动") { roleName = "情感代偿者"; }
-    else if (dominated && topDim === "自我状态") { roleName = "共情透支者"; }
-    else if (dominated && topDim === "冲突模式" && topScore >= 16) { roleName = "冲突吸引者"; }
-    else if (dominated && topDim === "冲突模式" && dimScores["情绪互动"] >= 10) { roleName = "情绪循环者"; }
-    else if (dominated && topDim === "冲突模式") { roleName = "关系修复者"; }
-    else if (dominated && topDim === "边界感" && dimScores["自我状态"] >= 8) { roleName = "自我压缩者"; }
-    else if (dominated && topDim === "边界感") { roleName = "责任承担者"; }
-    else if (dominated && topDim === "支持感") { roleName = "依赖支柱"; }
-    else if (dominated && topDim === "安全感") { roleName = "情绪守护者"; }
-    else {
-      const avgScore = scoreA / 6;
-      if (avgPerQ_A <= 3.0) { roleName = "关系消耗者"; }
-      else if (dimScores["自我状态"] >= avgScore) { roleName = "共情透支者"; }
-      else if (dimScores["冲突模式"] >= avgScore && dimScores["情绪互动"] >= avgScore) { roleName = "情绪循环者"; }
-      else if (dimScores["边界感"] >= avgScore && dimScores["自我状态"] >= avgScore) { roleName = "自我压缩者"; }
-      else if (dimScores["情绪互动"] >= avgScore && dimScores["安全感"] >= avgScore) { roleName = "情感代偿者"; }
-      else if (dimScores["支持感"] >= avgScore) { roleName = "依赖支柱"; }
-      else if (dimScores["冲突模式"] >= avgScore) { roleName = "关系修复者"; }
-      else if (scoreA >= 80) { roleName = "情绪倾倒者"; }
-      else { roleName = "关系消耗者"; }
+
+    // ── 权重评分模型 v2 ──
+
+    // Step 1: 关系清醒者快速返回
+    if (avgPerQ_A <= 2.5) {
+      roleName = "关系清醒者";
+    } else {
+      // Step 2: 归一化（每个维度满分25）
+      const norm = (dim) => (dimScores[dim] || 0) / 25;
+      const d = {
+        ei: norm("情绪互动"), aq: norm("安全感"), bj: norm("边界感"),
+        zc: norm("支持感"),   ct: norm("冲突模式"), zw: norm("自我状态"),
+      };
+      const raw = {
+        ei: dimScores["情绪互动"]||0, aq: dimScores["安全感"]||0,
+        bj: dimScores["边界感"]||0,   zc: dimScores["支持感"]||0,
+        ct: dimScores["冲突模式"]||0, zw: dimScores["自我状态"]||0,
+      };
+
+      // Step 2: 权重分
+      const rw = {
+        "情感代偿者": d.ei*0.40 + d.aq*0.10 + d.bj*0.05 + d.zc*0.25 + d.ct*0.00 + d.zw*0.20,
+        "情绪倾倒者": d.ei*0.45 + d.aq*0.05 + d.bj*0.05 + d.zc*0.15 + d.ct*0.05 + d.zw*0.25,
+        "共情透支者": d.ei*0.25 + d.aq*0.25 + d.bj*0.10 + d.zc*0.05 + d.ct*0.00 + d.zw*0.35,
+        "关系修复者": d.ei*0.10 + d.aq*0.10 + d.bj*0.10 + d.zc*0.30 + d.ct*0.35 + d.zw*0.05,
+        "冲突吸引者": d.ei*0.10 + d.aq*0.35 + d.bj*0.10 + d.zc*0.05 + d.ct*0.35 + d.zw*0.05,
+        "责任承担者": d.ei*0.10 + d.aq*0.10 + d.bj*0.45 + d.zc*0.25 + d.ct*0.05 + d.zw*0.05,
+        "依赖支柱":   d.ei*0.35 + d.aq*0.05 + d.bj*0.05 + d.zc*0.45 + d.ct*0.05 + d.zw*0.05,
+        "情绪守护者": d.ei*0.10 + d.aq*0.45 + d.bj*0.15 + d.zc*0.10 + d.ct*0.10 + d.zw*0.10,
+        "自我压缩者": d.ei*0.05 + d.aq*0.30 + d.bj*0.35 + d.zc*0.05 + d.ct*0.05 + d.zw*0.20,
+        "情绪循环者": d.ei*0.30 + d.aq*0.05 + d.bj*0.05 + d.zc*0.10 + d.ct*0.45 + d.zw*0.05,
+      };
+
+      // Step 3: 反向抑制（分级）
+      if (raw.zc >= 14) rw["情绪倾倒者"] -= 0.20;
+      else if (raw.zc >= 12) rw["情绪倾倒者"] -= 0.15;
+
+      // Step 4: 失衡放大（5条）
+      if (raw.ei >= 16 && raw.zc <= 8)  rw["情感代偿者"] += 0.20;
+      if (raw.ei >= 18 && raw.zw >= 14) rw["情绪倾倒者"] += 0.20;
+      if (raw.zc >= 16 && raw.ei >= 14) rw["依赖支柱"]   += 0.20;
+      if (raw.ct >= 16 && raw.aq >= 14) rw["冲突吸引者"] += 0.20;
+      if (raw.bj >= 14 && raw.aq >= 14) rw["自我压缩者"] += 0.20;
+
+      // Step 5: 排序
+      const sortedRoles = Object.entries(rw).sort((a,b) => b[1]-a[1]);
+      const top1Score = sortedRoles[0][1];
+      const top2Score = sortedRoles[1][1];
+      const top1Name  = sortedRoles[0][0];
+      const top2Name  = sortedRoles[1][0];
+      const gap = top1Score - top2Score;
+      const maxDimScore = Math.max(...Object.values(raw));
+
+      // Step 6: 稳定器（双角色优先判断）
+      const isDual = gap < 0.05 && top1Score >= 0.52 && top2Score >= 0.45;
+
+      // Step 7: fallback（最后兜底）
+      if (!isDual && top1Score < 0.58 && maxDimScore < 14) {
+        roleName = "关系消耗者";
+      } else {
+        roleName = top1Name;
+      }
+
+      // Step 8: 副角色
+      // 双角色模式强制输出，单角色模式需top2 >= 0.40
+      const subRoleName2 = (isDual || top2Score >= 0.40) ? top2Name : null;
+      var computedSubRole = subRoleName2 && ROLE_DATA[subRoleName2]
+        ? { name: subRoleName2, isDual, ...ROLE_DATA[subRoleName2] }
+        : null;
     }
-    const secondRoleName = DIM_TO_ROLE[secondDim];
-    const subRole = (secondScore >= 10 && secondRoleName !== roleName)
-      ? { name: secondRoleName, dim: secondDim, score: secondScore, ...ROLE_DATA[secondRoleName] } : null;
+
+    const subRole = typeof computedSubRole !== 'undefined' ? computedSubRole : null;
     const role = ROLE_DATA[roleName];
-    // status 只基于 Part A 的主导维度，Part B 完全独立不干预
+    // status 基于最高维度原始分占比，Part B 完全独立
     let dynamicStatus = '稳定';
     if (roleName === '关系清醒者') {
       dynamicStatus = '稳定';
     } else {
-      const topDimScore = dimScores[topDim] || 0;
-      const topDimRatio = topDimScore / 25;
-      if (topDimRatio >= 0.76) dynamicStatus = '严重损耗';
-      else if (topDimRatio >= 0.56) dynamicStatus = '明显损耗';
-      else if (topDimRatio >= 0.36) dynamicStatus = '轻度损耗';
+      const allDimScores = DIMENSIONS.slice(0,6).map(d => dimScores[d]||0);
+      const maxDim = Math.max(...allDimScores);
+      const maxDimRatio = maxDim / 25;
+      if (maxDimRatio >= 0.76) dynamicStatus = '严重损耗';
+      else if (maxDimRatio >= 0.56) dynamicStatus = '明显损耗';
+      else if (maxDimRatio >= 0.36) dynamicStatus = '轻度损耗';
       else dynamicStatus = '稳定';
     }
-    return { ...role, roleName, subRole, scoreA, scoreB, radarData, dimScores, topDim, status: dynamicStatus };
+    return { ...role, roleName, subRole, scoreA, scoreB, radarData, dimScores, status: dynamicStatus };
   }, [step, answers]);
 
   const finalTarget = targetPerson.trim() || 'TA';
@@ -642,16 +686,41 @@ export default function App() {
       const sorted2 = Object.entries(dimTotals).filter(([k]) => k !== "内在补能模式").sort((a,b) => b[1]-a[1]);
       const topD = sorted2[0]?.[0]; const topS = sorted2[0]?.[1] || 0;
       const secS = sorted2[1]?.[1] || 0; const dom = (topS - secS) >= 3;
-      let insertRole = "关系消耗者";
-      if (avgPerQ <= 2.5) insertRole = "关系清醒者";
-      else if (avgPerQ >= 4.0) insertRole = "情绪倾倒者";
-      else if (dom && topD === "情绪互动" && topS >= 16) insertRole = "情绪倾倒者";
-      else if (dom && topD === "情绪互动") insertRole = "情感代偿者";
-      else if (dom && topD === "冲突模式" && topS >= 16) insertRole = "冲突吸引者";
-      else if (dom && topD === "支持感") insertRole = "依赖支柱";
-      else if (dom && topD === "边界感") insertRole = "责任承担者";
-      else if (dom && topD === "安全感") insertRole = "情绪守护者";
-      else if (dom && topD === "自我状态") insertRole = "自我压缩者";
+      // 权重评分模型 v2（与 resultData 保持一致）
+      const normI = (dim) => (dimTotals[dim] || 0) / 25;
+      const dI = {
+        ei: normI("情绪互动"), aq: normI("安全感"), bj: normI("边界感"),
+        zc: normI("支持感"),   ct: normI("冲突模式"), zw: normI("自我状态"),
+      };
+      const rawI = {
+        ei: dimTotals["情绪互动"]||0, aq: dimTotals["安全感"]||0,
+        bj: dimTotals["边界感"]||0,   zc: dimTotals["支持感"]||0,
+        ct: dimTotals["冲突模式"]||0, zw: dimTotals["自我状态"]||0,
+      };
+      const rwI = {
+        "情感代偿者": dI.ei*0.40+dI.aq*0.10+dI.bj*0.05+dI.zc*0.25+dI.ct*0.00+dI.zw*0.20,
+        "情绪倾倒者": dI.ei*0.45+dI.aq*0.05+dI.bj*0.05+dI.zc*0.15+dI.ct*0.05+dI.zw*0.25,
+        "共情透支者": dI.ei*0.25+dI.aq*0.25+dI.bj*0.10+dI.zc*0.05+dI.ct*0.00+dI.zw*0.35,
+        "关系修复者": dI.ei*0.10+dI.aq*0.10+dI.bj*0.10+dI.zc*0.30+dI.ct*0.35+dI.zw*0.05,
+        "冲突吸引者": dI.ei*0.10+dI.aq*0.35+dI.bj*0.10+dI.zc*0.05+dI.ct*0.35+dI.zw*0.05,
+        "责任承担者": dI.ei*0.10+dI.aq*0.10+dI.bj*0.45+dI.zc*0.25+dI.ct*0.05+dI.zw*0.05,
+        "依赖支柱":   dI.ei*0.35+dI.aq*0.05+dI.bj*0.05+dI.zc*0.45+dI.ct*0.05+dI.zw*0.05,
+        "情绪守护者": dI.ei*0.10+dI.aq*0.45+dI.bj*0.15+dI.zc*0.10+dI.ct*0.10+dI.zw*0.10,
+        "自我压缩者": dI.ei*0.05+dI.aq*0.30+dI.bj*0.35+dI.zc*0.05+dI.ct*0.05+dI.zw*0.20,
+        "情绪循环者": dI.ei*0.30+dI.aq*0.05+dI.bj*0.05+dI.zc*0.10+dI.ct*0.45+dI.zw*0.05,
+      };
+      if (rawI.zc >= 14) rwI["情绪倾倒者"] -= 0.20;
+      else if (rawI.zc >= 12) rwI["情绪倾倒者"] -= 0.15;
+      if (rawI.ei >= 16 && rawI.zc <= 8)  rwI["情感代偿者"] += 0.20;
+      if (rawI.ei >= 18 && rawI.zw >= 14) rwI["情绪倾倒者"] += 0.20;
+      if (rawI.zc >= 16 && rawI.ei >= 14) rwI["依赖支柱"]   += 0.20;
+      if (rawI.ct >= 16 && rawI.aq >= 14) rwI["冲突吸引者"] += 0.20;
+      if (rawI.bj >= 14 && rawI.aq >= 14) rwI["自我压缩者"] += 0.20;
+      const sortedI = Object.entries(rwI).sort((a,b)=>b[1]-a[1]);
+      const maxDimI = Math.max(...Object.values(rawI));
+      let insertRole = avgPerQ <= 2.5 ? "关系清醒者"
+        : (sortedI[0][1] < 0.58 && maxDimI < 14) ? "关系消耗者"
+        : sortedI[0][0];
       try {
         await supabase.from('test_results').insert([{
           relation_type: finalTarget,
@@ -1285,7 +1354,8 @@ export default function App() {
             </button>
             <button onClick={() => setShowPoster(true)}
               className="active:scale-95"
-              style={{flex:2, height:'56px', background:'rgba(255,255,255,0.10)',
+              
+style={{flex：2， height：'56px'， background：'rgba（255,255,255,0.10）'，style={{flex:2, height:'56px', background:'rgba(255,255,255,0.10)',  
                 backdropFilter:'blur(12px)', border:'1px solid rgba(255,255,255,0.20)',
                 borderRadius:'9999px', color:'#F2F3FB', fontWeight:700, fontSize:'0.9rem',
                 letterSpacing:'0.04em', display:'flex', alignItems:'center', justifyContent:'center', gap:'8px',
