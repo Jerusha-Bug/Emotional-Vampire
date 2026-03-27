@@ -816,23 +816,23 @@ export default function App() {
                     style={{
                       transform: isSelected ? 'scale(1.25)' : 'scale(1)',
                       background: isSelected
-                        ? `radial-gradient(ellipse, ${accentColor}0.55) 0%, ${accentColor}0.15) 100%)`
-                        : 'rgba(255,255,255,0.07)',
+                        ? 'rgba(255,255,255,0.35)'
+                        : 'rgba(255,255,255,0.12)',
                       border: isSelected
-                        ? `2px solid ${accentColor}0.85)`
-                        : '1px solid rgba(255,255,255,0.18)',
+                        ? '2px solid rgba(255,255,255,0.90)'
+                        : '1px solid rgba(255,255,255,0.30)',
                       boxShadow: isSelected
-                        ? `0 0 16px ${accentColor}0.35) inset, 0 0 24px ${accentColor}0.15)`
+                        ? '0 0 20px rgba(255,255,255,0.25), 0 0 8px rgba(255,255,255,0.15) inset'
                         : 'none',
                     }}>
                     {isSelected && (
-                      <div className="w-2 h-2 rounded-full"
-                        style={{background: `${accentColor}0.9)`, boxShadow:`0 0 6px ${accentColor}0.8)`}} />
+                      <div className="w-2.5 h-2.5 rounded-full"
+                        style={{background: 'rgba(255,255,255,0.95)', boxShadow:'0 0 8px rgba(255,255,255,0.8)'}} />
                     )}
                   </div>
                   <span style={{
-                    fontSize: '9px', fontWeight: 700, letterSpacing: '0.04em',
-                    color: isSelected ? '#D0CEF0' : 'rgba(255,255,255,0.45)'
+                    fontSize: '11px', fontWeight: 700, letterSpacing: '0.02em',
+                    color: isSelected ? '#FFFFFF' : 'rgba(255,255,255,0.60)'
                   }}>
                     {String(opt.label)}
                   </span>
