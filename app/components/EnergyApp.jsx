@@ -563,13 +563,12 @@ export default function App() {
     let roleName;
     const avgPerQ_A = scoreA / 24;
     const avgPerQ_B = scoreB / 8;
-    if (avgPerQ_A <= 2.5 && avgPerQ_B <= 2.5) { roleName = "关系清醒者"; }
+    if (avgPerQ_A <= 2.5) { roleName = "关系清醒者"; }
     // 全面高分保护：所有维度都高，直接给严重损耗
     else if (avgPerQ_A >= 4.0) { roleName = "情绪倾倒者"; }
     else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪倾倒者"; }
     else if (dominated && topDim === "情绪倾倒") { roleName = "情感代偿者"; }
-    else if (dominated && topDim === "自我消耗" && scoreB > 27) { roleName = "共情透支者"; }
-    else if (dominated && topDim === "自我消耗") { roleName = "自我压缩者"; }
+    else if (dominated && topDim === "自我消耗") { roleName = "共情透支者"; }
     else if (dominated && topDim === "冲突激发" && topScore >= 16) { roleName = "冲突吸引者"; }
     else if (dominated && topDim === "冲突激发" && dimScores["情绪倾倒"] >= 10) { roleName = "情绪循环者"; }
     else if (dominated && topDim === "冲突激发") { roleName = "关系修复者"; }
@@ -579,8 +578,8 @@ export default function App() {
     else if (dominated && topDim === "受害叙述") { roleName = "情绪守护者"; }
     else {
       const avgScore = scoreA / 6;
-      if (avgPerQ_A <= 3.0 && avgPerQ_B <= 3.0) { roleName = "关系消耗者"; }
-      else if (dimScores["自我消耗"] >= avgScore && scoreB > 24) { roleName = "共情透支者"; }
+      if (avgPerQ_A <= 3.0) { roleName = "关系消耗者"; }
+      else if (dimScores["自我消耗"] >= avgScore) { roleName = "共情透支者"; }
       else if (dimScores["冲突激发"] >= avgScore && dimScores["情绪倾倒"] >= avgScore) { roleName = "情绪循环者"; }
       else if (dimScores["责任转移"] >= avgScore && dimScores["自我消耗"] >= avgScore) { roleName = "自我压缩者"; }
       else if (dimScores["情绪倾倒"] >= avgScore && dimScores["受害叙述"] >= avgScore) { roleName = "情感代偿者"; }
@@ -593,20 +592,16 @@ export default function App() {
     const subRole = (secondScore >= 10 && secondRoleName !== roleName)
       ? { name: secondRoleName, dim: secondDim, score: secondScore, ...ROLE_DATA[secondRoleName] } : null;
     const role = ROLE_DATA[roleName];
-    // 动态损耗等级：基于主导维度的严重程度，而非总分
-    // 主导维度满分25，B维度满分40
+    // status 只基于 Part A 的主导维度，Part B 完全独立不干预
     let dynamicStatus = '稳定';
     if (roleName === '关系清醒者') {
       dynamicStatus = '稳定';
     } else {
       const topDimScore = dimScores[topDim] || 0;
       const topDimRatio = topDimScore / 25;
-      const bRatio = dimScores['内在补能模式'] / 40;
-      // 主导维度占比 + B维度综合判断
-      const combinedRatio = (topDimRatio * 0.7) + (bRatio * 0.3);
-      if (combinedRatio >= 0.75) dynamicStatus = '严重损耗';
-      else if (combinedRatio >= 0.55) dynamicStatus = '明显损耗';
-      else if (combinedRatio >= 0.35) dynamicStatus = '轻度损耗';
+      if (topDimRatio >= 0.76) dynamicStatus = '严重损耗';
+      else if (topDimRatio >= 0.56) dynamicStatus = '明显损耗';
+      else if (topDimRatio >= 0.36) dynamicStatus = '轻度损耗';
       else dynamicStatus = '稳定';
     }
     return { ...role, roleName, subRole, scoreA, scoreB, radarData, dimScores, topDim, status: dynamicStatus };
