@@ -1035,7 +1035,7 @@ export default function App() {
         const boldMatch = para.match(/^\*\*(.+?)\*\*(.*)$/s);
         if (boldMatch) {
           return (
-            <p key={i} style={{...DS.type.t3, color:'rgba(255,255,255,0.72)', marginBottom:'10px'}}>
+            <p key={i} style={{...DS.type.t3, color:'rgba(255,255,255,0.85)', marginBottom:'10px'}}>
               <span style={{fontWeight:700, color:`${rc}1)`, display:'block', marginBottom:'4px'}}>
                 {boldMatch[1]}
               </span>
@@ -1043,7 +1043,7 @@ export default function App() {
             </p>
           );
         }
-        return <p key={i} style={{...DS.type.t3, color:'rgba(255,255,255,0.72)', marginBottom:'10px'}}>{para}</p>;
+        return <p key={i} style={{...DS.type.t3, color:'rgba(255,255,255,0.85)', marginBottom:'10px'}}>{para}</p>;
       });
     };
 
@@ -1095,7 +1095,7 @@ export default function App() {
             </p>
             <div style={{width:'40px', height:'1px', margin:'0 auto 24px',
               background:`linear-gradient(90deg, transparent, ${rc}0.8), transparent)`}}/>
-            <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)', maxWidth:'280px', margin:`0 auto ${DS.space.sm}`}}>
+            <p style={{...DS.type.t3, color:'rgba(255,255,255,0.85)', maxWidth:'280px', margin:`0 auto ${DS.space.sm}`}}>
               {String(definition)}
             </p>
             {scene && (
@@ -1142,14 +1142,14 @@ export default function App() {
                   <div key={i} style={{display:'flex', alignItems:'flex-start', gap:'12px'}}>
                     <div style={{width:'5px', height:'5px', borderRadius:'50%', marginTop:'8px', flexShrink:0,
                       background:`${rc}1)`, boxShadow:`0 0 6px ${rc}0.8)`}}/>
-                    <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(b)}</p>
+                    <p style={{...DS.type.t3, color:'rgba(255,255,255,0.85)'}}>{String(b)}</p>
                   </div>
                 ))}
               </div>
             </div>
             <div style={{padding:'20px 24px 24px'}}>
               <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.sm}}>能量消耗</p>
-              <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(impact)}</p>
+              <p style={{...DS.type.t3, color:'rgba(255,255,255,0.85)'}}>{String(impact)}</p>
             </div>
           </section>
 
@@ -1202,7 +1202,7 @@ export default function App() {
                     </div>
                     <p style={{...DS.type.t4, color:DS.text.muted, marginBottom:'6px'}}>{String(DIMENSION_DESCS[dim])}</p>
                     <p style={{...DS.type.t4, color:DS.text.ghost, marginBottom:DS.space.sm}}>{String(DIMENSION_SCORE_DESC[dim])}</p>
-                    <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}</p>
+                    <p style={{...DS.type.t3, color:'rgba(255,255,255,0.85)'}}>{String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}</p>
                   </div>
                 );
               })}
@@ -1246,7 +1246,7 @@ export default function App() {
                   </div>
                   <p style={{...DS.type.t4, color:DS.text.muted, marginBottom:'6px'}}>{String(DIMENSION_DESCS[dim])}</p>
                   <p style={{...DS.type.t4, color:DS.text.ghost, marginBottom:DS.space.sm}}>{String(DIMENSION_SCORE_DESC[dim])}</p>
-                  <p style={{...DS.type.t3, color:'rgba(255,255,255,0.72)'}}>{String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}</p>
+                  <p style={{...DS.type.t3, color:'rgba(255,255,255,0.85)'}}>{String(DIMENSION_LEVEL_DESC[dim]?.[levelKey]||'')}</p>
                 </div>
               </section>
             );
