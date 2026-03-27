@@ -802,7 +802,7 @@ export default function App() {
             Q{String(currentIndex+1).padStart(2,'0')}
           </span>
           <h2 style={{...DS.type.t1, fontSize:'1.65rem', color: DS.text.primary,
-            textShadow:'0 0 40px rgba(255,255,255,0.05)'}}>
+            textShadow:'0 0 40px rgba(255,255,255,0.05)', lineHeight: 1.5}}>
             {String(q.text).replace('{target}', finalTarget)}
           </h2>
         </div>
