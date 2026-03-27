@@ -135,58 +135,58 @@ const OPTIONS = [
   { label: "从不", value: 1 }, { label: "很少", value: 2 }, { label: "有时", value: 3 }, { label: "经常", value: 4 }, { label: "总是", value: 5 }
 ];
 
-const DIMENSIONS = ["情绪倾倒", "受害叙述", "责任转移", "依赖绑定", "冲突激发", "自我消耗", "内在补能模式"];
+const DIMENSIONS = ["情绪互动", "安全感", "边界感", "支持感", "冲突模式", "自我状态", "内在补能模式"];
 
 const DIMENSION_DESCS = {
-  "情绪倾倒": "这反映了对方是否将你视为单纯的情绪宣泄口。",
-  "受害叙述": "这反映了对方是否通过展示弱势来博取你的同情。",
-  "责任转移": "这反映了关系中责任承担的失衡。",
-  "依赖绑定": "这反映了对方是否在通过'没你不行'来捆绑你的自由。",
-  "冲突激发": "这反映了互动中的摩擦频率。",
-  "自我消耗": "这是最直接的生命力流失，代表你的自我认同感正在被磨损。",
+  "情绪互动": "这反映了你在这段关系中投入情绪精力的程度。",
+  "安全感": "这反映了你在这段关系中表达自己时的自由度。",
+  "边界感": "这反映了你在关系中维护自身边界的状态。",
+  "支持感": "这反映了这段关系中付出与支持的平衡程度。",
+  "冲突模式": "这反映了你们处理分歧和摩擦的方式。",
+  "自我状态": "这反映了这段关系对你自身状态的影响。",
   "内在补能模式": "这反映了你当前内在的能量储备状态，以及你是否可能在无意识地向外寻求情绪补给。"
 };
 
 const DIMENSION_SCORE_DESC = {
-  "情绪倾倒": "分数越高，代表你在这段关系中承受的情绪输出越多，对方越习惯把负面情绪倾倒给你。",
-  "受害叙述": "分数越高，代表对方越频繁地通过示弱、诉苦来影响你的判断，让你难以拒绝或表达自己。",
-  "责任转移": "分数越高，代表你替对方承担了越多本不属于你的责任，关系中的付出严重失衡。",
-  "依赖绑定": "分数越高，代表对方对你的情绪依赖越深，你的自由空间正在被这种依赖慢慢压缩。",
-  "冲突激发": "分数越高，代表你们的互动中摩擦越频繁，每一次冲突都在持续消耗你的情绪资源。",
-  "自我消耗": "分数越高，代表这段关系对你自我认同的磨损越严重，你越容易在其中迷失自己。",
+  "情绪互动": "分数越高，代表你在这段关系中需要投入的情绪精力越多，互动对你情绪的占用越大。",
+  "安全感": "分数越高，代表你在这段关系中的安全感越低，表达自己时需要更多的顾虑。",
+  "边界感": "分数越高，代表你在这段关系中维护自身边界的难度越大，个人空间受到的影响越明显。",
+  "支持感": "分数越高，代表这段关系中支持的不平衡程度越高，你获得的回馈相对较少。",
+  "冲突模式": "分数越高，代表你们之间的摩擦频率越高，冲突对你情绪资源的消耗越明显。",
+  "自我状态": "分数越高，代表这段关系对你自身状态的影响越大，你越难在其中保持自己原有的节奏。",
   "内在补能模式": "分数越高，代表你当前的内在能量越匮乏。当一个人长期处于低能量状态时，会不自觉地向身边的人寻求更多情绪支持与关注——这是一种自然的心理补偿机制，不是你的错。"
 };
 
 const DIMENSION_LEVEL_DESC = {
-  "情绪倾倒": {
-    stable: "你在这个维度目前还算平衡，对方的情绪输出没有明显压过你。继续保持对自己感受的关注，这是健康关系的基础。",
-    active: "你已经开始感受到对方情绪的重量了。有时候你可能没意识到，但那种聊完之后很累的感觉，正是情绪被倾倒的信号。",
-    overload: "你几乎成了对方的专属情绪容器。每一次对话结束，你都需要消化大量不属于你的情绪，这种长期积累会让你越来越难恢复。"
+  "情绪互动": {
+    stable: "你在这段关系中的情绪投入目前比较平衡，互动对你的情绪消耗不明显。这是一个健康的信号。",
+    active: "你开始感受到这段关系对情绪精力的占用了。那种互动结束后有些疲惫的感觉，值得留意。",
+    overload: "这段关系对你情绪精力的占用已经比较大了。每次互动结束，你可能都需要一段时间来恢复状态。"
   },
-  "受害叙述": {
-    stable: "这段关系里，对方还没有明显用我很可怜来影响你的判断。你的同情心目前是自由的，没有被绑架。",
-    active: "你有时候会因为对方的遭遇而压下自己的感受。这不一定是坏事，但值得留意——你的让步，是真心的，还是被触动的？",
-    overload: "对方擅长用脆弱来占据道德高地。你很难拒绝一个受害者，但这种模式正在让你失去表达自己的空间。"
+  "安全感": {
+    stable: "你在这段关系中表达自己时比较自由，没有明显需要顾虑的感觉。这说明关系有一定的安全基础。",
+    active: "你有时会在表达前考虑对方的反应。这不一定是问题，但值得留意——你的顾虑，是来自关心，还是来自不安？",
+    overload: "你在这段关系中的安全感比较低，表达真实想法需要较多的顾虑。这种长期的压抑会积累成内耗。"
   },
-  "责任转移": {
-    stable: "目前你们之间的责任分配还算合理，你没有明显感到这不是我的问题但我在处理的情况。",
-    active: "你开始替对方承担一些本不属于你的事情了。有时候是因为你善良，有时候是因为不想起冲突，但结果都是你多付出了。",
-    overload: "你已经习惯性地为对方的行为找理由、善后、道歉。这种模式很消耗人，因为你在用自己的能量填补对方不愿承担的部分。"
+  "边界感": {
+    stable: "你在这段关系中的边界状态目前比较健康，没有明显感到自己的空间被占用。",
+    active: "你开始注意到自己有时会为了维持关系而调整决定。偶尔的让步是正常的，但如果成为规律就值得关注。",
+    overload: "你在这段关系中维护自身边界的难度比较大，个人空间和决定受到的影响已经比较明显了。"
   },
-  "依赖绑定": {
-    stable: "对方目前没有表现出过度依赖你的迹象，你在这段关系里还保有自己的空间和节奏。",
-    active: "你开始感觉到对方需要你的频率有点高。只有你懂我听起来像赞美，但也可能是一种无形的绑定。",
-    overload: "你已经成为对方情绪系统的核心支撑。离开你，对方会陷入焦虑——而这份责任感，正在一点点压缩你的自由。"
+  "支持感": {
+    stable: "这段关系中的付出和支持目前比较平衡，你能在需要时获得回应。这是关系健康的重要基础。",
+    active: "你开始感觉到这段关系中的支持有些不均衡。你付出的和获得的，是不是不太对等？",
+    overload: "这段关系中的支持失衡已经比较明显了。你在大量付出，但获得的回馈相对很少。"
   },
-  "冲突激发": {
-    stable: "你们的沟通目前比较顺畅，没有频繁的摩擦或升温。这是一个好的信号，说明你们在表达上还有空间。",
-    active: "你们之间有些话题变得越来越难聊，容易擦枪走火。每次冲突消耗的不只是时间，还有你的情绪储备。",
-    overload: "你们的互动模式已经很容易触发冲突。你可能发现自己在说话前会先想这样说会不会又吵起来，这种预判本身就是一种消耗。"
+  "冲突模式": {
+    stable: "你们目前处理分歧的方式比较健康，摩擦不频繁，也能基本沟通解决。",
+    active: "你们之间有些话题或情境容易产生摩擦。每次冲突消耗的不只是时间，还有情绪资源。",
+    overload: "你们的互动模式比较容易产生摩擦或冲突，这种高频的消耗会让人越来越难以恢复。"
   },
-  "自我消耗": {
-    stable: "你的自我状态目前还比较稳定，这段关系还没有明显影响你对自己的看法。",
-    active: "你有时候会因为这段关系而怀疑自己——是不是我太敏感了？是不是我要求太多？这些问题值得你认真对待。",
-    overload: "你已经在这段关系里丢失了一部分自己。那个不断妥协、不断反思、不断压抑的你，正在付出非常真实的代价。"
+  "自我状态": {
+    stable: "这段关系目前对你的自身状态影响不大，你能比较自然地保持自己的节奏和状态。",
+    active: "你有时会感到这段关系对你的状态有些影响——偶尔需要反复回想，或者感到有些疲惫。",
+    overload: "这段关系对你自身状态的影响已经比较大了。你可能发现自己越来越难在其中保持原有的自己。"
   },
   "内在补能模式": {
     stable: "你的内在能量储备目前比较充足，有足够的资源去维持自己的状态，也有余力去关心身边的人。这是一个健康的信号，继续照顾好自己。",
@@ -196,30 +196,30 @@ const DIMENSION_LEVEL_DESC = {
 };
 
 const QUESTIONS = [
-  { id: 2, part: "A", dim: "情绪倾倒", text: "我需要花很多精力安抚{target}的情绪。" },
-  { id: 3, part: "A", dim: "情绪倾倒", text: "{target}经常向我倾倒负面情绪。" },
-  { id: 4, part: "A", dim: "情绪倾倒", text: "我需要压抑自己的真实感受去配合{target}。" },
-  { id: 5, part: "A", dim: "情绪倾倒", text: "和{target}沟通让我有心理负担。" },
-  { id: 6, part: "A", dim: "受害叙述", text: "我担心向{target}表达真实想法会引发冲突。" },
-  { id: 7, part: "A", dim: "受害叙述", text: "我会因为{target}的态度而情绪波动很大。" },
-  { id: 8, part: "A", dim: "受害叙述", text: "我经常猜测{target}是不是对我不满。" },
-  { id: 9, part: "A", dim: "受害叙述", text: "我在这段关系中缺乏稳定感。" },
-  { id: 11, part: "A", dim: "责任转移", text: "{target}会干涉我的决定或生活。" },
-  { id: 12, part: "A", dim: "责任转移", text: "我很难拒绝{target}的请求。" },
-  { id: 13, part: "A", dim: "责任转移", text: "即使不愿意，我也会答应{target}。" },
-  { id: 14, part: "A", dim: "责任转移", text: "我觉得自己需要为{target}的情绪负责。" },
-  { id: 16, part: "A", dim: "依赖绑定", text: "我付出的比{target}多。" },
-  { id: 17, part: "A", dim: "依赖绑定", text: "{target}很少关心我的感受。" },
-  { id: 19, part: "A", dim: "依赖绑定", text: "{target}只在需要时才联系我。" },
-  { id: 20, part: "A", dim: "依赖绑定", text: "我很少从这段关系中获得支持。" },
-  { id: 22, part: "A", dim: "冲突激发", text: "{target}会指责或否定我。" },
-  { id: 23, part: "A", dim: "冲突激发", text: "冲突后通常是我先向{target}道歉。" },
-  { id: 24, part: "A", dim: "冲突激发", text: "{target}会回避问题不沟通。" },
-  { id: 25, part: "A", dim: "冲突激发", text: "小问题会被放大成大矛盾。" },
-  { id: 27, part: "A", dim: "自我消耗", text: "你为了维持关系改变了自己。" },
-  { id: 28, part: "A", dim: "自我消耗", text: "你会反复回想{target}说过的话。" },
-  { id: 29, part: "A", dim: "自我消耗", text: "你在这段关系中感到内耗。" },
-  { id: 30, part: "A", dim: "自我消耗", text: "你有想过疏远{target}。" },
+  { id: 1,  part: "A", dim: "情绪互动", text: "当{target}情绪不好时，我通常会参与安抚或陪伴。" },
+  { id: 2,  part: "A", dim: "情绪互动", text: "{target}会主动和我分享自己的情绪状态。" },
+  { id: 3,  part: "A", dim: "情绪互动", text: "在和{target}相处后，我通常感到轻松。", reverse: true },
+  { id: 4,  part: "A", dim: "情绪互动", text: "我在这段关系中需要投入较多情绪精力。" },
+  { id: 5,  part: "A", dim: "安全感",   text: "我可以自然地向{target}表达真实想法。", reverse: true },
+  { id: 6,  part: "A", dim: "安全感",   text: "我会在表达前考虑{target}的反应。" },
+  { id: 7,  part: "A", dim: "安全感",   text: "{target}的态度会影响我的情绪状态。" },
+  { id: 8,  part: "A", dim: "安全感",   text: "这段关系整体让我感到稳定。", reverse: true },
+  { id: 9,  part: "A", dim: "边界感",   text: "{target}会参与或影响我的一些决定。" },
+  { id: 10, part: "A", dim: "边界感",   text: "当我不想答应时，我可以拒绝{target}。", reverse: true },
+  { id: 11, part: "A", dim: "边界感",   text: "我有时会为了维持关系而改变原本的决定。" },
+  { id: 12, part: "A", dim: "边界感",   text: "当{target}情绪波动时，我会下意识去回应或处理。" },
+  { id: 13, part: "A", dim: "支持感",   text: "我和{target}之间的付出是相对平衡的。", reverse: true },
+  { id: 14, part: "A", dim: "支持感",   text: "{target}会关注我的感受和状态。", reverse: true },
+  { id: 15, part: "A", dim: "支持感",   text: "{target}通常在需要时才会联系我。" },
+  { id: 16, part: "A", dim: "支持感",   text: "在需要帮助时，我可以向{target}寻求支持。", reverse: true },
+  { id: 17, part: "A", dim: "冲突模式", text: "当出现分歧时，我们通常可以沟通解决。", reverse: true },
+  { id: 18, part: "A", dim: "冲突模式", text: "在冲突中，我更容易主动缓和关系。" },
+  { id: 19, part: "A", dim: "冲突模式", text: "{target}有时会回避沟通或延后讨论问题。" },
+  { id: 20, part: "A", dim: "冲突模式", text: "一些小问题有时会演变成更大的矛盾。" },
+  { id: 21, part: "A", dim: "自我状态", text: "这段关系让我能够保持原本的自己。", reverse: true },
+  { id: 22, part: "A", dim: "自我状态", text: "我有时会反复回想{target}说过的话。" },
+  { id: 23, part: "A", dim: "自我状态", text: "和{target}相处会消耗我的精力。" },
+  { id: 24, part: "A", dim: "自我状态", text: "我可以自然地从这段关系中抽离和休息。", reverse: true },
   { id: 31, part: "B", dim: "内在补能模式", text: "我觉得周围的人大多都带着一身麻烦，需要我去关注。" },
   { id: 32, part: "B", dim: "内在补能模式", text: "我觉得自己对人生中发生的大部分事情都无能为力。" },
   { id: 33, part: "B", dim: "内在补能模式", text: "在我真正需要帮助时，身边几乎找不到可以依靠的人。" },
@@ -411,9 +411,9 @@ const ROLE_BAR_COLOR = {
 };
 
 const DIM_TO_ROLE = {
-  "情绪倾倒": "情感代偿者", "受害叙述": "情绪守护者",
-  "责任转移": "责任承担者", "依赖绑定": "依赖支柱",
-  "冲突激发": "关系修复者", "自我消耗": "共情透支者"
+  "情绪互动": "情感代偿者", "安全感": "情绪守护者",
+  "边界感": "责任承担者", "支持感": "依赖支柱",
+  "冲突模式": "关系修复者", "自我状态": "共情透支者"
 };
 
 const WaveTexture = ({ seed = 0, opacity = 0.12 }) => {
@@ -550,9 +550,10 @@ export default function App() {
     let scoreA = 0; let scoreB = 0; const dimScores = {};
     DIMENSIONS.forEach(dim => dimScores[dim] = 0);
     QUESTIONS.forEach(q => {
-      const val = answers[q.id] || 0;
+      const raw = answers[q.id] || 0;
+      const val = q.reverse ? (6 - raw) : raw;
       if (q.part === 'A') { scoreA += val; dimScores[q.dim] += val; }
-      else { scoreB += val; dimScores[q.dim] += val; }
+      else { scoreB += raw; dimScores[q.dim] += raw; }
     });
     const radarData = DIMENSIONS.slice(0, 6).map(key => ({ name: key, value: dimScores[key] / 5 }));
     const extDims = DIMENSIONS.slice(0, 6);
@@ -564,27 +565,26 @@ export default function App() {
     const avgPerQ_A = scoreA / 24;
     const avgPerQ_B = scoreB / 8;
     if (avgPerQ_A <= 2.5) { roleName = "关系清醒者"; }
-    // 全面高分保护：所有维度都高，直接给严重损耗
     else if (avgPerQ_A >= 4.0) { roleName = "情绪倾倒者"; }
-    else if (dominated && topDim === "情绪倾倒" && topScore >= 16) { roleName = "情绪倾倒者"; }
-    else if (dominated && topDim === "情绪倾倒") { roleName = "情感代偿者"; }
-    else if (dominated && topDim === "自我消耗") { roleName = "共情透支者"; }
-    else if (dominated && topDim === "冲突激发" && topScore >= 16) { roleName = "冲突吸引者"; }
-    else if (dominated && topDim === "冲突激发" && dimScores["情绪倾倒"] >= 10) { roleName = "情绪循环者"; }
-    else if (dominated && topDim === "冲突激发") { roleName = "关系修复者"; }
-    else if (dominated && topDim === "责任转移" && dimScores["自我消耗"] >= 8) { roleName = "自我压缩者"; }
-    else if (dominated && topDim === "责任转移") { roleName = "责任承担者"; }
-    else if (dominated && topDim === "依赖绑定") { roleName = "依赖支柱"; }
-    else if (dominated && topDim === "受害叙述") { roleName = "情绪守护者"; }
+    else if (dominated && topDim === "情绪互动" && topScore >= 16) { roleName = "情绪倾倒者"; }
+    else if (dominated && topDim === "情绪互动") { roleName = "情感代偿者"; }
+    else if (dominated && topDim === "自我状态") { roleName = "共情透支者"; }
+    else if (dominated && topDim === "冲突模式" && topScore >= 16) { roleName = "冲突吸引者"; }
+    else if (dominated && topDim === "冲突模式" && dimScores["情绪互动"] >= 10) { roleName = "情绪循环者"; }
+    else if (dominated && topDim === "冲突模式") { roleName = "关系修复者"; }
+    else if (dominated && topDim === "边界感" && dimScores["自我状态"] >= 8) { roleName = "自我压缩者"; }
+    else if (dominated && topDim === "边界感") { roleName = "责任承担者"; }
+    else if (dominated && topDim === "支持感") { roleName = "依赖支柱"; }
+    else if (dominated && topDim === "安全感") { roleName = "情绪守护者"; }
     else {
       const avgScore = scoreA / 6;
       if (avgPerQ_A <= 3.0) { roleName = "关系消耗者"; }
-      else if (dimScores["自我消耗"] >= avgScore) { roleName = "共情透支者"; }
-      else if (dimScores["冲突激发"] >= avgScore && dimScores["情绪倾倒"] >= avgScore) { roleName = "情绪循环者"; }
-      else if (dimScores["责任转移"] >= avgScore && dimScores["自我消耗"] >= avgScore) { roleName = "自我压缩者"; }
-      else if (dimScores["情绪倾倒"] >= avgScore && dimScores["受害叙述"] >= avgScore) { roleName = "情感代偿者"; }
-      else if (dimScores["依赖绑定"] >= avgScore) { roleName = "依赖支柱"; }
-      else if (dimScores["冲突激发"] >= avgScore) { roleName = "关系修复者"; }
+      else if (dimScores["自我状态"] >= avgScore) { roleName = "共情透支者"; }
+      else if (dimScores["冲突模式"] >= avgScore && dimScores["情绪互动"] >= avgScore) { roleName = "情绪循环者"; }
+      else if (dimScores["边界感"] >= avgScore && dimScores["自我状态"] >= avgScore) { roleName = "自我压缩者"; }
+      else if (dimScores["情绪互动"] >= avgScore && dimScores["安全感"] >= avgScore) { roleName = "情感代偿者"; }
+      else if (dimScores["支持感"] >= avgScore) { roleName = "依赖支柱"; }
+      else if (dimScores["冲突模式"] >= avgScore) { roleName = "关系修复者"; }
       else if (scoreA >= 80) { roleName = "情绪倾倒者"; }
       else { roleName = "关系消耗者"; }
     }
@@ -630,32 +630,38 @@ export default function App() {
     if (currentIndex === QUESTIONS.length - 1) {
       const dimTotals = {};
       DIMENSIONS.forEach(dim => dimTotals[dim] = 0);
-      QUESTIONS.forEach(q => { const score = newAnswers[q.id] || 0; if (dimTotals[q.dim] !== undefined) dimTotals[q.dim] += score; });
+      QUESTIONS.forEach(q => {
+        const raw = newAnswers[q.id] || 0;
+        const score = q.reverse ? (6 - raw) : raw;
+        if (dimTotals[q.dim] !== undefined) dimTotals[q.dim] += score;
+      });
       const totalScore = Object.values(newAnswers).reduce((a, b) => a + b, 0);
-      const avgPerQ = (totalScore - (dimTotals["内在补能模式"] || 0)) / 24;
+      const avgPerQ = QUESTIONS.filter(q=>q.part==='A').reduce((s,q)=>{
+        const raw = newAnswers[q.id]||0; return s+(q.reverse?(6-raw):raw);
+      },0) / 24;
       const sorted2 = Object.entries(dimTotals).filter(([k]) => k !== "内在补能模式").sort((a,b) => b[1]-a[1]);
       const topD = sorted2[0]?.[0]; const topS = sorted2[0]?.[1] || 0;
       const secS = sorted2[1]?.[1] || 0; const dom = (topS - secS) >= 3;
       let insertRole = "关系消耗者";
       if (avgPerQ <= 2.5) insertRole = "关系清醒者";
       else if (avgPerQ >= 4.0) insertRole = "情绪倾倒者";
-      else if (dom && topD === "情绪倾倒" && topS >= 16) insertRole = "情绪倾倒者";
-      else if (dom && topD === "情绪倾倒") insertRole = "情感代偿者";
-      else if (dom && topD === "冲突激发" && topS >= 16) insertRole = "冲突吸引者";
-      else if (dom && topD === "依赖绑定") insertRole = "依赖支柱";
-      else if (dom && topD === "责任转移") insertRole = "责任承担者";
-      else if (dom && topD === "受害叙述") insertRole = "情绪守护者";
-      else if (dom && topD === "自我消耗") insertRole = "自我压缩者";
+      else if (dom && topD === "情绪互动" && topS >= 16) insertRole = "情绪倾倒者";
+      else if (dom && topD === "情绪互动") insertRole = "情感代偿者";
+      else if (dom && topD === "冲突模式" && topS >= 16) insertRole = "冲突吸引者";
+      else if (dom && topD === "支持感") insertRole = "依赖支柱";
+      else if (dom && topD === "边界感") insertRole = "责任承担者";
+      else if (dom && topD === "安全感") insertRole = "情绪守护者";
+      else if (dom && topD === "自我状态") insertRole = "自我压缩者";
       try {
         await supabase.from('test_results').insert([{
           relation_type: finalTarget,
           role_name: insertRole,
-          dim_dumping: dimTotals["情绪倾倒"] / 5,
-          dim_narrative: dimTotals["受害叙述"] / 5,
-          dim_transfer: dimTotals["责任转移"] / 5,
-          dim_binding: dimTotals["依赖绑定"] / 5,
-          dim_conflict: dimTotals["冲突激发"] / 5,
-          dim_consumption: dimTotals["自我消耗"] / 5,
+          dim_dumping: dimTotals["情绪互动"] / 5,
+          dim_narrative: dimTotals["安全感"] / 5,
+          dim_transfer: dimTotals["边界感"] / 5,
+          dim_binding: dimTotals["支持感"] / 5,
+          dim_conflict: dimTotals["冲突模式"] / 5,
+          dim_consumption: dimTotals["自我状态"] / 5,
           final_score: totalScore
         }]);
       } catch (e) { console.error("Sync Error:", e); }
