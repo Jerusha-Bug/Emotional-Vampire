@@ -131,8 +131,98 @@ const Particles = () => (
   </div>
 );
 
-const OPTIONS = [
-  { label: "从不", value: 1 }, { label: "很少", value: 2 }, { label: "有时", value: 3 }, { label: "经常", value: 4 }, { label: "总是", value: 5 }
+const T = {
+  zh: {
+    tagline: '流失追踪 · 能量损耗分析',
+    title: '关系能量测评',
+    subtitle: '在这段关系里，你是谁',
+    intro: '在开始之前，想一想\n最近让你感到情绪消耗的那个人',
+    startBtn: '开启测评',
+    credit: '基于 Stéphane Clerget 情绪劳动理论\n及关系动力学理论',
+    nextBtn: '下一题',
+    doneBtn: '完成分析',
+    transitionTitle: '关系损耗扫描完成',
+    transitionSub: '接下来扫描你当前的',
+    transitionAccent: '内在能量补给状态',
+    transitionBtn: '继续内在扫描',
+    partALabel: 'PART A 完成',
+    sectionA: 'A · 外部能量损耗',
+    sectionB: 'B · 内在能量状态',
+    sectionBSub: '你是否正在无意识地消耗身边的人',
+    consumeLabel: '关系消耗程度',
+    behaviorsLabel: '常见互动表现',
+    impactLabel: '能量消耗',
+    adviceLabel: '你可以尝试',
+    subRoleLabel: '副机制',
+    retestBtn: '重测',
+    exportBtn: '导出卡片报告',
+    screenshotHint: '截图保存你的报告',
+    posterLabel: '关系能量分析',
+    stable: '平稳', active: '活跃', overload: '过载', needAttention: '需关注',
+    statusStable: '稳定', statusMild: '轻度损耗', statusModerate: '明显损耗', statusSevere: '严重损耗',
+    placeholderTarget: '例如：妈妈 / 爱人 / 同事',
+    lockTitle: '锁定分析对象',
+    lockSub: '告诉我们，你最想扫描哪段互动的能量流失？',
+    enterBtn: '进入扫描仪式 →',
+    backBtn: '返回首页',
+    dimNames: { '情绪互动':'情绪互动','安全感':'安全感','边界感':'边界感','支持感':'支持感','冲突模式':'冲突模式','自我状态':'自我状态','内在补能模式':'内在补能模式' },
+  },
+  en: {
+    tagline: 'Energy Tracking · Relationship Drain Analysis',
+    title: 'Relationship Energy Assessment',
+    subtitle: 'Who are you in this relationship?',
+    intro: 'Before you begin, think about\nthe person who has been draining you lately',
+    startBtn: 'Start Assessment',
+    credit: 'Based on Stéphane Clerget\'s emotional labor theory\nand relationship dynamics',
+    nextBtn: 'Next',
+    doneBtn: 'Finish',
+    transitionTitle: 'Relationship Scan Complete',
+    transitionSub: 'Next, we\'ll scan your',
+    transitionAccent: 'inner energy reserve',
+    transitionBtn: 'Continue Inner Scan',
+    partALabel: 'PART A COMPLETE',
+    sectionA: 'A · External Energy Drain',
+    sectionB: 'B · Inner Energy State',
+    sectionBSub: 'Are you unknowingly draining those around you?',
+    consumeLabel: 'Relationship Drain Level',
+    behaviorsLabel: 'Common Interaction Patterns',
+    impactLabel: 'Energy Impact',
+    adviceLabel: 'What You Can Try',
+    subRoleLabel: 'Secondary Pattern',
+    retestBtn: 'Retest',
+    exportBtn: 'Export Report Card',
+    screenshotHint: 'Screenshot to save your report',
+    posterLabel: 'Relationship Energy Analysis',
+    stable: 'Stable', active: 'Active', overload: 'Overloaded', needAttention: 'Needs Attention',
+    statusStable: 'Stable', statusMild: 'Mild Drain', statusModerate: 'Moderate Drain', statusSevere: 'Severe Drain',
+    placeholderTarget: 'e.g. Mom / Partner / Colleague',
+    lockTitle: 'Who are you thinking of?',
+    lockSub: 'Tell us which relationship you want to analyze.',
+    enterBtn: 'Begin Scan →',
+    backBtn: 'Back',
+    dimNames: { '情绪互动':'Emotional Interaction','安全感':'Safety','边界感':'Boundaries','支持感':'Support','冲突模式':'Conflict Pattern','自我状态':'Self State','内在补能模式':'Inner Energy' },
+  }
+};
+
+const LangToggle = ({ lang, setLang }) => (
+  <button
+    onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
+    style={{
+      position: 'fixed', top: '16px', right: '16px', zIndex: 100,
+      background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(12px)',
+      border: '1px solid rgba(255,255,255,0.30)', borderRadius: '9999px',
+      color: '#FFFFFF', fontWeight: 700, fontSize: '11px',
+      letterSpacing: '0.08em', padding: '6px 14px',
+      cursor: 'pointer', transition: 'opacity 0.15s',
+    }}>
+    {lang === 'zh' ? 'EN' : '中'}
+  </button>
+);
+  { label: "从不", en: "Never",     value: 1 },
+  { label: "很少", en: "Rarely",    value: 2 },
+  { label: "有时", en: "Sometimes", value: 3 },
+  { label: "经常", en: "Often",     value: 4 },
+  { label: "总是", en: "Always",    value: 5 }
 ];
 
 const DIMENSIONS = ["情绪互动", "安全感", "边界感", "支持感", "冲突模式", "自我状态", "内在补能模式"];
@@ -196,38 +286,38 @@ const DIMENSION_LEVEL_DESC = {
 };
 
 const QUESTIONS = [
-  { id: 1,  part: "A", dim: "情绪互动", text: "当{target}情绪不好时，我通常会参与安抚或陪伴。" },
-  { id: 2,  part: "A", dim: "情绪互动", text: "{target}会主动和我分享自己的情绪状态。" },
-  { id: 3,  part: "A", dim: "情绪互动", text: "在和{target}相处后，我通常感到轻松。", reverse: true },
-  { id: 4,  part: "A", dim: "情绪互动", text: "我在这段关系中需要投入较多情绪精力。" },
-  { id: 5,  part: "A", dim: "安全感",   text: "我可以自然地向{target}表达真实想法。", reverse: true },
-  { id: 6,  part: "A", dim: "安全感",   text: "我会在表达前考虑{target}的反应。" },
-  { id: 7,  part: "A", dim: "安全感",   text: "{target}的态度会影响我的情绪状态。" },
-  { id: 8,  part: "A", dim: "安全感",   text: "这段关系整体让我感到稳定。", reverse: true },
-  { id: 9,  part: "A", dim: "边界感",   text: "{target}会参与或影响我的一些决定。" },
-  { id: 10, part: "A", dim: "边界感",   text: "当我不想答应时，我可以拒绝{target}。", reverse: true },
-  { id: 11, part: "A", dim: "边界感",   text: "我有时会为了维持关系而改变原本的决定。" },
-  { id: 12, part: "A", dim: "边界感",   text: "当{target}情绪波动时，我会下意识去回应或处理。" },
-  { id: 13, part: "A", dim: "支持感",   text: "我和{target}之间的付出是相对平衡的。", reverse: true },
-  { id: 14, part: "A", dim: "支持感",   text: "{target}会关注我的感受和状态。", reverse: true },
-  { id: 15, part: "A", dim: "支持感",   text: "{target}通常在需要时才会联系我。" },
-  { id: 16, part: "A", dim: "支持感",   text: "在需要帮助时，我可以向{target}寻求支持。", reverse: true },
-  { id: 17, part: "A", dim: "冲突模式", text: "当出现分歧时，我们通常可以沟通解决。", reverse: true },
-  { id: 18, part: "A", dim: "冲突模式", text: "在冲突中，我更容易主动缓和关系。" },
-  { id: 19, part: "A", dim: "冲突模式", text: "{target}有时会回避沟通或延后讨论问题。" },
-  { id: 20, part: "A", dim: "冲突模式", text: "一些小问题有时会演变成更大的矛盾。" },
-  { id: 21, part: "A", dim: "自我状态", text: "这段关系让我能够保持原本的自己。", reverse: true },
-  { id: 22, part: "A", dim: "自我状态", text: "我有时会反复回想{target}说过的话。" },
-  { id: 23, part: "A", dim: "自我状态", text: "和{target}相处会消耗我的精力。" },
-  { id: 24, part: "A", dim: "自我状态", text: "我可以自然地从这段关系中抽离和休息。", reverse: true },
-  { id: 31, part: "B", dim: "内在补能模式", text: "我觉得周围的人大多都带着一身麻烦，需要我去关注。" },
-  { id: 32, part: "B", dim: "内在补能模式", text: "我觉得自己对人生中发生的大部分事情都无能为力。" },
-  { id: 33, part: "B", dim: "内在补能模式", text: "在我真正需要帮助时，身边几乎找不到可以依靠的人。" },
-  { id: 34, part: "B", dim: "内在补能模式", text: "相比其他人，我总觉得自己在达成目标的过程中阻碍重重。" },
-  { id: 35, part: "B", dim: "内在补能模式", text: "我认为人与人之间很难达成真正的理解，大家并不善于倾听。" },
-  { id: 36, part: "B", dim: "内在补能模式", text: "我常觉得我所处环境中，别人生活得比我更艰难，我必须为此做点什么。" },
-  { id: 37, part: "B", dim: "内在补能模式", text: "我在人际关系中经常遭遇背叛，或者被我信任的人伤害。" },
-  { id: 38, part: "B", dim: "内在补能模式", text: "我觉得自己付出的努力，并没有得到环境应有的认可。" }
+  { id: 1,  part: "A", dim: "情绪互动", text: "当{target}情绪不好时，我通常会参与安抚或陪伴。", textEn: "When {target} is in a bad mood, I usually try to comfort or stay with them." },
+  { id: 2,  part: "A", dim: "情绪互动", text: "{target}会主动和我分享自己的情绪状态。", textEn: "{target} actively shares their emotional state with me." },
+  { id: 3,  part: "A", dim: "情绪互动", text: "在和{target}相处后，我通常感到轻松。", reverse: true, textEn: "After spending time with {target}, I usually feel relaxed." },
+  { id: 4,  part: "A", dim: "情绪互动", text: "我在这段关系中需要投入较多情绪精力。", textEn: "This relationship requires a lot of emotional energy from me." },
+  { id: 5,  part: "A", dim: "安全感",   text: "我可以自然地向{target}表达真实想法。", reverse: true, textEn: "I can naturally express my true thoughts to {target}." },
+  { id: 6,  part: "A", dim: "安全感",   text: "我会在表达前考虑{target}的反应。", textEn: "I think about how {target} will react before I speak." },
+  { id: 7,  part: "A", dim: "安全感",   text: "{target}的态度会影响我的情绪状态。", textEn: "{target}'s attitude affects my emotional state." },
+  { id: 8,  part: "A", dim: "安全感",   text: "这段关系整体让我感到稳定。", reverse: true, textEn: "Overall, this relationship makes me feel stable." },
+  { id: 9,  part: "A", dim: "边界感",   text: "{target}会参与或影响我的一些决定。", textEn: "{target} participates in or influences some of my decisions." },
+  { id: 10, part: "A", dim: "边界感",   text: "当我不想答应时，我可以拒绝{target}。", reverse: true, textEn: "When I don't want to agree, I can say no to {target}." },
+  { id: 11, part: "A", dim: "边界感",   text: "我有时会为了维持关系而改变原本的决定。", textEn: "I sometimes change my decisions to maintain this relationship." },
+  { id: 12, part: "A", dim: "边界感",   text: "当{target}情绪波动时，我会下意识去回应或处理。", textEn: "When {target}'s emotions fluctuate, I instinctively respond or manage it." },
+  { id: 13, part: "A", dim: "支持感",   text: "我和{target}之间的付出是相对平衡的。", reverse: true, textEn: "The effort between {target} and me is relatively balanced." },
+  { id: 14, part: "A", dim: "支持感",   text: "{target}会关注我的感受和状态。", reverse: true, textEn: "{target} pays attention to my feelings and wellbeing." },
+  { id: 15, part: "A", dim: "支持感",   text: "{target}通常在需要时才会联系我。", textEn: "{target} usually contacts me only when they need something." },
+  { id: 16, part: "A", dim: "支持感",   text: "在需要帮助时，我可以向{target}寻求支持。", reverse: true, textEn: "When I need help, I can seek support from {target}." },
+  { id: 17, part: "A", dim: "冲突模式", text: "当出现分歧时，我们通常可以沟通解决。", reverse: true, textEn: "When disagreements arise, we can usually resolve them through communication." },
+  { id: 18, part: "A", dim: "冲突模式", text: "在冲突中，我更容易主动缓和关系。", textEn: "In conflicts, I tend to be the one who initiates reconciliation." },
+  { id: 19, part: "A", dim: "冲突模式", text: "{target}有时会回避沟通或延后讨论问题。", textEn: "{target} sometimes avoids communication or delays discussing issues." },
+  { id: 20, part: "A", dim: "冲突模式", text: "一些小问题有时会演变成更大的矛盾。", textEn: "Small issues sometimes escalate into bigger conflicts." },
+  { id: 21, part: "A", dim: "自我状态", text: "这段关系让我能够保持原本的自己。", reverse: true, textEn: "This relationship allows me to remain my authentic self." },
+  { id: 22, part: "A", dim: "自我状态", text: "我有时会反复回想{target}说过的话。", textEn: "I sometimes find myself replaying things {target} has said." },
+  { id: 23, part: "A", dim: "自我状态", text: "和{target}相处会消耗我的精力。", textEn: "Spending time with {target} drains my energy." },
+  { id: 24, part: "A", dim: "自我状态", text: "我可以自然地从这段关系中抽离和休息。", reverse: true, textEn: "I can naturally detach and rest from this relationship." },
+  { id: 31, part: "B", dim: "内在补能模式", text: "我觉得周围的人大多都带着一身麻烦，需要我去关注。", textEn: "I feel like most people around me carry problems that need my attention." },
+  { id: 32, part: "B", dim: "内在补能模式", text: "我觉得自己对人生中发生的大部分事情都无能为力。", textEn: "I feel powerless over most things that happen in my life." },
+  { id: 33, part: "B", dim: "内在补能模式", text: "在我真正需要帮助时，身边几乎找不到可以依靠的人。", textEn: "When I truly need help, there is almost no one I can rely on." },
+  { id: 34, part: "B", dim: "内在补能模式", text: "相比其他人，我总觉得自己在达成目标的过程中阻碍重重。", textEn: "Compared to others, I feel like I face far more obstacles in achieving my goals." },
+  { id: 35, part: "B", dim: "内在补能模式", text: "我认为人与人之间很难达成真正的理解，大家并不善于倾听。", textEn: "I believe it's hard for people to truly understand each other — most don't really listen." },
+  { id: 36, part: "B", dim: "内在补能模式", text: "我常觉得我所处环境中，别人生活得比我更艰难，我必须为此做点什么。", textEn: "I often feel that people around me have harder lives than I do, and I must do something about it." },
+  { id: 37, part: "B", dim: "内在补能模式", text: "我在人际关系中经常遭遇背叛，或者被我信任的人伤害。", textEn: "I frequently experience betrayal or being hurt by people I trust." },
+  { id: 38, part: "B", dim: "内在补能模式", text: "我觉得自己付出的努力，并没有得到环境应有的认可。", textEn: "I feel that my efforts are not recognized the way they deserve to be." }
 ];
 
 const ROLE_DATA = {
@@ -536,6 +626,7 @@ const RadarChart = ({ data }) => {
 
 export default function App() {
   const [mounted, setMounted] = useState(false);
+  const [lang, setLang] = useState('zh');
   const [step, setStep] = useState('welcome');
   const [targetPerson, setTargetPerson] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -555,7 +646,7 @@ export default function App() {
       if (q.part === 'A') { scoreA += val; dimScores[q.dim] += val; }
       else { scoreB += raw; dimScores[q.dim] += raw; }
     });
-    const radarData = DIMENSIONS.slice(0, 6).map(key => ({ name: key, value: dimScores[key] / 5 }));
+    const radarData = DIMENSIONS.slice(0, 6).map(key => ({ name: key, value: dimScores[key] / 5 })); // lang applied in render
     const extDims = DIMENSIONS.slice(0, 6);
     const sorted = [...extDims].sort((a, b) => dimScores[b] - dimScores[a]);
     const topDim = sorted[0]; const secondDim = sorted[1];
@@ -742,9 +833,11 @@ export default function App() {
 
   // [1] 首页
   if (step === 'welcome') {
+    const t = T[lang];
     return (
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
         style={{background: DS.pageBg}}>
+        <LangToggle lang={lang} setLang={setLang} />
         <style>{`
           @keyframes floatUp {
             0% { transform: translateY(0) scale(1); opacity: 0.5; }
@@ -760,28 +853,28 @@ export default function App() {
           <div className="flex-[1.2]" />
           <div className="flex flex-col items-center text-center">
             <p style={{...DS.label, color: 'rgba(255,255,255,0.80)', marginBottom: DS.space.md}}>
-              流失追踪 · 能量损耗分析
+              {t.tagline}
             </p>
             <h1 style={{...DS.type.t1, color: DS.text.primary, marginBottom: DS.space.sm}}>
-              关系能量测评
+              {t.title}
             </h1>
             <p style={{...DS.type.t3, color: 'rgba(255,255,255,0.75)', maxWidth:'220px'}}>
-              在这段关系里，你是谁
+              {t.subtitle}
             </p>
           </div>
           <div className="flex-[1.5]" />
           <div className="flex flex-col items-center mb-16" style={{gap: DS.space.md, width:'100%'}}>
             <p style={{...DS.type.t4, color: 'rgba(255,255,255,0.75)', textAlign:'center', maxWidth:'240px'}}>
-              在开始之前，想一想<br/>最近让你感到情绪消耗的那个人
+              {t.intro.split('\n').map((line, i) => <span key={i}>{line}{i === 0 && <br/>}</span>)}
             </p>
             <button onClick={handleStartIdentity}
               className="w-full max-w-xs active:scale-95"
               style={{...DS.btnPrimary(), height:'56px'}}>
-              <span>开启测评</span>
+              <span>{t.startBtn}</span>
             </button>
             <p style={{...DS.label, color: 'rgba(255,255,255,0.60)', letterSpacing: '0.12em',
               textAlign: 'center', lineHeight: 1.8, maxWidth: '240px'}}>
-              基于 Stéphane Clerget 情绪劳动理论<br/>及关系动力学理论
+              {t.credit.split('\n').map((line, i) => <span key={i}>{line}{i === 0 && <br/>}</span>)}
             </p>
           </div>
         </div>
@@ -791,9 +884,11 @@ export default function App() {
 
   // [2] Identity
   if (step === 'identity') {
+    const t = T[lang];
     return (
       <div className="min-h-screen text-white flex flex-col items-center justify-center p-8 font-sans overflow-hidden relative"
         style={{background: DS.pageBg}}>
+        <LangToggle lang={lang} setLang={setLang} />
         {DS.waveSvg}
         <Particles />
         <div className="relative z-10 flex flex-col items-center w-full">
@@ -801,12 +896,12 @@ export default function App() {
             style={{background: 'rgba(146,141,171,0.12)', border: '1px solid rgba(146,141,171,0.2)'}}>
             <Heart className="w-10 h-10 animate-pulse" style={{color: 'rgba(146,141,171,0.8)'}} fill="currentColor" />
           </div>
-          <h2 className="text-3xl font-bold mb-4 text-center" style={{letterSpacing: '-0.02em'}}>锁定分析对象</h2>
-          <p className="text-sm mb-12 text-center" style={{color: 'rgba(255,255,255,0.55)'}}>告诉我们，你最想扫描哪段互动的能量流失？</p>
+          <h2 className="text-3xl font-bold mb-4 text-center" style={{letterSpacing: '-0.02em'}}>{t.lockTitle}</h2>
+          <p className="text-sm mb-12 text-center" style={{color: 'rgba(255,255,255,0.55)'}}>{t.lockSub}</p>
           <div className="w-full max-w-sm space-y-4">
             <input
               autoFocus type="text"
-              placeholder="例如：妈妈 / 爱人 / 同事"
+              placeholder={t.placeholderTarget}
               className="w-full p-6 text-lg text-center focus:outline-none placeholder:text-white/15 transition-all"
               style={{background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.10)', borderRadius: '2rem', color: 'white'}}
               value={targetPerson}
@@ -817,11 +912,10 @@ export default function App() {
               onClick={handleStartQuiz}
               className="w-full py-5 active:scale-95"
               style={targetPerson.trim() ? DS.btnPrimary() : {...DS.btnSecondary, cursor: 'not-allowed', opacity: 0.5}}>
-              进入扫描仪式 →
+              {t.enterBtn}
             </button>
-            <button onClick={() => setStep('welcome')} className="w-full py-3"
-              style={DS.btnSecondary}>
-              返回首页
+            <button onClick={() => setStep('welcome')} className="w-full py-3" style={DS.btnSecondary}>
+              {t.backBtn}
             </button>
           </div>
         </div>
@@ -831,14 +925,18 @@ export default function App() {
 
   // [3] Quiz
   if (step === 'quiz') {
+    const t = T[lang];
     const q = QUESTIONS[currentIndex]; if (!q) return null;
     const currentVal = answers[q.id];
     const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
     const isPartB = q.part === 'B';
     const accentColor = isPartB ? 'rgba(200,198,230,' : 'rgba(188,190,229,';
+    const questionText = (lang === 'en' ? (q.textEn || q.text) : q.text).replace('{target}', finalTarget);
+    const dimLabel = t.dimNames[q.dim] || q.dim;
     return (
       <div className="min-h-screen text-white flex flex-col font-sans overflow-hidden relative"
         style={{background: DS.pageBg}}>
+        <LangToggle lang={lang} setLang={setLang} />
         <div className="absolute inset-0 pointer-events-none"
           style={{background: isPartB
             ? 'radial-gradient(ellipse at 70% 25%, rgba(99,94,121,0.2) 0%, transparent 55%)'
@@ -861,7 +959,7 @@ export default function App() {
             <div style={isPartB ? DS.progressFillB(progress) : DS.progressFillA(progress)} />
           </div>
           <p style={{...DS.label, color: isPartB ? 'rgba(200,198,230,0.65)' : 'rgba(255,255,255,0.70)'}}>
-            {String(q.dim)}
+            {dimLabel}
           </p>
         </div>
         <div className="relative z-10 px-8 max-w-md mx-auto w-full"
@@ -872,7 +970,7 @@ export default function App() {
           </span>
           <h2 style={{...DS.type.t1, fontSize:'1.65rem', color: DS.text.primary,
             textShadow:'0 0 40px rgba(255,255,255,0.05)', lineHeight: 1.5}}>
-            {String(q.text).replace('{target}', finalTarget)}
+            {questionText}
           </h2>
         </div>
         <div className="relative z-10 flex-1 flex flex-col justify-end px-8 max-w-md mx-auto w-full">
@@ -885,26 +983,18 @@ export default function App() {
                   <div className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
                     style={{
                       transform: isSelected ? 'scale(1.25)' : 'scale(1)',
-                      background: isSelected
-                        ? 'rgba(255,255,255,0.35)'
-                        : 'rgba(255,255,255,0.12)',
-                      border: isSelected
-                        ? '2px solid rgba(255,255,255,0.90)'
-                        : '1px solid rgba(255,255,255,0.30)',
-                      boxShadow: isSelected
-                        ? '0 0 20px rgba(255,255,255,0.25), 0 0 8px rgba(255,255,255,0.15) inset'
-                        : 'none',
+                      background: isSelected ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.12)',
+                      border: isSelected ? '2px solid rgba(255,255,255,0.90)' : '1px solid rgba(255,255,255,0.30)',
+                      boxShadow: isSelected ? '0 0 20px rgba(255,255,255,0.25), 0 0 8px rgba(255,255,255,0.15) inset' : 'none',
                     }}>
                     {isSelected && (
                       <div className="w-2.5 h-2.5 rounded-full"
                         style={{background: 'rgba(255,255,255,0.95)', boxShadow:'0 0 8px rgba(255,255,255,0.8)'}} />
                     )}
                   </div>
-                  <span style={{
-                    fontSize: '11px', fontWeight: 700, letterSpacing: '0.02em',
-                    color: isSelected ? '#FFFFFF' : 'rgba(255,255,255,0.60)'
-                  }}>
-                    {String(opt.label)}
+                  <span style={{fontSize: '11px', fontWeight: 700, letterSpacing: '0.02em',
+                    color: isSelected ? '#FFFFFF' : 'rgba(255,255,255,0.60)'}}>
+                    {lang === 'en' ? opt.en : opt.label}
                   </span>
                 </button>
               );
@@ -917,13 +1007,10 @@ export default function App() {
             disabled={currentIndex === 0}
             className="active:scale-90"
             style={{
-              ...DS.btnSecondary,
-              width: '56px', height: '56px',
+              ...DS.btnSecondary, width: '56px', height: '56px',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              borderRadius: '50%',
-              opacity: currentIndex === 0 ? 0 : 1,
-              pointerEvents: currentIndex === 0 ? 'none' : 'auto',
-              padding: 0,
+              borderRadius: '50%', opacity: currentIndex === 0 ? 0 : 1,
+              pointerEvents: currentIndex === 0 ? 'none' : 'auto', padding: 0,
             }}>
             <ArrowLeft className="w-5 h-5" style={{color: 'rgba(255,255,255,0.6)'}} />
           </button>
@@ -932,12 +1019,9 @@ export default function App() {
             disabled={!currentVal}
             className="flex-1 active:scale-95"
             style={currentVal
-              ? {...DS.btnPrimary(accentColor), height: '56px',
-                  background: isPartB
-                    ? 'rgba(255,255,255,0.15)'
-                    : 'rgba(255,255,255,0.15)'}
+              ? {...DS.btnPrimary(accentColor), height: '56px', background: 'rgba(255,255,255,0.15)'}
               : {...DS.btnSecondary, height: '56px', cursor: 'not-allowed', opacity: 0.4}}>
-            {currentIndex === QUESTIONS.length - 1 ? '完成分析' : '下一题'}
+            {currentIndex === QUESTIONS.length - 1 ? t.doneBtn : t.nextBtn}
           </button>
         </div>
       </div>
@@ -945,9 +1029,12 @@ export default function App() {
   }
 
   // [4] 过渡页
-  if (step === 'transition') return (
+  if (step === 'transition') {
+    const t = T[lang];
+    return (
     <div className="min-h-screen text-white flex flex-col items-center justify-center p-12 text-center font-sans relative overflow-hidden"
       style={{background: DS.pageBg}}>
+      <LangToggle lang={lang} setLang={setLang} />
       <div className="absolute inset-0 pointer-events-none"
         style={{background: 'radial-gradient(ellipse at 50% 40%, rgba(146,141,171,0.18) 0%, transparent 60%)'}} />
       {DS.waveSvg}
@@ -961,29 +1048,34 @@ export default function App() {
           }}>
           <Fingerprint className="w-7 h-7" style={{color:'rgba(188,190,229,0.75)'}} />
         </div>
-        <p style={{...DS.label, marginBottom: DS.space.sm}}>PART A 完成</p>
+        <p style={{...DS.label, marginBottom: DS.space.sm}}>{t.partALabel}</p>
         <h2 style={{...DS.type.t1, fontSize:'1.5rem', color: DS.text.primary, marginBottom: DS.space.sm}}>
-          关系损耗扫描完成
+          {t.transitionTitle}
         </h2>
         <p style={{...DS.type.t3, color: 'rgba(255,255,255,0.75)',
           marginBottom: DS.space.lg, maxWidth:'240px', textAlign:'center'}}>
-          接下来扫描你当前的<br/>
-          <span style={{color:'rgba(200,198,230,0.85)'}}>内在能量补给状态</span>
+          {t.transitionSub}<br/>
+          <span style={{color:'rgba(200,198,230,0.85)'}}>{t.transitionAccent}</span>
         </p>
         <button
           onClick={() => { setStep('quiz'); setCurrentIndex(QUESTIONS.findIndex(q => q.part === 'B')); }}
           className="w-full max-w-xs active:scale-95"
           style={{...DS.btnPrimary(), height: '56px'}}>
-          继续内在扫描
+          {t.transitionBtn}
         </button>
       </div>
     </div>
-  );
+  );}
 
   // [5] 结果页
   if (step === 'result' && resultData) {
-    const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole, image, imageResult } = resultData;
+    const t = T[lang];
+    const { roleName, color, bg, status, tag, definition, scene, behaviors, impact, advice, scoreA, radarData, dimScores, subRole, image, imageResult, en: roleEn } = resultData;
     const displayImage = imageResult || image;
+    const displayRoleName = lang === 'en' && roleEn ? roleEn : roleName;
+    const displayStatus = lang === 'en'
+      ? (status === '严重损耗' ? t.statusSevere : status === '明显损耗' ? t.statusModerate : status === '轻度损耗' ? t.statusMild : t.statusStable)
+      : status;
 
     if (showPoster) {
       const _roleColorMap = {
@@ -1025,11 +1117,11 @@ export default function App() {
             <div style={{borderRadius:'24px', border:`1px solid ${_rc}0.25)`,
               overflow:'hidden', background:'rgba(0,0,0,0.5)'}}>
               <div style={{padding:'20px 20px 16px', textAlign:'center'}}>
-                <p style={{...DS.label, color:`${_rc}0.6)`, marginBottom:'8px'}}>关系能量分析</p>
+                <p style={{...DS.label, color:`${_rc}0.6)`, marginBottom:'8px'}}>{t.posterLabel}</p>
                 <h2 style={{fontSize:'1.7rem', fontWeight:800, letterSpacing:'-0.02em',
                   color:'#fff', lineHeight:1.1, marginBottom:'4px',
                   textShadow:`0 0 24px ${_rc}0.5)`}}>
-                  {String(roleName)}
+                  {displayRoleName}
                 </h2>
                 <p style={{fontSize:'9px', fontWeight:600, letterSpacing:'0.2em',
                   color:`${_rc}0.6)`, textTransform:'uppercase'}}>
@@ -1057,7 +1149,7 @@ export default function App() {
               color:'rgba(255,255,255,0.18)', marginTop:'12px',
               display:'flex', alignItems:'center', justifyContent:'center', gap:'6px'}}>
               <Download style={{width:'9px', height:'9px', opacity:0.4}}/>
-              截图保存你的报告
+              {t.screenshotHint}
             </p>
           </div>
         </div>
@@ -1124,6 +1216,7 @@ export default function App() {
 
     return (
       <div className="min-h-screen text-white font-sans relative overflow-x-hidden" style={{background: pageBg}}>
+        <LangToggle lang={lang} setLang={setLang} />
         <style>{`
           @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 0.6; } 100% { transform: translateY(-140px) scale(0.2); opacity: 0; } }
           .particle { animation: floatUp linear infinite; }
@@ -1156,13 +1249,13 @@ export default function App() {
               borderRadius:'999px', padding:'4px 14px', marginBottom:'20px'}}>
               <div style={{width:'5px', height:'5px', borderRadius:'50%',
                 background:`${rc}1)`, boxShadow:`0 0 8px ${rc}1)`}}/>
-              <span style={{...DS.label, color:`${rc}1)`, letterSpacing:'0.2em'}}>{String(status)}</span>
+              <span style={{...DS.label, color:`${rc}1)`, letterSpacing:'0.2em'}}>{displayStatus}</span>
             </div>
             <h2 style={{fontSize:'clamp(3rem, 12vw, 4.5rem)', fontWeight:800, lineHeight:1.0,
               letterSpacing:'-0.04em', color:'#FFFFFF',
               textShadow:`0 2px 4px rgba(0,0,0,0.8), 0 0 60px ${rc}0.6), 0 0 120px ${rc}0.25)`,
               marginBottom:'12px'}}>
-              {String(roleName)}
+              {displayRoleName}
             </h2>
             <p style={{fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.18em',
               color:'rgba(255,255,255,0.85)', marginBottom:'28px'}}>
@@ -1183,7 +1276,7 @@ export default function App() {
             {subRole && (
               <div style={{...DS.cardInner, background:`${rc}0.08)`, border:`1px solid ${rc}0.28)`,
                 marginTop:'24px', padding:'16px 20px', textAlign:'left'}}>
-                <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.xs}}>副机制</p>
+                <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.xs}}>{t.subRoleLabel}</p>
                 <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'6px'}}>
                   <span style={{...DS.type.t2, color:`${rc}1)`, textShadow:`0 0 12px ${rc}0.4)`}}>
                     {String(subRole.name)}
@@ -1211,7 +1304,7 @@ export default function App() {
           {/* ③ 常见互动 + 消耗 */}
           <section style={{...DS.card, border:`1px solid ${rc}0.20)`, marginBottom:DS.space.sm}}>
             <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.10)`}}>
-              <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.sm}}>常见互动表现</p>
+              <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.sm}}>{t.behaviorsLabel}</p>
               <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
                 {behaviors.map((b,i)=>(
                   <div key={i} style={{display:'flex', alignItems:'flex-start', gap:'12px'}}>
@@ -1223,7 +1316,7 @@ export default function App() {
               </div>
             </div>
             <div style={{padding:'20px 24px 24px'}}>
-              <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.sm}}>能量消耗</p>
+              <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.sm}}>{t.impactLabel}</p>
               <p style={{...DS.type.t3, color:'rgba(255,255,255,0.85)'}}>{String(impact)}</p>
             </div>
           </section>
@@ -1231,10 +1324,10 @@ export default function App() {
           {/* ④ Part A 维度 */}
           <section style={{...DS.card, border:`1px solid ${rc}0.18)`, marginBottom:DS.space.sm}}>
             <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.10)`}}>
-              <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.xs}}>A · 外部能量损耗</p>
+              <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:DS.space.xs}}>{t.sectionA}</p>
               <div style={{display:'flex', alignItems:'center', justifyContent:'space-between',
                 marginTop:DS.space.sm, marginBottom:'8px'}}>
-                <span style={{...DS.label, color:DS.text.muted}}>关系消耗程度</span>
+                <span style={{...DS.label, color:DS.text.muted}}>{t.consumeLabel}</span>
                 <span style={{fontSize:'1.5rem', fontWeight:800, letterSpacing:'-0.02em',
                   color:`${rc}1)`, textShadow:`0 0 20px ${rc}0.5)`, lineHeight:1}}>
                   {Math.round((scoreA/120)*100)}%
@@ -1245,7 +1338,7 @@ export default function App() {
               </div>
             </div>
             <div style={{padding:'4px 16px 0'}}>
-              <RadarChart data={radarData}/>
+              <RadarChart data={radarData.map(d => ({...d, name: t.dimNames[d.name] || d.name}))}/>
             </div>
             <div style={{padding:`0 16px ${DS.space.md}`, display:'flex', flexDirection:'column', gap:DS.space.xs}}>
               {DIMENSIONS.slice(0,6).map((dim,idx)=>{
@@ -1260,7 +1353,7 @@ export default function App() {
                     <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
                       <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
                         <span style={{...DS.label, color:DS.text.ghost}}>{String(idx+1).padStart(2,'0')}</span>
-                        <span style={{...DS.type.t2, color:DS.text.primary}}>{String(dim)}</span>
+                        <span style={{...DS.type.t2, color:DS.text.primary}}>{t.dimNames[dim] || dim}</span>
                         <span style={{fontSize:'8px', fontWeight:700, padding:'2px 8px', borderRadius:'999px',
                           color:stateColor, background:bgState, border:`1px solid ${brdState}`}}>
                           {stateLabel}
@@ -1298,13 +1391,13 @@ export default function App() {
                 <Fingerprint style={{position:'absolute', top:'12px', right:'12px',
                   width:'80px', height:'80px', pointerEvents:'none', color:`${rc}0.08)`, strokeWidth:1.5}}/>
                 <div style={{padding:'24px 24px 20px', borderBottom:`1px solid ${rc}0.15)`}}>
-                  <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:'6px'}}>B · 内在能量状态</p>
-                  <p style={{...DS.type.t4, color:DS.text.muted}}>你是否正在无意识地消耗身边的人</p>
+                  <p style={{...DS.label, color:'rgba(255,255,255,0.80)', marginBottom:'6px'}}>{t.sectionB}</p>
+                  <p style={{...DS.type.t4, color:DS.text.muted}}>{t.sectionBSub}</p>
                 </div>
                 <div style={{padding:'20px 24px 24px'}}>
                   <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
                     <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
-                      <span style={{...DS.type.t2, color:DS.text.primary}}>{String(dim)}</span>
+                      <span style={{...DS.type.t2, color:DS.text.primary}}>{t.dimNames[dim] || dim}</span>
                       <span style={{fontSize:'8px', fontWeight:700, padding:'2px 8px', borderRadius:'999px',
                         color:stateColor, background:bgState, border:`1px solid ${brdState}`}}>
                         {stateLabel}
@@ -1333,7 +1426,7 @@ export default function App() {
               <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:DS.space.sm}}>
                 <div style={{width:'3px', height:'20px', borderRadius:'2px',
                   background:`${rc}1)`, boxShadow:`0 0 10px ${rc}0.7)`, flexShrink:0}}/>
-                <p style={{...DS.label, color:'rgba(255,255,255,0.80)'}}>你可以尝试</p>
+                <p style={{...DS.label, color:'rgba(255,255,255,0.80)'}}>{t.adviceLabel}</p>
               </div>
               <div style={{display:'flex', flexDirection:'column', gap:'4px'}}>
                 {renderAdvice(String(advice))}
@@ -1350,7 +1443,7 @@ export default function App() {
                 borderRadius:'9999px', color:'#F2F3FB', fontWeight:700, fontSize:'0.85rem',
                 display:'flex', alignItems:'center', justifyContent:'center', gap:'6px',
                 transition:'transform 0.15s'}}>
-              <RefreshCcw style={{width:'13px', height:'13px'}}/> 重测
+              <RefreshCcw style={{width:'13px', height:'13px'}}/> {t.retestBtn}
             </button>
             <button onClick={() => setShowPoster(true)}
               className="active:scale-95"
@@ -1359,7 +1452,7 @@ export default function App() {
                 borderRadius:'9999px', color:'#F2F3FB', fontWeight:700, fontSize:'0.9rem',
                 letterSpacing:'0.04em', display:'flex', alignItems:'center', justifyContent:'center', gap:'8px',
                 transition:'transform 0.15s'}}>
-              <Share2 style={{width:'15px', height:'15px'}}/> 导出卡片报告
+              <Share2 style={{width:'15px', height:'15px'}}/> {t.exportBtn}
             </button>
           </section>
 
